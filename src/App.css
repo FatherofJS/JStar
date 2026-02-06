@@ -1,42 +1,114 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* App Layout */
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: #0b0e14;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Header */
+.header {
+  height: 56px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(100, 120, 150, 0.15);
+  background: #0f1318;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
 }
 
-.card {
-  padding: 2em;
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #e0e6ed;
 }
 
-.read-the-docs {
-  color: #888;
+.page-subtitle {
+  color: #6b7a8f;
+  font-size: 0.85rem;
+}
+
+/* Content Grid */
+.content-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 240px 1fr 280px;
+  gap: 16px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.left-panel,
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.chart-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Placeholder Styling */
+.placeholder {
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px dashed rgba(100, 120, 150, 0.3);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: #4a5568;
+  min-height: 150px;
+}
+
+.placeholder-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: #6b7a8f;
+}
+
+.placeholder-assignee {
+  font-size: 0.7rem;
+  color: #ff4757;
+}
+
+/* Panel and Button styles are in index.css */
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #161b24;
+  border: 1px solid rgba(100, 120, 150, 0.15);
+  border-radius: 12px;
+  padding: 24px;
+  min-width: 300px;
 }

@@ -1,75 +1,105 @@
-# React + TypeScript + Vite
+# JStar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Cài đặt
 
-Currently, two official plugins are available:
+```bash
+# Cài đặt thư viện
+npm install
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Chạy dev server
+npm run dev
+```
+Mở: http://localhost:5173
 
-## React Compiler
+---
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Thư viện đã cài
 
-Note: This will impact Vite dev & build performances.
+| Thư viện | Mục đích |
+|----------|----------|
+| `@tabler/icons-react` | Icon library |
+| `react` | UI framework |
 
-## Expanding the ESLint configuration
+### Fonts (Google Fonts)
+- **Space Grotesk** - Font chính
+- **Inter** - Font phụ
+- **Outfit** - Font phụ
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Cấu trúc dự án
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── App.tsx           # Layout chính
+├── App.css           # Layout styles
+├── index.css         # CSS variables + base styles
+├── types/chart.ts    # TypeScript interfaces
+├── data/mockData.ts  # Dữ liệu test
+└── components/
+    ├── BirthForm.tsx   → FE1
+    ├── ChartWheel.tsx  → FE2
+    ├── PlanetTable.tsx → FE3
+    ├── InfoPanel.tsx   → FE3
+    ├── HousePanel.tsx  → FE3
+    ├── AspectPanel.tsx → FE3
+    ├── LandingPage.tsx → FE4
+    ├── Sidebar.tsx     → FE5
+    └── Header.tsx      → FE5
+    
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Sử dụng Mock Data
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```tsx
+import { MOCK_CHART } from '../data/mockData';
+
+const { planets, houses, aspects, angles, subject } = MOCK_CHART;
 ```
+
+### Dữ liệu có sẵn
+- **13 Planets**: Sun → Pluto + Chiron + Nodes
+- **12 Houses**: Placidus system
+- **27 Aspects**: Đã sắp xếp theo orb
+- **4 Angles**: Asc, Dsc, MC, IC
+
+---
+
+## CSS Variables
+
+```css
+/* Backgrounds */
+--bg-primary: #0a0f1a;
+--bg-secondary: #111827;
+
+/* Accent */
+--accent: #ff4757;
+
+/* Elements */
+--fire: #f97316;
+--earth: #22c55e;
+--air: #38bdf8;
+--water: #a855f7;
+
+/* Aspects */
+--aspect-conjunction: #ffd93d;
+--aspect-opposition: #ff6b8a;
+--aspect-trine: #6bcbff;
+--aspect-square: #ff4757;
+--aspect-sextile: #50fa7b;
+```
+
+---
+
+## Sử dụng Icons
+
+```tsx
+import { IconStar, IconMoon, IconSun } from '@tabler/icons-react';
+
+<IconStar size={20} />
+<IconMoon size={20} stroke={1.5} />
+```
+
+Xem tất cả icons: https://tabler.io/icons
