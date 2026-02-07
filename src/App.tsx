@@ -12,6 +12,7 @@ import { BirthForm } from './components/BirthForm';
 import { LandingPage } from './components/LandingPage';
 import { useState } from 'react';
 import './App.css';
+import './components/BirthForm.css';
 
 function App() {
   // TODO: Add state to toggle between landing page and chart view

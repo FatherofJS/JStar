@@ -7,8 +7,9 @@ type BirthFormProps = {
 export function BirthForm({ onClose }: BirthFormProps) {
 
     return (
-        <div className="modal-overlay">
-            <div className="modal">
+        <>
+            <div className="modal-overlay" onClick={onClose} aria-hidden="true"></div>
+            <div className="modal" role="dialog" aria-modal="true">
                 <div>
                     <h2>Add Subject</h2>
                     <p>Create a new subject by filling the fields below.</p>
@@ -45,11 +46,12 @@ export function BirthForm({ onClose }: BirthFormProps) {
                     </div>
                 </form>
 
-                <button onClick={onClose}>
+                <button type="button" onClick={onClose}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
                 </button>
 
             </div>
-        </div>
+
+        </>
     );
 }
