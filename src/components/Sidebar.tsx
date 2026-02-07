@@ -1,5 +1,14 @@
 // import { MOCK_CHART } from '../data/mockData';
 
-export function Sidebar() {
-    return null;
+type SidebarProps = {
+    onOpenBirthForm: () => void;
+};
+
+export function Sidebar({ onOpenBirthForm }: SidebarProps) {
+    return (
+        <aside className="sidebar">
+            <button onClick={onOpenBirthForm}>New Subject</button>
+        </aside>
+
+    );
 }

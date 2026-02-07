@@ -10,11 +10,14 @@ import { HousePanel } from './components/HousePanel';
 import { AspectPanel } from './components/AspectPanel';
 import { BirthForm } from './components/BirthForm';
 import { LandingPage } from './components/LandingPage';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
   // TODO: Add state to toggle between landing page and chart view
   const showLanding = false; // Set to true to test landing page
+
+  const [showBirthForm, setShowBirthForm] = useState(false);
 
   if (showLanding) {
     return <LandingPage />;
@@ -22,7 +25,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <Sidebar />
+      <Sidebar onOpenBirthForm={() => setShowBirthForm(true)} />
 
       <div className="main-area">
         <Header />
@@ -44,7 +47,10 @@ function App() {
         </div>
       </div>
 
-      <BirthForm />
+      {showBirthForm && (
+        <BirthForm onClose={() => setShowBirthForm(false)} />
+      )}
+      
     </div>
   );
 }
