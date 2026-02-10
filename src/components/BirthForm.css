@@ -11,7 +11,8 @@
     background-color: var(--muted);
 }
 
-.bg-primary, .bg-primary\/5 {
+.bg-primary,
+.bg-primary\/5 {
     --primary: #f8fafc;
     background-color: var(--primary);
 }
@@ -315,6 +316,34 @@
 
 .whitespace-nowrap {
     white-space: nowrap;
+}
+
+.picker_city {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    transform: translate(430px, 475px);
+    min-width: max-content;
+    --radix-popper-transform-origin: 50% 0px;
+    z-index: 1002;
+    --radix-popper-available-width: 826.4000244140625px;
+    --radix-popper-available-height: 344.0499572753906px;
+    --radix-popper-anchor-width: 334.3999938964844px;
+    --radix-popper-anchor-height: 40px;
+}
+
+.picker_country {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    transform: translate(777px, 475px);
+    min-width: max-content;
+    --radix-popper-transform-origin: 50% 0px;
+    z-index: 1002;
+    --radix-popper-available-width: 826.4000244140625px;
+    --radix-popper-available-height: 344.0499572753906px;
+    --radix-popper-anchor-width: 334.3999938964844px;
+    --radix-popper-anchor-height: 40px;
 }
 
 input[type=date],

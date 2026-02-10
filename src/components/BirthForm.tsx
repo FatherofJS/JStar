@@ -1,10 +1,68 @@
 // import { MOCK_CHART } from '../data/mockData';
 
+import { COUNTRIES } from "../data/location"
+import { useState } from "react";
+
 type BirthFormProps = {
     onClose: () => void;
 };
 
 export function BirthForm({ onClose }: BirthFormProps) {
+
+    const [cityQuery, setCityQuery] = useState("");
+    const [cityResults, setCityResults] = useState<
+        { city: string; countryCode: string; countryName: string }[]
+    >([]);
+
+    const [city, setCity] = useState<string | null>("Chọn thành phố");
+    const [country, setCountry] = useState<string | null>("Chọn quốc gia");
+
+    const [isPickerOpen, setIsPickerOpen] = useState(false);
+
+    const openCountryPicker = () => {
+        setIsPickerOpen(true);
+    };
+
+    const selectCountry = (value: string) => {
+        setCountry(value);
+    };
+
+    const [form, setForm] = useState({
+        name: "",
+        birthDate: "",
+        birthTime: "",
+    });
+
+    const [error, setError] = useState("");
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const hasEmptyField = Object.values(form).some(value => value.trim() === "");
+
+        if (hasEmptyField || !city || !country) {
+            setError("Please fill in all fields.");
+            return;
+        }
+
+        setError("");
+
+        const submittedData = {
+            ...form,
+            city,
+            country,
+        };
+
+        console.log("Form submitted:", submittedData);
+        onClose();
+    };
 
     return (
         <>
@@ -15,22 +73,22 @@ export function BirthForm({ onClose }: BirthFormProps) {
                     <p className="text-muted-foreground">Create a new subject by filling the fields below.</p>
                 </div>
 
-                <form className="flex flex-col gap-4 mt-2 pr-1 px-1">
+                <form className="flex flex-col gap-4 mt-2 pr-1 px-1"  onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-1">
                         <label htmlFor="create_name">Họ và tên</label>
-                        <input id="create_name" className="border rounded px-2 py-1 bg-background" placeholder="Nhập tên" name="name" type="text" />
+                        <input id="create_name" className="border rounded px-2 py-1 bg-background" placeholder="Nhập tên" name="name" type="text" onChange={handleChange}/>
                     </div>
                     <div className="grid gap-4 grid-cols-2">
                         <div className="flex flex-col gap-1">
                             <label htmlFor="create_birthDate">Ngày sinh</label>
-                            <input id="create_birthDate" type="date" className="border rounded px-2 py-1 bg-background w-full min-w-0" />
+                            <input id="create_birthDate" type="date" className="border rounded px-2 py-1 bg-background w-full min-w-0" name="birthDate" onChange={handleChange}/>
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="create_birthTime">Giờ sinh</label>
                             <div className="flex items-center gap-2">
                                 <div className="relative flex-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-clock absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" aria-hidden="true"><path d="M12 6v6l4 2"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                    <input id="create_birthTime" step="1" className="border rounded pl-8 pr-2 py-1 bg-background w-full min-w-0" type="time" />
+                                    <input id="create_birthTime" step="1" className="border rounded pl-8 pr-2 py-1 bg-background w-full min-w-0" name="birthTime" type="time" onChange={handleChange}/>
                                 </div>
                             </div>
 
@@ -41,12 +99,34 @@ export function BirthForm({ onClose }: BirthFormProps) {
                             <div className="flex flex-col gap-1">
                                 <label htmlFor="create_city">Thành phố</label>
                                 <div className="relative">
-                                    <input id="create_city" className="border rounded px-2 py-1 bg-background w-full h-10" placeholder="Nhập thành phố" autoComplete="off" type="text" />
+                                    <input id="create_city" className="border rounded px-2 py-1 bg-background w-full h-10" placeholder="Nhập thành phố" autoComplete="off" type="text" value={cityQuery} onChange={(e) => {
+                                        const value = e.target.value;
+                                        setCityQuery(value);
+
+                                        if (!value.trim()) {
+                                            setCityResults([]);
+                                            return;
+                                        }
+
+                                        const results = COUNTRIES.flatMap((country) =>
+                                            country.cities
+                                                .filter((c) =>
+                                                    c.name.toLowerCase().includes(value.toLowerCase())
+                                                )
+                                                .map((c) => ({
+                                                    city: c.name,
+                                                    countryCode: country.code,
+                                                    countryName: country.name,
+                                                }))
+                                        );
+
+                                        setCityResults(results);
+                                    }} />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-1">
                                 <label htmlFor="create_country">Quốc gia</label>
-                                <button className="inline-flex items-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 w-full justify-between h-10" type="button" id="create_country" >VD: Việt Nam, Mỹ ,...
+                                <button className="inline-flex items-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 w-full justify-between h-10" type="button" id="create_country" onClick={openCountryPicker}>{country}
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chevrons-up-down ml-2 h-4 w-4 opacity-50" aria-hidden="true"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
                                 </button>
                             </div>
@@ -54,7 +134,7 @@ export function BirthForm({ onClose }: BirthFormProps) {
                     </div>
                     <div className="flex flex-row justify-end">
                         <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background h-10 px-4 py-2" onClick={onClose} type="button">Cancel</button>
-                        <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary text-primary-foreground h-10 px-4 py-2">Create</button>
+                        <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary text-primary-foreground h-10 px-4 py-2" type="submit">Calculate Chart</button>
                     </div>
                 </form>
 
@@ -64,6 +144,42 @@ export function BirthForm({ onClose }: BirthFormProps) {
                 </button>
 
             </div>
+            {cityResults.length > 0 && (
+                <div className="picker_city">
+                    {cityResults.map((item) => (
+                        <div
+                            key={`${item.countryCode}-${item.city}`}
+                            className="picker-item"
+                            onClick={() => {
+                                setCity(item.city);
+                                setCountry(item.countryName);
+                                setCityQuery(item.city);
+                                setCityResults([]);
+                            }}
+                        >
+                            <strong>{item.city}</strong>
+                            <span className="opacity-60 ml-2">
+                                {item.countryName}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            )}
+            {isPickerOpen && (
+                <div className="picker_country">
+                    {COUNTRIES.map((country) => (
+                        <div
+                            key={country.name} className="country-item" onClick={() => {
+                                setCountry(country.name)
+                                setIsPickerOpen(false)
+                            }}
+                        >
+                            {country.name}
+                        </div>
+                    ))}
+                </div >
+            )
+            }
 
         </>
     );
