@@ -16,7 +16,7 @@ export default function LandingPage() {
     []
   );
 
-  /* ================= SCROLL ZOOM ================= */
+
 
   useEffect(() => {
     const sections = document.querySelectorAll(".zoom-section");
@@ -58,7 +58,7 @@ export default function LandingPage() {
         ))}
       </Galaxy>
 
-      {/* HERO */}
+      
       <SectionHero className="zoom-section zoom-in">
         <Content>
           <h1>
@@ -77,7 +77,7 @@ export default function LandingPage() {
         </Content>
       </SectionHero>
 
-      {/* ABOUT */}
+      
       <SectionAbout ref={aboutRef} className="zoom-section">
         <AboutBox>
           <h2>About JSTAR</h2>
@@ -89,7 +89,7 @@ export default function LandingPage() {
         </AboutBox>
       </SectionAbout>
 
-      {/* EXTRA 1 */}
+      
       <SectionExtra className="zoom-section">
         <AboutBox>
           <h2>Birth Chart Analysis</h2>
@@ -100,7 +100,7 @@ export default function LandingPage() {
         </AboutBox>
       </SectionExtra>
 
-      {/* EXTRA 2 */}
+      
       <SectionExtra className="zoom-section">
         <AboutBox>
           <h2>Cosmic Forecast</h2>
@@ -114,7 +114,7 @@ export default function LandingPage() {
   );
 }
 
-/* ================= BUTTON ================= */
+
 
 const SpaceButton = () => {
   return (
@@ -129,7 +129,7 @@ const SpaceButton = () => {
   );
 };
 
-/* ================= ANIMATIONS ================= */
+
 
 const shoot = keyframes`
   0% { transform: translate(0,0) rotate(-45deg); opacity: 0 }
@@ -161,7 +161,7 @@ const zoomScrollOut = keyframes`
   }
 `;
 
-/* ================= STYLES ================= */
+
 
 const Wrapper = styled.div`
   min-height: 400vh;
