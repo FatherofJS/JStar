@@ -9,12 +9,12 @@ import { ChartWheel } from './components/ChartWheel';
 import { HousePanel } from './components/HousePanel';
 import { AspectPanel } from './components/AspectPanel';
 import { BirthForm } from './components/BirthForm';
-import { LandingPage } from './components/LandingPage';
+import LandingPage from './components/LandingPage';
 import './App.css';
 
 function App() {
   // TODO: Add state to toggle between landing page and chart view
-  const showLanding = false; // Set to true to test landing page
+  const showLanding = true; // Set to true to test landing page
 
   if (showLanding) {
     return <LandingPage />;
