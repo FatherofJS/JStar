@@ -219,7 +219,7 @@ const Galaxy = styled.div`
     will-change: transform, opacity, filter;
   }
 
-  /* 🌟 Head Glow */
+  
   .shooting-star::before {
     content: "";
     position: absolute;
