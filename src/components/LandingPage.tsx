@@ -6,7 +6,7 @@ export default function LandingPage() {
 
   const stars = useMemo(
     () =>
-      Array.from({ length: 14 }, (_, i) => ({
+      Array.from({ length: 8 }, (_, i) => ({
         id: i,
         top: Math.random() * 100,
         left: Math.random() * 100,
@@ -15,8 +15,6 @@ export default function LandingPage() {
       })),
     []
   );
-
-
 
   useEffect(() => {
     const sections = document.querySelectorAll(".zoom-section");
@@ -58,7 +56,6 @@ export default function LandingPage() {
         ))}
       </Galaxy>
 
-      
       <SectionHero className="zoom-section zoom-in">
         <Content>
           <h1>
@@ -77,7 +74,6 @@ export default function LandingPage() {
         </Content>
       </SectionHero>
 
-      
       <SectionAbout ref={aboutRef} className="zoom-section">
         <AboutBox>
           <h2>About JSTAR</h2>
@@ -89,7 +85,6 @@ export default function LandingPage() {
         </AboutBox>
       </SectionAbout>
 
-      
       <SectionExtra className="zoom-section">
         <AboutBox>
           <h2>Birth Chart Analysis</h2>
@@ -100,7 +95,6 @@ export default function LandingPage() {
         </AboutBox>
       </SectionExtra>
 
-      
       <SectionExtra className="zoom-section">
         <AboutBox>
           <h2>Cosmic Forecast</h2>
@@ -132,9 +126,27 @@ const SpaceButton = () => {
 
 
 const shoot = keyframes`
-  0% { transform: translate(0,0) rotate(-45deg); opacity: 0 }
-  10% { opacity: 1 }
-  100% { transform: translate(-320px,320px) rotate(-45deg); opacity: 0 }
+  0% {
+    transform: translate(0,0) rotate(-45deg) scale(0.6);
+    opacity: 0;
+  }
+
+  3% {
+    opacity: 1;
+    filter:
+      drop-shadow(0 0 25px #ffffff)
+      drop-shadow(0 0 45px #7aa2ff)
+      drop-shadow(0 0 70px #4facfe);
+  }
+
+  8% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-420px,420px) rotate(-45deg) scale(1);
+    opacity: 0;
+  }
 `;
 
 const zoomScrollIn = keyframes`
@@ -160,7 +172,6 @@ const zoomScrollOut = keyframes`
     opacity: 0.4;
   }
 `;
-
 
 
 const Wrapper = styled.div`
@@ -192,12 +203,38 @@ const Galaxy = styled.div`
 
   .shooting-star {
     position: absolute;
-    width: 150px;
-    height: 2px;
-    background: linear-gradient(90deg, white, rgba(255,255,255,0));
-    filter: drop-shadow(0 0 6px white);
+    width: 200px;
+    height: 3px;
+    border-radius: 50%;
+
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,1) 0%,
+      rgba(255,255,255,0.9) 20%,
+      rgba(255,255,255,0.3) 60%,
+      rgba(255,255,255,0) 100%
+    );
+
     animation: ${shoot} linear infinite;
-    will-change: transform, opacity;
+    will-change: transform, opacity, filter;
+  }
+
+  /* 🌟 Head Glow */
+  .shooting-star::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    background: radial-gradient(circle, #ffffff 0%, #7aa2ff 60%, transparent 100%);
+    box-shadow:
+      0 0 10px #ffffff,
+      0 0 25px #7aa2ff,
+      0 0 45px #4facfe;
   }
 `;
 
@@ -247,8 +284,6 @@ const Content = styled.div`
 
 const Actions = styled.div`
   margin-top: 30px;
-  display: flex;
-  gap: 16px;
 `;
 
 const AboutBox = styled.div`
