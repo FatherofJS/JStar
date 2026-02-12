@@ -1,8 +1,26 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
 export default function LandingPage() {
+  const heroRef = useRef(null);
   const aboutRef = useRef(null);
+  const chartRef = useRef(null);
+  const forecastRef = useRef(null);
+
+  const [active, setActive] = useState("home");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
 
   const stars = useMemo(
     () =>
@@ -15,6 +33,8 @@ export default function LandingPage() {
       })),
     []
   );
+  
+
 
   useEffect(() => {
     const sections = document.querySelectorAll(".zoom-section");
@@ -22,25 +42,70 @@ export default function LandingPage() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          const id = entry.target.getAttribute("data-section");
+
           if (entry.isIntersecting) {
             entry.target.classList.add("zoom-in");
             entry.target.classList.remove("zoom-out");
+            if (id) setActive(id);
           } else {
             entry.target.classList.remove("zoom-in");
             entry.target.classList.add("zoom-out");
           }
         });
       },
-      { threshold: 0.35 }
+      { threshold: 0.5 }
     );
 
     sections.forEach((section) => observer.observe(section));
-
     return () => observer.disconnect();
   }, []);
 
+  function scrollTo({ ref }: { ref: any; }): void {
+        ref.current?.scrollIntoView({ behavior: "smooth" });
+        setIsOpen(false);
+    }
+
   return (
     <Wrapper>
+   
+      <DynamicIsland $scrolled={isScrolled} $open={isOpen}>
+        <MobileToggle onClick={() => setIsOpen(!isOpen)}>
+          ☰
+        </MobileToggle>
+
+        <NavContainer $open={isOpen} $scrolled={isScrolled}>
+          <NavItem
+            $active={active === "home"}
+            onClick={() => scrollTo({ ref: heroRef })}
+          >
+            Home
+          </NavItem>
+
+          <NavItem
+            $active={active === "about"}
+            onClick={() => scrollTo({ ref: aboutRef })}
+          >
+            About
+          </NavItem>
+
+          <NavItem
+            $active={active === "chart"}
+            onClick={() => scrollTo({ ref: chartRef })}
+          >
+            Chart
+          </NavItem>
+
+          <NavItem
+            $active={active === "forecast"}
+            onClick={() => scrollTo({ ref: forecastRef })}
+          >
+            Forecast
+          </NavItem>
+        </NavContainer>
+      </DynamicIsland>
+
+      {/* ================= Galaxy ================= */}
       <Galaxy>
         {stars.map((s) => (
           <span
@@ -56,7 +121,12 @@ export default function LandingPage() {
         ))}
       </Galaxy>
 
-      <SectionHero className="zoom-section zoom-in">
+      
+      <SectionHero
+        ref={heroRef}
+        data-section="home"
+        className="zoom-section zoom-in"
+      >
         <Content>
           <h1>
             <span>JSTAR</span>
@@ -74,33 +144,45 @@ export default function LandingPage() {
         </Content>
       </SectionHero>
 
-      <SectionAbout ref={aboutRef} className="zoom-section">
+      
+      <SectionAbout
+        ref={aboutRef}
+        data-section="about"
+        className="zoom-section"
+      >
         <AboutBox>
           <h2>About JSTAR</h2>
           <p>
             JSTAR is a modern astrology platform designed to help you
-            discover your cosmic identity through personalized birth charts
-            and celestial insights.
+            discover your cosmic identity through personalized birth charts.
           </p>
         </AboutBox>
       </SectionAbout>
 
-      <SectionExtra className="zoom-section">
+      
+      <SectionExtra
+        ref={chartRef}
+        data-section="chart"
+        className="zoom-section"
+      >
         <AboutBox>
           <h2>Birth Chart Analysis</h2>
           <p>
-            Explore your planetary alignment and understand your strengths,
-            emotions, and destiny path.
+            Explore your planetary alignment and understand your destiny path.
           </p>
         </AboutBox>
       </SectionExtra>
 
-      <SectionExtra className="zoom-section">
+      
+      <SectionExtra
+        ref={forecastRef}
+        data-section="forecast"
+        className="zoom-section"
+      >
         <AboutBox>
           <h2>Cosmic Forecast</h2>
           <p>
-            Get personalized astrological predictions based on your unique
-            birth data.
+            Get personalized astrological predictions based on your birth data.
           </p>
         </AboutBox>
       </SectionExtra>
@@ -109,81 +191,32 @@ export default function LandingPage() {
 }
 
 
-
-const SpaceButton = () => {
-  return (
-    <StyledWrapper>
-      <button type="button" className="btn">
-        <strong>GET START</strong>
-        <div className="container-stars">
-          <div className="stars" />
-        </div>
-      </button>
-    </StyledWrapper>
-  );
-};
-
-
-
 const shoot = keyframes`
-  0% {
-    transform: translate(0,0) rotate(-45deg) scale(0.6);
-    opacity: 0;
-  }
-
-  3% {
-    opacity: 1;
-    filter:
-      drop-shadow(0 0 25px #ffffff)
-      drop-shadow(0 0 45px #7aa2ff)
-      drop-shadow(0 0 70px #4facfe);
-  }
-
-  8% {
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-420px,420px) rotate(-45deg) scale(1);
-    opacity: 0;
-  }
+  0% { transform: translate(0,0) rotate(-45deg) scale(0.6); opacity: 0; }
+  3% { opacity: 1; }
+  100% { transform: translate(-420px,420px) rotate(-45deg) scale(1); opacity: 0; }
 `;
 
 const zoomScrollIn = keyframes`
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-    filter: blur(10px);
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-    filter: blur(0);
-  }
+  from { transform: scale(0.9); opacity: 0; filter: blur(10px); }
+  to { transform: scale(1); opacity: 1; filter: blur(0); }
 `;
 
 const zoomScrollOut = keyframes`
-  from {
-    transform: scale(1);
-    opacity: 1;
-  }
-  to {
-    transform: scale(0.9);
-    opacity: 0.4;
-  }
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(0.9); opacity: 0.4; }
 `;
+
 
 
 const Wrapper = styled.div`
   min-height: 400vh;
   background: radial-gradient(circle at top, #0b0f2f, #000);
   color: white;
-  position: relative;
   overflow-x: hidden;
 
   .zoom-section {
-    transition: transform 0.8s ease, opacity 0.8s ease, filter 0.8s ease;
-    will-change: transform, opacity;
+    transition: transform 0.8s ease, opacity 0.8s ease;
   }
 
   .zoom-in {
@@ -195,31 +228,91 @@ const Wrapper = styled.div`
   }
 `;
 
+
+
+const DynamicIsland = styled.div<{ $scrolled: boolean; $open: boolean }>`
+  position: fixed;
+  top: ${({ $scrolled }) => ($scrolled ? "12px" : "25px")};
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: ${({ $scrolled }) => ($scrolled ? "45px" : "60px")};
+  width: ${({ $open, $scrolled }) =>
+    $open ? "340px" : $scrolled ? "220px" : "480px"};
+
+  padding: 0 30px;
+  border-radius: 999px;
+
+  background: rgba(15, 20, 50, 0.75);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255,255,255,0.15);
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+
+  transition: all 0.45s cubic-bezier(.22,1,.36,1);
+
+  @media (max-width: 768px) {
+    width: ${({ $open }) => ($open ? "300px" : "60px")};
+    height: 45px;
+    padding: 0 20px;
+  }
+`;
+
+const MobileToggle = styled.div`
+  display: none;
+  font-size: 18px;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: block;
+    position: absolute;
+    left: 18px;
+  }
+`;
+
+const NavContainer = styled.div<{ $scrolled: boolean; $open: boolean }>`
+  display: flex;
+  gap: 35px;
+
+  @media (max-width: 768px) {
+    gap: 20px;
+    opacity: ${({ $open }) => ($open ? 1 : 0)};
+    pointer-events: ${({ $open }) => ($open ? "auto" : "none")};
+    transition: 0.3s;
+  }
+`;
+
+const NavItem = styled.div<{ $active: boolean }>`
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 2px;
+  position: relative;
+  transition: 0.3s;
+  color: ${({ $active }) => ($active ? "#7aa2ff" : "white")};
+`;
+
+
+
 const Galaxy = styled.div`
   position: fixed;
   inset: 0;
-  z-index: 0;
   pointer-events: none;
 
   .shooting-star {
     position: absolute;
     width: 200px;
     height: 3px;
-    border-radius: 50%;
-
-    background: linear-gradient(
-      90deg,
-      rgba(255,255,255,1) 0%,
-      rgba(255,255,255,0.9) 20%,
-      rgba(255,255,255,0.3) 60%,
-      rgba(255,255,255,0) 100%
-    );
-
+    background: linear-gradient(90deg,#fff,transparent);
     animation: ${shoot} linear infinite;
     will-change: transform, opacity, filter;
   }
 
-  
+ 
   .shooting-star::before {
     content: "";
     position: absolute;
@@ -242,8 +335,6 @@ const SectionHero = styled.section`
   height: 100vh;
   display: flex;
   align-items: center;
-  position: relative;
-  z-index: 2;
 `;
 
 const SectionAbout = styled.section`
@@ -251,35 +342,16 @@ const SectionAbout = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
 `;
 
-const SectionExtra = styled.section`
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-`;
+const SectionExtra = styled(SectionAbout)``;
 
 const Content = styled.div`
   padding: 0 10vw;
   max-width: 900px;
-
-  h1 {
-    font-size: clamp(42px, 6vw, 80px);
-
-    span {
-      color: #7aa2ff;
-    }
-  }
-
-  p {
-    max-width: 520px;
-    font-size: 18px;
-    margin-top: 20px;
-    opacity: 0.85;
-  }
+  h1 { font-size: clamp(42px, 6vw, 80px); }
+  span { color: #7aa2ff; }
+  p { margin-top: 20px; opacity: 0.85; }
 `;
 
 const Actions = styled.div`
@@ -296,8 +368,6 @@ const AboutBox = styled.div`
 `;
 
 const StyledWrapper = styled.div`
-  position: relative;
-
   .btn {
     width: 13rem;
     height: 3rem;
@@ -305,60 +375,22 @@ const StyledWrapper = styled.div`
     border: double 4px transparent;
     cursor: pointer;
     color: white;
-    background-image: linear-gradient(#212121, #212121),
+    background-image: linear-gradient(#212121,#212121),
       linear-gradient(137deg,#ffdb3b,#fe53bb,#8f51ea,#0044ff);
     background-origin: border-box;
     background-clip: content-box, border-box;
     transition: 0.4s;
   }
 
-  .btn:hover {
-    transform: scale(1.1);
-  }
+  .btn:hover { transform: scale(1.1); }
 
-  strong {
-    font-size: 12px;
-    letter-spacing: 4px;
-  }
-
-  .container-stars {
-    position: absolute;
-    inset: 0;
-    border-radius: 5rem;
-    overflow: hidden;
-  }
-
-  .stars {
-    width: 200rem;
-    height: 200rem;
-  }
-
-  .stars::before,
-  .stars::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: radial-gradient(#ffffff 1px, transparent 1%);
-    background-size: 50px 50px;
-  }
-
-  .stars::before {
-    animation: starMove 60s linear infinite;
-    opacity: 0.5;
-  }
-
-  .stars::after {
-    animation: starRotate 90s linear infinite;
-  }
-
-  @keyframes starMove {
-    from { transform: translateY(0); }
-    to { transform: translateY(-135rem); }
-  }
-
-  @keyframes starRotate {
-    from { transform: rotate(360deg); }
-    to { transform: rotate(0); }
-  }
+  strong { font-size: 12px; letter-spacing: 4px; }
 `;
+
+const SpaceButton = () => (
+  <StyledWrapper>
+    <button type="button" className="btn">
+      <strong>GET START</strong>
+    </button>
+  </StyledWrapper>
+);
