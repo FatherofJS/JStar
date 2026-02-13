@@ -30,7 +30,7 @@ function App() {
         <div className="content-grid">
           <aside className="left-panel">
             <InfoPanel />
-            <PlanetTable />
+            {/* <PlanetTable /> */}
           </aside>
 
           <main className="chart-area">
