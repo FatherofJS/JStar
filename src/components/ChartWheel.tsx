@@ -111,6 +111,12 @@ export function ChartWheel() {
         return null;
     }
 
+    const tooltipStyle = tooltip ? {
+        left: `${(tooltip.x / size) * 100}%`,
+        top: `${(tooltip.y / size) * 100}%`,
+        transform: `translate(${tooltip.x > cx ? '-100%' : '10px'}, ${tooltip.y > cy ? '-100%' : '10px'})`,
+    } : {};
+
     return (
         <div className="chart-wheel-container">
 
@@ -118,11 +124,12 @@ export function ChartWheel() {
             <div className="chart-controls">
                 <button onClick={() => handleZoom(0.1)}>+</button>
                 <button onClick={() => handleZoom(-0.1)}>−</button>
+                <button onClick={() => setScale(1)}>⟳</button>
             </div>
 
             {/* Tooltip — shows planet info on hover */}
             {tooltip && (
-                <div className="planet-tooltip" style={{ left: tooltip.x, top: tooltip.y - 70 }}>
+                <div className="planet-tooltip" style={tooltipStyle}>
                     <div className="tooltip-header">
                         {PLANET_SYMBOLS[tooltip.planet.name]} {tooltip.planet.name}
                     </div>
