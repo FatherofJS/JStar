@@ -2,17 +2,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
 export default function LandingPage() {
-    const heroRef = useRef(null);
-    const aboutRef = useRef(null);
-    const chartRef = useRef(null);
-    const forecastRef = useRef(null);
+    const heroRef = useRef<any>(null);
+    const aboutRef = useRef<any>(null);
+    const chartRef = useRef<any>(null);
+    const forecastRef = useRef<any>(null);
 
     const [active, setActive] = useState("home");
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
-
-
+    // 🔥 Scroll behavior improved
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 40);
@@ -26,22 +25,20 @@ export default function LandingPage() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-
+    // 🌌 Premium star generation
     const stars = useMemo(
         () =>
-            Array.from({ length: 8 }, (_, i) => ({
+            Array.from({ length: 6 }, (_, i) => ({
                 id: i,
-                top: Math.random() * 100,
+                top: Math.random() * 80,
                 left: Math.random() * 100,
-                delay: Math.random() * 6,
-                duration: 2.5 + Math.random() * 2,
+                delay: Math.random() * 8,
+                duration: 3 + Math.random() * 3,
             })),
         []
     );
 
-
-
-
+    // 🎯 Smooth section tracking
     useEffect(() => {
         const sections = document.querySelectorAll(".zoom-section");
 
@@ -60,62 +57,46 @@ export default function LandingPage() {
                     }
                 });
             },
-            { threshold: 0.5 }
+            { threshold: 0.6 }
         );
 
         sections.forEach((section) => observer.observe(section));
         return () => observer.disconnect();
     }, []);
 
-    function scrollTo({ ref }: { ref: any; }): void {
+    function scrollTo(ref: any) {
         ref.current?.scrollIntoView({ behavior: "smooth" });
         setIsOpen(false);
     }
 
     return (
         <Wrapper>
-
             <DynamicIsland $scrolled={isScrolled} $open={isOpen}>
                 <MobileToggle onClick={() => setIsOpen(!isOpen)}>
                     ☰
                 </MobileToggle>
 
-                <NavContainer $open={isOpen} $scrolled={isScrolled}>
-                    <NavItem
-                        $active={active === "home"}
-                        $scrolled={isScrolled}
-                        onClick={() => scrollTo({ ref: heroRef })}
-                    >
+                <NavContainer $open={isOpen}>
+                    <NavItem $active={active === "home"} onClick={() => scrollTo(heroRef)}>
                         Home
                     </NavItem>
 
-
-                    <NavItem
-                        $active={active === "about"}
-                        $scrolled={isScrolled}
-                        onClick={() => scrollTo({ ref: heroRef })}
-                    >
+                    <NavItem $active={active === "about"} onClick={() => scrollTo(aboutRef)}>
                         About
                     </NavItem>
 
-
-                    <NavItem
-                        $active={active === "chart"}
-                        onClick={() => scrollTo({ ref: chartRef })}
-                    >
+                    <NavItem $active={active === "chart"} onClick={() => scrollTo(chartRef)}>
                         Chart
                     </NavItem>
 
                     <NavItem
                         $active={active === "forecast"}
-                        $scrolled={isScrolled}
-                        onClick={() => scrollTo({ ref: forecastRef })}
+                        onClick={() => scrollTo(forecastRef)}
                     >
                         Forecast
                     </NavItem>
                 </NavContainer>
             </DynamicIsland>
-
 
             <Galaxy>
                 {stars.map((s) => (
@@ -132,7 +113,6 @@ export default function LandingPage() {
                 ))}
             </Galaxy>
 
-
             <SectionHero
                 ref={heroRef}
                 data-section="home"
@@ -145,8 +125,8 @@ export default function LandingPage() {
                     </h1>
 
                     <p>
-                        CHOOSE YOUR DAY OF BIRTH TO SEE YOUR PERSONALIZED ASTROLOGY
-                        CHART AND INSIGHTS.
+                        CHOOSE YOUR DAY OF BIRTH TO SEE YOUR PERSONALIZED ASTROLOGY CHART
+                        AND INSIGHTS.
                     </p>
 
                     <Actions>
@@ -155,35 +135,22 @@ export default function LandingPage() {
                 </Content>
             </SectionHero>
 
-
-            <SectionAbout
-                ref={aboutRef}
-                data-section="about"
-                className="zoom-section"
-            >
+            <SectionAbout ref={aboutRef} data-section="about" className="zoom-section">
                 <AboutBox>
                     <h2>About JSTAR</h2>
                     <p>
-                        JSTAR is a modern astrology platform designed to help you
-                        discover your cosmic identity through personalized birth charts.
+                        Discover your cosmic identity through personalized birth charts and
+                        intelligent astrology analysis.
                     </p>
                 </AboutBox>
             </SectionAbout>
 
-
-            <SectionExtra
-                ref={chartRef}
-                data-section="chart"
-                className="zoom-section"
-            >
+            <SectionExtra ref={chartRef} data-section="chart" className="zoom-section">
                 <AboutBox>
                     <h2>Birth Chart Analysis</h2>
-                    <p>
-                        Explore your planetary alignment and understand your destiny path.
-                    </p>
+                    <p>Explore your planetary alignment and destiny path.</p>
                 </AboutBox>
             </SectionExtra>
-
 
             <SectionExtra
                 ref={forecastRef}
@@ -192,33 +159,28 @@ export default function LandingPage() {
             >
                 <AboutBox>
                     <h2>Cosmic Forecast</h2>
-                    <p>
-                        Get personalized astrological predictions based on your birth data.
-                    </p>
+                    <p>Get personalized astrological predictions for your future.</p>
                 </AboutBox>
             </SectionExtra>
         </Wrapper>
     );
 }
 
-
 const shoot = keyframes`
-  0% { transform: translate(0,0) rotate(-45deg) scale(0.6); opacity: 0; }
-  3% { opacity: 1; }
-  100% { transform: translate(-420px,420px) rotate(-45deg) scale(1); opacity: 0; }
+  0% { transform: translate(0,0) rotate(-45deg); opacity: 0; }
+  5% { opacity: 1; }
+  100% { transform: translate(-600px,600px) rotate(-45deg); opacity: 0; }
 `;
 
 const zoomScrollIn = keyframes`
-  from { transform: scale(0.9); opacity: 0; filter: blur(10px); }
+  from { transform: scale(0.92); opacity: 0; filter: blur(8px); }
   to { transform: scale(1); opacity: 1; filter: blur(0); }
 `;
 
 const zoomScrollOut = keyframes`
   from { transform: scale(1); opacity: 1; }
-  to { transform: scale(0.9); opacity: 0.4; }
+  to { transform: scale(0.94); opacity: 0.5; }
 `;
-
-
 
 const Wrapper = styled.div`
   min-height: 400vh;
@@ -231,15 +193,13 @@ const Wrapper = styled.div`
   }
 
   .zoom-in {
-    animation: ${zoomScrollIn} 1s ease forwards;
+    animation: ${zoomScrollIn} 0.9s ease forwards;
   }
 
   .zoom-out {
-    animation: ${zoomScrollOut} 0.8s ease forwards;
+    animation: ${zoomScrollOut} 0.7s ease forwards;
   }
 `;
-
-
 
 const DynamicIsland = styled.div<{ $scrolled: boolean; $open: boolean }>`
   position: fixed;
@@ -252,123 +212,79 @@ const DynamicIsland = styled.div<{ $scrolled: boolean; $open: boolean }>`
   align-items: center;
   justify-content: center;
 
-  height: ${({ $scrolled }) => ($scrolled ? "46px" : "64px")};
+  height: ${({ $scrolled }) => ($scrolled ? "50px" : "65px")};
   width: ${({ $open, $scrolled }) =>
-        $open ? "360px" : $scrolled ? "fit-content" : "520px"};
+        $open ? "280px" : $scrolled ? "fit-content" : "520px"};
 
-  padding: ${({ $scrolled }) =>
-        $scrolled ? "0 24px" : "0 45px"};
+  padding: ${({ $scrolled }) => ($scrolled ? "0 28px" : "0 45px")};
 
-  border-radius: 999px;
+  border-radius: ${({ $open }) => ($open ? "28px" : "999px")};
 
-  background: rgba(15, 20, 50, 0.65);
-  backdrop-filter: blur(30px) saturate(180%);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(15, 20, 50, 0.75);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 
-  box-shadow:
-    0 8px 40px rgba(0,0,0,0.6),
-    inset 0 1px 0 rgba(255,255,255,0.1);
+  box-shadow: 
+    0 8px 40px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
-  overflow: visible; /* 🔥 đổi từ hidden */
-
-  transition: all 0.55s cubic-bezier(.22,1,.36,1);
+  transition: all 0.5s cubic-bezier(.22,1,.36,1);
 
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
 
-    width: ${({ $open }) => ($open ? "280px" : "58px")};
-    height: auto;
-    padding: ${({ $open }) => ($open ? "15px 20px 20px" : "0")};
+    width: ${({ $open }) => ($open ? "260px" : "58px")};
+    height: ${({ $open }) => ($open ? "auto" : "50px")};
+    padding: ${({ $open }) => ($open ? "20px 20px 25px" : "0")};
   }
 `;
-
 
 
 const MobileToggle = styled.div`
   display: none;
-  font-size: 18px;
   cursor: pointer;
-  z-index: 10;
 
   @media (max-width: 768px) {
     display: flex;
+    width: 58px;
+    height: 50px;
     align-items: center;
     justify-content: center;
-    width: 58px;
-    height: 46px;
   }
 `;
 
-const NavContainer = styled.div<{ $scrolled: boolean; $open: boolean }>`
+const NavContainer = styled.div<{ $open: boolean }>`
   display: flex;
-  align-items: center;
-  gap: ${({ $scrolled }) => ($scrolled ? "38px" : "38px")};
-  transition: all 0.4s ease;
+  gap: 38px;
 
   @media (max-width: 768px) {
     flex-direction: column;
     width: 100%;
-  
+    margin-top: 10px;
 
     opacity: ${({ $open }) => ($open ? 1 : 0)};
-    max-height: ${({ $open }) => ($open ? "200px" : "0")};
-    overflow: hidden;
+    max-height: ${({ $open }) => ($open ? "250px" : "0")};
 
+    overflow: hidden;
     transition: all 0.4s ease;
   }
 `;
 
 
-
-const NavItem = styled.div<{ $active: boolean; $scrolled?: boolean }>`
+const NavItem = styled.div<{ $active: boolean }>`
   cursor: pointer;
   position: relative;
-
-  font-size: ${({ $scrolled }) => ($scrolled ? "12px" : "14px")};
+  font-size: 14px;
   letter-spacing: 2px;
-  font-weight: 500;
-
   color: ${({ $active }) => ($active ? "#7aa2ff" : "white")};
+  transition: 0.3s;
 
-  transition: all 0.3s ease;
-
-  /* Hover Glow */
   &:hover {
     color: #7aa2ff;
     text-shadow: 0 0 12px rgba(122,162,255,0.8);
   }
-
-  /* Animated Underline */
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -6px;
-    left: 50%;
-    transform: translateX(-50%)
-      scaleX(${({ $active }) => ($active ? 1 : 0)});
-    transform-origin: center;
-
-    width: 100%;
-    height: 2px;
-
-    background: linear-gradient(
-      90deg,
-      transparent,
-      #7aa2ff,
-      transparent
-    );
-
-    transition: transform 0.35s ease;
-  }
-
-  &:hover::after {
-    transform: translateX(-50%) scaleX(1);
-  }
 `;
-
-
-
 
 const Galaxy = styled.div`
   position: fixed;
@@ -377,29 +293,10 @@ const Galaxy = styled.div`
 
   .shooting-star {
     position: absolute;
-    width: 200px;
+    width: 220px;
     height: 3px;
     background: linear-gradient(90deg,#fff,transparent);
     animation: ${shoot} linear infinite;
-    will-change: transform, opacity, filter;
-  }
-
- 
-  .shooting-star::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-
-    background: radial-gradient(circle, #ffffff 0%, #7aa2ff 60%, transparent 100%);
-    box-shadow:
-      0 0 10px #ffffff,
-      0 0 25px #7aa2ff,
-      0 0 45px #4facfe;
   }
 `;
 
@@ -421,6 +318,7 @@ const SectionExtra = styled(SectionAbout)``;
 const Content = styled.div`
   padding: 0 10vw;
   max-width: 900px;
+
   h1 { font-size: clamp(42px, 6vw, 80px); }
   span { color: #7aa2ff; }
   p { margin-top: 20px; opacity: 0.85; }
@@ -455,8 +353,6 @@ const StyledWrapper = styled.div`
   }
 
   .btn:hover { transform: scale(1.1); }
-
-  strong { font-size: 12px; letter-spacing: 4px; }
 `;
 
 const SpaceButton = () => (
@@ -466,4 +362,3 @@ const SpaceButton = () => (
         </button>
     </StyledWrapper>
 );
-
