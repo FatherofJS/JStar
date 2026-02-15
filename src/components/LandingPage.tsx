@@ -1,5 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
+const getStarIntensity = () => {
+    const r = Math.random();
+
+    if (r < 0.7) return 0.5;   
+    if (r < 0.9) return 0.7;   
+    return 1;                  
+};
+
 
 const zodiac = [
     { name: "Aries", symbol: "♈", color: "#ff6b6b" },
@@ -16,142 +24,142 @@ const zodiac = [
     { name: "Pisces", symbol: "♓", color: "#10ac84" },
 ];
 const constellationMap: Record<
-  string,
-  { stars: { x: number; y: number }[]; lines: [number, number][] }
+    string,
+    { stars: { x: number; y: number }[]; lines: [number, number][] }
 > = {
 
-  Aries: {
-    stars: [
-      { x: 20, y: 55 },
-      { x: 40, y: 45 },
-      { x: 60, y: 50 },
-      { x: 80, y: 65 }
-    ],
-    lines: [[0,1],[1,2],[2,3]]
-  },
+    Aries: {
+        stars: [
+            { x: 20, y: 55 },
+            { x: 40, y: 45 },
+            { x: 60, y: 50 },
+            { x: 80, y: 65 }
+        ],
+        lines: [[0, 1], [1, 2], [2, 3]]
+    },
 
-  Taurus: {
-    stars: [
-      { x: 20, y: 40 },
-      { x: 35, y: 25 },
-      { x: 55, y: 35 },
-      { x: 70, y: 50 },
-      { x: 55, y: 70 },
-      { x: 35, y: 60 }
-    ],
-    lines: [[0,1],[1,2],[2,3],[2,4],[4,5]]
-  },
+    Taurus: {
+        stars: [
+            { x: 20, y: 40 },
+            { x: 35, y: 25 },
+            { x: 55, y: 35 },
+            { x: 70, y: 50 },
+            { x: 55, y: 70 },
+            { x: 35, y: 60 }
+        ],
+        lines: [[0, 1], [1, 2], [2, 3], [2, 4], [4, 5]]
+    },
 
-  Gemini: {
-    stars: [
-      { x: 35, y: 20 },
-      { x: 35, y: 80 },
-      { x: 65, y: 20 },
-      { x: 65, y: 80 },
-      { x: 50, y: 50 }
-    ],
-    lines: [[0,1],[2,3],[0,4],[2,4]]
-  },
+    Gemini: {
+        stars: [
+            { x: 35, y: 20 },
+            { x: 35, y: 80 },
+            { x: 65, y: 20 },
+            { x: 65, y: 80 },
+            { x: 50, y: 50 }
+        ],
+        lines: [[0, 1], [2, 3], [0, 4], [2, 4]]
+    },
 
-  Cancer: {
-    stars: [
-      { x: 35, y: 50 },
-      { x: 50, y: 35 },
-      { x: 65, y: 50 },
-      { x: 50, y: 70 }
-    ],
-    lines: [[0,1],[1,2],[2,3]]
-  },
+    Cancer: {
+        stars: [
+            { x: 35, y: 50 },
+            { x: 50, y: 35 },
+            { x: 65, y: 50 },
+            { x: 50, y: 70 }
+        ],
+        lines: [[0, 1], [1, 2], [2, 3]]
+    },
 
-  Leo: {
-    stars: [
-      { x: 20, y: 55 },
-      { x: 35, y: 40 },
-      { x: 55, y: 45 },
-      { x: 75, y: 60 },
-      { x: 60, y: 75 },
-      { x: 40, y: 70 }
-    ],
-    lines: [[0,1],[1,2],[2,3],[3,4],[4,5]]
-  },
+    Leo: {
+        stars: [
+            { x: 20, y: 55 },
+            { x: 35, y: 40 },
+            { x: 55, y: 45 },
+            { x: 75, y: 60 },
+            { x: 60, y: 75 },
+            { x: 40, y: 70 }
+        ],
+        lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
+    },
 
-  Virgo: {
-    stars: [
-      { x: 30, y: 25 },
-      { x: 45, y: 45 },
-      { x: 60, y: 55 },
-      { x: 75, y: 75 },
-      { x: 55, y: 80 }
-    ],
-    lines: [[0,1],[1,2],[2,3],[2,4]]
-  },
+    Virgo: {
+        stars: [
+            { x: 30, y: 25 },
+            { x: 45, y: 45 },
+            { x: 60, y: 55 },
+            { x: 75, y: 75 },
+            { x: 55, y: 80 }
+        ],
+        lines: [[0, 1], [1, 2], [2, 3], [2, 4]]
+    },
 
-  Libra: {
-    stars: [
-      { x: 25, y: 55 },
-      { x: 50, y: 40 },
-      { x: 75, y: 55 },
-      { x: 50, y: 70 }
-    ],
-    lines: [[0,1],[1,2],[1,3]]
-  },
+    Libra: {
+        stars: [
+            { x: 25, y: 55 },
+            { x: 50, y: 40 },
+            { x: 75, y: 55 },
+            { x: 50, y: 70 }
+        ],
+        lines: [[0, 1], [1, 2], [1, 3]]
+    },
 
-  Scorpio: {
-    stars: [
-      { x: 20, y: 40 },
-      { x: 35, y: 60 },
-      { x: 50, y: 45 },
-      { x: 65, y: 65 },
-      { x: 80, y: 50 },
-      { x: 90, y: 65 }
-    ],
-    lines: [[0,1],[1,2],[2,3],[3,4],[4,5]]
-  },
+    Scorpio: {
+        stars: [
+            { x: 20, y: 40 },
+            { x: 35, y: 60 },
+            { x: 50, y: 45 },
+            { x: 65, y: 65 },
+            { x: 80, y: 50 },
+            { x: 90, y: 65 }
+        ],
+        lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
+    },
 
-  Sagittarius: {
-    stars: [
-      { x: 30, y: 30 },
-      { x: 45, y: 50 },
-      { x: 60, y: 30 },
-      { x: 70, y: 70 },
-      { x: 50, y: 80 },
-      { x: 40, y: 65 }
-    ],
-    lines: [[0,1],[1,2],[1,3],[3,4],[4,5]]
-  },
+    Sagittarius: {
+        stars: [
+            { x: 30, y: 30 },
+            { x: 45, y: 50 },
+            { x: 60, y: 30 },
+            { x: 70, y: 70 },
+            { x: 50, y: 80 },
+            { x: 40, y: 65 }
+        ],
+        lines: [[0, 1], [1, 2], [1, 3], [3, 4], [4, 5]]
+    },
 
-  Capricorn: {
-    stars: [
-      { x: 25, y: 60 },
-      { x: 40, y: 40 },
-      { x: 60, y: 50 },
-      { x: 75, y: 70 },
-      { x: 55, y: 80 }
-    ],
-    lines: [[0,1],[1,2],[2,3],[3,4]]
-  },
+    Capricorn: {
+        stars: [
+            { x: 25, y: 60 },
+            { x: 40, y: 40 },
+            { x: 60, y: 50 },
+            { x: 75, y: 70 },
+            { x: 55, y: 80 }
+        ],
+        lines: [[0, 1], [1, 2], [2, 3], [3, 4]]
+    },
 
-  Aquarius: {
-    stars: [
-      { x: 25, y: 45 },
-      { x: 40, y: 60 },
-      { x: 55, y: 45 },
-      { x: 70, y: 60 },
-      { x: 85, y: 45 }
-    ],
-    lines: [[0,1],[1,2],[2,3],[3,4]]
-  },
+    Aquarius: {
+        stars: [
+            { x: 25, y: 45 },
+            { x: 40, y: 60 },
+            { x: 55, y: 45 },
+            { x: 70, y: 60 },
+            { x: 85, y: 45 }
+        ],
+        lines: [[0, 1], [1, 2], [2, 3], [3, 4]]
+    },
 
-  Pisces: {
-    stars: [
-      { x: 25, y: 50 },
-      { x: 45, y: 30 },
-      { x: 65, y: 50 },
-      { x: 45, y: 70 },
-      { x: 85, y: 50 }
-    ],
-    lines: [[0,1],[1,2],[2,3],[2,4]]
-  }
+    Pisces: {
+        stars: [
+            { x: 25, y: 50 },
+            { x: 45, y: 30 },
+            { x: 65, y: 50 },
+            { x: 45, y: 70 },
+            { x: 85, y: 50 }
+        ],
+        lines: [[0, 1], [1, 2], [2, 3], [2, 4]]
+    }
 
 };
 
@@ -209,11 +217,11 @@ const ConstellationContainer = styled.div`
   animation: ${floatSlow} 8s ease-in-out infinite;
 `;
 
-const DeepGlow = styled.div<{ color:string }>`
+const DeepGlow = styled.div<{ color: string }>`
   position:absolute;
   inset:0;
   border-radius:50%;
-  background: radial-gradient(circle, ${({color})=>color}40, transparent 70%);
+  background: radial-gradient(circle, ${({ color }) => color}40, transparent 70%);
   filter: blur(120px);
   opacity:.6;
 `;
@@ -245,18 +253,18 @@ const ZodiacName = styled.div`
   font-size:22px;
   opacity:.9;
 `;
-const GalaxyStar = styled.circle<{ size:number }>`
-  fill: rgba(255,255,255,.9);
+const GalaxyStar = styled.circle<{ intensity: number }>`
+  fill: rgba(255,255,255, ${p => 0.5 + p.intensity * 0.5});
 
   filter:
-    drop-shadow(0 0 1px rgba(255,255,255,.9))
-    drop-shadow(0 0 3px rgba(200,220,255,.8))
-    drop-shadow(0 0 8px rgba(160,180,255,.6))
-    drop-shadow(0 0 18px rgba(120,140,255,.4))
-    drop-shadow(0 0 30px rgba(100,120,255,.25));
+    drop-shadow(0 0 ${p => 1 + p.intensity * 1}px rgba(255,255,255,.9))
+    drop-shadow(0 0 ${p => 3 + p.intensity * 3}px rgba(200,220,255,.8))
+    drop-shadow(0 0 ${p => 8 + p.intensity * 6}px rgba(160,180,255,.6))
+    drop-shadow(0 0 ${p => 18 + p.intensity * 10}px rgba(120,140,255,.35));
 
-  opacity: .9;
+  opacity: ${p => 0.5 + p.intensity * 0.5};
 `;
+
 
 
 
@@ -270,95 +278,108 @@ const ConstellationSVG = styled.svg`
   z-index:2;
 `;
 
-const Line = styled.line<{ color:string; delay:number }>`
-  stroke:${p=>p.color};
+const Line = styled.line<{ color: string; delay: number }>`
+  stroke:${p => p.color};
   stroke-width:.8;
-  filter: drop-shadow(0 0 8px ${p=>p.color});
+  filter: drop-shadow(0 0 8px ${p => p.color});
   stroke-dasharray: 140;
   stroke-dashoffset: 140;
   animation:${drawLine} 5.5s cubic-bezier(.22,1,.36,1) forwards;
-  animation-delay:${p=>p.delay}s;
+  animation-delay:${p => p.delay}s;
 `;
 
 
 
 function ZodiacCinematic() {
-  const [index,setIndex]=useState(0);
-  const ref = useRef<HTMLDivElement>(null);
+    const [index, setIndex] = useState(0);
+    const ref = useRef<HTMLDivElement>(null);
 
-useEffect(()=>{
-  const i=setInterval(()=>setIndex(p=>(p+1)%zodiac.length),7000);
-  return()=>clearInterval(i);
-},[]);
-
-
-  const move=(e:React.MouseEvent)=>{
-    const el=ref.current;
-    if(!el) return;
-    const rect=el.getBoundingClientRect();
-    const x=(e.clientX-rect.left-rect.width/2)/20;
-    const y=(e.clientY-rect.top-rect.height/2)/20;
-    el.style.transform=`rotateY(${x}deg) rotateX(${-y}deg)`;
-  };
-
-  const reset=()=>{ if(ref.current) ref.current.style.transform="rotateY(0) rotateX(0)" };
-
-  const current=zodiac[index];
-  const map=constellationMap[current.name];
-
-  return (
-    <ZodiacWrapper>
-      <ConstellationContainer ref={ref} onMouseMove={move} onMouseLeave={reset}>
-
-        <DeepGlow color={current.color} />
-
-        <AuraRing/>
-        <OrbitRing/>
-
-<ConstellationSVG key={current.name} viewBox="0 0 100 100">
+    useEffect(() => {
+        const i = setInterval(() => setIndex(p => (p + 1) % zodiac.length), 7000);
+        return () => clearInterval(i);
+    }, []);
 
 
-  {map.lines.map(([a,b],i)=>{
-    const s1=map.stars[a];
-    const s2=map.stars[b];
+    const move = (e: React.MouseEvent) => {
+        const el = ref.current;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const x = (e.clientX - rect.left - rect.width / 2) / 20;
+        const y = (e.clientY - rect.top - rect.height / 2) / 20;
+        el.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+    };
+
+    const reset = () => { if (ref.current) ref.current.style.transform = "rotateY(0) rotateX(0)" };
+
+    const current = zodiac[index];
+    const map = constellationMap[current.name];
 
     return (
-      <Line
-        key={`line-${i}-${current.name}`}
-        x1={s1.x}
-        y1={s1.y}
-        x2={s2.x}
-        y2={s2.y}
-        color={current.color}
-        delay={i * 0.35}
-      />
+        <ZodiacWrapper>
+            <ConstellationContainer ref={ref} onMouseMove={move} onMouseLeave={reset}>
+
+                <DeepGlow
+                    color="rgba(120,140,255,.25)"
+                    style={{ filter: "blur(180px)", opacity: .4 }}
+                />
+
+
+                <AuraRing />
+                <OrbitRing />
+
+                <ConstellationSVG key={current.name} viewBox="0 0 100 100">
+
+
+                    {map.lines.map(([a, b], i) => {
+                        const s1 = map.stars[a];
+                        const s2 = map.stars[b];
+
+                        return (
+                            <Line
+                                key={`line-${i}-${current.name}`}
+                                x1={s1.x}
+                                y1={s1.y}
+                                x2={s2.x}
+                                y2={s2.y}
+                                color={current.color}
+                                delay={i * 0.35}
+                            />
+                        );
+                    })}
+                    {map.stars.map((s, i) => {
+                        const intensity = getStarIntensity();
+                        const size =
+                            intensity === 1 ? 1.4 :
+                                intensity === 0.5 ? 1 :
+                                    0.6;
+
+                        return (
+                            <GalaxyStar
+                                key={`star-${i}-${current.name}`}
+                                cx={s.x}
+                                cy={s.y}
+                                r={size}
+                                intensity={intensity}
+                            />
+                        );
+                    })}
+
+
+
+
+
+
+
+
+                </ConstellationSVG>
+
+
+
+                <ZodiacName>{current.name}</ZodiacName>
+
+            </ConstellationContainer>
+        </ZodiacWrapper>
     );
-  })}
-{map.stars.map((s,i)=>(
-  <GalaxyStar
-    key={`star-${i}-${current.name}`}
-    cx={s.x}
-    cy={s.y}
-    r={0.6 + Math.random()*0.7}
-    size={1}
-  />
-))}
-
-
-
-
-
-
-
-</ConstellationSVG>
-
-
-
-        <ZodiacName>{current.name}</ZodiacName>
-
-      </ConstellationContainer>
-    </ZodiacWrapper>
-  );
 }
 
 
