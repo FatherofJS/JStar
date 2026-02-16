@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { MOCK_CHART } from '../data/mockData';
 import {
     ZODIAC_SIGNS, ZODIAC_ORDER, ASPECT_COLORS,
-    PLANET_SYMBOLS,
+    PLANET_SYMBOLS, ASPECT_SYMBOLS,
 } from '../types/chart';
-import type { Planet } from '../types/chart';
+import type { Planet, Aspect } from '../types/chart';
 
 import {
     IconZodiacAries, IconZodiacTaurus, IconZodiacGemini, IconZodiacCancer,
@@ -61,14 +61,13 @@ export function ChartWheel() {
     const cx = size / 2;
     const cy = size / 2;
 
-    const outerRing = size * 0.4;         // = 280px
-    const nameRadius = size * 0.42;        // = 294px (just outside outerRing)
-    const zodiacIconRadius = outerRing * 0.925;  // = 259px
-    const zodiacInner = outerRing * 0.85;   // = 238px
-    const planetRing = outerRing * 0.77;   // = 216px
-    const houseRingOuter = outerRing * 0.58;   // = 162px
-    const houseRingInner = outerRing * 0.50;   // = 140px
-    const aspectRadius = outerRing * 0.50;   // = 140px
+    const outerRadius = size * 0.4;              // = 280px
+    const nameRadius = size * 0.42;              // = 294px
+    const zodiacIconRadius = outerRadius * 0.925; // = 259px
+    const zodiacInnerRadius = outerRadius * 0.85; // = 238px
+    const planetRadius = outerRadius * 0.77;     // = 216px
+    const houseOuterRadius = outerRadius * 0.58; // = 162px
+    const innerRadius = outerRadius * 0.50;      // = 140px (houses + aspects)
 
     const ascendant = houses[0]?.cusp || 0;
 
@@ -91,81 +90,122 @@ export function ChartWheel() {
         return rot;
     }
 
-    const [tooltip, setTooltip] = useState<{ x: number; y: number; planet: Planet } | null>(null);
+    const [hoveredPlanet, setHoveredPlanet] = useState<{ x: number; y: number; planet: Planet } | null>(null);
+    const [hoveredAspect, setHoveredAspect] = useState<{ x: number; y: number; aspect: Aspect } | null>(null);
     const [scale, setScale] = useState(1);
+    const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+    const dragRef = useRef({ dragging: false, startX: 0, startY: 0, origX: 0, origY: 0 });
 
-    function handleZoom(delta: number) {
-        setScale(prev => Math.max(0.75, Math.min(3, prev + delta)));
-    }
+    const zoom = (delta: number) => setScale(prev => Math.max(0.75, Math.min(3, prev + delta)));
 
-    /**
-     * Find the (x, y) position of a planet or angle on the inner aspect ring.
-     * Used to draw the endpoint of aspect lines.
-     */
-    function getAspectPosition(bodyName: string) {
-        const planet = planets.find(p => p.name === bodyName);
-        if (planet) return toXY(planet.longitude, aspectRadius);
-        if (bodyName === 'Ascendant') return toXY(houses[0]?.cusp || 0, aspectRadius);
-        if (bodyName === 'Midheaven (MC)' || bodyName === 'Midheaven')
-            return toXY(houses[9]?.cusp || 0, aspectRadius);
-        return null;
-    }
+    const drag = {
+        start: (e: React.MouseEvent) => {
+            dragRef.current = { dragging: true, startX: e.clientX, startY: e.clientY, origX: panOffset.x, origY: panOffset.y };
+        },
+        move: (e: React.MouseEvent) => {
+            if (!dragRef.current.dragging) return;
+            setPanOffset({
+                x: dragRef.current.origX + (e.clientX - dragRef.current.startX),
+                y: dragRef.current.origY + (e.clientY - dragRef.current.startY),
+            });
+        },
+        end: () => { dragRef.current.dragging = false; },
+    };
 
-    const tooltipStyle = tooltip ? {
-        left: `${(tooltip.x / size) * 100}%`,
-        top: `${(tooltip.y / size) * 100}%`,
-        transform: `translate(${tooltip.x > cx ? '-100%' : '10px'}, ${tooltip.y > cy ? '-100%' : '10px'})`,
+    const aspectEndpoints: Record<string, { x: number; y: number }> = {};
+    planets.forEach(p => aspectEndpoints[p.name] = toXY(p.longitude, innerRadius));
+    aspectEndpoints['Ascendant'] = toXY(houses[0]?.cusp || 0, innerRadius);
+    aspectEndpoints['Midheaven'] = toXY(houses[9]?.cusp || 0, innerRadius);
+    aspectEndpoints['Midheaven (MC)'] = aspectEndpoints['Midheaven'];
+
+    const tipAnchor = hoveredAspect || hoveredPlanet;
+    const tooltipStyle = tipAnchor ? {
+        left: `${(tipAnchor.x / size) * 100}%`,
+        top: `${(tipAnchor.y / size) * 100}%`,
+        transform: `translate(${tipAnchor.x > cx ? '-100%' : '10px'}, ${tipAnchor.y > cy ? '-100%' : '10px'})`,
     } : {};
 
     return (
         <div className="chart-wheel-container">
 
-            {/* Zoom controls */}
+            {/* Zoom */}
             <div className="chart-controls">
-                <button onClick={() => handleZoom(0.1)}>+</button>
-                <button onClick={() => handleZoom(-0.1)}>−</button>
-                <button onClick={() => setScale(1)}>⟳</button>
+                <button onClick={() => zoom(0.1)}>+</button>
+                <button onClick={() => zoom(-0.1)}>−</button>
+                <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}>⟳</button>
             </div>
 
-            {/* Tooltip — shows planet info on hover */}
-            {tooltip && (
+            {/* Tooltip */}
+            {(hoveredPlanet || hoveredAspect) && (
                 <div className="planet-tooltip" style={tooltipStyle}>
-                    <div className="tooltip-header">
-                        {PLANET_SYMBOLS[tooltip.planet.name]} {tooltip.planet.name}
-                    </div>
-                    <div className="tooltip-row">
-                        <span>Sign:</span>
-                        <span style={{ color: getSignColor(tooltip.planet.sign) }}>
-                            {ZODIAC_SIGNS[tooltip.planet.sign]?.symbol} {tooltip.planet.sign}
-                        </span>
-                    </div>
-                    <div className="tooltip-row">
-                        <span>Degree:</span>
-                        <span>
-                            {Math.floor(tooltip.planet.signDegree)}°
-                            {Math.floor((tooltip.planet.signDegree % 1) * 60)}'
-                        </span>
-                    </div>
-                    <div className="tooltip-row">
-                        <span>House:</span>
-                        <span>{tooltip.planet.house}</span>
-                    </div>
-                    {tooltip.planet.retrograde && (
-                        <div className="tooltip-retrograde">℞ Retrograde</div>
+                    {hoveredPlanet && !hoveredAspect && (
+                        <>
+                            <div className="tooltip-header">
+                                {PLANET_SYMBOLS[hoveredPlanet.planet.name]} {hoveredPlanet.planet.name}
+                            </div>
+                            <div className="tooltip-row">
+                                <span>Sign:</span>
+                                <span style={{ color: getSignColor(hoveredPlanet.planet.sign) }}>
+                                    {ZODIAC_SIGNS[hoveredPlanet.planet.sign]?.symbol} {hoveredPlanet.planet.sign}
+                                </span>
+                            </div>
+                            <div className="tooltip-row">
+                                <span>Degree:</span>
+                                <span>
+                                    {Math.floor(hoveredPlanet.planet.signDegree)}°
+                                    {Math.floor((hoveredPlanet.planet.signDegree % 1) * 60)}'
+                                </span>
+                            </div>
+                            <div className="tooltip-row">
+                                <span>House:</span>
+                                <span>{hoveredPlanet.planet.house}</span>
+                            </div>
+                            {hoveredPlanet.planet.retrograde && (
+                                <div className="tooltip-retrograde">℞ Retrograde</div>
+                            )}
+                        </>
+                    )}
+                    {hoveredAspect && (
+                        <>
+                            <div className="tooltip-header" style={{ color: ASPECT_COLORS[hoveredAspect.aspect.type] }}>
+                                {ASPECT_SYMBOLS[hoveredAspect.aspect.type]} {hoveredAspect.aspect.type.charAt(0).toUpperCase() + hoveredAspect.aspect.type.slice(1)}
+                            </div>
+                            <div className="tooltip-row">
+                                <span>Planets:</span>
+                                <span>{PLANET_SYMBOLS[hoveredAspect.aspect.planet1] || hoveredAspect.aspect.planet1} ↔ {PLANET_SYMBOLS[hoveredAspect.aspect.planet2] || hoveredAspect.aspect.planet2}</span>
+                            </div>
+                            <div className="tooltip-row">
+                                <span>Angle:</span>
+                                <span>{hoveredAspect.aspect.angle.toFixed(1)}°</span>
+                            </div>
+                            <div className="tooltip-row">
+                                <span>Orb:</span>
+                                <span>{hoveredAspect.aspect.orb.toFixed(2)}°</span>
+                            </div>
+                            <div className="tooltip-row">
+                                <span>Status:</span>
+                                <span>{hoveredAspect.aspect.applying ? 'Applying' : 'Separating'}</span>
+                            </div>
+                        </>
                     )}
                 </div>
             )}
 
-            {/* ═══ SVG CHART ═══ */}
+            {/* SVG Chart */}
             <div className="chart-viewport"
-                onWheel={(e) => { e.preventDefault(); handleZoom(e.deltaY > 0 ? -0.05 : 0.05); }}
+                onWheel={(e) => { e.preventDefault(); zoom(e.deltaY > 0 ? -0.01 : 0.01); }}
+                onMouseDown={drag.start}
+                onMouseMove={drag.move}
+                onMouseUp={drag.end}
+                onMouseLeave={drag.end}
+                style={{ cursor: dragRef.current.dragging ? 'grabbing' : 'grab' }}
             >
                 <svg
                     viewBox={`0 0 ${size} ${size}`}
                     style={{
                         width: '100%', height: '100%',
                         maxWidth: size, maxHeight: size,
-                        transform: `scale(${scale})`,
+                        transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${scale})`,
                     }}
                 >
 
@@ -198,15 +238,15 @@ export function ChartWheel() {
                         Two concentric circles form a "band". Inside the
                         band: sign divider lines and zodiac icons.
                         ══════════════════════════════════════════════ */}
-                    <circle cx={cx} cy={cy} r={outerRing} fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth={2.5} />
-                    <circle cx={cx} cy={cy} r={zodiacInner} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth={2} />
+                    <circle cx={cx} cy={cy} r={outerRadius} fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth={2.5} />
+                    <circle cx={cx} cy={cy} r={zodiacInnerRadius} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth={2} />
 
                     {ZODIAC_ORDER.map((sign, i) => {
                         const startAngle = i * 30;
                         const midAngle = startAngle + 15;
                         const iconPos = toXY(midAngle, zodiacIconRadius);
-                        const divStart = toXY(startAngle, zodiacInner);
-                        const divEnd = toXY(startAngle, outerRing);
+                        const divStart = toXY(startAngle, zodiacInnerRadius);
+                        const divEnd = toXY(startAngle, outerRadius);
                         const ZodiacIcon = ZODIAC_ICONS[sign];
                         const iconSize = 30;
                         const color = getSignColor(sign);
@@ -235,14 +275,14 @@ export function ChartWheel() {
                         icon inside. Hovering shows a tooltip.
                         ══════════════════════════════════════════════ */}
                     {planets.map((planet) => {
-                        const pos = toXY(planet.longitude, planetRing);
+                        const pos = toXY(planet.longitude, planetRadius);
                         const color = getSignColor(planet.sign);
                         const iconSize = 18;
 
                         return (
                             <g key={planet.name} className="planet-symbol"
-                                onMouseEnter={() => setTooltip({ x: pos.x, y: pos.y, planet })}
-                                onMouseLeave={() => setTooltip(null)}
+                                onMouseEnter={() => setHoveredPlanet({ x: pos.x, y: pos.y, planet })}
+                                onMouseLeave={() => setHoveredPlanet(null)}
                             >
                                 {/* Background circle */}
                                 <circle cx={pos.x} cy={pos.y} r={14}
@@ -274,15 +314,15 @@ export function ChartWheel() {
                         12 houses divide the chart. House cusps are thin
                         lines; angular houses (1,4,7,10) are bolder.
                         ══════════════════════════════════════════════ */}
-                    <circle cx={cx} cy={cy} r={houseRingOuter} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth={2} />
-                    <circle cx={cx} cy={cy} r={houseRingInner} fill="#0a0e17" stroke="rgba(255,255,255,0.12)" strokeWidth={2} />
+                    <circle cx={cx} cy={cy} r={houseOuterRadius} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth={2} />
+                    <circle cx={cx} cy={cy} r={innerRadius} fill="#0a0e17" stroke="rgba(255,255,255,0.12)" strokeWidth={2} />
 
                     {houses.map((house) => {
-                        const innerPos = toXY(house.cusp, houseRingInner);
-                        const outerPos = toXY(house.cusp, zodiacInner);
+                        const innerPos = toXY(house.cusp, innerRadius);
+                        const outerPos = toXY(house.cusp, zodiacInnerRadius);
 
                         const midAngle = house.cusp + house.size / 2;
-                        const labelPos = toXY(midAngle, (houseRingOuter + houseRingInner) / 2);
+                        const labelPos = toXY(midAngle, (houseOuterRadius + innerRadius) / 2);
                         const isAngular = [1, 4, 7, 10].includes(house.id);
 
                         return (
@@ -301,7 +341,7 @@ export function ChartWheel() {
                         );
                     })}
 
-                    {/* Angle labels: AC (Ascendant), MC (Midheaven), DC, IC */}
+                    {/* Angles: AC (Ascendant), MC (Midheaven), DC, IC */}
                     {[
                         { idx: 0, label: 'AC', color: '#ff6b8a' },
                         { idx: 9, label: 'MC', color: '#6bcbff' },
@@ -309,7 +349,7 @@ export function ChartWheel() {
                         { idx: 3, label: 'IC', color: '#ffd93d' },
                     ].map(({ idx, label, color }) => {
                         if (!houses[idx]) return null;
-                        const pos = toXY(houses[idx].cusp, houseRingInner - 15);
+                        const pos = toXY(houses[idx].cusp, innerRadius - 15);
                         return (
                             <text key={label} x={pos.x} y={pos.y}
                                 fill={color} fontSize={10} fontWeight={700}
@@ -326,23 +366,40 @@ export function ChartWheel() {
                         relationships (trine=120°, square=90°, etc.)
                         Each aspect type has its own color.
                         ══════════════════════════════════════════════ */}
-                    <circle cx={cx} cy={cy} r={aspectRadius}
+                    <circle cx={cx} cy={cy} r={innerRadius}
                         fill="none" stroke="rgba(255,255,255,0.06)"
                         strokeWidth={0.5} strokeDasharray="2,4" />
 
                     {aspects.map((aspect, i) => {
-                        const pos1 = getAspectPosition(aspect.planet1);
-                        const pos2 = getAspectPosition(aspect.planet2);
+                        const pos1 = aspectEndpoints[aspect.planet1];
+                        const pos2 = aspectEndpoints[aspect.planet2];
                         if (!pos1 || !pos2) return null;
 
                         const color = ASPECT_COLORS[aspect.type] || '#666';
+                        const midX = (pos1.x + pos2.x) / 2;
+                        const midY = (pos1.y + pos2.y) / 2;
+                        const isHovered = hoveredAspect?.aspect === aspect;
 
                         return (
-                            <line key={`aspect-${i}`}
-                                x1={pos1.x} y1={pos1.y}
-                                x2={pos2.x} y2={pos2.y}
-                                stroke={color} strokeWidth={1.2} opacity={0.5}
-                            />
+                            <g key={`aspect-${i}`}
+                                onMouseEnter={() => setHoveredAspect({ x: midX, y: midY, aspect })}
+                                onMouseLeave={() => setHoveredAspect(null)}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <line
+                                    x1={pos1.x} y1={pos1.y}
+                                    x2={pos2.x} y2={pos2.y}
+                                    stroke="transparent" strokeWidth={8}
+                                />
+                                <line
+                                    x1={pos1.x} y1={pos1.y}
+                                    x2={pos2.x} y2={pos2.y}
+                                    stroke={color}
+                                    strokeWidth={isHovered ? 2.5 : 1.2}
+                                    opacity={isHovered ? 1 : (hoveredAspect ? 0.15 : 0.5)}
+                                    style={{ transition: 'all 0.15s' }}
+                                />
+                            </g>
                         );
                     })}
 
