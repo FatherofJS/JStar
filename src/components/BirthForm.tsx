@@ -9,32 +9,38 @@ type BirthFormProps = {
 
 export function BirthForm({ onClose }: BirthFormProps) {
 
+    //query to search for city
     const [cityQuery, setCityQuery] = useState("");
-    const [cityResults, setCityResults] = useState<
-        { city: string; countryCode: string; countryName: string }[]
-    >([]);
+
+    //city result from query
+    const [cityResults, setCityResults] = useState<{
+        city: string;
+        countryCode: string;
+        countryName: string
+    }[]>([]);
 
     const [city, setCity] = useState<string | null>("Chọn thành phố");
     const [country, setCountry] = useState<string | null>("Chọn quốc gia");
 
+    //checks if the picker is open
     const [isPickerOpen, setIsPickerOpen] = useState(false);
 
+    //open picker for country
     const openCountryPicker = () => {
         setIsPickerOpen(true);
     };
 
-    const selectCountry = (value: string) => {
-        setCountry(value);
-    };
-
+    //create form
     const [form, setForm] = useState({
         name: "",
         birthDate: "",
         birthTime: "",
     });
 
+    //error
     const [error, setError] = useState("");
 
+    //used to check empty fields
     const [fieldErrors, setFieldErrors] = useState({
         name: false,
         birthDate: false,
@@ -43,13 +49,22 @@ export function BirthForm({ onClose }: BirthFormProps) {
         country: false,
     });
 
+    //update form on any changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value,
         });
+
+        if (e.target.value.trim() !== "") {
+            setFieldErrors((prev) => ({
+                ...prev,
+                [e.target.name]: false,
+            }));
+        }
     };
 
+    //runs when user submits the form
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -72,6 +87,7 @@ export function BirthForm({ onClose }: BirthFormProps) {
 
         setError("");
 
+        //creates submit data and logs to console
         const submittedData = {
             ...form,
             city,
@@ -82,6 +98,7 @@ export function BirthForm({ onClose }: BirthFormProps) {
         onClose();
     };
 
+    //displays the form
     return (
         <>
             <div className="modal-overlay" onClick={onClose} aria-hidden="true"></div>
@@ -121,6 +138,7 @@ export function BirthForm({ onClose }: BirthFormProps) {
                                 <div className="relative">
                                     <input id="create_city" className={`border rounded px-2 py-1 bg-background w-full h-10 ${fieldErrors.city ? "red" : ""
                                         }`} placeholder="Nhập thành phố" autoComplete="off" type="text" value={cityQuery} onChange={(e) => {
+
                                             const value = e.target.value;
                                             setCityQuery(value);
 
@@ -158,6 +176,12 @@ export function BirthForm({ onClose }: BirthFormProps) {
                                                         setCountry(item.countryName);
                                                         setCityQuery(item.city);
                                                         setCityResults([]);
+
+                                                        setFieldErrors((prev) => ({
+                                                            ...prev,
+                                                            city: false,
+                                                            country: false,
+                                                        }));
                                                     }}
                                                 >
                                                     <span>{item.city} ({item.countryName})</span>
@@ -181,6 +205,11 @@ export function BirthForm({ onClose }: BirthFormProps) {
                                                     key={country.name} className="flex flex-col w-full items-start px-3 py-2 text-left" onClick={() => {
                                                         setCountry(country.name);
                                                         setIsPickerOpen(false);
+
+                                                        setFieldErrors((prev) => ({
+                                                            ...prev,
+                                                            country: false,
+                                                        }));    
 
                                                         const cityBelongsToCountry =
                                                             city &&
@@ -216,29 +245,29 @@ export function BirthForm({ onClose }: BirthFormProps) {
             </div>
             {error && (
                 <>
-                <div className="error-msg-overlay" onClick={() => setError("")} aria-hidden="true"></div>
-                <div
-                    className="modal error-msg"
-                    onClick={() => setError("")}
-                >
+                    <div className="error-msg-overlay" onClick={() => setError("")} aria-hidden="true"></div>
                     <div
-                        className="bg-background rounded-lg text-center p-3"
-                        onClick={(e) => e.stopPropagation()}
+                        className="modal error-msg"
+                        onClick={() => setError("")}
                     >
-                        <h3 className="">Error</h3>
-                        <p className="text-muted-foreground">
-                            {error}
-                        </p>
-                        <div className="flex justify-end">
-                            <button
-                                className="rounded-md bg-primary text-primary-foreground px-3 py-1"
-                                onClick={() => setError("")}
-                            >
-                                OK
-                            </button>
+                        <div
+                            className="bg-background rounded-lg text-center p-3"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <h3 className="">Error</h3>
+                            <p className="text-muted-foreground">
+                                {error}
+                            </p>
+                            <div className="flex justify-end">
+                                <button
+                                    className="rounded-md bg-primary text-primary-foreground px-3 py-1"
+                                    onClick={() => setError("")}
+                                >
+                                    OK
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </>
             )}
         </>
