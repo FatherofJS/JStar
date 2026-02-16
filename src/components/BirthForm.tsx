@@ -9,6 +9,9 @@ type BirthFormProps = {
 
 export function BirthForm({ onClose }: BirthFormProps) {
 
+    const [isLoading, setIsLoading] = useState(false);
+
+
     //query to search for city
     const [cityQuery, setCityQuery] = useState("");
 
@@ -65,7 +68,7 @@ export function BirthForm({ onClose }: BirthFormProps) {
     };
 
     //runs when user submits the form
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const newErrors = {
@@ -86,6 +89,7 @@ export function BirthForm({ onClose }: BirthFormProps) {
         }
 
         setError("");
+        setIsLoading(true);
 
         //creates submit data and logs to console
         const submittedData = {
@@ -233,7 +237,7 @@ export function BirthForm({ onClose }: BirthFormProps) {
                     </div>
                     <div className="flex flex-row justify-end">
                         <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background h-10 px-4 py-2" onClick={onClose} type="button">Cancel</button>
-                        <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary text-primary-foreground h-10 px-4 py-2" type="submit">Calculate Chart</button>
+                        <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary text-primary-foreground h-10 px-4 py-2" type="submit" disabled={isLoading}>{isLoading ? "Calculating..." : "Calculate Chart"}</button>
                     </div>
                 </form>
 

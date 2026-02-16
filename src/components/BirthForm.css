@@ -357,47 +357,6 @@
     --radix-popper-anchor-height: 40px;
 }
 
-input[type=date],
-input[type=time],
-input[type=datetime-local] {
-    appearance: none;
-    box-sizing: border-box;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%
-}
-
-input[type=date]::-webkit-date-and-time-value {
-    text-align: left;
-    min-width: 0
-}
-
-input[type=time]::-webkit-date-and-time-value {
-    text-align: left;
-    min-width: 0
-}
-
-input[type=date]::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-    background: 0 0;
-    width: auto;
-    height: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0
-}
-
-input[type=time]::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-    background: 0 0;
-    width: auto;
-    height: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0
-}
 
 button,
 input,
@@ -412,6 +371,32 @@ textarea {
     opacity: 1;
     background-color: #0000;
     border-radius: 0
+}
+
+input[type=date],
+input[type=time],
+input[type=datetime-local] {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    background-color: #0000;
+}
+
+input[type=date],
+input[type=time] {
+    appearance: auto;
+    -webkit-appearance: auto;
+    color-scheme: dark;
+}
+
+input[type=date]::-webkit-date-and-time-value {
+    text-align: left;
+    min-width: 0
+}
+
+input[type=time]::-webkit-date-and-time-value {
+    text-align: left;
+    min-width: 0
 }
 
 .error-msg {
