@@ -1,11 +1,23 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
+import ariesImg from "../assets/zodiac/aries.png";
+import taurusImg from "../assets/zodiac/taurus.png"
+import geminiImg from "../assets/zodiac/gemini.png";
+import cancerImg from "../assets/zodiac/cancer.png";
+import leoImg from "../assets/zodiac/leo.png";
+import virgoImg from "../assets/zodiac/virgo.png";
+import libraImg from "../assets/zodiac/libra.png";
+import scorpioImg from "../assets/zodiac/scorpio.png";
+import sagittariusImg from "../assets/zodiac/sagittarius.png";
+import capricornImg from "../assets/zodiac/capricorn.png";
+import aquariusImg from "../assets/zodiac/aquarius.png";
+import piscesImg from "../assets/zodiac/pisces.png";
 const getStarIntensity = () => {
     const r = Math.random();
 
-    if (r < 0.7) return 0.5;   
-    if (r < 0.9) return 0.7;   
-    return 1;                  
+    if (r < 0.7) return 0.2;   // faint stars (đa số)
+    if (r < 0.9) return 0.5;   // medium
+    return 1;                  // bright stars (hiếm)
 };
 
 
@@ -23,6 +35,22 @@ const zodiac = [
     { name: "Aquarius", symbol: "♒", color: "#5f27cd" },
     { name: "Pisces", symbol: "♓", color: "#10ac84" },
 ];
+const zodiacImages: Record<string, string> = {
+    Aries: ariesImg,
+    Taurus: taurusImg,
+    Gemini: geminiImg,
+    Cancer: cancerImg,
+    Leo: leoImg,
+    Virgo: virgoImg,
+    Libra: libraImg,
+    Scorpio: scorpioImg,
+    Sagittarius: sagittariusImg,
+    Capricorn: capricornImg,
+    Aquarius: aquariusImg,
+    Pisces: piscesImg,
+
+};
+
 const constellationMap: Record<
     string,
     { stars: { x: number; y: number }[]; lines: [number, number][] }
@@ -30,135 +58,312 @@ const constellationMap: Record<
 
     Aries: {
         stars: [
-            { x: 20, y: 55 },
-            { x: 40, y: 45 },
-            { x: 60, y: 50 },
-            { x: 80, y: 65 }
+            { x: 18, y: 52 },
+            { x: 30, y: 54 },
+            { x: 50, y: 58 },
+            { x: 65, y: 40 },
+            { x: 72, y: 65 }
         ],
-        lines: [[0, 1], [1, 2], [2, 3]]
-    },
+        lines: [
+            [0, 1],
+            [1, 2],
+            [2, 4],
+            [2, 3],
+        ]
+    }
+    ,
 
     Taurus: {
         stars: [
-            { x: 20, y: 40 },
-            { x: 35, y: 25 },
-            { x: 55, y: 35 },
-            { x: 70, y: 50 },
-            { x: 55, y: 70 },
-            { x: 35, y: 60 }
+            { x: 8, y: 20 },
+            { x: 28, y: 28 },
+            { x: 48, y: 38 },
+            { x: 55, y: 50 },
+            { x: 45, y: 55 },
+            { x: 30, y: 60 },
+            { x: 15, y: 50 },
+            { x: 60, y: 55 },
+            { x: 75, y: 52 },
+            { x: 82, y: 62 },
+            { x: 68, y: 65 },
+            { x: 55, y: 68 }
         ],
-        lines: [[0, 1], [1, 2], [2, 3], [2, 4], [4, 5]]
+        lines: [[0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [4, 5],
+        [5, 6],
+        [3, 7],
+        [7, 8],
+        [8, 9],
+        [7, 10],
+        [10, 11]]
     },
 
     Gemini: {
         stars: [
             { x: 35, y: 20 },
-            { x: 35, y: 80 },
-            { x: 65, y: 20 },
-            { x: 65, y: 80 },
-            { x: 50, y: 50 }
+            { x: 35, y: 35 },
+            { x: 35, y: 50 },
+            { x: 30, y: 65 },
+            { x: 40, y: 75 },
+            { x: 55, y: 75 },
+            { x: 60, y: 60 },
+            { x: 60, y: 45 },
+            { x: 60, y: 30 },
+            { x: 70, y: 25 },
         ],
-        lines: [[0, 1], [2, 3], [0, 4], [2, 4]]
+        lines: [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 6],
+            [6, 7],
+            [7, 8],
+            [8, 9],
+        ]
     },
 
     Cancer: {
         stars: [
-            { x: 35, y: 50 },
-            { x: 50, y: 35 },
-            { x: 65, y: 50 },
-            { x: 50, y: 70 }
+            { x: 40, y: 20 }, { x: 45, y: 40 }, { x: 50, y: 55 }, { x: 35, y: 70 }, { x: 60, y: 70 }
         ],
-        lines: [[0, 1], [1, 2], [2, 3]]
+        lines: [[0, 1], [1, 2], [2, 3], [2, 4]]
     },
 
     Leo: {
         stars: [
-            { x: 20, y: 55 },
-            { x: 35, y: 40 },
-            { x: 55, y: 45 },
-            { x: 75, y: 60 },
-            { x: 60, y: 75 },
-            { x: 40, y: 70 }
+            { x: 10, y: 55 },
+            { x: 22, y: 42 },
+            { x: 30, y: 55 },
+            { x: 50, y: 55 },
+            { x: 62, y: 48 },
+            { x: 60, y: 35 },
+            { x: 68, y: 25 },
+            { x: 80, y: 22 }
         ],
-        lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
+        lines: [[0, 1],
+        [1, 2],
+        [2, 0],
+        [2, 3],
+        [3, 4],
+        [4, 5],
+        [5, 6],
+        [6, 7]]
     },
 
     Virgo: {
         stars: [
+            { x: 18, y: 62 },
+            { x: 22, y: 48 },
+            { x: 30, y: 38 },
+            { x: 45, y: 42 },
+            { x: 58, y: 40 },
+            { x: 70, y: 30 },
+            { x: 78, y: 22 },
             { x: 30, y: 25 },
-            { x: 45, y: 45 },
-            { x: 60, y: 55 },
-            { x: 75, y: 75 },
-            { x: 55, y: 80 }
+            { x: 30, y: 15 },
+            { x: 10, y: 45 }
         ],
-        lines: [[0, 1], [1, 2], [2, 3], [2, 4]]
+        lines: [[0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [4, 5],
+        [5, 6],
+        [2, 7],
+        [7, 8],
+        [1, 9]]
     },
 
     Libra: {
         stars: [
-            { x: 25, y: 55 },
-            { x: 50, y: 40 },
-            { x: 75, y: 55 },
-            { x: 50, y: 70 }
+            { x: 30, y: 20 },
+            { x: 18, y: 38 },
+            { x: 45, y: 38 },
+            { x: 48, y: 58 },
+            { x: 25, y: 58 },
+            { x: 15, y: 72 }
         ],
-        lines: [[0, 1], [1, 2], [1, 3]]
+        lines: [[0, 1],
+        [0, 2],
+        [1, 2],
+        [2, 3],
+        [1, 4],
+        [4, 5]]
     },
 
     Scorpio: {
         stars: [
-            { x: 20, y: 40 },
-            { x: 35, y: 60 },
-            { x: 50, y: 45 },
-            { x: 65, y: 65 },
-            { x: 80, y: 50 },
-            { x: 90, y: 65 }
+            { x: 15, y: 40 },
+            { x: 10, y: 50 },
+            { x: 12, y: 62 },
+            { x: 20, y: 72 },
+            { x: 32, y: 78 },
+            { x: 45, y: 72 },
+            { x: 55, y: 66 },
+            { x: 65, y: 60 },
+            { x: 72, y: 58 },
+            { x: 80, y: 58 },
+            { x: 88, y: 60 },
+            { x: 95, y: 55 },
+            { x: 92, y: 65 },
+            { x: 85, y: 70 }
         ],
-        lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
+        lines: [[0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [4, 5],
+        [5, 6],
+        [6, 7],
+        [7, 8],
+        [8, 9],
+        [9, 10],
+        [10, 11],
+        [10, 12],
+        [10, 13]]
     },
 
     Sagittarius: {
         stars: [
-            { x: 30, y: 30 },
-            { x: 45, y: 50 },
-            { x: 60, y: 30 },
-            { x: 70, y: 70 },
-            { x: 50, y: 80 },
-            { x: 40, y: 65 }
+            { x: 18, y: 30 },
+            { x: 24, y: 40 },
+            { x: 30, y: 50 },
+            { x: 30, y: 62 },
+            { x: 26, y: 74 },
+            { x: 38, y: 70 },
+            { x: 44, y: 62 },
+            { x: 52, y: 58 },
+            { x: 60, y: 56 },
+            { x: 70, y: 58 },
+            { x: 78, y: 52 },
+            { x: 72, y: 66 },
+            { x: 78, y: 74 },
+            { x: 70, y: 82 },
+            { x: 36, y: 80 },
+            { x: 30, y: 86 }
         ],
-        lines: [[0, 1], [1, 2], [1, 3], [3, 4], [4, 5]]
+        lines: [[0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [4, 5],
+        [5, 6],
+        [6, 7],
+        [7, 8],
+        [8, 9],
+        [9, 10],
+        [9, 11],
+        [11, 12],
+        [12, 13],
+        [4, 14],
+        [14, 15]]
     },
 
     Capricorn: {
         stars: [
-            { x: 25, y: 60 },
-            { x: 40, y: 40 },
-            { x: 60, y: 50 },
-            { x: 75, y: 70 },
-            { x: 55, y: 80 }
+            { x: 50, y: 18 },
+            { x: 42, y: 32 },
+            { x: 58, y: 44 },
+            { x: 72, y: 64 },
+            { x: 52, y: 70 },
+            { x: 32, y: 68 },
+            { x: 18, y: 62 },
+            { x: 24, y: 54 },
+            { x: 34, y: 48 }
         ],
-        lines: [[0, 1], [1, 2], [2, 3], [3, 4]]
+        lines: [[0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [4, 5],
+        [5, 6],
+        [6, 7],
+        [7, 8],
+        [8, 1]]
     },
 
     Aquarius: {
         stars: [
-            { x: 25, y: 45 },
-            { x: 40, y: 60 },
-            { x: 55, y: 45 },
-            { x: 70, y: 60 },
-            { x: 85, y: 45 }
+            { x: 20, y: 52 },
+            { x: 28, y: 48 },
+            { x: 36, y: 46 },
+            { x: 44, y: 44 },
+            { x: 50, y: 36 },
+            { x: 54, y: 28 },
+            { x: 56, y: 44 },
+            { x: 66, y: 48 },
+            { x: 76, y: 48 },
+            { x: 86, y: 48 },
+            { x: 52, y: 58 },
+            { x: 56, y: 70 },
+            { x: 34, y: 58 },
+            { x: 30, y: 70 },
+            { x: 24, y: 80 }
         ],
-        lines: [[0, 1], [1, 2], [2, 3], [3, 4]]
+        lines: [[0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 6],
+        [6, 7],
+        [7, 8],
+        [8, 9],
+        [3, 4],
+        [4, 5],
+        [6, 10],
+        [10, 11],
+        [1, 12],
+        [12, 13],
+        [13, 14]]
     },
 
     Pisces: {
         stars: [
-            { x: 25, y: 50 },
-            { x: 45, y: 30 },
-            { x: 65, y: 50 },
-            { x: 45, y: 70 },
-            { x: 85, y: 50 }
+            { x: 18, y: 30 },
+            { x: 22, y: 36 },
+            { x: 20, y: 44 },
+            { x: 18, y: 52 },
+            { x: 18, y: 62 },
+            { x: 20, y: 72 },
+            { x: 24, y: 80 },
+
+            { x: 32, y: 76 },
+            { x: 40, y: 74 },
+            { x: 48, y: 72 },
+            { x: 56, y: 70 },
+            { x: 64, y: 68 },
+
+            { x: 72, y: 66 },
+            { x: 78, y: 66 },
+            { x: 82, y: 70 },
+            { x: 80, y: 76 },
+            { x: 74, y: 76 },
+            { x: 70, y: 72 }
         ],
-        lines: [[0, 1], [1, 2], [2, 3], [2, 4]]
+        lines: [[0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [4, 5],
+        [5, 6],
+
+        [6, 7],
+        [7, 8],
+        [8, 9],
+        [9, 10],
+        [10, 11],
+        [11, 12],
+
+        [12, 13],
+        [13, 14],
+        [14, 15],
+        [15, 16],
+        [16, 17],
+        [17, 12]]
     }
 
 };
@@ -191,6 +396,17 @@ const drawLine = keyframes`
     opacity: 1;
   }
 `;
+const fadeInSymbol = keyframes`
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(.95);
+  }
+  to {
+    opacity: .85;
+    transform: translate(-50%, -50%) scale(1);
+  }
+`;
+
 
 
 
@@ -207,6 +423,32 @@ const ZodiacWrapper = styled.div`
   justify-content:center;
   perspective: 1000px;
 `;
+const ZodiacSymbol = styled.img`
+  position: absolute;
+  width: 320px;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  opacity: 0;
+
+  animation: ${fadeInSymbol} 2.2s ease forwards;
+  animation-delay: 4.8s;
+
+  mix-blend-mode: screen;
+
+  filter:
+    drop-shadow(0 0 50px rgba(120,140,255,.6))
+    blur(.2px);
+
+  z-index: 1;
+`;
+
+
 
 const ConstellationContainer = styled.div`
   position: relative;
@@ -325,7 +567,14 @@ function ZodiacCinematic() {
 
 
                 <AuraRing />
+                <ZodiacSymbol
+                    key={`img-${current.name}`}
+                    src={zodiacImages[current.name]}
+                />
+
                 <OrbitRing />
+
+
 
                 <ConstellationSVG key={current.name} viewBox="0 0 100 100">
 
@@ -363,14 +612,6 @@ function ZodiacCinematic() {
                             />
                         );
                     })}
-
-
-
-
-
-
-
-
                 </ConstellationSVG>
 
 
@@ -492,6 +733,9 @@ export default function LandingPage() {
                 ))}
             </Galaxy>
             <SectionHero ref={heroRef} data-section="home" className="zoom-section zoom-in">
+
+                <HeroLight />
+
                 <HeroLayout>
 
                     <Content>
@@ -504,6 +748,8 @@ export default function LandingPage() {
                             CHOOSE YOUR DAY OF BIRTH TO SEE YOUR PERSONALIZED ASTROLOGY CHART AND INSIGHTS.
                         </p>
 
+                        <DividerGlow />
+
                         <Actions>
                             <SpaceButton />
                         </Actions>
@@ -514,7 +760,9 @@ export default function LandingPage() {
                     </HeroRight>
 
                 </HeroLayout>
+
             </SectionHero>
+
 
 
             <Section ref={aboutRef} data-section="about" className="zoom-section">
@@ -790,6 +1038,20 @@ const Galaxy = styled.div<{ $active: boolean }>`
   }
 `;
 
+const HeroLight = styled.div`
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 25% 30%, rgba(120,140,255,.25), transparent 40%),
+    radial-gradient(circle at 75% 40%, rgba(180,120,255,.18), transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(0,200,255,.12), transparent 50%);
+
+  filter: blur(120px);
+  opacity: .6;
+`;
+
 
 
 
@@ -797,29 +1059,51 @@ const SectionHero = styled.section`
   height: 100vh;
   display: flex;
   align-items: center;
+  position: relative;
+//   overflow: hidden;
 `;
+
 const HeroLayout = styled.div`
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 520px;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 4vw;
-  gap: 150px;
+  padding: 0 6vw;
+  gap: 120px;
+  position: relative;
+  z-index: 2;
 
-  @media (max-width: 900px) {
-    flex-direction: column;
-    justify-content: center;
+  @media (max-width: 1000px) {
+    grid-template-columns: 1fr;
     text-align: center;
+    gap: 60px;
   }
 `;
+const DividerGlow = styled.div`
+  width: 120px;
+  height: 2px;
+  margin-top: 28px;
+
+  background: linear-gradient(90deg, transparent, #7aa2ff, transparent);
+  filter: blur(.6px);
+  opacity: .7;
+`;
+
+
 
 const HeroRight = styled.div`
-  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  @media (max-width: 900px) {
-    margin-top: 40px;
+  transform: translateY(-10px);
+
+  @media (max-width: 1000px) {
+    transform: none;
   }
 `;
+
 
 
 const Section = styled.section`
@@ -830,16 +1114,34 @@ const Section = styled.section`
 `;
 
 const Content = styled.div`
-  padding: 0 10vw;
-  max-width: 900px;
+  max-width: 620px;
 
-  h1 { font-size: clamp(42px,6vw,80px); }
-  span { color:#7aa2ff; }
-  p { margin-top:20px; opacity:0.85; }
+  h1 {
+    font-size: clamp(52px, 6vw, 84px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -1px;
+  }
+
+  span {
+    background: linear-gradient(90deg,#7aa2ff,#c084fc,#22d3ee);
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 30px rgba(122,162,255,.6);
+  }
+
+  p {
+    margin-top: 24px;
+    font-size: 17px;
+    line-height: 1.6;
+    opacity: .75;
+    max-width: 520px;
+  }
 `;
 
+
 const Actions = styled.div`
-  margin-top: 35px;
+  margin-top: 40px;
 `;
 
 const GlassBox = styled.div`
