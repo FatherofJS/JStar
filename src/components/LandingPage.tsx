@@ -13,358 +13,358 @@ import capricornImg from "../assets/zodiac/capricorn.png";
 import aquariusImg from "../assets/zodiac/aquarius.png";
 import piscesImg from "../assets/zodiac/pisces.png";
 const getStarIntensity = () => {
-    const r = Math.random();
+  const r = Math.random();
 
-    if (r < 0.7) return 0.2;   // faint stars (đa số)
-    if (r < 0.9) return 0.5;   // medium
-    return 1;                  // bright stars (hiếm)
+  if (r < 0.7) return 0.2;   // faint stars (đa số)
+  if (r < 0.9) return 0.5;   // medium
+  return 1;                  // bright stars (hiếm)
 };
 
 
 const zodiac = [
-    { name: "Aries", symbol: "♈", color: "#ff6b6b" },
-    { name: "Taurus", symbol: "♉", color: "#4ecdc4" },
-    { name: "Gemini", symbol: "♊", color: "#ffd93d" },
-    { name: "Cancer", symbol: "♋", color: "#6c5ce7" },
-    { name: "Leo", symbol: "♌", color: "#ff9f43" },
-    { name: "Virgo", symbol: "♍", color: "#1dd1a1" },
-    { name: "Libra", symbol: "♎", color: "#54a0ff" },
-    { name: "Scorpio", symbol: "♏", color: "#ee5253" },
-    { name: "Sagittarius", symbol: "♐", color: "#f368e0" },
-    { name: "Capricorn", symbol: "♑", color: "#00d2d3" },
-    { name: "Aquarius", symbol: "♒", color: "#5f27cd" },
-    { name: "Pisces", symbol: "♓", color: "#10ac84" },
+  { name: "Aries", symbol: "♈", color: "#ff6b6b" },
+  { name: "Taurus", symbol: "♉", color: "#4ecdc4" },
+  { name: "Gemini", symbol: "♊", color: "#ffd93d" },
+  { name: "Cancer", symbol: "♋", color: "#6c5ce7" },
+  { name: "Leo", symbol: "♌", color: "#ff9f43" },
+  { name: "Virgo", symbol: "♍", color: "#1dd1a1" },
+  { name: "Libra", symbol: "♎", color: "#54a0ff" },
+  { name: "Scorpio", symbol: "♏", color: "#ee5253" },
+  { name: "Sagittarius", symbol: "♐", color: "#f368e0" },
+  { name: "Capricorn", symbol: "♑", color: "#00d2d3" },
+  { name: "Aquarius", symbol: "♒", color: "#5f27cd" },
+  { name: "Pisces", symbol: "♓", color: "#10ac84" },
 ];
 const zodiacImages: Record<string, string> = {
-    Aries: ariesImg,
-    Taurus: taurusImg,
-    Gemini: geminiImg,
-    Cancer: cancerImg,
-    Leo: leoImg,
-    Virgo: virgoImg,
-    Libra: libraImg,
-    Scorpio: scorpioImg,
-    Sagittarius: sagittariusImg,
-    Capricorn: capricornImg,
-    Aquarius: aquariusImg,
-    Pisces: piscesImg,
+  Aries: ariesImg,
+  Taurus: taurusImg,
+  Gemini: geminiImg,
+  Cancer: cancerImg,
+  Leo: leoImg,
+  Virgo: virgoImg,
+  Libra: libraImg,
+  Scorpio: scorpioImg,
+  Sagittarius: sagittariusImg,
+  Capricorn: capricornImg,
+  Aquarius: aquariusImg,
+  Pisces: piscesImg,
 
 };
 
 const constellationMap: Record<
-    string,
-    { stars: { x: number; y: number }[]; lines: [number, number][] }
+  string,
+  { stars: { x: number; y: number }[]; lines: [number, number][] }
 > = {
 
-    Aries: {
-        stars: [
-            { x: 18, y: 52 },
-            { x: 30, y: 54 },
-            { x: 50, y: 58 },
-            { x: 65, y: 40 },
-            { x: 72, y: 65 }
-        ],
-        lines: [
-            [0, 1],
-            [1, 2],
-            [2, 4],
-            [2, 3],
-        ]
-    }
-    ,
+  Aries: {
+    stars: [
+      { x: 18, y: 52 },
+      { x: 30, y: 54 },
+      { x: 50, y: 58 },
+      { x: 65, y: 40 },
+      { x: 72, y: 65 }
+    ],
+    lines: [
+      [0, 1],
+      [1, 2],
+      [2, 4],
+      [2, 3],
+    ]
+  }
+  ,
 
-    Taurus: {
-        stars: [
-            { x: 8, y: 20 },
-            { x: 28, y: 28 },
-            { x: 48, y: 38 },
-            { x: 55, y: 50 },
-            { x: 45, y: 55 },
-            { x: 30, y: 60 },
-            { x: 15, y: 50 },
-            { x: 60, y: 55 },
-            { x: 75, y: 52 },
-            { x: 82, y: 62 },
-            { x: 68, y: 65 },
-            { x: 55, y: 68 }
-        ],
-        lines: [[0, 1],
-        [1, 2],
-        [2, 3],
-        [3, 4],
-        [4, 5],
-        [5, 6],
-        [3, 7],
-        [7, 8],
-        [8, 9],
-        [7, 10],
-        [10, 11]]
-    },
+  Taurus: {
+    stars: [
+      { x: 8, y: 20 },
+      { x: 28, y: 28 },
+      { x: 48, y: 38 },
+      { x: 55, y: 50 },
+      { x: 45, y: 55 },
+      { x: 30, y: 60 },
+      { x: 15, y: 50 },
+      { x: 60, y: 55 },
+      { x: 75, y: 52 },
+      { x: 82, y: 62 },
+      { x: 68, y: 65 },
+      { x: 55, y: 68 }
+    ],
+    lines: [[0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [5, 6],
+    [3, 7],
+    [7, 8],
+    [8, 9],
+    [7, 10],
+    [10, 11]]
+  },
 
-    Gemini: {
-        stars: [
-            { x: 35, y: 20 },
-            { x: 35, y: 35 },
-            { x: 35, y: 50 },
-            { x: 30, y: 65 },
-            { x: 40, y: 75 },
-            { x: 55, y: 75 },
-            { x: 60, y: 60 },
-            { x: 60, y: 45 },
-            { x: 60, y: 30 },
-            { x: 70, y: 25 },
-        ],
-        lines: [
-            [0, 1],
-            [1, 2],
-            [2, 3],
-            [3, 4],
-            [4, 5],
-            [5, 6],
-            [6, 7],
-            [7, 8],
-            [8, 9],
-        ]
-    },
+  Gemini: {
+    stars: [
+      { x: 35, y: 20 },
+      { x: 35, y: 35 },
+      { x: 35, y: 50 },
+      { x: 30, y: 65 },
+      { x: 40, y: 75 },
+      { x: 55, y: 75 },
+      { x: 60, y: 60 },
+      { x: 60, y: 45 },
+      { x: 60, y: 30 },
+      { x: 70, y: 25 },
+    ],
+    lines: [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [4, 5],
+      [5, 6],
+      [6, 7],
+      [7, 8],
+      [8, 9],
+    ]
+  },
 
-    Cancer: {
-        stars: [
-            { x: 40, y: 20 }, { x: 45, y: 40 }, { x: 50, y: 55 }, { x: 35, y: 70 }, { x: 60, y: 70 }
-        ],
-        lines: [[0, 1], [1, 2], [2, 3], [2, 4]]
-    },
+  Cancer: {
+    stars: [
+      { x: 40, y: 20 }, { x: 45, y: 40 }, { x: 50, y: 55 }, { x: 35, y: 70 }, { x: 60, y: 70 }
+    ],
+    lines: [[0, 1], [1, 2], [2, 3], [2, 4]]
+  },
 
-    Leo: {
-        stars: [
-            { x: 10, y: 55 },
-            { x: 22, y: 42 },
-            { x: 30, y: 55 },
-            { x: 50, y: 55 },
-            { x: 62, y: 48 },
-            { x: 60, y: 35 },
-            { x: 68, y: 25 },
-            { x: 80, y: 22 }
-        ],
-        lines: [[0, 1],
-        [1, 2],
-        [2, 0],
-        [2, 3],
-        [3, 4],
-        [4, 5],
-        [5, 6],
-        [6, 7]]
-    },
+  Leo: {
+    stars: [
+      { x: 10, y: 55 },
+      { x: 22, y: 42 },
+      { x: 30, y: 55 },
+      { x: 50, y: 55 },
+      { x: 62, y: 48 },
+      { x: 60, y: 35 },
+      { x: 68, y: 25 },
+      { x: 80, y: 22 }
+    ],
+    lines: [[0, 1],
+    [1, 2],
+    [2, 0],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [5, 6],
+    [6, 7]]
+  },
 
-    Virgo: {
-        stars: [
-            { x: 18, y: 62 },
-            { x: 22, y: 48 },
-            { x: 30, y: 38 },
-            { x: 45, y: 42 },
-            { x: 58, y: 40 },
-            { x: 70, y: 30 },
-            { x: 78, y: 22 },
-            { x: 30, y: 25 },
-            { x: 30, y: 15 },
-            { x: 10, y: 45 }
-        ],
-        lines: [[0, 1],
-        [1, 2],
-        [2, 3],
-        [3, 4],
-        [4, 5],
-        [5, 6],
-        [2, 7],
-        [7, 8],
-        [1, 9]]
-    },
+  Virgo: {
+    stars: [
+      { x: 18, y: 62 },
+      { x: 22, y: 48 },
+      { x: 30, y: 38 },
+      { x: 45, y: 42 },
+      { x: 58, y: 40 },
+      { x: 70, y: 30 },
+      { x: 78, y: 22 },
+      { x: 30, y: 25 },
+      { x: 30, y: 15 },
+      { x: 10, y: 45 }
+    ],
+    lines: [[0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [5, 6],
+    [2, 7],
+    [7, 8],
+    [1, 9]]
+  },
 
-    Libra: {
-        stars: [
-            { x: 30, y: 20 },
-            { x: 18, y: 38 },
-            { x: 45, y: 38 },
-            { x: 48, y: 58 },
-            { x: 25, y: 58 },
-            { x: 15, y: 72 }
-        ],
-        lines: [[0, 1],
-        [0, 2],
-        [1, 2],
-        [2, 3],
-        [1, 4],
-        [4, 5]]
-    },
+  Libra: {
+    stars: [
+      { x: 30, y: 20 },
+      { x: 18, y: 38 },
+      { x: 45, y: 38 },
+      { x: 48, y: 58 },
+      { x: 25, y: 58 },
+      { x: 15, y: 72 }
+    ],
+    lines: [[0, 1],
+    [0, 2],
+    [1, 2],
+    [2, 3],
+    [1, 4],
+    [4, 5]]
+  },
 
-    Scorpio: {
-        stars: [
-            { x: 15, y: 40 },
-            { x: 10, y: 50 },
-            { x: 12, y: 62 },
-            { x: 20, y: 72 },
-            { x: 32, y: 78 },
-            { x: 45, y: 72 },
-            { x: 55, y: 66 },
-            { x: 65, y: 60 },
-            { x: 72, y: 58 },
-            { x: 80, y: 58 },
-            { x: 88, y: 60 },
-            { x: 95, y: 55 },
-            { x: 92, y: 65 },
-            { x: 85, y: 70 }
-        ],
-        lines: [[0, 1],
-        [1, 2],
-        [2, 3],
-        [3, 4],
-        [4, 5],
-        [5, 6],
-        [6, 7],
-        [7, 8],
-        [8, 9],
-        [9, 10],
-        [10, 11],
-        [10, 12],
-        [10, 13]]
-    },
+  Scorpio: {
+    stars: [
+      { x: 15, y: 40 },
+      { x: 10, y: 50 },
+      { x: 12, y: 62 },
+      { x: 20, y: 72 },
+      { x: 32, y: 78 },
+      { x: 45, y: 72 },
+      { x: 55, y: 66 },
+      { x: 65, y: 60 },
+      { x: 72, y: 58 },
+      { x: 80, y: 58 },
+      { x: 88, y: 60 },
+      { x: 95, y: 55 },
+      { x: 92, y: 65 },
+      { x: 85, y: 70 }
+    ],
+    lines: [[0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [5, 6],
+    [6, 7],
+    [7, 8],
+    [8, 9],
+    [9, 10],
+    [10, 11],
+    [10, 12],
+    [10, 13]]
+  },
 
-    Sagittarius: {
-        stars: [
-            { x: 18, y: 30 },
-            { x: 24, y: 40 },
-            { x: 30, y: 50 },
-            { x: 30, y: 62 },
-            { x: 26, y: 74 },
-            { x: 38, y: 70 },
-            { x: 44, y: 62 },
-            { x: 52, y: 58 },
-            { x: 60, y: 56 },
-            { x: 70, y: 58 },
-            { x: 78, y: 52 },
-            { x: 72, y: 66 },
-            { x: 78, y: 74 },
-            { x: 70, y: 82 },
-            { x: 36, y: 80 },
-            { x: 30, y: 86 }
-        ],
-        lines: [[0, 1],
-        [1, 2],
-        [2, 3],
-        [3, 4],
-        [4, 5],
-        [5, 6],
-        [6, 7],
-        [7, 8],
-        [8, 9],
-        [9, 10],
-        [9, 11],
-        [11, 12],
-        [12, 13],
-        [4, 14],
-        [14, 15]]
-    },
+  Sagittarius: {
+    stars: [
+      { x: 18, y: 30 },
+      { x: 24, y: 40 },
+      { x: 30, y: 50 },
+      { x: 30, y: 62 },
+      { x: 26, y: 74 },
+      { x: 38, y: 70 },
+      { x: 44, y: 62 },
+      { x: 52, y: 58 },
+      { x: 60, y: 56 },
+      { x: 70, y: 58 },
+      { x: 78, y: 52 },
+      { x: 72, y: 66 },
+      { x: 78, y: 74 },
+      { x: 70, y: 82 },
+      { x: 36, y: 80 },
+      { x: 30, y: 86 }
+    ],
+    lines: [[0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [5, 6],
+    [6, 7],
+    [7, 8],
+    [8, 9],
+    [9, 10],
+    [9, 11],
+    [11, 12],
+    [12, 13],
+    [4, 14],
+    [14, 15]]
+  },
 
-    Capricorn: {
-        stars: [
-            { x: 50, y: 18 },
-            { x: 42, y: 32 },
-            { x: 58, y: 44 },
-            { x: 72, y: 64 },
-            { x: 52, y: 70 },
-            { x: 32, y: 68 },
-            { x: 18, y: 62 },
-            { x: 24, y: 54 },
-            { x: 34, y: 48 }
-        ],
-        lines: [[0, 1],
-        [1, 2],
-        [2, 3],
-        [3, 4],
-        [4, 5],
-        [5, 6],
-        [6, 7],
-        [7, 8],
-        [8, 1]]
-    },
+  Capricorn: {
+    stars: [
+      { x: 50, y: 18 },
+      { x: 42, y: 32 },
+      { x: 58, y: 44 },
+      { x: 72, y: 64 },
+      { x: 52, y: 70 },
+      { x: 32, y: 68 },
+      { x: 18, y: 62 },
+      { x: 24, y: 54 },
+      { x: 34, y: 48 }
+    ],
+    lines: [[0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [5, 6],
+    [6, 7],
+    [7, 8],
+    [8, 1]]
+  },
 
-    Aquarius: {
-        stars: [
-            { x: 20, y: 52 },
-            { x: 28, y: 48 },
-            { x: 36, y: 46 },
-            { x: 44, y: 44 },
-            { x: 50, y: 36 },
-            { x: 54, y: 28 },
-            { x: 56, y: 44 },
-            { x: 66, y: 48 },
-            { x: 76, y: 48 },
-            { x: 86, y: 48 },
-            { x: 52, y: 58 },
-            { x: 56, y: 70 },
-            { x: 34, y: 58 },
-            { x: 30, y: 70 },
-            { x: 24, y: 80 }
-        ],
-        lines: [[0, 1],
-        [1, 2],
-        [2, 3],
-        [3, 6],
-        [6, 7],
-        [7, 8],
-        [8, 9],
-        [3, 4],
-        [4, 5],
-        [6, 10],
-        [10, 11],
-        [1, 12],
-        [12, 13],
-        [13, 14]]
-    },
+  Aquarius: {
+    stars: [
+      { x: 20, y: 52 },
+      { x: 28, y: 48 },
+      { x: 36, y: 46 },
+      { x: 44, y: 44 },
+      { x: 50, y: 36 },
+      { x: 54, y: 28 },
+      { x: 56, y: 44 },
+      { x: 66, y: 48 },
+      { x: 76, y: 48 },
+      { x: 86, y: 48 },
+      { x: 52, y: 58 },
+      { x: 56, y: 70 },
+      { x: 34, y: 58 },
+      { x: 30, y: 70 },
+      { x: 24, y: 80 }
+    ],
+    lines: [[0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 6],
+    [6, 7],
+    [7, 8],
+    [8, 9],
+    [3, 4],
+    [4, 5],
+    [6, 10],
+    [10, 11],
+    [1, 12],
+    [12, 13],
+    [13, 14]]
+  },
 
-    Pisces: {
-        stars: [
-            { x: 18, y: 30 },
-            { x: 22, y: 36 },
-            { x: 20, y: 44 },
-            { x: 18, y: 52 },
-            { x: 18, y: 62 },
-            { x: 20, y: 72 },
-            { x: 24, y: 80 },
+  Pisces: {
+    stars: [
+      { x: 18, y: 30 },
+      { x: 22, y: 36 },
+      { x: 20, y: 44 },
+      { x: 18, y: 52 },
+      { x: 18, y: 62 },
+      { x: 20, y: 72 },
+      { x: 24, y: 80 },
 
-            { x: 32, y: 76 },
-            { x: 40, y: 74 },
-            { x: 48, y: 72 },
-            { x: 56, y: 70 },
-            { x: 64, y: 68 },
+      { x: 32, y: 76 },
+      { x: 40, y: 74 },
+      { x: 48, y: 72 },
+      { x: 56, y: 70 },
+      { x: 64, y: 68 },
 
-            { x: 72, y: 66 },
-            { x: 78, y: 66 },
-            { x: 82, y: 70 },
-            { x: 80, y: 76 },
-            { x: 74, y: 76 },
-            { x: 70, y: 72 }
-        ],
-        lines: [[0, 1],
-        [1, 2],
-        [2, 3],
-        [3, 4],
-        [4, 5],
-        [5, 6],
+      { x: 72, y: 66 },
+      { x: 78, y: 66 },
+      { x: 82, y: 70 },
+      { x: 80, y: 76 },
+      { x: 74, y: 76 },
+      { x: 70, y: 72 }
+    ],
+    lines: [[0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [5, 6],
 
-        [6, 7],
-        [7, 8],
-        [8, 9],
-        [9, 10],
-        [10, 11],
-        [11, 12],
+    [6, 7],
+    [7, 8],
+    [8, 9],
+    [9, 10],
+    [10, 11],
+    [11, 12],
 
-        [12, 13],
-        [13, 14],
-        [14, 15],
-        [15, 16],
-        [16, 17],
-        [17, 12]]
-    }
+    [12, 13],
+    [13, 14],
+    [14, 15],
+    [15, 16],
+    [16, 17],
+    [17, 12]]
+  }
 
 };
 
@@ -533,94 +533,94 @@ const Line = styled.line<{ color: string; delay: number }>`
 
 
 function ZodiacCinematic() {
-    const [index, setIndex] = useState(0);
-    const ref = useRef<HTMLDivElement>(null);
+  const [index, setIndex] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const i = setInterval(() => setIndex(p => (p + 1) % zodiac.length), 7000);
-        return () => clearInterval(i);
-    }, []);
-
-
-    const move = (e: React.MouseEvent) => {
-        const el = ref.current;
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-        const x = (e.clientX - rect.left - rect.width / 2) / 20;
-        const y = (e.clientY - rect.top - rect.height / 2) / 20;
-        el.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-    };
-
-    const reset = () => { if (ref.current) ref.current.style.transform = "rotateY(0) rotateX(0)" };
-
-    const current = zodiac[index];
-    const map = constellationMap[current.name];
-
-    return (
-        <ZodiacWrapper>
-            <ConstellationContainer ref={ref} onMouseMove={move} onMouseLeave={reset}>
-
-                <DeepGlow
-                    color="rgba(120,140,255,.25)"
-                    style={{ filter: "blur(180px)", opacity: .4 }}
-                />
+  useEffect(() => {
+    const i = setInterval(() => setIndex(p => (p + 1) % zodiac.length), 7000);
+    return () => clearInterval(i);
+  }, []);
 
 
-                <AuraRing />
-                <ZodiacSymbol
-                    key={`img-${current.name}`}
-                    src={zodiacImages[current.name]}
-                />
+  const move = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) / 20;
+    const y = (e.clientY - rect.top - rect.height / 2) / 20;
+    el.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+  };
 
-                <OrbitRing />
+  const reset = () => { if (ref.current) ref.current.style.transform = "rotateY(0) rotateX(0)" };
+
+  const current = zodiac[index];
+  const map = constellationMap[current.name];
+
+  return (
+    <ZodiacWrapper>
+      <ConstellationContainer ref={ref} onMouseMove={move} onMouseLeave={reset}>
+
+        <DeepGlow
+          color="rgba(120,140,255,.25)"
+          style={{ filter: "blur(180px)", opacity: .4 }}
+        />
 
 
+        <AuraRing />
+        <ZodiacSymbol
+          key={`img-${current.name}`}
+          src={zodiacImages[current.name]}
+        />
 
-                <ConstellationSVG key={current.name} viewBox="0 0 100 100">
-
-
-                    {map.lines.map(([a, b], i) => {
-                        const s1 = map.stars[a];
-                        const s2 = map.stars[b];
-
-                        return (
-                            <Line
-                                key={`line-${i}-${current.name}`}
-                                x1={s1.x}
-                                y1={s1.y}
-                                x2={s2.x}
-                                y2={s2.y}
-                                color={current.color}
-                                delay={i * 0.35}
-                            />
-                        );
-                    })}
-                    {map.stars.map((s, i) => {
-                        const intensity = getStarIntensity();
-                        const size =
-                            intensity === 1 ? 1.4 :
-                                intensity === 0.5 ? 1 :
-                                    0.6;
-
-                        return (
-                            <GalaxyStar
-                                key={`star-${i}-${current.name}`}
-                                cx={s.x}
-                                cy={s.y}
-                                r={size}
-                                intensity={intensity}
-                            />
-                        );
-                    })}
-                </ConstellationSVG>
+        <OrbitRing />
 
 
 
-                <ZodiacName>{current.name}</ZodiacName>
+        <ConstellationSVG key={current.name} viewBox="0 0 100 100">
 
-            </ConstellationContainer>
-        </ZodiacWrapper>
-    );
+
+          {map.lines.map(([a, b], i) => {
+            const s1 = map.stars[a];
+            const s2 = map.stars[b];
+
+            return (
+              <Line
+                key={`line-${i}-${current.name}`}
+                x1={s1.x}
+                y1={s1.y}
+                x2={s2.x}
+                y2={s2.y}
+                color={current.color}
+                delay={i * 0.35}
+              />
+            );
+          })}
+          {map.stars.map((s, i) => {
+            const intensity = getStarIntensity();
+            const size =
+              intensity === 1 ? 1.4 :
+                intensity === 0.5 ? 1 :
+                  0.6;
+
+            return (
+              <GalaxyStar
+                key={`star-${i}-${current.name}`}
+                cx={s.x}
+                cy={s.y}
+                r={size}
+                intensity={intensity}
+              />
+            );
+          })}
+        </ConstellationSVG>
+
+
+
+        <ZodiacName>{current.name}</ZodiacName>
+
+      </ConstellationContainer>
+    </ZodiacWrapper>
+  );
 }
 
 
@@ -628,170 +628,170 @@ function ZodiacCinematic() {
 
 
 export default function LandingPage() {
-    const heroRef = useRef<any>(null);
-    const aboutRef = useRef<any>(null);
-    const chartRef = useRef<any>(null);
-    const forecastRef = useRef<any>(null);
+  const heroRef = useRef<any>(null);
+  const aboutRef = useRef<any>(null);
+  const chartRef = useRef<any>(null);
+  const forecastRef = useRef<any>(null);
 
 
-    const [active, setActive] = useState("home");
-    const [isOpen, setIsOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
+  const [active, setActive] = useState("home");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
 
-    useEffect(() => {
-        let ticking = false;
+  useEffect(() => {
+    let ticking = false;
 
-        const handleScroll = () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    setIsScrolled(window.scrollY > 40);
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-
-    const stars = useMemo(
-        () =>
-            Array.from({ length: 5 }, (_, i) => ({
-                id: i,
-                top: Math.random() * 70,
-                left: Math.random() * 100,
-                delay: Math.random() * 12,
-                duration: 3 + Math.random() * 4,
-            })),
-        []
-    );
-
-
-
-    useEffect(() => {
-        const sections = document.querySelectorAll(".zoom-section");
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    const id = entry.target.getAttribute("data-section");
-
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("zoom-in");
-                        entry.target.classList.remove("zoom-out");
-                        if (id) setActive(id);
-                    } else {
-                        entry.target.classList.remove("zoom-in");
-                        entry.target.classList.add("zoom-out");
-                    }
-                });
-            },
-            {
-                threshold: 0.55,
-                rootMargin: "-10% 0px -10% 0px",
-            }
-        );
-
-        sections.forEach((s) => observer.observe(s));
-        return () => observer.disconnect();
-    }, []);
-
-    const scrollTo = (ref: any) => {
-        ref.current?.scrollIntoView({ behavior: "smooth" });
-        setIsOpen(false);
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 40);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    return (
-        <Wrapper>
-            <DynamicIsland $scrolled={isScrolled} $open={isOpen}>
-                <MobileToggle onClick={() => setIsOpen(!isOpen)}>☰</MobileToggle>
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-                <NavContainer $open={isOpen}>
-                    <NavItem $active={active === "home"} onClick={() => scrollTo(heroRef)}>Home</NavItem>
-                    <NavItem $active={active === "about"} onClick={() => scrollTo(aboutRef)}>About</NavItem>
-                    <NavItem $active={active === "chart"} onClick={() => scrollTo(chartRef)}>Chart</NavItem>
-                    <NavItem $active={active === "forecast"} onClick={() => scrollTo(forecastRef)}>Forecast</NavItem>
-                </NavContainer>
-            </DynamicIsland>
 
-            <Galaxy $active={active === "home"}>
-
-                {stars.map((s) => (
-                    <span
-                        key={s.id}
-                        className="shooting-star"
-                        style={{
-                            top: `${s.top}%`,
-                            left: `${s.left}%`,
-                            animationDelay: `${s.delay}s`,
-                            animationDuration: `${s.duration}s`,
-                        }}
-                    />
-                ))}
-            </Galaxy>
-            <SectionHero ref={heroRef} data-section="home" className="zoom-section zoom-in">
-
-                <HeroLight />
-
-                <HeroLayout>
-
-                    <Content>
-                        <h1>
-                            <span>JSTAR</span>
-                            <br /> KNOW YOUR STAR
-                        </h1>
-
-                        <p>
-                            CHOOSE YOUR DAY OF BIRTH TO SEE YOUR PERSONALIZED ASTROLOGY CHART AND INSIGHTS.
-                        </p>
-
-                        <DividerGlow />
-
-                        <Actions>
-                            <SpaceButton />
-                        </Actions>
-                    </Content>
-
-                    <HeroRight>
-                        <ZodiacCinematic />
-                    </HeroRight>
-
-                </HeroLayout>
-
-            </SectionHero>
+  const stars = useMemo(
+    () =>
+      Array.from({ length: 5 }, (_, i) => ({
+        id: i,
+        top: Math.random() * 70,
+        left: Math.random() * 100,
+        delay: Math.random() * 12,
+        duration: 3 + Math.random() * 4,
+      })),
+    []
+  );
 
 
 
-            <Section ref={aboutRef} data-section="about" className="zoom-section">
-                <GlassBox>
-                    <h2>About JSTAR</h2>
-                    <p>
-                        Discover your cosmic identity through personalized birth charts and AI-powered astrology.
-                    </p>
+  useEffect(() => {
+    const sections = document.querySelectorAll(".zoom-section");
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.getAttribute("data-section");
 
-                </GlassBox>
-            </Section>
-
-
-            <Section ref={chartRef} data-section="chart" className="zoom-section">
-                <GlassBox>
-                    <h2>Birth Chart Analysis</h2>
-                    <p>Explore your planetary alignment and destiny path.</p>
-                </GlassBox>
-            </Section>
-
-            <Section ref={forecastRef} data-section="forecast" className="zoom-section">
-                <GlassBox>
-                    <h2>Cosmic Forecast</h2>
-                    <p>Get personalized astrological predictions for your future.</p>
-                </GlassBox>
-            </Section>
-        </Wrapper>
+          if (entry.isIntersecting) {
+            entry.target.classList.add("zoom-in");
+            entry.target.classList.remove("zoom-out");
+            if (id) setActive(id);
+          } else {
+            entry.target.classList.remove("zoom-in");
+            entry.target.classList.add("zoom-out");
+          }
+        });
+      },
+      {
+        threshold: 0.55,
+        rootMargin: "-10% 0px -10% 0px",
+      }
     );
+
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollTo = (ref: any) => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+    setIsOpen(false);
+  };
+
+  return (
+    <Wrapper>
+      <DynamicIsland $scrolled={isScrolled} $open={isOpen}>
+        <MobileToggle onClick={() => setIsOpen(!isOpen)}>☰</MobileToggle>
+
+        <NavContainer $open={isOpen}>
+          <NavItem $active={active === "home"} onClick={() => scrollTo(heroRef)}>Home</NavItem>
+          <NavItem $active={active === "about"} onClick={() => scrollTo(aboutRef)}>About</NavItem>
+          <NavItem $active={active === "chart"} onClick={() => scrollTo(chartRef)}>Chart</NavItem>
+          <NavItem $active={active === "forecast"} onClick={() => scrollTo(forecastRef)}>Forecast</NavItem>
+        </NavContainer>
+      </DynamicIsland>
+
+      <Galaxy $active={active === "home"}>
+
+        {stars.map((s) => (
+          <span
+            key={s.id}
+            className="shooting-star"
+            style={{
+              top: `${s.top}%`,
+              left: `${s.left}%`,
+              animationDelay: `${s.delay}s`,
+              animationDuration: `${s.duration}s`,
+            }}
+          />
+        ))}
+      </Galaxy>
+      <SectionHero ref={heroRef} data-section="home" className="zoom-section zoom-in">
+
+        <HeroLight />
+
+        <HeroLayout>
+
+          <Content>
+            <h1>
+              <span>JSTAR</span>
+              <br /> KNOW YOUR STAR
+            </h1>
+
+            <p>
+              CHOOSE YOUR DAY OF BIRTH TO SEE YOUR PERSONALIZED ASTROLOGY CHART AND INSIGHTS.
+            </p>
+
+            <DividerGlow />
+
+            <Actions>
+              <SpaceButton />
+            </Actions>
+          </Content>
+
+          <HeroRight>
+            <ZodiacCinematic />
+          </HeroRight>
+
+        </HeroLayout>
+
+      </SectionHero>
+
+
+
+      <Section ref={aboutRef} data-section="about" className="zoom-section">
+        <GlassBox>
+          <h2>About JSTAR</h2>
+          <p>
+            Discover your cosmic identity through personalized birth charts and AI-powered astrology.
+          </p>
+
+
+        </GlassBox>
+      </Section>
+
+
+      <Section ref={chartRef} data-section="chart" className="zoom-section">
+        <GlassBox>
+          <h2>Birth Chart Analysis</h2>
+          <p>Explore your planetary alignment and destiny path.</p>
+        </GlassBox>
+      </Section>
+
+      <Section ref={forecastRef} data-section="forecast" className="zoom-section">
+        <GlassBox>
+          <h2>Cosmic Forecast</h2>
+          <p>Get personalized astrological predictions for your future.</p>
+        </GlassBox>
+      </Section>
+    </Wrapper>
+  );
 }
 
 
@@ -921,7 +921,7 @@ const DynamicIsland = styled.div<{ $scrolled: boolean; $open: boolean }>`
 
   height: ${({ $scrolled }) => ($scrolled ? "52px" : "70px")};
   width: ${({ $open, $scrolled }) =>
-        $open ? "280px" : $scrolled ? "fit-content" : "540px"};
+    $open ? "280px" : $scrolled ? "fit-content" : "540px"};
 
   padding: 0 35px;
   border-radius: ${({ $open }) => ($open ? "30px" : "999px")};
@@ -1262,57 +1262,57 @@ const Particle = styled.span`
 
 
 const SpaceButton = () => {
-    const ref = useRef<HTMLButtonElement>(null);
-    const [waves, setWaves] = useState<number[]>([]);
+  const ref = useRef<HTMLButtonElement>(null);
+  const [waves, setWaves] = useState<number[]>([]);
 
-    const handleMove = (e: React.MouseEvent) => {
-        const btn = ref.current;
-        if (!btn) return;
+  const handleMove = (e: React.MouseEvent) => {
+    const btn = ref.current;
+    if (!btn) return;
 
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
 
-        btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px) scale(1.05)`;
-    };
+    btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px) scale(1.05)`;
+  };
 
-    const reset = () => {
-        if (ref.current) {
-            ref.current.style.transform = "translate(0,0) scale(1)";
-        }
-    };
+  const reset = () => {
+    if (ref.current) {
+      ref.current.style.transform = "translate(0,0) scale(1)";
+    }
+  };
 
-    const click = () => {
-        const id = Date.now();
-        setWaves((w) => [...w, id]);
-        setTimeout(() => {
-            setWaves((w) => w.filter((x) => x !== id));
-        }, 800);
-    };
+  const click = () => {
+    const id = Date.now();
+    setWaves((w) => [...w, id]);
+    setTimeout(() => {
+      setWaves((w) => w.filter((x) => x !== id));
+    }, 800);
+  };
 
-    return (
-        <WrapperBH>
-            <Vortex />
+  return (
+    <WrapperBH>
+      <Vortex />
 
-            <ButtonBH
-                ref={ref}
-                onMouseMove={handleMove}
-                onMouseLeave={reset}
-                onClick={click}
-            >
-                SEE YOUR STAR
-                <Glow />
+      <ButtonBH
+        ref={ref}
+        onMouseMove={handleMove}
+        onMouseLeave={reset}
+        onClick={click}
+      >
+        SEE YOUR STAR
+        <Glow />
 
-                {waves.map((id) => (
-                    <Shockwave key={id} />
-                ))}
+        {waves.map((id) => (
+          <Shockwave key={id} />
+        ))}
 
-                <Particle style={{ top: "10%", left: "10%" }} />
-                <Particle style={{ top: "80%", left: "20%", animationDuration: "7s" }} />
-                <Particle style={{ top: "40%", left: "85%", animationDuration: "5s" }} />
-            </ButtonBH>
-        </WrapperBH>
-    );
+        <Particle style={{ top: "10%", left: "10%" }} />
+        <Particle style={{ top: "80%", left: "20%", animationDuration: "7s" }} />
+        <Particle style={{ top: "40%", left: "85%", animationDuration: "5s" }} />
+      </ButtonBH>
+    </WrapperBH>
+  );
 };
 
 
