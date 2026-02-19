@@ -12,7 +12,21 @@ import { BirthForm } from './components/BirthForm';
 import { LandingPage } from './components/LandingPage';
 import './App.css';
 
+import { useState } from "react";
+
+
+
 function App() {
+
+
+
+//dong mo sidebar
+  const [isClosed, setIsClosed] = useState(false);
+
+
+
+
+
   // TODO: Add state to toggle between landing page and chart view
   const showLanding = false; // Set to true to test landing page
 
@@ -22,10 +36,10 @@ function App() {
 
   return (
     <div className="app-container">
-      <Sidebar />
+      <Sidebar isClosed={isClosed} setIsClosed={setIsClosed} />
 
       <div className="main-area">
-        <Header />
+        <Header isClosed={isClosed}/>
 
         <div className="content-grid">
           <aside className="left-panel">

@@ -32,8 +32,8 @@ body {
 }
 
 .sidebar.close .toggle{
-    margin-top: 15px;
-    margin-right: 45px;
+    margin-top: 3px;
+    margin-right: 41px;
 }
 .sidebar.close .rotate{
     transform: rotate(180deg);
@@ -54,16 +54,13 @@ body {
     margin-top:22px ;
 }
 .sidebar.close .plus{
+
+    opacity: 1;
     font-size: large;
     transition: all 0.5s ease;
 }
 .sidebar.close .newsj{
-    /* display: flex; */
-    /* align-items: center;
-    width: 50px;
-    height: 30px;
-    margin-top: 20px;
-    padding: 5px; */
+
     width: 50px;
     height: 40px;
     margin: 20px auto;
@@ -74,9 +71,9 @@ body {
     align-items: center;
  
 }
-.sidebar.close .plus{
-    margin-left: 24px;
-    font-size: 18px;
+
+.sidebar.close .sbtext {
+    display: none;
 }
 
 .sidebar.close .menu{
@@ -89,10 +86,10 @@ body {
 .sidebar.close .tktext{
     display: none;
 }
-.sidebar.close ~ .home .bottombar{
+/* .sidebar.close ~ .home .bottombar{
     width: calc(100% - 13px);
 
-}
+} */
 
 
 .sidebar ul {
@@ -207,6 +204,13 @@ body {
     padding: 2px;
 }
 
+.newsj {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 
 /* menu */
 .menu{
@@ -241,13 +245,14 @@ body {
     margin: 5px;
 }
 .a1link{
+        transition: all 0.3 ease;
     cursor: pointer;
     width:100% ;
     height: 22px; /*--------------------*/
 }
 
 .center{
-
+    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -268,7 +273,7 @@ body {
     display: flex;
     justify-content: center;
     border-radius: 50%;
-    border: 3px solid green;
+    border: green solid 2px;
     
 }
 .account {
@@ -342,6 +347,7 @@ body {
 .bottom1{
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 
@@ -350,13 +356,14 @@ body {
     color: aliceblue;
     font-size: 18px;
     padding: 10px;
-    margin-left: 10px;
+
 }
 .bottom .mode .moon-sun{
     height: 20px;
     width: 30px;
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-left: 30px;
 }
 .bottom .mode i{
@@ -377,11 +384,15 @@ body {
 .toggle i {
     transition: transform 0.6s ease;
 }
-.mode {display: flex;margin-top: 14px;}
+.mode {display: flex;
+    margin-top: 14px;
+    align-items: center;
+    justify-content: center;
+}
 
 
 
-.home {
+/* .home {
     border: #2c3e50 solid 0px;
     flex: 1;
     margin-left: 0;
@@ -400,28 +411,28 @@ body {
     margin-left: 60px;
 
     width:calc(100%-60px) ;
-}
+} */
 
 /* -------------header--------------- */
 
 
-.header{
+/* .header{
     background: #0a1020;
     width:100% ;
     height: 200px;
     display: flex;
     flex-direction: column;
-}
-.topbar {
+} */
+/* .topbar {
     display: flex;
     align-items: center;
 
-}
-.header li{
+} */
+/* .header li{
     list-style-type: none;
-}
+} */
 
-.htext{
+/* .htext{
     color: aliceblue;
 
     font-size: 15px;
@@ -587,7 +598,7 @@ body {
 }
 
 /* ------------------------------------- */
-
+/* 
  .container{
             text-align:center;
             display: flex;
@@ -606,7 +617,7 @@ body {
             }
 .cursor{
     cursor: pointer;
-}
+} */ */
 
 /* --------------fix-------------------------- */
 .newsj:hover{
@@ -615,14 +626,18 @@ body {
     transition: 0.2s ease;
 }
 
+
+.sidebar.close .bimg{
+    margin-left: 4px;
+
+        height: 50px;
+    width: 50px;
+    transform: scale(0.9);
+    translate: -5px 0;
+}
 .bimg{
     transition: transform 0.4s ease;
 
-}
-
-.sidebar.close .bimg{
-    transform: scale(0.9);
-    translate: -5px 0;
 }
 .tktext{
     transform: translateX(0);
