@@ -1,743 +1,95 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import styled, { keyframes } from "styled-components";
-import ariesImg from "../assets/zodiac/aries.png";
-import taurusImg from "../assets/zodiac/taurus.png"
-import geminiImg from "../assets/zodiac/gemini.png";
-import cancerImg from "../assets/zodiac/cancer.png";
-import leoImg from "../assets/zodiac/leo.png";
-import virgoImg from "../assets/zodiac/virgo.png";
-import libraImg from "../assets/zodiac/libra.png";
-import scorpioImg from "../assets/zodiac/scorpio.png";
-import sagittariusImg from "../assets/zodiac/sagittarius.png";
-import capricornImg from "../assets/zodiac/capricorn.png";
-import aquariusImg from "../assets/zodiac/aquarius.png";
-import piscesImg from "../assets/zodiac/pisces.png";
-const getStarIntensity = () => {
-  const r = Math.random();
-
-  if (r < 0.7) return 0.2;   // faint stars (đa số)
-  if (r < 0.9) return 0.5;   // medium
-  return 1;                  // bright stars (hiếm)
-};
-
-
-const zodiac = [
-  { name: "Aries", symbol: "♈", color: "#ff6b6b" },
-  { name: "Taurus", symbol: "♉", color: "#4ecdc4" },
-  { name: "Gemini", symbol: "♊", color: "#ffd93d" },
-  { name: "Cancer", symbol: "♋", color: "#6c5ce7" },
-  { name: "Leo", symbol: "♌", color: "#ff9f43" },
-  { name: "Virgo", symbol: "♍", color: "#1dd1a1" },
-  { name: "Libra", symbol: "♎", color: "#54a0ff" },
-  { name: "Scorpio", symbol: "♏", color: "#ee5253" },
-  { name: "Sagittarius", symbol: "♐", color: "#f368e0" },
-  { name: "Capricorn", symbol: "♑", color: "#00d2d3" },
-  { name: "Aquarius", symbol: "♒", color: "#5f27cd" },
-  { name: "Pisces", symbol: "♓", color: "#10ac84" },
-];
-const zodiacImages: Record<string, string> = {
-  Aries: ariesImg,
-  Taurus: taurusImg,
-  Gemini: geminiImg,
-  Cancer: cancerImg,
-  Leo: leoImg,
-  Virgo: virgoImg,
-  Libra: libraImg,
-  Scorpio: scorpioImg,
-  Sagittarius: sagittariusImg,
-  Capricorn: capricornImg,
-  Aquarius: aquariusImg,
-  Pisces: piscesImg,
-
-};
-
-const constellationMap: Record<
-  string,
-  { stars: { x: number; y: number }[]; lines: [number, number][] }
-> = {
-
-  Aries: {
-    stars: [
-      { x: 18, y: 52 },
-      { x: 30, y: 54 },
-      { x: 50, y: 58 },
-      { x: 65, y: 40 },
-      { x: 72, y: 65 }
-    ],
-    lines: [
-      [0, 1],
-      [1, 2],
-      [2, 4],
-      [2, 3],
-    ]
-  }
-  ,
-
-  Taurus: {
-    stars: [
-      { x: 8, y: 20 },
-      { x: 28, y: 28 },
-      { x: 48, y: 38 },
-      { x: 55, y: 50 },
-      { x: 45, y: 55 },
-      { x: 30, y: 60 },
-      { x: 15, y: 50 },
-      { x: 60, y: 55 },
-      { x: 75, y: 52 },
-      { x: 82, y: 62 },
-      { x: 68, y: 65 },
-      { x: 55, y: 68 }
-    ],
-    lines: [[0, 1],
-    [1, 2],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [5, 6],
-    [3, 7],
-    [7, 8],
-    [8, 9],
-    [7, 10],
-    [10, 11]]
-  },
-
-  Gemini: {
-    stars: [
-      { x: 35, y: 20 },
-      { x: 35, y: 35 },
-      { x: 35, y: 50 },
-      { x: 30, y: 65 },
-      { x: 40, y: 75 },
-      { x: 55, y: 75 },
-      { x: 60, y: 60 },
-      { x: 60, y: 45 },
-      { x: 60, y: 30 },
-      { x: 70, y: 25 },
-    ],
-    lines: [
-      [0, 1],
-      [1, 2],
-      [2, 3],
-      [3, 4],
-      [4, 5],
-      [5, 6],
-      [6, 7],
-      [7, 8],
-      [8, 9],
-    ]
-  },
-
-  Cancer: {
-    stars: [
-      { x: 40, y: 20 }, { x: 45, y: 40 }, { x: 50, y: 55 }, { x: 35, y: 70 }, { x: 60, y: 70 }
-    ],
-    lines: [[0, 1], [1, 2], [2, 3], [2, 4]]
-  },
-
-  Leo: {
-    stars: [
-      { x: 10, y: 55 },
-      { x: 22, y: 42 },
-      { x: 30, y: 55 },
-      { x: 50, y: 55 },
-      { x: 62, y: 48 },
-      { x: 60, y: 35 },
-      { x: 68, y: 25 },
-      { x: 80, y: 22 }
-    ],
-    lines: [[0, 1],
-    [1, 2],
-    [2, 0],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [5, 6],
-    [6, 7]]
-  },
-
-  Virgo: {
-    stars: [
-      { x: 18, y: 62 },
-      { x: 22, y: 48 },
-      { x: 30, y: 38 },
-      { x: 45, y: 42 },
-      { x: 58, y: 40 },
-      { x: 70, y: 30 },
-      { x: 78, y: 22 },
-      { x: 30, y: 25 },
-      { x: 30, y: 15 },
-      { x: 10, y: 45 }
-    ],
-    lines: [[0, 1],
-    [1, 2],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [5, 6],
-    [2, 7],
-    [7, 8],
-    [1, 9]]
-  },
-
-  Libra: {
-    stars: [
-      { x: 30, y: 20 },
-      { x: 18, y: 38 },
-      { x: 45, y: 38 },
-      { x: 48, y: 58 },
-      { x: 25, y: 58 },
-      { x: 15, y: 72 }
-    ],
-    lines: [[0, 1],
-    [0, 2],
-    [1, 2],
-    [2, 3],
-    [1, 4],
-    [4, 5]]
-  },
-
-  Scorpio: {
-    stars: [
-      { x: 15, y: 40 },
-      { x: 10, y: 50 },
-      { x: 12, y: 62 },
-      { x: 20, y: 72 },
-      { x: 32, y: 78 },
-      { x: 45, y: 72 },
-      { x: 55, y: 66 },
-      { x: 65, y: 60 },
-      { x: 72, y: 58 },
-      { x: 80, y: 58 },
-      { x: 88, y: 60 },
-      { x: 95, y: 55 },
-      { x: 92, y: 65 },
-      { x: 85, y: 70 }
-    ],
-    lines: [[0, 1],
-    [1, 2],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [5, 6],
-    [6, 7],
-    [7, 8],
-    [8, 9],
-    [9, 10],
-    [10, 11],
-    [10, 12],
-    [10, 13]]
-  },
-
-  Sagittarius: {
-    stars: [
-      { x: 18, y: 30 },
-      { x: 24, y: 40 },
-      { x: 30, y: 50 },
-      { x: 30, y: 62 },
-      { x: 26, y: 74 },
-      { x: 38, y: 70 },
-      { x: 44, y: 62 },
-      { x: 52, y: 58 },
-      { x: 60, y: 56 },
-      { x: 70, y: 58 },
-      { x: 78, y: 52 },
-      { x: 72, y: 66 },
-      { x: 78, y: 74 },
-      { x: 70, y: 82 },
-      { x: 36, y: 80 },
-      { x: 30, y: 86 }
-    ],
-    lines: [[0, 1],
-    [1, 2],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [5, 6],
-    [6, 7],
-    [7, 8],
-    [8, 9],
-    [9, 10],
-    [9, 11],
-    [11, 12],
-    [12, 13],
-    [4, 14],
-    [14, 15]]
-  },
-
-  Capricorn: {
-    stars: [
-      { x: 50, y: 18 },
-      { x: 42, y: 32 },
-      { x: 58, y: 44 },
-      { x: 72, y: 64 },
-      { x: 52, y: 70 },
-      { x: 32, y: 68 },
-      { x: 18, y: 62 },
-      { x: 24, y: 54 },
-      { x: 34, y: 48 }
-    ],
-    lines: [[0, 1],
-    [1, 2],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [5, 6],
-    [6, 7],
-    [7, 8],
-    [8, 1]]
-  },
-
-  Aquarius: {
-    stars: [
-      { x: 20, y: 52 },
-      { x: 28, y: 48 },
-      { x: 36, y: 46 },
-      { x: 44, y: 44 },
-      { x: 50, y: 36 },
-      { x: 54, y: 28 },
-      { x: 56, y: 44 },
-      { x: 66, y: 48 },
-      { x: 76, y: 48 },
-      { x: 86, y: 48 },
-      { x: 52, y: 58 },
-      { x: 56, y: 70 },
-      { x: 34, y: 58 },
-      { x: 30, y: 70 },
-      { x: 24, y: 80 }
-    ],
-    lines: [[0, 1],
-    [1, 2],
-    [2, 3],
-    [3, 6],
-    [6, 7],
-    [7, 8],
-    [8, 9],
-    [3, 4],
-    [4, 5],
-    [6, 10],
-    [10, 11],
-    [1, 12],
-    [12, 13],
-    [13, 14]]
-  },
-
-  Pisces: {
-    stars: [
-      { x: 18, y: 30 },
-      { x: 22, y: 36 },
-      { x: 20, y: 44 },
-      { x: 18, y: 52 },
-      { x: 18, y: 62 },
-      { x: 20, y: 72 },
-      { x: 24, y: 80 },
-
-      { x: 32, y: 76 },
-      { x: 40, y: 74 },
-      { x: 48, y: 72 },
-      { x: 56, y: 70 },
-      { x: 64, y: 68 },
-
-      { x: 72, y: 66 },
-      { x: 78, y: 66 },
-      { x: 82, y: 70 },
-      { x: 80, y: 76 },
-      { x: 74, y: 76 },
-      { x: 70, y: 72 }
-    ],
-    lines: [[0, 1],
-    [1, 2],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [5, 6],
-
-    [6, 7],
-    [7, 8],
-    [8, 9],
-    [9, 10],
-    [10, 11],
-    [11, 12],
-
-    [12, 13],
-    [13, 14],
-    [14, 15],
-    [15, 16],
-    [16, 17],
-    [17, 12]]
-  }
-
-};
-
-
-
-
-const floatSlow = keyframes`
-  0% { transform: translateY(-6px) }
-  50% { transform: translateY(6px) }
-  100% { transform: translateY(-6px) }
-`;
-
-const rotateUltraSlow = keyframes`
-  from { transform: rotate(0deg) }
-  to { transform: rotate(360deg) }
-`;
-
-
-const drawLine = keyframes`
-  0% {
-    stroke-dashoffset: 140;
-    opacity: .15;
-  }
-  70% {
-    opacity: 1;
-  }
-  100% {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
-`;
-const fadeInSymbol = keyframes`
-  from {
-    opacity: 0;
-    transform: translate(-50%, -48%) scale(.95);
-  }
-  to {
-    opacity: .85;
-    transform: translate(-50%, -50%) scale(1);
-  }
-`;
-
-
-
-
-
-
-
-
-
-const ZodiacWrapper = styled.div`
-  margin-top: 40px;
-  height: 440px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  perspective: 1000px;
-`;
-const ZodiacSymbol = styled.img`
-  position: absolute;
-  width: 320px;
-  height: auto;
-  object-fit: contain;
-  pointer-events: none;
-
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  opacity: 0;
-
-  animation: ${fadeInSymbol} 2.2s ease forwards;
-  animation-delay: 4.8s;
-
-  mix-blend-mode: screen;
-
-  filter:
-    drop-shadow(0 0 50px rgba(120,140,255,.6))
-    blur(.2px);
-
-  z-index: 1;
-`;
-
-
-
-const ConstellationContainer = styled.div`
-  position: relative;
-  width: 420px;
-  height: 420px;
-  transform-style: preserve-3d;
-  transition: transform .25s ease;
-  animation: ${floatSlow} 8s ease-in-out infinite;
-`;
-
-const DeepGlow = styled.div<{ color: string }>`
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  background: radial-gradient(circle, ${({ color }) => color}40, transparent 70%);
-  filter: blur(120px);
-  opacity:.6;
-`;
-
-const AuraRing = styled.div`
-  position:absolute;
-  width:340px;
-  height:340px;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.08);
-  animation:${rotateUltraSlow} 90s linear infinite;
-`;
-
-const OrbitRing = styled.div`
-  position:absolute;
-  width:280px;
-  height:280px;
-  border-radius:50%;
-  border:1px dashed rgba(255,255,255,.18);
-  animation:${rotateUltraSlow} 40s linear infinite reverse;
-`;
-
-const ZodiacName = styled.div`
-  position:absolute;
-  bottom:-38px;
-  width:100%;
-  text-align:center;
-  letter-spacing:5px;
-  font-size:22px;
-  opacity:.9;
-`;
-const GalaxyStar = styled.circle<{ intensity: number }>`
-  fill: rgba(255,255,255, ${p => 0.5 + p.intensity * 0.5});
-
-  filter:
-    drop-shadow(0 0 ${p => 1 + p.intensity * 1}px rgba(255,255,255,.9))
-    drop-shadow(0 0 ${p => 3 + p.intensity * 3}px rgba(200,220,255,.8))
-    drop-shadow(0 0 ${p => 8 + p.intensity * 6}px rgba(160,180,255,.6))
-    drop-shadow(0 0 ${p => 18 + p.intensity * 10}px rgba(120,140,255,.35));
-
-  opacity: ${p => 0.5 + p.intensity * 0.5};
-`;
-
-
-
-
-
-
-
-
-const ConstellationSVG = styled.svg`
-  width:420px;
-  height:420px;
-  z-index:2;
-`;
-
-const Line = styled.line<{ color: string; delay: number }>`
-  stroke:${p => p.color};
-  stroke-width:.8;
-  filter: drop-shadow(0 0 8px ${p => p.color});
-  stroke-dasharray: 140;
-  stroke-dashoffset: 140;
-  animation:${drawLine} 5.5s cubic-bezier(.22,1,.36,1) forwards;
-  animation-delay:${p => p.delay}s;
-`;
-
-
-
-function ZodiacCinematic() {
-  const [index, setIndex] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const i = setInterval(() => setIndex(p => (p + 1) % zodiac.length), 7000);
-    return () => clearInterval(i);
-  }, []);
-
-
-  const move = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) / 20;
-    const y = (e.clientY - rect.top - rect.height / 2) / 20;
-    el.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-  };
-
-  const reset = () => { if (ref.current) ref.current.style.transform = "rotateY(0) rotateX(0)" };
-
-  const current = zodiac[index];
-  const map = constellationMap[current.name];
-
-  return (
-    <ZodiacWrapper>
-      <ConstellationContainer ref={ref} onMouseMove={move} onMouseLeave={reset}>
-
-        <DeepGlow
-          color="rgba(120,140,255,.25)"
-          style={{ filter: "blur(180px)", opacity: .4 }}
-        />
-
-
-        <AuraRing />
-        <ZodiacSymbol
-          key={`img-${current.name}`}
-          src={zodiacImages[current.name]}
-        />
-
-        <OrbitRing />
-
-
-
-        <ConstellationSVG key={current.name} viewBox="0 0 100 100">
-
-
-          {map.lines.map(([a, b], i) => {
-            const s1 = map.stars[a];
-            const s2 = map.stars[b];
-
-            return (
-              <Line
-                key={`line-${i}-${current.name}`}
-                x1={s1.x}
-                y1={s1.y}
-                x2={s2.x}
-                y2={s2.y}
-                color={current.color}
-                delay={i * 0.35}
-              />
-            );
-          })}
-          {map.stars.map((s, i) => {
-            const intensity = getStarIntensity();
-            const size =
-              intensity === 1 ? 1.4 :
-                intensity === 0.5 ? 1 :
-                  0.6;
-
-            return (
-              <GalaxyStar
-                key={`star-${i}-${current.name}`}
-                cx={s.x}
-                cy={s.y}
-                r={size}
-                intensity={intensity}
-              />
-            );
-          })}
-        </ConstellationSVG>
-
-
-
-        <ZodiacName>{current.name}</ZodiacName>
-
-      </ConstellationContainer>
-    </ZodiacWrapper>
-  );
-}
-
-
-
-
+// LandingPage Component - Main landing page with hero section and navigation
+
+import { useRef, useState } from "react";
+import { ZodiacCinematic } from "./ZodiacCinematic";
+import { SpaceButton } from "./SpaceButton";
+import { Background } from "./Background";
+import { useSectionObserver } from "../hooks/useSectionObserver";
+import { useScrollPosition } from "../hooks/useScrollPosition";
+import { SECTIONS } from "../constants";
+import {
+  Wrapper,
+  DynamicIsland,
+  MobileToggle,
+  NavContainer,
+  NavItem,
+  HeroLight,
+  SectionHero,
+  HeroLayout,
+  Content,
+  DividerGlow,
+  HeroRight,
+  Section,
+  Actions,
+  GlassBox,
+} from "../styles/LandingPage.styles";
 
 export default function LandingPage() {
-  const heroRef = useRef<any>(null);
-  const aboutRef = useRef<any>(null);
-  const chartRef = useRef<any>(null);
-  const forecastRef = useRef<any>(null);
+  // Section refs
+  const heroRef = useRef<HTMLElement>(null);
+  const aboutRef = useRef<HTMLElement>(null);
+  const chartRef = useRef<HTMLElement>(null);
+  const forecastRef = useRef<HTMLElement>(null);
 
-
-  const [active, setActive] = useState("home");
+  // UI state
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
+  // Custom hooks for scroll and section tracking
+  const { isScrolled } = useScrollPosition();
+  const { activeSection } = useSectionObserver();
 
-  useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 40);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-
-  const stars = useMemo(
-    () =>
-      Array.from({ length: 5 }, (_, i) => ({
-        id: i,
-        top: Math.random() * 70,
-        left: Math.random() * 100,
-        delay: Math.random() * 12,
-        duration: 3 + Math.random() * 4,
-      })),
-    []
-  );
-
-
-
-  useEffect(() => {
-    const sections = document.querySelectorAll(".zoom-section");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const id = entry.target.getAttribute("data-section");
-
-          if (entry.isIntersecting) {
-            entry.target.classList.add("zoom-in");
-            entry.target.classList.remove("zoom-out");
-            if (id) setActive(id);
-          } else {
-            entry.target.classList.remove("zoom-in");
-            entry.target.classList.add("zoom-out");
-          }
-        });
-      },
-      {
-        threshold: 0.55,
-        rootMargin: "-10% 0px -10% 0px",
-      }
-    );
-
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
-  }, []);
-
-  const scrollTo = (ref: any) => {
+  // Smooth scroll to section
+  const scrollTo = (ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
     setIsOpen(false);
   };
 
   return (
     <Wrapper>
+      {/* Reusable Background Component */}
+      <Background showShootingStars={activeSection === SECTIONS.HOME} />
+
+      {/* Fixed Navigation Bar */}
       <DynamicIsland $scrolled={isScrolled} $open={isOpen}>
         <MobileToggle onClick={() => setIsOpen(!isOpen)}>☰</MobileToggle>
 
         <NavContainer $open={isOpen}>
-          <NavItem $active={active === "home"} onClick={() => scrollTo(heroRef)}>Home</NavItem>
-          <NavItem $active={active === "about"} onClick={() => scrollTo(aboutRef)}>About</NavItem>
-          <NavItem $active={active === "chart"} onClick={() => scrollTo(chartRef)}>Chart</NavItem>
-          <NavItem $active={active === "forecast"} onClick={() => scrollTo(forecastRef)}>Forecast</NavItem>
+          <NavItem
+            $active={activeSection === SECTIONS.HOME}
+            onClick={() => scrollTo(heroRef)}
+          >
+            Home
+          </NavItem>
+          <NavItem
+            $active={activeSection === SECTIONS.ABOUT}
+            onClick={() => scrollTo(aboutRef)}
+          >
+            About
+          </NavItem>
+          <NavItem
+            $active={activeSection === SECTIONS.CHART}
+            onClick={() => scrollTo(chartRef)}
+          >
+            Chart
+          </NavItem>
+          <NavItem
+            $active={activeSection === SECTIONS.FORECAST}
+            onClick={() => scrollTo(forecastRef)}
+          >
+            Forecast
+          </NavItem>
         </NavContainer>
       </DynamicIsland>
 
-      <Galaxy $active={active === "home"}>
-
-        {stars.map((s) => (
-          <span
-            key={s.id}
-            className="shooting-star"
-            style={{
-              top: `${s.top}%`,
-              left: `${s.left}%`,
-              animationDelay: `${s.delay}s`,
-              animationDuration: `${s.duration}s`,
-            }}
-          />
-        ))}
-      </Galaxy>
-      <SectionHero ref={heroRef} data-section="home" className="zoom-section zoom-in">
-
+      {/* Hero Section */}
+      <SectionHero
+        ref={heroRef}
+        data-section={SECTIONS.HOME}
+        className="zoom-section zoom-in"
+      >
         <HeroLight />
 
         <HeroLayout>
-
           <Content>
             <h1>
               <span>JSTAR</span>
@@ -745,7 +97,8 @@ export default function LandingPage() {
             </h1>
 
             <p>
-              CHOOSE YOUR DAY OF BIRTH TO SEE YOUR PERSONALIZED ASTROLOGY CHART AND INSIGHTS.
+              CHOOSE YOUR DAY OF BIRTH TO SEE YOUR PERSONALIZED ASTROLOGY CHART
+              AND INSIGHTS.
             </p>
 
             <DividerGlow />
@@ -758,33 +111,42 @@ export default function LandingPage() {
           <HeroRight>
             <ZodiacCinematic />
           </HeroRight>
-
         </HeroLayout>
-
       </SectionHero>
 
-
-
-      <Section ref={aboutRef} data-section="about" className="zoom-section">
+      {/* About Section */}
+      <Section
+        ref={aboutRef}
+        data-section={SECTIONS.ABOUT}
+        className="zoom-section"
+      >
         <GlassBox>
           <h2>About JSTAR</h2>
           <p>
-            Discover your cosmic identity through personalized birth charts and AI-powered astrology.
+            Discover your cosmic identity through personalized birth charts and
+            AI-powered astrology.
           </p>
-
-
         </GlassBox>
       </Section>
 
-
-      <Section ref={chartRef} data-section="chart" className="zoom-section">
+      {/* Chart Section */}
+      <Section
+        ref={chartRef}
+        data-section={SECTIONS.CHART}
+        className="zoom-section"
+      >
         <GlassBox>
           <h2>Birth Chart Analysis</h2>
           <p>Explore your planetary alignment and destiny path.</p>
         </GlassBox>
       </Section>
 
-      <Section ref={forecastRef} data-section="forecast" className="zoom-section">
+      {/* Forecast Section */}
+      <Section
+        ref={forecastRef}
+        data-section={SECTIONS.FORECAST}
+        className="zoom-section"
+      >
         <GlassBox>
           <h2>Cosmic Forecast</h2>
           <p>Get personalized astrological predictions for your future.</p>
@@ -793,526 +155,4 @@ export default function LandingPage() {
     </Wrapper>
   );
 }
-
-
-
-const shoot = keyframes`
-  0% { transform: translate(0,0) rotate(-45deg); opacity:0; }
-  10% { opacity:1; }
-  100% { transform: translate(-700px,700px) rotate(-45deg); opacity:0; }
-`;
-
-const zoomIn = keyframes`
-  from { transform: scale(0.9); opacity:0; filter: blur(8px); }
-  to { transform: scale(1); opacity:1; filter: blur(0); }
-`;
-
-const zoomOut = keyframes`
-  from { transform: scale(1); opacity:1; }
-  to { transform: scale(0.95); opacity:0.5; }
-`;
-const nebulaDrift = keyframes`
-  0% { transform: translate3d(-8%, -6%, 0) scale(1.2); }
-  50% { transform: translate3d(8%, 6%, 0) scale(1.25); }
-  100% { transform: translate3d(-8%, -6%, 0) scale(1.2); }
-`;
-
-const auroraWave = keyframes`
-  0% { opacity:.25; transform: translateY(0); }
-  50% { opacity:.55; transform: translateY(-60px); }
-  100% { opacity:.25; transform: translateY(0); }
-`;
-
-const starTwinkle = keyframes`
-  0%,100% { opacity:.25; }
-  50% { opacity:.7; }
-`;
-
-const grainShift = keyframes`
-  0% { transform: translate(0,0); }
-  100% { transform: translate(-10%,10%); }
-`;
-
-const cosmicPulse = keyframes`
-  0%,100% { opacity:.35; }
-  50% { opacity:.75; }
-`;
-
-
-
-
-const Wrapper = styled.div`
-  min-height: 400vh;
-  color: white;
-  overflow-x: hidden;
-  position: relative;
-
-  background:
-    radial-gradient(circle at 15% 20%, rgba(120,140,255,.25), transparent 45%),
-    radial-gradient(circle at 85% 30%, rgba(180,120,255,.22), transparent 50%),
-    radial-gradient(circle at 50% 85%, rgba(0,200,255,.18), transparent 55%),
-    #01020a;
-
-
-  &:before {
-    content: "";
-    position: fixed;
-    inset: -25%;
-    background:
-      radial-gradient(circle at 30% 40%, rgba(140,160,255,.22), transparent 60%),
-      radial-gradient(circle at 70% 60%, rgba(200,140,255,.18), transparent 65%),
-      radial-gradient(circle at 50% 20%, rgba(0,200,255,.15), transparent 60%);
-    filter: blur(160px);
-    animation: ${nebulaDrift} 60s ease-in-out infinite;
-    z-index: -3;
-  }
-
-
-  &:after {
-    content: "";
-    position: fixed;
-    inset: -10%;
-    background: linear-gradient(
-      120deg,
-      rgba(0,200,255,.12),
-      transparent,
-      rgba(140,80,255,.12)
-    );
-    filter: blur(90px);
-    animation: ${auroraWave} 20s ease-in-out infinite;
-    mix-blend-mode: screen;
-    z-index: -2;
-  }
-
-
-  & > *:first-child::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,.02),
-      rgba(255,255,255,.02) 1px,
-      transparent 2px,
-      transparent 3px
-    );
-    opacity: .15;
-    animation: ${grainShift} 10s linear infinite;
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .zoom-in { animation: ${zoomIn} 0.8s ease forwards; }
-  .zoom-out { animation: ${zoomOut} 0.6s ease forwards; }
-`;
-
-
-
-const DynamicIsland = styled.div<{ $scrolled: boolean; $open: boolean }>`
-  position: fixed;
-  top: ${({ $scrolled }) => ($scrolled ? "14px" : "30px")};
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: ${({ $scrolled }) => ($scrolled ? "52px" : "70px")};
-  width: ${({ $open, $scrolled }) =>
-    $open ? "280px" : $scrolled ? "fit-content" : "540px"};
-
-  padding: 0 35px;
-  border-radius: ${({ $open }) => ($open ? "30px" : "999px")};
-
-  background: rgba(20, 25, 70, 0.7);
-  backdrop-filter: blur(30px);
-  border: 1px solid rgba(255,255,255,0.1);
-
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-
-  transition: all 0.5s cubic-bezier(.22,1,.36,1);
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    width: ${({ $open }) => ($open ? "260px" : "60px")};
-    height: ${({ $open }) => ($open ? "auto" : "52px")};
-    padding: ${({ $open }) => ($open ? "20px" : "0")};
-  }
-`;
-
-const MobileToggle = styled.div`
-  display: none;
-  cursor: pointer;
-  font-size: 20px;
-
-  @media (max-width: 768px) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 52px;
-  }
-`;
-
-const NavContainer = styled.div<{ $open: boolean }>`
-  display: flex;
-  gap: 35px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    width: 100%;
-    margin-top: 12px;
-    opacity: ${({ $open }) => ($open ? 1 : 0)};
-    max-height: ${({ $open }) => ($open ? "240px" : "0")};
-    overflow: hidden;
-    transition: all 0.4s ease;
-  }
-`;
-
-const NavItem = styled.div<{ $active: boolean }>`
-  cursor: pointer;
-  font-size: 14px;
-  letter-spacing: 2px;
-  color: ${({ $active }) => ($active ? "#7aa2ff" : "white")};
-  transition: 0.3s;
-
-  &:hover {
-    color: #7aa2ff;
-    text-shadow: 0 0 15px rgba(122,162,255,0.9);
-  }
-`;
-const Galaxy = styled.div<{ $active: boolean }>`
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  transition: filter .6s ease;
-
-  filter: ${({ $active }) => ($active ? "brightness(1.35)" : "brightness(1)")};
-
- 
-  &:before {
-    content: "";
-    position: absolute;
-    inset: -10%;
-    background-image:
-      radial-gradient(1px 1px at 20px 30px, #fff, transparent),
-      radial-gradient(1px 1px at 60px 70px, #fff, transparent),
-      radial-gradient(1px 1px at 120px 140px, #fff, transparent),
-      radial-gradient(1px 1px at 200px 200px, #fff, transparent);
-    background-size: 240px 240px;
-    opacity: .25;
-    animation: ${starTwinkle} 6s ease-in-out infinite;
-  }
-
- 
-  &:after {
-    content: "";
-    position: absolute;
-    inset: -10%;
-    background-image:
-      radial-gradient(2px 2px at 80px 90px, rgba(255,255,255,.9), transparent),
-      radial-gradient(2px 2px at 160px 40px, rgba(255,255,255,.7), transparent),
-      radial-gradient(2px 2px at 200px 120px, rgba(255,255,255,.8), transparent);
-    background-size: 300px 300px;
-    opacity: .4;
-  }
-
-  
-  & > div {
-    position: absolute;
-    inset: -20%;
-    background:
-      radial-gradient(circle at center, rgba(120,160,255,.18), transparent 60%);
-    animation: ${cosmicPulse} 12s ease-in-out infinite;
-    z-index: -1;
-  }
-
-  .shooting-star {
-    position: absolute;
-    width: 260px;
-    height: 3px;
-    background: linear-gradient(90deg,#fff,transparent);
-    animation: ${shoot} linear infinite;
-    filter: drop-shadow(0 0 14px rgba(255,255,255,.9));
-  }
-`;
-
-const HeroLight = styled.div`
-  position: absolute;
-  inset: -20%;
-  pointer-events: none;
-
-  background:
-    radial-gradient(circle at 25% 30%, rgba(120,140,255,.25), transparent 40%),
-    radial-gradient(circle at 75% 40%, rgba(180,120,255,.18), transparent 45%),
-    radial-gradient(circle at 50% 80%, rgba(0,200,255,.12), transparent 50%);
-
-  filter: blur(120px);
-  opacity: .6;
-`;
-
-
-
-
-const SectionHero = styled.section`
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  position: relative;
-//   overflow: hidden;
-`;
-
-const HeroLayout = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 520px;
-  align-items: center;
-  padding: 0 6vw;
-  gap: 120px;
-  position: relative;
-  z-index: 2;
-
-  @media (max-width: 1000px) {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 60px;
-  }
-`;
-const DividerGlow = styled.div`
-  width: 120px;
-  height: 2px;
-  margin-top: 28px;
-
-  background: linear-gradient(90deg, transparent, #7aa2ff, transparent);
-  filter: blur(.6px);
-  opacity: .7;
-`;
-
-
-
-const HeroRight = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  transform: translateY(-10px);
-
-  @media (max-width: 1000px) {
-    transform: none;
-  }
-`;
-
-
-
-const Section = styled.section`
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Content = styled.div`
-  max-width: 620px;
-
-  h1 {
-    font-size: clamp(52px, 6vw, 84px);
-    font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -1px;
-  }
-
-  span {
-    background: linear-gradient(90deg,#7aa2ff,#c084fc,#22d3ee);
-    -webkit-background-clip: text;
-    color: transparent;
-    text-shadow: 0 0 30px rgba(122,162,255,.6);
-  }
-
-  p {
-    margin-top: 24px;
-    font-size: 17px;
-    line-height: 1.6;
-    opacity: .75;
-    max-width: 520px;
-  }
-`;
-
-
-const Actions = styled.div`
-  margin-top: 40px;
-`;
-
-const GlassBox = styled.div`
-  width: 80%;
-  padding: 60px;
-  border-radius: 28px;
-  background: rgba(20,25,60,0.55);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.08);
-`;
-
-
-
-
-const orbit = keyframes`
-  0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
-  100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
-`;
-
-const vortexSpin = keyframes`
-  0% { transform: rotate(0deg) scale(1); }
-  100% { transform: rotate(360deg) scale(1.1); }
-`;
-
-const shockwaveAnim = keyframes`
-  0% { opacity:.8; transform: scale(.3); }
-  100% { opacity:0; transform: scale(3.2); }
-`;
-
-const glowPulse = keyframes`
-  0%,100% { opacity:.5; }
-  50% { opacity:1; }
-`;
-
-
-
-const WrapperBH = styled.div`
-  display: inline-block;
-  position: relative;
-`;
-
-const ButtonBH = styled.button`
-  position: relative;
-  overflow: hidden;
-
-  width: 16rem;
-  height: 3.6rem;
-  border-radius: 60px;
-  border: none;
-  cursor: pointer;
-
-  color: white;
-  font-weight: 600;
-  letter-spacing: 1px;
-
-  background: radial-gradient(circle at center, #000 30%, #050a2a 70%);
-  box-shadow:
-    0 0 50px rgba(90,120,255,.9),
-    inset 0 0 30px rgba(0,0,0,1);
-
-  transition: transform .25s cubic-bezier(.22,1,.36,1);
-
-  &:active {
-    transform: scale(.94);
-  }
-`;
-
-const Vortex = styled.div`
-  position: absolute;
-  inset: -45%;
-  border-radius: 50%;
-
-  background: conic-gradient(
-    from 0deg,
-    // rgba(90,120,255,.8),
-    // rgba(140,80,255,.8),
-    // rgba(0,200,255,.8),
-    // rgba(90,120,255,.8)
-  );
-
-  filter: blur(45px);
-  animation: ${vortexSpin} 6s linear infinite;
-  z-index: -1;
-`;
-
-const Glow = styled.div`
-  position: absolute;
-  inset: 0;
-  border-radius: 60px;
-
-  background: radial-gradient(circle, rgba(255,255,255,.25), transparent 60%);
-  animation: ${glowPulse} 3s ease-in-out infinite;
-`;
-
-const Shockwave = styled.span`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 140px;
-  height: 140px;
-
-  border-radius: 50%;
-  border: 2px solid rgba(120,160,255,.8);
-
-  transform: translate(-50%, -50%);
-  animation: ${shockwaveAnim} .8s ease-out forwards;
-  pointer-events: none;
-`;
-
-const Particle = styled.span`
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: rgba(160,180,255,.9);
-  border-radius: 50%;
-  animation: ${orbit} 6s linear infinite;
-`;
-
-
-const SpaceButton = () => {
-  const ref = useRef<HTMLButtonElement>(null);
-  const [waves, setWaves] = useState<number[]>([]);
-
-  const handleMove = (e: React.MouseEvent) => {
-    const btn = ref.current;
-    if (!btn) return;
-
-    const rect = btn.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-
-    btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px) scale(1.05)`;
-  };
-
-  const reset = () => {
-    if (ref.current) {
-      ref.current.style.transform = "translate(0,0) scale(1)";
-    }
-  };
-
-  const click = () => {
-    const id = Date.now();
-    setWaves((w) => [...w, id]);
-    setTimeout(() => {
-      setWaves((w) => w.filter((x) => x !== id));
-    }, 800);
-  };
-
-  return (
-    <WrapperBH>
-      <Vortex />
-
-      <ButtonBH
-        ref={ref}
-        onMouseMove={handleMove}
-        onMouseLeave={reset}
-        onClick={click}
-      >
-        SEE YOUR STAR
-        <Glow />
-
-        {waves.map((id) => (
-          <Shockwave key={id} />
-        ))}
-
-        <Particle style={{ top: "10%", left: "10%" }} />
-        <Particle style={{ top: "80%", left: "20%", animationDuration: "7s" }} />
-        <Particle style={{ top: "40%", left: "85%", animationDuration: "5s" }} />
-      </ButtonBH>
-    </WrapperBH>
-  );
-};
-
 
