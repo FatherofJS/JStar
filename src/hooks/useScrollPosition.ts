@@ -6,10 +6,11 @@ import { SCROLL } from "../constants";
 
 interface UseScrollPositionReturn {
   isScrolled: boolean;
+  scrollY: number;
 }
 
 export function useScrollPosition(): UseScrollPositionReturn {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     let ticking = false;
@@ -17,7 +18,7 @@ export function useScrollPosition(): UseScrollPositionReturn {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > SCROLL.TRIGGER_THRESHOLD);
+          setScrollY(window.scrollY);
           ticking = false;
         });
         ticking = true;
@@ -28,6 +29,9 @@ export function useScrollPosition(): UseScrollPositionReturn {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  return { isScrolled };
+  return { 
+    isScrolled: scrollY > SCROLL.TRIGGER_THRESHOLD,
+    scrollY 
+  };
 }
 

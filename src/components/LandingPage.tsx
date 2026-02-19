@@ -7,6 +7,8 @@ import { Background } from "./Background";
 import { useSectionObserver } from "../hooks/useSectionObserver";
 import { useScrollPosition } from "../hooks/useScrollPosition";
 import { SECTIONS } from "../constants";
+import { useTheme } from "../contexts/ThemeContext";
+import ThemeSwitch from "./ThemeSwitch";
 import {
   Wrapper,
   DynamicIsland,
@@ -37,6 +39,9 @@ export default function LandingPage() {
   // Custom hooks for scroll and section tracking
   const { isScrolled } = useScrollPosition();
   const { activeSection } = useSectionObserver();
+  
+  // Theme context
+  const { theme, toggleTheme } = useTheme();
 
   // Smooth scroll to section
   const scrollTo = (ref: React.RefObject<HTMLElement | null>) => {
@@ -77,6 +82,9 @@ export default function LandingPage() {
             onClick={() => scrollTo(forecastRef)}
           >
             Forecast
+          </NavItem>
+          <NavItem $active={false}>
+            <ThemeSwitch isDark={theme === 'dark'} onToggle={toggleTheme} />
           </NavItem>
         </NavContainer>
       </DynamicIsland>
@@ -155,4 +163,3 @@ export default function LandingPage() {
     </Wrapper>
   );
 }
-

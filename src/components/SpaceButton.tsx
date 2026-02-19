@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import {
   WrapperBH,
   ButtonBH,
-  Vortex,
   Glow,
   Shockwave,
   Particle,
@@ -26,8 +25,28 @@ export function SpaceButton() {
     btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px) scale(1.05)`;
   };
 
+  // Handle touch movement for subtle button tilt effect
+  const handleTouchMove = (e: React.TouchEvent<HTMLButtonElement>) => {
+    const btn = ref.current;
+    if (!btn) return;
+
+    const touch = e.touches[0];
+    const rect = btn.getBoundingClientRect();
+    const x = touch.clientX - rect.left - rect.width / 2;
+    const y = touch.clientY - rect.top - rect.height / 2;
+
+    btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px) scale(1.05)`;
+  };
+
   // Reset button position on mouse leave
   const handleMouseLeave = () => {
+    if (ref.current) {
+      ref.current.style.transform = "translate(0,0) scale(1)";
+    }
+  };
+
+  // Handle touch end
+  const handleTouchEnd = () => {
     if (ref.current) {
       ref.current.style.transform = "translate(0,0) scale(1)";
     }
@@ -44,12 +63,14 @@ export function SpaceButton() {
 
   return (
     <WrapperBH>
-      <Vortex />
+      {/* <Vortex /> */}
 
       <ButtonBH
         ref={ref}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onClick={handleClick}
       >
         SEE YOUR STAR

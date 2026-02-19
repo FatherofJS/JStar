@@ -82,16 +82,27 @@ export const zoomOut = keyframes`
 
 export const ZodiacWrapper = styled.div`
   margin-top: 40px;
-  height: 440px;
+  height: clamp(280px, 50vh, 440px);
   display: flex;
   align-items: center;
   justify-content: center;
   perspective: 1000px;
+  padding: 0 20px;
+
+  @media (max-width: 1000px) {
+    margin-top: 24px;
+    height: clamp(240px, 40vh, 360px);
+  }
+
+  @media (max-width: 480px) {
+    margin-top: 16px;
+    height: clamp(200px, 35vh, 280px);
+  }
 `;
 
 export const ZodiacSymbol = styled.img`
   position: absolute;
-  width: 320px;
+  width: clamp(160px, 30vw, 280px);
   height: auto;
   object-fit: contain;
   pointer-events: none;
@@ -102,50 +113,64 @@ export const ZodiacSymbol = styled.img`
 
   opacity: 0;
 
-  animation: ${fadeInSymbol} 2.2s ease forwards;
-  animation-delay: 4.8s;
+  animation: ${fadeInSymbol} 2s ease forwards;
+  animation-delay: 4s;
 
   mix-blend-mode: screen;
 
-  filter: drop-shadow(0 0 50px rgba(120, 140, 255, 0.6)) blur(0.2px);
+  filter: drop-shadow(0 0 30px rgba(120, 140, 255, 0.4)) blur(0.2px);
 
   z-index: 1;
 `;
 
 export const ConstellationContainer = styled.div`
   position: relative;
-  width: 420px;
-  height: 420px;
+  width: clamp(260px, 45vw, 420px);
+  height: clamp(260px, 45vw, 420px);
   transform-style: preserve-3d;
-  transition: transform 0.25s ease;
-  animation: ${floatSlow} 8s ease-in-out infinite;
+  transition: transform 0.3s ease;
+
+  @media (max-width: 480px) {
+    width: clamp(200px, 55vw, 260px);
+    height: clamp(200px, 55vw, 260px);
+  }
 `;
 
 export const DeepGlow = styled.div<{ color: string }>`
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: radial-gradient(circle, ${({ color }) => color}40, transparent 70%);
-  filter: blur(120px);
-  opacity: 0.6;
+  background: radial-gradient(circle, ${({ color }) => color}30, transparent 70%);
+  filter: blur(40px);
+  opacity: 0.5;
 `;
 
 export const AuraRing = styled.div`
   position: absolute;
-  width: 340px;
-  height: 340px;
+  width: clamp(200px, 35vw, 340px);
+  height: clamp(200px, 35vw, 340px);
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  animation: ${rotateUltraSlow} 90s linear infinite;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  animation: ${rotateUltraSlow} 180s linear infinite;
+
+  @media (max-width: 480px) {
+    width: clamp(160px, 45vw, 200px);
+    height: clamp(160px, 45vw, 200px);
+  }
 `;
 
 export const OrbitRing = styled.div`
   position: absolute;
-  width: 280px;
-  height: 280px;
+  width: clamp(160px, 28vw, 280px);
+  height: clamp(160px, 28vw, 280px);
   border-radius: 50%;
-  border: 1px dashed rgba(255, 255, 255, 0.18);
-  animation: ${rotateUltraSlow} 40s linear infinite reverse;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  animation: ${rotateUltraSlow} 80s linear infinite reverse;
+
+  @media (max-width: 480px) {
+    width: clamp(120px, 35vw, 160px);
+    height: clamp(120px, 35vw, 160px);
+  }
 `;
 
 export const ZodiacName = styled.div`
@@ -154,34 +179,39 @@ export const ZodiacName = styled.div`
   width: 100%;
   text-align: center;
   letter-spacing: 5px;
-  font-size: 22px;
+  font-size: clamp(16px, 2.5vw, 22px);
   opacity: 0.9;
+
+  @media (max-width: 480px) {
+    bottom: -28px;
+    letter-spacing: 3px;
+    font-size: 14px;
+  }
 `;
 
 export const GalaxyStar = styled.circle<{ intensity: number }>`
   fill: rgba(255, 255, 255, ${(p) => 0.5 + p.intensity * 0.5});
-
-  filter: drop-shadow(0 0 ${(p) => 1 + p.intensity * 1}px rgba(255, 255, 255, 0.9))
-    drop-shadow(0 0 ${(p) => 3 + p.intensity * 3}px rgba(200, 220, 255, 0.8))
-    drop-shadow(0 0 ${(p) => 8 + p.intensity * 6}px rgba(160, 180, 255, 0.6))
-    drop-shadow(0 0 ${(p) => 18 + p.intensity * 10}px rgba(120, 140, 255, 0.35));
-
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
   opacity: ${(p) => 0.5 + p.intensity * 0.5};
 `;
 
 export const ConstellationSVG = styled.svg`
-  width: 420px;
-  height: 420px;
+  width: clamp(260px, 45vw, 420px);
+  height: clamp(260px, 45vw, 420px);
   z-index: 2;
+
+  @media (max-width: 480px) {
+    width: clamp(200px, 55vw, 260px);
+    height: clamp(200px, 55vw, 260px);
+  }
 `;
 
 export const Line = styled.line<{ color: string; delay: number }>`
   stroke: ${(p) => p.color};
-  stroke-width: 0.8;
-  filter: drop-shadow(0 0 8px ${(p) => p.color});
+  stroke-width: 0.5;
   stroke-dasharray: 140;
   stroke-dashoffset: 140;
-  animation: ${drawLine} 5.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: ${drawLine} 4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: ${(p) => p.delay}s;
 `;
 
@@ -208,7 +238,7 @@ export const ButtonBH = styled.button`
   font-weight: 600;
   letter-spacing: 1px;
 
-  background: radial-gradient(circle at center, #000 30%, #050a2a 70%);
+  background: radial-gradient(circle at center, #000 30%, var(--bg-wrapper) 70%);
   box-shadow: 0 0 50px rgba(90, 120, 255, 0.9),
     inset 0 0 30px rgba(0, 0, 0, 1);
 
@@ -216,6 +246,12 @@ export const ButtonBH = styled.button`
 
   &:active {
     transform: scale(0.94);
+  }
+
+  @media (max-width: 480px) {
+    width: 14rem;
+    height: 3.2rem;
+    font-size: 14px;
   }
 `;
 
@@ -280,7 +316,7 @@ export const Particle = styled.span`
 
 export const Wrapper = styled.div`
   min-height: 400vh;
-  color: white;
+  color: var(--text-inverse);
   overflow-x: hidden;
   position: relative;
 
@@ -310,19 +346,25 @@ export const DynamicIsland = styled.div<{ $scrolled: boolean; $open: boolean }>`
   padding: 0 35px;
   border-radius: ${({ $open }) => ($open ? "30px" : "999px")};
 
-  background: rgba(20, 25, 70, 0.7);
+  background: var(--nav-bg);
   backdrop-filter: blur(30px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
 
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 40px var(--shadow-color);
 
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 
   @media (max-width: 768px) {
+    top: ${({ $scrolled }) => ($scrolled ? "10px" : "16px")};
     flex-direction: column;
-    width: ${({ $open }) => ($open ? "260px" : "60px")};
+    width: ${({ $open }) => ($open ? "240px" : "56px")};
     height: ${({ $open }) => ($open ? "auto" : "52px")};
-    padding: ${({ $open }) => ($open ? "20px" : "0")};
+    padding: ${({ $open }) => ($open ? "16px" : "0")};
+    border-radius: ${({ $open }) => ($open ? "24px" : "28px")};
+  }
+
+  @media (max-width: 480px) {
+    width: ${({ $open }) => ($open ? "220px" : "52px")};
   }
 `;
 
@@ -341,6 +383,7 @@ export const MobileToggle = styled.div`
 
 export const NavContainer = styled.div<{ $open: boolean }>`
   display: flex;
+  align-items: center;
   gap: 35px;
 
   @media (max-width: 768px) {
@@ -348,9 +391,10 @@ export const NavContainer = styled.div<{ $open: boolean }>`
     width: 100%;
     margin-top: 12px;
     opacity: ${({ $open }) => ($open ? 1 : 0)};
-    max-height: ${({ $open }) => ($open ? "240px" : "0")};
+    max-height: ${({ $open }) => ($open ? "300px" : "0")};
     overflow: hidden;
     transition: all 0.4s ease;
+    gap: 16px;
   }
 `;
 
@@ -358,12 +402,34 @@ export const NavItem = styled.div<{ $active: boolean }>`
   cursor: pointer;
   font-size: 14px;
   letter-spacing: 2px;
-  color: ${({ $active }) => ($active ? "#7aa2ff" : "white")};
+  color: ${({ $active }) => ($active ? "var(--nav-item-active)" : "var(--text-inverse)")};
   transition: 0.3s;
+  padding: 8px 4px;
 
   &:hover {
-    color: #7aa2ff;
-    text-shadow: 0 0 15px rgba(122, 162, 255, 0.9);
+    color: var(--nav-item-active);
+    text-shadow: 0 0 15px var(--text-shadow);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    padding: 12px 8px;
+    text-align: center;
+    border-radius: 8px;
+    
+    &:hover {
+      background: var(--nav-item-hover);
+    }
+  }
+`;
+
+export const NavRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -404,9 +470,21 @@ export const HeroLight = styled.div`
 
 export const SectionHero = styled.section`
   height: 100vh;
+  min-height: 600px;
   display: flex;
   align-items: center;
   position: relative;
+  padding: 80px 0;
+
+  @media (max-width: 768px) {
+    min-height: 500px;
+    padding: 60px 0;
+  }
+
+  @media (max-width: 480px) {
+    min-height: 450px;
+    padding: 40px 0;
+  }
 `;
 
 export const HeroLayout = styled.div`
@@ -422,7 +500,13 @@ export const HeroLayout = styled.div`
   @media (max-width: 1000px) {
     grid-template-columns: 1fr;
     text-align: center;
-    gap: 60px;
+    gap: 40px;
+    padding: 0 4vw;
+  }
+
+  @media (max-width: 480px) {
+    gap: 24px;
+    padding: 0 20px;
   }
 `;
 
@@ -431,9 +515,13 @@ export const DividerGlow = styled.div`
   height: 2px;
   margin-top: 28px;
 
-  background: linear-gradient(90deg, transparent, #7aa2ff, transparent);
+  background: linear-gradient(90deg, transparent, var(--divider-glow), transparent);
   filter: blur(0.6px);
   opacity: 0.7;
+
+  @media (max-width: 1000px) {
+    margin: 28px auto 0;
+  }
 `;
 
 export const HeroRight = styled.div`
@@ -446,41 +534,61 @@ export const HeroRight = styled.div`
 
   @media (max-width: 1000px) {
     transform: none;
+    order: -1;
   }
 `;
 
 export const Section = styled.section`
   height: 100vh;
+  min-height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 40px 20px;
+
+  @media (max-width: 768px) {
+    min-height: 500px;
+    padding: 20px 16px;
+  }
 `;
 
 export const Content = styled.div`
   max-width: 620px;
 
   h1 {
-    font-size: clamp(52px, 6vw, 84px);
+    font-size: clamp(36px, 6vw, 84px);
     font-weight: 700;
     line-height: 1.05;
     letter-spacing: -1px;
   }
 
   span {
-    background: linear-gradient(90deg, #7aa2ff, #c084fc, #22d3ee);
+    background: linear-gradient(90deg, var(--hero-gradient-start), var(--hero-gradient-mid), var(--hero-gradient-end));
     -webkit-background-clip: text;
     background-clip: text;
 
     color: transparent;
-    text-shadow: 0 0 30px rgba(122, 162, 255, 0.6);
+    text-shadow: 0 0 30px var(--text-shadow);
   }
 
   p {
     margin-top: 24px;
-    font-size: 17px;
+    font-size: clamp(14px, 2vw, 17px);
     line-height: 1.6;
     opacity: 0.75;
     max-width: 520px;
+    color: var(--text-secondary);
+    
+    @media (max-width: 1000px) {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: clamp(32px, 8vw, 52px);
+    }
   }
 `;
 
@@ -492,8 +600,32 @@ export const GlassBox = styled.div`
   width: 80%;
   padding: 60px;
   border-radius: 28px;
-  background: rgba(20, 25, 60, 0.55);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+
+  @media (max-width: 768px) {
+    width: 90%;
+    padding: 40px 24px;
+    border-radius: 20px;
+  }
+
+  @media (max-width: 480px) {
+    width: 94%;
+    padding: 32px 16px;
+    border-radius: 16px;
+  }
+
+  h2 {
+    @media (max-width: 480px) {
+      font-size: 24px;
+    }
+  }
+
+  p {
+    @media (max-width: 480px) {
+      font-size: 14px;
+    }
+  }
 `;
 

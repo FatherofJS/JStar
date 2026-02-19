@@ -1,4 +1,5 @@
 // Background Component - Reusable cosmic background for all views
+import { useScrollPosition } from "../hooks/useScrollPosition";
 import {
   BackgroundWrapper,
   NebulaLayer,
@@ -11,7 +12,7 @@ import {
 
 // Generate shooting star data
 const generateShootingStars = () =>
-  Array.from({ length: 5 }, (_, i) => ({
+  Array.from({ length: 3 }, (_, i) => ({
     id: i,
     top: Math.random() * 70,
     left: Math.random() * 100,
@@ -27,6 +28,8 @@ interface BackgroundProps {
 }
 
 export function Background({ showShootingStars = true }: BackgroundProps) {
+  const { scrollY } = useScrollPosition();
+  
   return (
     <BackgroundWrapper>
       {/* Nebula drifting effect */}
@@ -35,8 +38,8 @@ export function Background({ showShootingStars = true }: BackgroundProps) {
       {/* Aurora wave effect */}
       <AuroraLayer />
       
-      {/* Star field */}
-      <StarField>
+      {/* Star field with scroll-based viewing angle */}
+      <StarField $scrollY={scrollY}>
         <CosmicGlow />
       </StarField>
       

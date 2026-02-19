@@ -9,30 +9,30 @@ import type { CSSProperties } from "styled-components";
 // =============================================================================
 
 const nebulaDrift = keyframes`
-  0% { transform: translate3d(-8%, -6%, 0) scale(1.2); }
-  50% { transform: translate3d(8%, 6%, 0) scale(1.25); }
-  100% { transform: translate3d(-8%, -6%, 0) scale(1.2); }
+  0% { transform: translate3d(-4%, -3%, 0) scale(1.1); }
+  50% { transform: translate3d(4%, 3%, 0) scale(1.15); }
+  100% { transform: translate3d(-4%, -3%, 0) scale(1.1); }
 `;
 
 const auroraWave = keyframes`
-  0% { opacity:.25; transform: translateY(0); }
-  50% { opacity:.55; transform: translateY(-60px); }
-  100% { opacity:.25; transform: translateY(0); }
+  0% { opacity:.1; transform: translateY(0); }
+  50% { opacity:.2; transform: translateY(-20px); }
+  100% { opacity:.1; transform: translateY(0); }
 `;
 
 const starTwinkle = keyframes`
-  0%,100% { opacity:.25; }
-  50% { opacity:.7; }
+  0%,100% { opacity:.15; }
+  50% { opacity:.3; }
 `;
 
 const grainShift = keyframes`
   0% { transform: translate(0,0); }
-  100% { transform: translate(-10%,10%); }
+  100% { transform: translate(-5%,5%); }
 `;
 
 const cosmicPulse = keyframes`
-  0%,100% { opacity:.35; }
-  50% { opacity:.75; }
+  0%,100% { opacity:.15; }
+  50% { opacity:.25; }
 `;
 
 const shoot = keyframes`
@@ -51,6 +51,11 @@ export const BackgroundWrapper = styled.div`
   z-index: -10;
   overflow: hidden;
   pointer-events: none;
+  background: var(--bg-wrapper);
+  
+  [data-theme="light"] & {
+    background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #B8E4F9 100%);
+  }
 `;
 
 export const NebulaLayer = styled.div`
@@ -58,21 +63,25 @@ export const NebulaLayer = styled.div`
   inset: -25%;
   background: radial-gradient(
       circle at 30% 40%,
-      rgba(140, 160, 255, 0.22),
+      rgba(140, 160, 255, 0.12),
       transparent 60%
     ),
     radial-gradient(
       circle at 70% 60%,
-      rgba(200, 140, 255, 0.18),
+      rgba(200, 140, 255, 0.1),
       transparent 65%
     ),
     radial-gradient(
       circle at 50% 20%,
-      rgba(0, 200, 255, 0.15),
+      rgba(0, 200, 255, 0.08),
       transparent 60%
     );
-  filter: blur(160px);
-  animation: ${nebulaDrift} 60s ease-in-out infinite;
+  filter: blur(60px);
+  animation: ${nebulaDrift} 120s ease-in-out infinite;
+  
+  [data-theme="light"] & {
+    display: none;
+  }
 `;
 
 export const AuroraLayer = styled.div`
@@ -80,18 +89,24 @@ export const AuroraLayer = styled.div`
   inset: -10%;
   background: linear-gradient(
     120deg,
-    rgba(0, 200, 255, 0.12),
+    rgba(0, 200, 255, 0.06),
     transparent,
-    rgba(140, 80, 255, 0.12)
+    rgba(140, 80, 255, 0.06)
   );
-  filter: blur(90px);
-  animation: ${auroraWave} 20s ease-in-out infinite;
-  mix-blend-mode: screen;
+  filter: blur(40px);
+  animation: ${auroraWave} 40s ease-in-out infinite;
+  
+  [data-theme="light"] & {
+    display: none;
+  }
 `;
 
-export const StarField = styled.div`
+export const StarField = styled.div<{ $scrollY: number }>`
   position: absolute;
   inset: -10%;
+  transform: perspective(1000px) rotateX(${({ $scrollY }) => $scrollY * 0.02}deg);
+  transform-origin: center bottom;
+  transition: transform 0.1s ease-out;
 
   &:before {
     content: "";
@@ -99,14 +114,14 @@ export const StarField = styled.div`
     inset: -10%;
     background-image: radial-gradient(
         1px 1px at 20px 30px,
-        #fff,
+        var(--text-primary),
         transparent
       ),
-      radial-gradient(1px 1px at 60px 70px, #fff, transparent),
-      radial-gradient(1px 1px at 120px 140px, #fff, transparent),
-      radial-gradient(1px 1px at 200px 200px, #fff, transparent);
+      radial-gradient(1px 1px at 60px 70px, var(--text-primary), transparent),
+      radial-gradient(1px 1px at 120px 140px, var(--text-primary), transparent),
+      radial-gradient(1px 1px at 200px 200px, var(--text-primary), transparent);
     background-size: 240px 240px;
-    opacity: 0.25;
+    opacity: 0.5;
     animation: ${starTwinkle} 6s ease-in-out infinite;
   }
 
@@ -116,7 +131,7 @@ export const StarField = styled.div`
     inset: -10%;
     background-image: radial-gradient(
         2px 2px at 80px 90px,
-        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.8),
         transparent
       ),
       radial-gradient(
@@ -126,11 +141,15 @@ export const StarField = styled.div`
       ),
       radial-gradient(
         2px 2px at 200px 120px,
-        rgba(255, 255, 255, 0.8),
+        rgba(255, 255, 255, 0.75),
         transparent
       );
     background-size: 300px 300px;
-    opacity: 0.4;
+    opacity: 0.8;
+  }
+  
+  [data-theme="light"] & {
+    display: none;
   }
 `;
 
@@ -139,10 +158,14 @@ export const CosmicGlow = styled.div`
   inset: -20%;
   background: radial-gradient(
     circle at center,
-    rgba(120, 160, 255, 0.18),
+    rgba(120, 160, 255, 0.1),
     transparent 60%
   );
   animation: ${cosmicPulse} 12s ease-in-out infinite;
+  
+  [data-theme="light"] & {
+    display: none;
+  }
 `;
 
 export const GrainOverlay = styled.div`
@@ -150,13 +173,17 @@ export const GrainOverlay = styled.div`
   inset: 0;
   background: repeating-linear-gradient(
     0deg,
-    rgba(255, 255, 255, 0.02),
-    rgba(255, 255, 255, 0.02) 1px,
+    rgba(255, 255, 255, 0.015),
+    rgba(255, 255, 255, 0.015) 1px,
     transparent 2px,
     transparent 3px
   );
-  opacity: 0.15;
+  opacity: 0.1;
   animation: ${grainShift} 10s linear infinite;
+  
+  [data-theme="light"] & {
+    display: none;
+  }
 `;
 
 interface ShootingStarProps {
@@ -169,14 +196,17 @@ interface ShootingStarProps {
 
 export const ShootingStar = styled.span<ShootingStarProps>`
   position: absolute;
-  width: 260px;
-  height: 3px;
-  background: linear-gradient(90deg, #fff, transparent);
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--text-primary), transparent);
   top: ${({ $top }) => $top}%;
   left: ${({ $left }) => $left}%;
   animation: ${shoot} ${({ $duration }) => $duration}s linear infinite;
   animation-delay: ${({ $delay }) => $delay}s;
-  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.9));
+  
+  [data-theme="light"] & {
+    display: none;
+  }
 `;
 
 // Export keyframes for external use if needed
