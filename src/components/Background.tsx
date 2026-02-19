@@ -1,4 +1,5 @@
 // Background Component - Reusable cosmic background for all views
+import { useRef, useEffect } from "react";
 import { useScrollPosition } from "../hooks/useScrollPosition";
 import {
   BackgroundWrapper,
@@ -29,6 +30,15 @@ interface BackgroundProps {
 
 export function Background({ showShootingStars = true }: BackgroundProps) {
   const { scrollY } = useScrollPosition();
+  const lastScrollY = useRef(0);
+  
+  // Use ref to throttle scroll updates for the star field
+  useEffect(() => {
+    lastScrollY.current = scrollY;
+  }, [scrollY]);
+  
+  // Only update star field transform periodically to reduce re-renders
+  const displayScrollY = Math.round(scrollY / 10) * 10;
   
   return (
     <BackgroundWrapper>
@@ -38,8 +48,8 @@ export function Background({ showShootingStars = true }: BackgroundProps) {
       {/* Aurora wave effect */}
       <AuroraLayer />
       
-      {/* Star field with scroll-based viewing angle */}
-      <StarField $scrollY={scrollY}>
+      {/* Star field with scroll-based viewing angle - throttled */}
+      <StarField $scrollY={displayScrollY}>
         <CosmicGlow />
       </StarField>
       

@@ -1,6 +1,6 @@
 // LandingPage Component - Main landing page with hero section and navigation
 
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback, memo } from "react";
 import { ZodiacCinematic } from "./ZodiacCinematic";
 import { SpaceButton } from "./SpaceButton";
 import { Background } from "./Background";
@@ -26,6 +26,9 @@ import {
   GlassBox,
 } from "../styles/LandingPage.styles";
 
+// Memoized nav item to prevent re-renders
+const NavItemMemo = memo(NavItem);
+
 export default function LandingPage() {
   // Section refs
   const heroRef = useRef<HTMLElement>(null);
@@ -43,11 +46,16 @@ export default function LandingPage() {
   // Theme context
   const { theme, toggleTheme } = useTheme();
 
-  // Smooth scroll to section
-  const scrollTo = (ref: React.RefObject<HTMLElement | null>) => {
+  // Memoize scrollTo function
+  const scrollTo = useCallback((ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
     setIsOpen(false);
-  };
+  }, []);
+
+  // Memoize setIsOpen toggle
+  const toggleMenu = useCallback(() => {
+    setIsOpen(prev => !prev);
+  }, []);
 
   return (
     <Wrapper>
@@ -56,36 +64,36 @@ export default function LandingPage() {
 
       {/* Fixed Navigation Bar */}
       <DynamicIsland $scrolled={isScrolled} $open={isOpen}>
-        <MobileToggle onClick={() => setIsOpen(!isOpen)}>☰</MobileToggle>
+        <MobileToggle onClick={toggleMenu}>☰</MobileToggle>
 
         <NavContainer $open={isOpen}>
-          <NavItem
+          <NavItemMemo
             $active={activeSection === SECTIONS.HOME}
             onClick={() => scrollTo(heroRef)}
           >
             Home
-          </NavItem>
-          <NavItem
+          </NavItemMemo>
+          <NavItemMemo
             $active={activeSection === SECTIONS.ABOUT}
             onClick={() => scrollTo(aboutRef)}
           >
             About
-          </NavItem>
-          <NavItem
+          </NavItemMemo>
+          <NavItemMemo
             $active={activeSection === SECTIONS.CHART}
             onClick={() => scrollTo(chartRef)}
           >
             Chart
-          </NavItem>
-          <NavItem
+          </NavItemMemo>
+          <NavItemMemo
             $active={activeSection === SECTIONS.FORECAST}
             onClick={() => scrollTo(forecastRef)}
           >
             Forecast
-          </NavItem>
-          <NavItem $active={false}>
+          </NavItemMemo>
+          <NavItemMemo $active={false}>
             <ThemeSwitch isDark={theme === 'dark'} onToggle={toggleTheme} />
-          </NavItem>
+          </NavItemMemo>
         </NavContainer>
       </DynamicIsland>
 

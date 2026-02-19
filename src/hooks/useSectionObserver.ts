@@ -1,7 +1,7 @@
 // useSectionObserver - Custom hook for section-based navigation
 // Handles intersection observer for tracking which section is in view
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { SCROLL, SECTIONS, type SectionId } from "../constants";
 
 interface UseSectionObserverReturn {
@@ -12,6 +12,9 @@ export function useSectionObserver(): UseSectionObserverReturn {
   const [activeSection, setActiveSection] = useState<SectionId>(
     SECTIONS.HOME as SectionId
   );
+  
+  // Use ref to track current active section to avoid stale closures
+  const activeSectionRef = useRef<SectionId>(SECTIONS.HOME as SectionId);
 
   useEffect(() => {
     const sections = document.querySelectorAll(".zoom-section");
@@ -24,7 +27,10 @@ export function useSectionObserver(): UseSectionObserverReturn {
           if (entry.isIntersecting) {
             entry.target.classList.add("zoom-in");
             entry.target.classList.remove("zoom-out");
-            if (id) setActiveSection(id);
+            if (id) {
+              activeSectionRef.current = id;
+              setActiveSection(id);
+            }
           } else {
             entry.target.classList.remove("zoom-in");
             entry.target.classList.add("zoom-out");

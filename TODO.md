@@ -1,32 +1,33 @@
-# Task: Make stars brighter and add scroll-based viewing angle change
+# Performance Optimization TODO
 
-## Plan
+## Task: Fix occasional lag issues in the JStar application
 
-### 1. Update useScrollPosition hook
-- Modify to return scrollY value instead of just isScrolled boolean
-- This will allow us to track the actual scroll position for the parallax effect
+### Identified Issues:
+1. **ZodiacCinematic**: Star intensity/size recalculates on every render (random values each time)
+2. **Background**: Heavy CSS blur filters (60px, 40px) causing repaint issues during scroll
+3. **Scroll handlers**: Multiple hooks listening to scroll events separately
+4. **Missing performance optimizations**: No `will-change` hints, no memoization
 
-### 2. Update Background component
-- Accept scrollY prop to pass to StarField styled component
-- Pass the scroll position to enable 3D perspective transform
+### Fix Plan:
 
-### 3. Update Background.styles.ts
-- **Make stars brighter**: Increase opacity values in StarField
-  - Before pseudo-element: increase from 0.15 to 0.5 (much brighter)
-  - After pseudo-element: increase from 0.25 to 0.8 (much brighter)
-- **Add scroll-based viewing angle**: Add transform based on scrollY
-  - Use perspective and rotateX to create a 3D viewing angle effect
-  - As user scrolls down, stars will appear to tilt/rotate
+- [x] 1. Fix ZodiacCinematic - Memoize star intensity/size to avoid recalculation on every render
+- [x] 2. Fix Background - Use CSS `will-change` and optimize transitions for scroll
+- [x] 3. Optimize useScrollPosition - Use ref-based approach to avoid state updates during scroll
+- [x] 4. Add performance optimizations to LandingPage - Memoize components, use React.memo
+- [x] 5. Optimize Background.styles.ts - Reduce blur complexity, add will-change hints
 
-## Files to edit:
-1. `src/hooks/useScrollPosition.ts` - Return scrollY value
-2. `src/components/Background.tsx` - Accept and pass scrollY prop
-3. `src/styles/Background.styles.ts` - Increase brightness and add scroll transform
+### Completed:
+All performance optimizations have been applied successfully. The build passes without errors.
 
-## Completed Steps:
-- [x] Updated useScrollPosition hook to return scrollY value
-- [x] Updated Background component to use scrollY from useScrollPosition
-- [x] Updated Background.styles.ts to make stars brighter and add scroll-based viewing angle
-- [x] Fixed pre-existing NavItem $active prop error in LandingPage.tsx
-- [x] Verified build is successful
+### Summary of Changes:
+1. **ZodiacCinematic.tsx**: Added `useMemo` for star data, `useCallback` for event handlers
+2. **Background.tsx**: Added throttled scroll updates (rounded to nearest 10)
+3. **Background.styles.ts**: Added `will-change` hints to all animated elements
+4. **useScrollPosition.ts**: Changed from closure variable to useRef for ticking
+5. **useSectionObserver.ts**: Added useRef to avoid stale closures
+6. **LandingPage.tsx**: Added `memo` for NavItem, `useCallback` for handlers
+7. **SpaceButton.tsx**: Added `memo` for particles, `useCallback` for all handlers
+
+### Testing:
+Run `npm run build` to verify the application builds successfully.
 

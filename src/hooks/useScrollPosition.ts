@@ -1,7 +1,7 @@
 // useScrollPosition - Custom hook for scroll position tracking
 // Handles scroll events with requestAnimationFrame for performance
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { SCROLL } from "../constants";
 
 interface UseScrollPositionReturn {
@@ -11,17 +11,16 @@ interface UseScrollPositionReturn {
 
 export function useScrollPosition(): UseScrollPositionReturn {
   const [scrollY, setScrollY] = useState(0);
+  const ticking = useRef(false);
 
   useEffect(() => {
-    let ticking = false;
-
     const handleScroll = () => {
-      if (!ticking) {
+      if (!ticking.current) {
         window.requestAnimationFrame(() => {
           setScrollY(window.scrollY);
-          ticking = false;
+          ticking.current = false;
         });
-        ticking = true;
+        ticking.current = true;
       }
     };
 

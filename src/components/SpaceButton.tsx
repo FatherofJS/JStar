@@ -1,6 +1,6 @@
 // SpaceButton Component - Animated CTA button with cosmic effects
 
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback, memo } from "react";
 import {
   WrapperBH,
   ButtonBH,
@@ -9,12 +9,27 @@ import {
   Particle,
 } from "../styles/LandingPage.styles";
 
+// Memoize particles to avoid re-renders
+const particles = [
+  { top: "10%", left: "10%" },
+  { top: "80%", left: "20%", animationDuration: "7s" },
+  { top: "40%", left: "85%", animationDuration: "5s" },
+];
+
+const ParticlesMemo = memo(() => (
+  <>
+    {particles.map((style, i) => (
+      <Particle key={i} style={style} />
+    ))}
+  </>
+));
+
 export function SpaceButton() {
   const ref = useRef<HTMLButtonElement>(null);
   const [waves, setWaves] = useState<number[]>([]);
 
-  // Handle mouse movement for subtle button tilt effect
-  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+  // Memoize mouse move handler
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     const btn = ref.current;
     if (!btn) return;
 
@@ -23,10 +38,10 @@ export function SpaceButton() {
     const y = e.clientY - rect.top - rect.height / 2;
 
     btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px) scale(1.05)`;
-  };
+  }, []);
 
-  // Handle touch movement for subtle button tilt effect
-  const handleTouchMove = (e: React.TouchEvent<HTMLButtonElement>) => {
+  // Memoize touch move handler
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLButtonElement>) => {
     const btn = ref.current;
     if (!btn) return;
 
@@ -36,35 +51,33 @@ export function SpaceButton() {
     const y = touch.clientY - rect.top - rect.height / 2;
 
     btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px) scale(1.05)`;
-  };
+  }, []);
 
-  // Reset button position on mouse leave
-  const handleMouseLeave = () => {
+  // Memoize mouse leave handler
+  const handleMouseLeave = useCallback(() => {
     if (ref.current) {
       ref.current.style.transform = "translate(0,0) scale(1)";
     }
-  };
+  }, []);
 
-  // Handle touch end
-  const handleTouchEnd = () => {
+  // Memoize touch end handler
+  const handleTouchEnd = useCallback(() => {
     if (ref.current) {
       ref.current.style.transform = "translate(0,0) scale(1)";
     }
-  };
+  }, []);
 
-  // Add shockwave effect on click
-  const handleClick = () => {
+  // Memoize click handler
+  const handleClick = useCallback(() => {
     const id = Date.now();
     setWaves((prev) => [...prev, id]);
     setTimeout(() => {
       setWaves((prev) => prev.filter((x) => x !== id));
     }, 800);
-  };
+  }, []);
 
   return (
     <WrapperBH>
-      {/* <Vortex /> */}
-
       <ButtonBH
         ref={ref}
         onMouseMove={handleMouseMove}
@@ -81,14 +94,8 @@ export function SpaceButton() {
           <Shockwave key={id} />
         ))}
 
-        {/* Animated particles */}
-        <Particle style={{ top: "10%", left: "10%" }} />
-        <Particle
-          style={{ top: "80%", left: "20%", animationDuration: "7s" }}
-        />
-        <Particle
-          style={{ top: "40%", left: "85%", animationDuration: "5s" }}
-        />
+        {/* Memoized particles */}
+        <ParticlesMemo />
       </ButtonBH>
     </WrapperBH>
   );

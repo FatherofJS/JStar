@@ -1,6 +1,6 @@
 // ZodiacCinematic Component - Animated zodiac constellation visualization
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import {
   ZodiacWrapper,
   ZodiacSymbol,
@@ -17,11 +17,17 @@ import {
   zodiac,
   zodiacImages,
   constellationMap,
-  getStarIntensity,
-  getStarSize,
 } from "../data/zodiacData";
-import type { StarIntensity } from "../data/zodiacData";
 import { useTheme } from "../contexts/ThemeContext";
+
+// Memoize star data to prevent recalculation on every render
+const useStarData = (zodiacName: string) => {
+  return useMemo(() => {
+    const intensity = Math.random();
+    const size = intensity > 0.7 ? 1.4 : intensity > 0.4 ? 1 : 0.6;
+    return { intensity, size };
+  }, [zodiacName]);
+};
 
 export function ZodiacCinematic() {
   const [index, setIndex] = useState(0);
@@ -29,6 +35,12 @@ export function ZodiacCinematic() {
   const lastMouseMove = useRef(0);
   const { theme } = useTheme();
   const isLightMode = theme === "light";
+
+  const current = zodiac[index];
+  const map = constellationMap[current.name];
+  
+  // Memoize star data for current zodiac
+  const starData = useStarData(current.name);
 
   // Cycle through zodiac signs every 12 seconds
   useEffect(() => {
@@ -39,10 +51,10 @@ export function ZodiacCinematic() {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle mouse movement for 3D parallax effect with throttling
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  // Memoize mouse move handler
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const now = Date.now();
-    if (now - lastMouseMove.current < 50) return; // Throttle to ~20fps
+    if (now - lastMouseMove.current < 50) return;
     lastMouseMove.current = now;
 
     const el = ref.current;
@@ -52,12 +64,12 @@ export function ZodiacCinematic() {
     const x = (e.clientX - rect.left - rect.width / 2) / 30;
     const y = (e.clientY - rect.top - rect.height / 2) / 30;
     el.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-  };
+  }, []);
 
-  // Handle touch movement for 3D parallax effect with throttling
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+  // Memoize touch move handler
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     const now = Date.now();
-    if (now - lastMouseMove.current < 50) return; // Throttle to ~20fps
+    if (now - lastMouseMove.current < 50) return;
     lastMouseMove.current = now;
 
     const el = ref.current;
@@ -68,24 +80,21 @@ export function ZodiacCinematic() {
     const x = (touch.clientX - rect.left - rect.width / 2) / 30;
     const y = (touch.clientY - rect.top - rect.height / 2) / 30;
     el.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-  };
+  }, []);
 
-  // Reset transform on mouse leave
-  const handleMouseLeave = () => {
+  // Memoize mouse leave handler
+  const handleMouseLeave = useCallback(() => {
     if (ref.current) {
       ref.current.style.transform = "rotateY(0) rotateX(0)";
     }
-  };
+  }, []);
 
-  // Reset transform on touch end
-  const handleTouchEnd = () => {
+  // Memoize touch end handler
+  const handleTouchEnd = useCallback(() => {
     if (ref.current) {
       ref.current.style.transform = "rotateY(0) rotateX(0)";
     }
-  };
-
-  const current = zodiac[index];
-  const map = constellationMap[current.name];
+  }, []);
 
   return (
     <ZodiacWrapper>
@@ -130,20 +139,15 @@ export function ZodiacCinematic() {
           })}
 
           {/* Render constellation stars - hidden in light mode */}
-          {!isLightMode && map.stars.map((s, i) => {
-            const intensity: StarIntensity = getStarIntensity();
-            const size = getStarSize(intensity);
-
-            return (
-              <GalaxyStar
-                key={`star-${i}-${current.name}`}
-                cx={s.x}
-                cy={s.y}
-                r={size}
-                intensity={intensity}
-              />
-            );
-          })}
+          {!isLightMode && map.stars.map((s, i) => (
+            <GalaxyStar
+              key={`star-${i}-${current.name}`}
+              cx={s.x}
+              cy={s.y}
+              r={starData.size}
+              intensity={starData.intensity}
+            />
+          ))}
         </ConstellationSVG>
 
         <ZodiacName>{current.name}</ZodiacName>
