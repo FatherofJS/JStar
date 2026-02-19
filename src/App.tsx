@@ -20,7 +20,7 @@ function App() {
 
 
 
-//dong mo sidebar
+//close sidebar
   const [isClosed, setIsClosed] = useState(false);
 
 
