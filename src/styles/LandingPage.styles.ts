@@ -314,6 +314,114 @@ export const Particle = styled.span`
 // LANDING PAGE LAYOUT STYLES
 // =============================================================================
 
+export const Header = styled.header<{ $scrolled: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: ${({ $scrolled }) => ($scrolled ? "64px" : "80px")};
+  padding: 0 40px;
+
+  background: ${({ $scrolled }) => 
+    $scrolled ? "var(--nav-bg)" : "transparent"};
+  backdrop-filter: ${({ $scrolled }) => 
+    $scrolled ? "blur(20px)" : "none"};
+  
+  border-bottom: ${({ $scrolled }) => 
+    $scrolled ? "1px solid var(--glass-border)" : "none"};
+
+  box-shadow: ${({ $scrolled }) => 
+    $scrolled ? "0 4px 30px var(--shadow-color)" : "none"};
+
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+
+  @media (max-width: 768px) {
+    height: 60px;
+    padding: 0 20px;
+  }
+`;
+
+export const HeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 48px;
+
+  @media (max-width: 768px) {
+    gap: 24px;
+  }
+`;
+
+export const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    gap: 12px;
+  }
+`;
+
+export const Logo = styled.div`
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  background: linear-gradient(90deg, var(--hero-gradient-start), var(--hero-gradient-mid), var(--hero-gradient-end));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 30px var(--text-shadow);
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+`;
+
+export const NavMenu = styled.nav`
+  display: flex;
+  align-items: center;
+  gap: 32px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const NavMenuMobile = styled.div<{ $open: boolean }>`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 20px;
+    gap: 16px;
+    
+    opacity: ${({ $open }) => ($open ? 1 : 0)};
+    max-height: ${({ $open }) => ($open ? "300px" : "0")};
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+`;
+
 export const Wrapper = styled.div`
   min-height: 400vh;
   color: var(--text-inverse);
@@ -423,6 +531,79 @@ export const NavItem = styled.div<{ $active: boolean }>`
   }
 `;
 
+export const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(120, 140, 255, 0.15);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--text-inverse);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(120, 140, 255, 0.25);
+    box-shadow: 0 0 15px rgba(120, 140, 255, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 10px 14px;
+    width: 100%;
+    justify-content: center;
+  }
+`;
+
+export const UserAvatar = styled.div`
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #787cff, #a85aff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 12px;
+  color: white;
+`;
+
+export const UserName = styled.span`
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  
+  @media (max-width: 768px) {
+    max-width: none;
+  }
+`;
+
+export const LogoutButton = styled.button`
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-inverse);
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+
+  &:hover {
+    background: rgba(255, 100, 100, 0.2);
+    border-color: rgba(255, 100, 100, 0.4);
+    color: #ffaaaa;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+  }
+`;
+
 export const NavRight = styled.div`
   display: flex;
   align-items: center;
@@ -430,6 +611,262 @@ export const NavRight = styled.div`
   
   @media (max-width: 768px) {
     display: none;
+  }
+`;
+
+// =============================================================================
+// USER MENU STYLES
+// =============================================================================
+
+export const UserMenuWrapper = styled.div`
+  position: relative;
+`;
+
+export const UserInfoButton = styled.div<{ $hasMenu?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(120, 140, 255, 0.15);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--text-inverse);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(120, 140, 255, 0.25);
+    box-shadow: 0 0 15px rgba(120, 140, 255, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 10px 14px;
+    width: 100%;
+    justify-content: center;
+  }
+`;
+
+export const UserMenuDropdown = styled.div<{ $open: boolean }>`
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px var(--shadow-color);
+  overflow: hidden;
+  opacity: ${({ $open }) => ($open ? 1 : 0)};
+  visibility: ${({ $open }) => ($open ? 'visible' : 'hidden')};
+  transform: ${({ $open }) => ($open ? 'translateY(0)' : 'translateY(-10px)')};
+  transition: all 0.3s ease;
+  z-index: 1000;
+`;
+
+export const UserMenuSection = styled.div`
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--glass-border);
+`;
+
+export const UserMenuLabel = styled.div`
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+`;
+
+export const UserMenuEmail = styled.div`
+  font-size: 13px;
+  color: var(--text-inverse);
+  word-break: break-all;
+`;
+
+export const UserMenuName = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-inverse);
+  margin-bottom: 4px;
+`;
+
+export const UserMenuItem = styled.button<{ $danger?: boolean }>`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  color: ${({ $danger }) => ($danger ? '#ff6b6b' : 'var(--text-inverse)')};
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${({ $danger }) => ($danger ? 'rgba(255, 107, 107, 0.15)' : 'var(--nav-item-hover)')};
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+`;
+
+export const UserMenuDivider = styled.div`
+  height: 1px;
+  background: var(--glass-border);
+  margin: 4px 0;
+`;
+
+// =============================================================================
+// CHANGE PASSWORD MODAL STYLES
+// =============================================================================
+
+export const PasswordModalOverlay = styled.div<{ $open: boolean }>`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: ${({ $open }) => ($open ? 1 : 0)};
+  visibility: ${({ $open }) => ($open ? 'visible' : 'hidden')};
+  transition: all 0.3s ease;
+`;
+
+export const PasswordModalContainer = styled.div<{ $open: boolean }>`
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 32px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  transform: ${({ $open }) => ($open ? 'scale(1)' : 'scale(0.9)')};
+  transition: all 0.3s ease;
+`;
+
+export const PasswordModalHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+`;
+
+export const PasswordModalTitle = styled.h3`
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-inverse);
+  margin: 0;
+`;
+
+export const PasswordModalClose = styled.button`
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  
+  &:hover {
+    color: var(--text-inverse);
+  }
+`;
+
+export const PasswordForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+export const PasswordInputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+export const PasswordInputLabel = styled.label`
+  font-size: 13px;
+  color: var(--text-secondary);
+`;
+
+export const PasswordInput = styled.input`
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-inverse);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+  
+  &:focus {
+    border-color: var(--hero-gradient-start);
+    box-shadow: 0 0 0 3px rgba(120, 140, 255, 0.2);
+  }
+  
+  &::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+  }
+`;
+
+export const PasswordSubmitButton = styled.button`
+  padding: 14px 24px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #787cff, #a85aff);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(120, 140, 255, 0.4);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+`;
+
+export const PasswordErrorMessage = styled.div`
+  color: #ff6b6b;
+  font-size: 13px;
+  text-align: center;
+  padding: 8px;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 6px;
+`;
+
+export const PasswordSuccessMessage = styled.div`
+  color: #4ade80;
+  font-size: 14px;
+  text-align: center;
+  padding: 16px;
+  background: rgba(74, 222, 128, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  
+  svg {
+    width: 20px;
+    height: 20px;
   }
 `;
 

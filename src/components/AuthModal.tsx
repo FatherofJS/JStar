@@ -23,11 +23,13 @@ import {
   CosmicBackground,
   Star,
 } from "../styles/AuthModal.styles";
+import { useAuth } from "../contexts/AuthContext";
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialTab?: "login" | "register";
+  onLoginSuccess?: () => void;
 }
 
 // Generate random stars for cosmic background
@@ -42,7 +44,8 @@ const generateStars = (count: number) => {
 
 const stars = generateStars(8);
 
-export default function AuthModal({ isOpen, onClose, initialTab = "login" }: AuthModalProps) {
+export default function AuthModal({ isOpen, onClose, initialTab = "login", onLoginSuccess }: AuthModalProps) {
+  const { login } = useAuth();
   const [activeTab, setActiveTab] = useState<"login" | "register">(initialTab);
   const [isClosing, setIsClosing] = useState(false);
   const [formData, setFormData] = useState({
@@ -52,6 +55,8 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login" }: Aut
   });
   const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
   const [shake, setShake] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   // Reset form when modal opens
   useEffect(() => {
@@ -60,6 +65,8 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login" }: Aut
       setFormData({ email: "", password: "", name: "" });
       setErrors({});
       setIsClosing(false);
+      setApiError(null);
+      setIsLoading(false);
     }
   }, [isOpen, initialTab]);
 
@@ -126,7 +133,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login" }: Aut
   }, [errors]);
 
   // Handle form submit
-  const handleSubmit = useCallback((e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!validate()) {
@@ -135,15 +142,35 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login" }: Aut
       return;
     }
 
-    // TODO: Implement actual login/register logic
-    console.log("Form submitted:", { ...formData, type: activeTab });
-    handleClose();
-  }, [formData, activeTab, validate, handleClose]);
+    setIsLoading(true);
+    setApiError(null);
+
+    if (activeTab === "login") {
+      // Handle login
+      const result = await login(formData.email, formData.password);
+      
+      if (result.success) {
+        handleClose();
+        onLoginSuccess?.();
+      } else {
+        setApiError(result.error || "Login failed. Please try again.");
+        setShake(true);
+        setTimeout(() => setShake(false), 500);
+      }
+    } else {
+      // Handle registration - for now just close the modal
+      console.log("Registration submitted:", formData);
+      handleClose();
+    }
+
+    setIsLoading(false);
+  }, [formData, activeTab, validate, handleClose, login, onLoginSuccess]);
 
   // Switch tab
   const switchTab = useCallback((tab: "login" | "register") => {
     setActiveTab(tab);
     setErrors({});
+    setApiError(null);
   }, []);
 
   if (!isOpen && !isClosing) return null;
@@ -230,6 +257,9 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login" }: Aut
               autoComplete={activeTab === "login" ? "current-password" : "new-password"}
             />
             {errors.password && <ErrorMessage $shake={shake}>{errors.password}</ErrorMessage>}
+            {apiError && activeTab === "login" && (
+              <ErrorMessage $shake={shake}>{apiError}</ErrorMessage>
+            )}
           </InputGroup>
 
           {activeTab === "login" && (
@@ -238,8 +268,8 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login" }: Aut
             </ForgotPassword>
           )}
 
-          <SubmitButton type="submit">
-            {activeTab === "login" ? "Sign In" : "Create Account"}
+          <SubmitButton type="submit" disabled={isLoading}>
+            {isLoading ? "Signing in..." : activeTab === "login" ? "Sign In" : "Create Account"}
           </SubmitButton>
 
           <Divider>
