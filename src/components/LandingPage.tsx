@@ -4,6 +4,7 @@ import { useRef, useState, useCallback, memo } from "react";
 import { ZodiacCinematic } from "./ZodiacCinematic";
 import { SpaceButton } from "./SpaceButton";
 import { Background } from "./Background";
+import AuthModal from "./AuthModal";
 import { useSectionObserver } from "../hooks/useSectionObserver";
 import { useScrollPosition } from "../hooks/useScrollPosition";
 import { SECTIONS } from "../constants";
@@ -38,6 +39,7 @@ export default function LandingPage() {
 
   // UI state
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   // Custom hooks for scroll and section tracking
   const { isScrolled } = useScrollPosition();
@@ -55,6 +57,16 @@ export default function LandingPage() {
   // Memoize setIsOpen toggle
   const toggleMenu = useCallback(() => {
     setIsOpen(prev => !prev);
+  }, []);
+
+  // Handle open auth modal
+  const handleOpenAuthModal = useCallback(() => {
+    setIsAuthModalOpen(true);
+  }, []);
+
+  // Handle close auth modal
+  const handleCloseAuthModal = useCallback(() => {
+    setIsAuthModalOpen(false);
   }, []);
 
   return (
@@ -120,7 +132,7 @@ export default function LandingPage() {
             <DividerGlow />
 
             <Actions>
-              <SpaceButton />
+              <SpaceButton onClick={handleOpenAuthModal} />
             </Actions>
           </Content>
 
@@ -168,6 +180,9 @@ export default function LandingPage() {
           <p>Get personalized astrological predictions for your future.</p>
         </GlassBox>
       </Section>
+
+      {/* Auth Modal */}
+      <AuthModal isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
     </Wrapper>
   );
 }

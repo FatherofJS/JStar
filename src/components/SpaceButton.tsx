@@ -1,6 +1,6 @@
 // SpaceButton Component - Animated CTA button with cosmic effects
 
-import { useRef, useState, useCallback, memo } from "react";
+import { useRef, useState, useCallback, forwardRef, useImperativeHandle, memo } from "react";
 import {
   WrapperBH,
   ButtonBH,
@@ -24,13 +24,20 @@ const ParticlesMemo = memo(() => (
   </>
 ));
 
-export function SpaceButton() {
-  const ref = useRef<HTMLButtonElement>(null);
+interface SpaceButtonProps {
+  onClick?: () => void;
+}
+
+export const SpaceButton = forwardRef<HTMLButtonElement, SpaceButtonProps>(function SpaceButton({ onClick }, ref) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const [waves, setWaves] = useState<number[]>([]);
+
+  // Expose the button ref to parent components
+  useImperativeHandle(ref, () => buttonRef.current as HTMLButtonElement);
 
   // Memoize mouse move handler
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    const btn = ref.current;
+    const btn = buttonRef.current;
     if (!btn) return;
 
     const rect = btn.getBoundingClientRect();
@@ -42,7 +49,7 @@ export function SpaceButton() {
 
   // Memoize touch move handler
   const handleTouchMove = useCallback((e: React.TouchEvent<HTMLButtonElement>) => {
-    const btn = ref.current;
+    const btn = buttonRef.current;
     if (!btn) return;
 
     const touch = e.touches[0];
@@ -55,15 +62,15 @@ export function SpaceButton() {
 
   // Memoize mouse leave handler
   const handleMouseLeave = useCallback(() => {
-    if (ref.current) {
-      ref.current.style.transform = "translate(0,0) scale(1)";
+    if (buttonRef.current) {
+      buttonRef.current.style.transform = "translate(0,0) scale(1)";
     }
   }, []);
 
   // Memoize touch end handler
   const handleTouchEnd = useCallback(() => {
-    if (ref.current) {
-      ref.current.style.transform = "translate(0,0) scale(1)";
+    if (buttonRef.current) {
+      buttonRef.current.style.transform = "translate(0,0) scale(1)";
     }
   }, []);
 
@@ -74,12 +81,27 @@ export function SpaceButton() {
     setTimeout(() => {
       setWaves((prev) => prev.filter((x) => x !== id));
     }, 800);
-  }, []);
+    
+    // Call the onClick prop if provided
+    if (onClick) {
+      onClick();
+    }
+  }, [onClick]);
+
+  // Combine refs
+  const combinedRef = useCallback((element: HTMLButtonElement | null) => {
+    (buttonRef as React.MutableRefObject<HTMLButtonElement | null>).current = element;
+    if (typeof ref === 'function') {
+      ref(element);
+    } else if (ref) {
+      (ref as React.MutableRefObject<HTMLButtonElement | null>).current = element;
+    }
+  }, [ref]);
 
   return (
     <WrapperBH>
       <ButtonBH
-        ref={ref}
+        ref={combinedRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onTouchMove={handleTouchMove}
@@ -99,5 +121,5 @@ export function SpaceButton() {
       </ButtonBH>
     </WrapperBH>
   );
-}
+});
 
