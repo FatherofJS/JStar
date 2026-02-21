@@ -18,7 +18,7 @@ import {
   Actions,
   HeroRight,
   ScrollButton,
-} from "./HeroSection.styles.ts";
+} from "./styles/HeroSection.styles.ts";
 
 // SVG Icons
 const ChevronDownIcon = () => (

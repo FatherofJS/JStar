@@ -14,7 +14,7 @@ import {
   OpenSourceButtons,
   OpenSourceButton,
   MaxWidthContainer,
-} from "./OpenSourceSection.styles.ts";
+} from "./styles/OpenSourceSection.styles.ts";
 
 // SVG Icons
 const CodeIcon = () => (

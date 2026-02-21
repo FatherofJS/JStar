@@ -27,7 +27,7 @@ import {
   UserMenuEmail,
   UserMenuItem,
   UserMenuDivider,
-} from "./Header.styles.ts";
+} from "./styles/Header.styles.ts";
 
 // SVG Icons
 const LockIcon = () => (

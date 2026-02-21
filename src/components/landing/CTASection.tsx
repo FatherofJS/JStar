@@ -10,7 +10,7 @@ import {
   CTAButton,
   CTANote,
   MaxWidthContainer,
-} from "./CTASection.styles.ts";
+} from "./styles/CTASection.styles.ts";
 
 // SVG Icons
 const ArrowRightIcon = () => (

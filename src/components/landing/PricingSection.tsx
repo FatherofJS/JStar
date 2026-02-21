@@ -22,7 +22,7 @@ import {
   PricingButton,
   PricingNote,
   MaxWidthContainer,
-} from "./PricingSection.styles.ts";
+} from "./styles/PricingSection.styles.ts";
 
 // SVG Icons
 const CheckIcon = () => (

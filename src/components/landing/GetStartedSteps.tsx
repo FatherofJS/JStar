@@ -12,7 +12,7 @@ import {
   StepTitle,
   StepDescription,
   MaxWidthContainer,
-} from "./GetStartedSteps.styles.ts";
+} from "./styles/GetStartedSteps.styles.ts";
 
 interface Step {
   number: number;
