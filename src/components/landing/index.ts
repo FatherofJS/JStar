@@ -7,7 +7,7 @@ export {
   FeatureSectionAlt, 
   AIInterpretationSection 
 } from "./FeatureSection";
-export type { FeatureItem, FeatureSectionProps } from "./FeatureSection";
+export type { FeatureItem } from "./FeatureSection";
 export { default as PricingSection } from "./PricingSection";
 export { default as GetStartedSteps } from "./GetStartedSteps";
 export { default as OpenSourceSection } from "./OpenSourceSection";

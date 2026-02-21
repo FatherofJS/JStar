@@ -1,5 +1,6 @@
 // FeatureSection Component - Reusable feature section with image and content
 
+import type { FeatureItem } from "../../data/landingFeatures";
 import {
   SectionContainer,
   SectionContainerAlt,
@@ -48,18 +49,6 @@ const ZoomInIcon = () => (
     <line x1="8" x2="14" y1="11" y2="11"/>
   </svg>
 );
-
-export interface FeatureItem {
-  title: string;
-  description: string;
-  items: string[];
-  imageSrc: string;
-  imageAlt: string;
-  badge?: string;
-  badgeIcon?: "chart" | "sparkles";
-  reversed?: boolean;
-  glowColor?: "blue" | "purple";
-}
 
 interface FeatureSectionProps {
   feature: FeatureItem;
@@ -322,5 +311,5 @@ function AIInterpretationSection({ feature }: FeatureSectionProps) {
 }
 
 export { FeatureSection, FeatureSectionAlt, AIInterpretationSection };
-export type { FeatureSectionProps };
+export type { FeatureItem } from "../../data/landingFeatures";
 
