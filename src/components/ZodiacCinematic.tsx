@@ -1,4 +1,4 @@
-// ZodiacCinematic Component - Animated zodiac constellation visualization
+// ZodiacCinematic Component - Optimized for performance
 
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import {
@@ -24,7 +24,7 @@ import { useTheme } from "../contexts/ThemeContext";
 const useStarData = (zodiacName: string) => {
   return useMemo(() => {
     const intensity = Math.random();
-    const size = intensity > 0.7 ? 1.4 : intensity > 0.4 ? 1 : 0.6;
+    const size = intensity > 0.7 ? 1.2 : intensity > 0.4 ? 0.8 : 0.5;
     return { intensity, size };
   }, [zodiacName]);
 };
@@ -32,7 +32,6 @@ const useStarData = (zodiacName: string) => {
 export function ZodiacCinematic() {
   const [index, setIndex] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const lastMouseMove = useRef(0);
   const { theme } = useTheme();
   const isLightMode = theme === "light";
 
@@ -51,46 +50,18 @@ export function ZodiacCinematic() {
     return () => clearInterval(interval);
   }, []);
 
-  // Memoize mouse move handler
+  // Simplified mouse move handler - no throttling for smoother interaction
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const now = Date.now();
-    if (now - lastMouseMove.current < 50) return;
-    lastMouseMove.current = now;
-
     const el = ref.current;
     if (!el) return;
 
     const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) / 30;
-    const y = (e.clientY - rect.top - rect.height / 2) / 30;
+    const x = (e.clientX - rect.left - rect.width / 2) / 40;
+    const y = (e.clientY - rect.top - rect.height / 2) / 40;
     el.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
   }, []);
 
-  // Memoize touch move handler
-  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
-    const now = Date.now();
-    if (now - lastMouseMove.current < 50) return;
-    lastMouseMove.current = now;
-
-    const el = ref.current;
-    if (!el) return;
-
-    const touch = e.touches[0];
-    const rect = el.getBoundingClientRect();
-    const x = (touch.clientX - rect.left - rect.width / 2) / 30;
-    const y = (touch.clientY - rect.top - rect.height / 2) / 30;
-    el.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-  }, []);
-
-  // Memoize mouse leave handler
   const handleMouseLeave = useCallback(() => {
-    if (ref.current) {
-      ref.current.style.transform = "rotateY(0) rotateX(0)";
-    }
-  }, []);
-
-  // Memoize touch end handler
-  const handleTouchEnd = useCallback(() => {
     if (ref.current) {
       ref.current.style.transform = "rotateY(0) rotateX(0)";
     }
@@ -102,12 +73,10 @@ export function ZodiacCinematic() {
         ref={ref}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
       >
         <DeepGlow
-          color="rgba(120,140,255,.25)"
-          style={{ filter: "blur(180px)", opacity: 0.4 }}
+          color="rgba(120,140,255,0.2)"
+          style={{ filter: "blur(120px)", opacity: 0.3 }}
         />
 
         <AuraRing />

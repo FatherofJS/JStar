@@ -1,50 +1,36 @@
 // LandingPage styled components and keyframes
-// Organized by component for better maintainability
+// Optimized for performance
 
 import styled, { keyframes } from "styled-components";
 
 // =============================================================================
-// ANIMATIONS
+// ANIMATIONS - Simplified for performance
 // =============================================================================
 
-// ZodiacCinematic animations
+// ZodiacCinematic animations - simplified
 export const floatSlow = keyframes`
-  0% { transform: translateY(-6px) }
-  50% { transform: translateY(6px) }
-  100% { transform: translateY(-6px) }
+  0% { transform: translateY(-3px) }
+  50% { transform: translateY(3px) }
+  100% { transform: translateY(-3px) }
 `;
 
 export const rotateUltraSlow = keyframes`
-  from { transform: rotate(0deg) }
-  to { transform: rotate(360deg) }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 `;
 
 export const drawLine = keyframes`
-  0% {
-    stroke-dashoffset: 140;
-    opacity: .15;
-  }
-  70% {
-    opacity: 1;
-  }
-  100% {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
+  0% { stroke-dashoffset: 140; opacity: 0.15; }
+  70% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
 `;
 
 export const fadeInSymbol = keyframes`
-  from {
-    opacity: 0;
-    transform: translate(-50%, -48%) scale(.95);
-  }
-  to {
-    opacity: .85;
-    transform: translate(-50%, -50%) scale(1);
-  }
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.95); }
+  to { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
 `;
 
-// Space button animations
+// Space button animations - simplified
 export const orbit = keyframes`
   0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
   100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
@@ -56,24 +42,24 @@ export const vortexSpin = keyframes`
 `;
 
 export const shockwaveAnim = keyframes`
-  0% { opacity:.8; transform: scale(.3); }
-  100% { opacity:0; transform: scale(3.2); }
+  0% { opacity: 0.8; transform: scale(0.3); }
+  100% { opacity: 0; transform: scale(3.2); }
 `;
 
 export const glowPulse = keyframes`
-  0%,100% { opacity:.5; }
-  50% { opacity:1; }
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 `;
 
-// Landing page section animations
+// Landing page section animations - simplified
 export const zoomIn = keyframes`
-  from { transform: scale(0.9); opacity:0; filter: blur(8px); }
-  to { transform: scale(1); opacity:1; filter: blur(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 `;
 
 export const zoomOut = keyframes`
-  from { transform: scale(1); opacity:1; }
-  to { transform: scale(0.95); opacity:0.5; }
+  from { opacity: 1; }
+  to { opacity: 0.5; }
 `;
 
 // =============================================================================
