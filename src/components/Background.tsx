@@ -1,4 +1,4 @@
-// Background Component - Simplified for performance
+// Background Component - Beautiful cosmic background with vibrant nebula
 import { useMemo } from "react";
 import {
   BackgroundWrapper,
@@ -15,15 +15,15 @@ import {
 
 // Generate shooting star data
 const generateShootingStars = () =>
-  Array.from({ length: 8 }, (_, i) => ({
+  Array.from({ length: 3 }, (_, i) => ({
     id: i,
-    top: Math.random() * 70,
+    top: Math.random() * 60,
     left: Math.random() * 100,
-    delay: Math.random() * 12,
-    duration: 3 + Math.random() * 4,
+    delay: Math.random() * 15,
+    duration: 2 + Math.random() * 3,
   }));
 
-// Pre-generate shooting stars (computed once at module load)
+// Pre-generate shooting stars
 const SHOOTING_STARS = generateShootingStars();
 
 interface BackgroundProps {
@@ -31,31 +31,49 @@ interface BackgroundProps {
 }
 
 export function Background({ showShootingStars = true }: BackgroundProps) {
-  // Memoize shooting stars to prevent recreation
   const shootingStars = useMemo(() => SHOOTING_STARS, []);
   
   return (
     <BackgroundWrapper>
-      {/* Nebula drifting effect */}
-      <NebulaLayer />
+      {/* Nebula layers - multiple colorful nebulas */}
+      <NebulaLayer>
+        <div style={{
+          position: 'absolute',
+          inset: '-20%',
+          background: 'radial-gradient(ellipse at 20% 30%, rgba(147, 51, 234, 0.25) 0%, rgba(126, 34, 206, 0.15) 30%, transparent 60%)',
+          animation: 'nebulaPulse 15s ease-in-out infinite',
+        }} />
+        <div style={{
+          position: 'absolute',
+          inset: '-20%',
+          background: 'radial-gradient(ellipse at 70% 60%, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.12) 30%, transparent 60%)',
+          animation: 'nebulaPulse 12s ease-in-out infinite 2s',
+        }} />
+        <div style={{
+          position: 'absolute',
+          inset: '-20%',
+          background: 'radial-gradient(ellipse at 50% 80%, rgba(236, 72, 153, 0.15) 0%, rgba(219, 39, 119, 0.1) 30%, transparent 60%)',
+          animation: 'nebulaPulse 18s ease-in-out infinite 4s',
+        }} />
+      </NebulaLayer>
       
-      {/* Aurora wave effect - hidden for performance */}
+      {/* Aurora wave effect - hidden */}
       <AuroraLayer />
       
-      {/* Static star layers - simplified */}
+      {/* Star layers */}
       <StarsLayer />
       <StarsLayer2 />
       <StarsLayer3 />
       
-      {/* Static star field without scroll parallax */}
+      {/* Star field */}
       <StarField>
         <CosmicGlow />
       </StarField>
       
-      {/* Grain overlay - hidden for performance */}
+      {/* Grain overlay - hidden */}
       <GrainOverlay />
       
-      {/* Shooting stars - reduced count */}
+      {/* Shooting stars */}
       {showShootingStars &&
         shootingStars.map((star) => (
           <ShootingStar
