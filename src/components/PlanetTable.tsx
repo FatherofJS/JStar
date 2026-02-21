@@ -1,161 +1,92 @@
-import { MOCK_CHART } from '../data/mockData.ts';
-import { ZODIAC_SIGNS } from '../types/chart.ts';
+import React, { useState } from 'react';
+import './PlanetTable.css';
+import type { ChartData } from '../types/chart';
 
-export function PlanetTable(){
-    const planets = MOCK_CHART.planets;
-
-  // Function to format degree notation (e.g., 24°17'52")
-  const formatDegree = (longitude: number, signDegree: number) => {
-    const degrees = Math.floor(signDegree);
-    const minutesDecimal = (signDegree - degrees) * 60;
-    const minutes = Math.floor(minutesDecimal);
-    const seconds = Math.floor((minutesDecimal - minutes) * 60);
-    
-    return `${degrees}°${minutes}'${seconds}"`;
-  };
-
-  // Get house number as ordinal (1st, 2nd, 3rd, etc.)
-  const getHouseOrdinal = (house: number): string => {
-    const suffixes = ['th', 'st', 'nd', 'rd'];
-    const v = house % 100;
-    return house + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
-  };
-
-  // Define planet order and their display info
-  const planetOrder = [
-    { id: 'sun', label: 'Sun:', color: '#9B59D6' },
-    { id: 'moon', label: 'Moon:', color: '#9B59D6' },
-    { id: 'mercury', label: 'Mercury:', color: '#9B59D6' },
-    { id: 'venus', label: 'Venus:', color: '#9B59D6' },
-    { id: 'mars', label: 'Mars:', color: '#9B59D6' },
-    { id: 'jupiter', label: 'Jupiter:', color: '#9B59D6' },
-    { id: 'saturn', label: 'Saturn:', color: '#9B59D6' },
-    { id: 'uranus', label: 'Uranus:', color: '#9B59D6' },
-    { id: 'neptune', label: 'Neptune:', color: '#9B59D6' },
-    { id: 'pluto', label: 'Pluto:', color: '#9B59D6' },
-    { id: 'north_node', label: 'North Node (T):', color: '#9B59D6' },
-    { id: 'south_node', label: 'South Node (T):', color: '#7B68A8' },
-    { id: 'ascendant', label: 'Ascendant:', color: '#9B59D6' },
-    { id: 'midheaven', label: 'Midheaven (MC):', color: '#9B59D6' },
-  ];
-
-  // Get planet data by ID
-  const getPlanetData = (id: string) => {
-    if (id === 'ascendant') {
-      return {
-        degree: formatDegree(MOCK_CHART.houses[0].longitude, MOCK_CHART.houses[0].signDegree),
-        house: '1th'
-      };
-    }
-    if (id === 'midheaven') {
-      return {
-        degree: formatDegree(MOCK_CHART.houses[9].longitude, MOCK_CHART.houses[9].signDegree),
-        house: '10th'
-      };
-    }
-    
-    const planet = planets.find(p => p.id === id);
-    if (!planet) return { degree: '', house: '' };
-    
-    return {
-      degree: formatDegree(planet.longitude, planet.signDegree),
-      house: getHouseOrdinal(planet.house)
-    };
-  };
-
-  return (
-    <div style={{
-      backgroundColor: '#0a0e1a',
-      borderRadius: '8px',
-      padding: '16px',
-      color: '#fff',
-      fontFamily: 'system-ui, -apple-system, sans-serif',
-      fontSize: '13px',
-      minWidth: '280px'
-    }}>
-      {/* Header */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '12px',
-        paddingBottom: '8px',
-        borderBottom: '1px solid #1a2332'
-      }}>
-        <h3 style={{
-          margin: 0,
-          fontSize: '14px',
-          fontWeight: 600,
-          color: '#e0e0e0'
-        }}>
-          Natal Points
-        </h3>
-        <span style={{
-          fontSize: '18px',
-          color: '#666',
-          cursor: 'pointer'
-        }}>
-          ⌄
-        </span>
-      </div>
-
-      {/* Planet list */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        {planetOrder.map((item) => {
-          const data = getPlanetData(item.id);
-          
-          return (
-            <div
-              key={item.id}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '120px 80px 40px',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-            >
-              {/* Planet name */}
-              <span style={{
-                color: '#a0a0a0',
-                fontSize: '12px'
-              }}>
-                {item.label}
-              </span>
-
-              {/* Degree indicator */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}>
-                <div style={{
-                  width: '12px',
-                  height: '12px',
-                  backgroundColor: item.color,
-                  borderRadius: '2px',
-                  flexShrink: 0
-                }} />
-                <span style={{
-                  color: '#fff',
-                  fontSize: '12px',
-                  fontVariantNumeric: 'tabular-nums'
-                }}>
-                  {data.degree}
-                </span>
-              </div>
-
-              {/* House */}
-              <span style={{
-                color: '#a0a0a0',
-                fontSize: '12px',
-                textAlign: 'right'
-              }}>
-                {data.house}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
+interface PlanetTableProps {
+    chartData: ChartData;
 }
+
+const PlanetTable: React.FC<PlanetTableProps> = ({ chartData }) => {
+    const { planets, angles } = chartData;
+    const [isExpanded, setIsExpanded] = useState(true);
+
+    const toggleExpanded = () => {
+        setIsExpanded(!isExpanded);
+    };
+
+    // Combine planets and angles
+    const allPoints = [
+        ...planets,
+        ...angles.map(a => ({
+            id: a.id,
+            name: a.name,
+            symbol: '',
+            sign: a.sign,
+            signDegree: a.signDegree,
+            longitude: a.longitude,
+            house: a.name === 'Ascendant' ? 1 :
+                   a.name === 'Midheaven' ? 10 :
+                   a.name === 'Descendant' ? 7 : 4,
+            speed: 0,
+            retrograde: false
+        }))
+    ];
+
+    // Format degree display
+    const formatDegree = (signDegree: number) => {
+        const degrees = Math.floor(signDegree);
+        const minutes = Math.round((signDegree - degrees) * 60);
+        return `${degrees}°${minutes}'`;
+    };
+
+    // Get house ordinal
+    const getHouseOrdinal = (house: number) => {
+        if (house === 11 || house === 12 || house === 13) return `${house}th`;
+        const lastDigit = house % 10;
+        if (lastDigit === 1) return `${house}st`;
+        if (lastDigit === 2) return `${house}nd`;
+        if (lastDigit === 3) return `${house}rd`;
+        return `${house}th`;
+    };
+
+    return (
+        <div className="planet-table-container">
+            <div className="planet-table-header" onClick={toggleExpanded}>
+                <h3 className="table-title">Natal Points</h3>
+                <button className="expand-btn" aria-expanded={isExpanded}>
+                    <svg 
+                        width="12" 
+                        height="12" 
+                        viewBox="0 0 12 12" 
+                        fill="none"
+                        style={{ 
+                            transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transition: 'transform 0.2s ease'
+                        }}
+                    >
+                        <path d="M6 9L3 6L9 6L6 9Z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div className={`planet-table-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
+                <table className="planet-table">
+                    <tbody>
+                        {allPoints.map((point, index) => (
+                            <tr key={point.id || index} className="planet-row">
+                                <td className="planet-name">{point.name}:</td>
+                                <td className="planet-position">
+                                    <span className="position-indicator"></span>
+                                    {formatDegree(point.signDegree)}
+                                </td>
+                                <td className="planet-house">{getHouseOrdinal(point.house)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+};
+
+export default PlanetTable;
