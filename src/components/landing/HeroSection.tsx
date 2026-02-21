@@ -3,8 +3,8 @@
 import { useRef, useCallback, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ZodiacCinematic } from "../../components/ZodiacCinematic";
-import { StarPlayButton } from "../../components/StarPlayButton";
-import { SpaceStyleButton } from "../../components/SpaceStyleButton";
+import { StarPlayButton } from "../button/StarPlayButton";
+import { SpaceStyleButton } from "../button/SpaceStyleButton";
 import { useAuth } from "../../contexts/AuthContext";
 import { SECTIONS } from "../../constants";
 import {
