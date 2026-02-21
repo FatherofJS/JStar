@@ -22,8 +22,8 @@ import {
   Footer,
   CosmicBackground,
   Star,
-} from "../styles/AuthModal.styles";
-import { useAuth } from "../contexts/AuthContext";
+} from "./AuthModal.styles.ts";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface AuthModalProps {
   isOpen: boolean;

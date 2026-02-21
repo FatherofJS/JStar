@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { Background } from "./background/Background";
-import AuthModal from "./AuthModal";
+import AuthModal from "./auth/AuthModal";
 import { useSectionObserver } from "../hooks/useSectionObserver";
 import { SECTIONS } from "../constants";
 import { useAuth } from "../contexts/AuthContext";
