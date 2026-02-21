@@ -64,6 +64,10 @@
   --hero-gradient-mid: #c084fc;
   --hero-gradient-end: #22d3ee;
   --text-shadow: rgba(122, 162, 255, 0.6);
+
+  /* ===== SECONDARY BUTTON ===== */
+  --secondary-btn-bg: #ffffff;
+  --secondary-btn-color: #000000;
 }
 
 /* Light Mode Theme */
@@ -114,6 +118,10 @@
   --hero-gradient-mid: #a855f7;
   --hero-gradient-end: #06b6d4;
   --text-shadow: rgba(99, 102, 241, 0.6);
+
+  /* ===== SECONDARY BUTTON ===== */
+  --secondary-btn-bg: #000000;
+  --secondary-btn-color: #ffffff;
 }
 
 /* ===== RESET ===== */

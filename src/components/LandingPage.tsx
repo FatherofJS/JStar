@@ -3,7 +3,6 @@
 import { useRef, useState, useCallback, memo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ZodiacCinematic } from "./ZodiacCinematic";
-import { SpaceButton } from "./SpaceButton";
 import { Background } from "./Background";
 import AuthModal from "./AuthModal";
 import { useSectionObserver } from "../hooks/useSectionObserver";
@@ -57,6 +56,11 @@ import {
   PasswordErrorMessage,
   PasswordSuccessMessage,
 } from "../styles/LandingPage.styles";
+
+// Import StarPlayButton component
+import { StarPlayButton } from "./StarPlayButton";
+// Import SpaceStyleButton component
+import { SpaceStyleButton } from "./SpaceStyleButton";
 
 // Memoized nav item to prevent re-renders
 const NavItemMemo = memo(NavItem);
@@ -400,7 +404,10 @@ export default function LandingPage() {
             <DividerGlow />
 
             <Actions>
-              <SpaceButton onClick={handleStarButtonClick} />
+              <StarPlayButton onClick={handleStarButtonClick} />
+              <SpaceStyleButton>
+                VIEW CHART
+              </SpaceStyleButton>
             </Actions>
           </Content>
 

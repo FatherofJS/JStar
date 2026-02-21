@@ -255,6 +255,49 @@ export const ButtonBH = styled.button`
   }
 `;
 
+// Secondary Button Styles - White in dark mode, black in light mode
+export const SecondaryButtonWrapper = styled.div`
+  display: inline-block;
+  position: relative;
+`;
+
+export const SecondaryButton = styled.button`
+  position: relative;
+  overflow: hidden;
+
+  width: 16rem;
+  height: 3.6rem;
+  border-radius: 60px;
+  border: none;
+  cursor: pointer;
+
+  font-weight: 600;
+  letter-spacing: 1px;
+
+  /* Theme-aware colors using CSS variables */
+  background: var(--secondary-btn-bg);
+  color: var(--secondary-btn-color);
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media (max-width: 480px) {
+    width: 14rem;
+    height: 3.2rem;
+    font-size: 14px;
+  }
+`;
+
 export const Vortex = styled.div`
   position: absolute;
   inset: -45%;
@@ -1031,6 +1074,14 @@ export const Content = styled.div`
 
 export const Actions = styled.div`
   margin-top: 40px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  @media (max-width: 480px) {
+    gap: 12px;
+  }
 `;
 
 export const GlassBox = styled.div`
