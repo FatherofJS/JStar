@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from "react";
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import ThemeSwitch from "./ThemeSwitch";
+import ThemeSwitch from "./themeSwitch/ThemeSwitch";
 import { useTheme } from "../contexts/ThemeContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useScrollPosition } from "../hooks/useScrollPosition";

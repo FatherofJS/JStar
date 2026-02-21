@@ -2,53 +2,53 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface ThemeSwitchProps {
-  isDark: boolean;
-  onToggle: () => void;
+    isDark: boolean;
+    onToggle: () => void;
 }
 
 const Switch: React.FC<ThemeSwitchProps> = ({ isDark, onToggle }) => {
-  return (
-    <StyledWrapper onClick={onToggle}>
-      <label className="bb8-toggle">
-        <input 
-          className="bb8-toggle__checkbox" 
-          type="checkbox" 
-          checked={!isDark}
-          onChange={onToggle}
-        />
-        <div className="bb8-toggle__container">
-          <div className="bb8-toggle__scenery">
-            <div className="bb8-toggle__star" />
-            <div className="bb8-toggle__star" />
-            <div className="bb8-toggle__star" />
-            <div className="bb8-toggle__star" />
-            <div className="bb8-toggle__star" />
-            <div className="bb8-toggle__star" />
-            <div className="bb8-toggle__star" />
-            <div className="tatto-1" />
-            <div className="tatto-2" />
-            <div className="gomrassen" />
-            <div className="hermes" />
-            <div className="chenini" />
-            <div className="bb8-toggle__cloud" />
-            <div className="bb8-toggle__cloud" />
-            <div className="bb8-toggle__cloud" />
-          </div>
-          <div className="bb8">
-            <div className="bb8__head-container">
-              <div className="bb8__antenna" />
-              <div className="bb8__antenna" />
-              <div className="bb8__head" />
-            </div>
-            <div className="bb8__body" />
-          </div>
-          <div className="artificial__hidden">
-            <div className="bb8__shadow" />
-          </div>
-        </div>
-      </label>
-    </StyledWrapper>
-  );
+    return (
+        <StyledWrapper onClick={onToggle}>
+            <label className="bb8-toggle">
+                <input
+                    className="bb8-toggle__checkbox"
+                    type="checkbox"
+                    checked={!isDark}
+                    onChange={onToggle}
+                />
+                <div className="bb8-toggle__container">
+                    <div className="bb8-toggle__scenery">
+                        <div className="bb8-toggle__star" />
+                        <div className="bb8-toggle__star" />
+                        <div className="bb8-toggle__star" />
+                        <div className="bb8-toggle__star" />
+                        <div className="bb8-toggle__star" />
+                        <div className="bb8-toggle__star" />
+                        <div className="bb8-toggle__star" />
+                        <div className="tatto-1" />
+                        <div className="tatto-2" />
+                        <div className="gomrassen" />
+                        <div className="hermes" />
+                        <div className="chenini" />
+                        <div className="bb8-toggle__cloud" />
+                        <div className="bb8-toggle__cloud" />
+                        <div className="bb8-toggle__cloud" />
+                    </div>
+                    <div className="bb8">
+                        <div className="bb8__head-container">
+                            <div className="bb8__antenna" />
+                            <div className="bb8__antenna" />
+                            <div className="bb8__head" />
+                        </div>
+                        <div className="bb8__body" />
+                    </div>
+                    <div className="artificial__hidden">
+                        <div className="bb8__shadow" />
+                    </div>
+                </div>
+            </label>
+        </StyledWrapper>
+    );
 };
 
 const StyledWrapper = styled.div`
@@ -263,11 +263,11 @@ const StyledWrapper = styled.div`
     background: silver;
   }
 
-  .bb8__body {
-    width: var(--bb8-diameter);
-    height: var(--bb8-diameter);
-    background: var(--bb8-bg);
-    border-radius: var(--radius);
+.bb8__body {
+  width: var(--bb8-diameter);
+  height: var(--bb8-diameter);
+  background: var(--bb8-bg);
+  border-radius: var(--radius);
     position: relative;
     overflow: hidden;
     -webkit-transition: var(--transition);
@@ -767,4 +767,3 @@ const StyledWrapper = styled.div`
 `;
 
 export default Switch;
-

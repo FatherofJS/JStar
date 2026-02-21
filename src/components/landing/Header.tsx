@@ -1,7 +1,7 @@
 // Header Component - Navigation với logo, menu, theme switch, user menu
 
 import { memo, useCallback, useEffect, useState } from "react";
-import ThemeSwitch from "../ThemeSwitch";
+import ThemeSwitch from "../themeSwitch/ThemeSwitch";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useSectionObserver } from "../../hooks/useSectionObserver";
