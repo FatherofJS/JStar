@@ -405,8 +405,8 @@ export default function LandingPage() {
 
             <Actions>
               <StarPlayButton onClick={handleStarButtonClick} />
-              <SpaceStyleButton>
-                VIEW CHART
+              <SpaceStyleButton onClick={() => navigate('/your-star')}>
+                SEE YOUR STAR
               </SpaceStyleButton>
             </Actions>
           </Content>

@@ -59,6 +59,7 @@ export const BackgroundWrapper = styled.div`
   height: 100%;
   width: 100%;
   background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  contain: paint;
   
   [data-theme="light"] & {
     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
@@ -80,9 +81,10 @@ const generateStarPositions = (count: number): string => {
   return positions.join(', ');
 };
 
-const stars1Positions = generateStarPositions(700);
-const stars2Positions = generateStarPositions(200);
-const stars3Positions = generateStarPositions(100);
+// Reduced star counts for better performance
+const stars1Positions = generateStarPositions(300);
+const stars2Positions = generateStarPositions(100);
+const stars3Positions = generateStarPositions(50);
 
 export const StarsLayer = styled.div`
   position: absolute;
@@ -165,7 +167,7 @@ export const NebulaLayer = styled.div`
       rgba(0, 200, 255, 0.08),
       transparent 60%
     );
-  filter: blur(60px);
+  filter: blur(30px);
   animation: ${nebulaDrift} 120s ease-in-out infinite;
   will-change: transform;
   
@@ -183,7 +185,7 @@ export const AuroraLayer = styled.div`
     transparent,
     rgba(140, 80, 255, 0.06)
   );
-  filter: blur(40px);
+  filter: blur(20px);
   animation: ${auroraWave} 40s ease-in-out infinite;
   will-change: transform, opacity;
   

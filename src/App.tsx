@@ -18,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/star-chart" element={<StarChartPage />} />
+            <Route path="/your-star" element={<StarChartPage />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

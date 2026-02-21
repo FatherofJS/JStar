@@ -249,7 +249,7 @@ export default function StarChartPage() {
     <Layout>
       <Background showShootingStars={false} />
       <PageWrapper>
-        <PageTitle>Your Star Chart</PageTitle>
+        <PageTitle>Your Star</PageTitle>
         <WelcomeText>Welcome, {user?.name}! Enter your birth details to discover your cosmic identity.</WelcomeText>
 
         <ChartContainer>
