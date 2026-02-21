@@ -14,7 +14,6 @@ import HeroSection from "./landing/HeroSection";
 import { FeatureSection, FeatureSectionAlt, AIInterpretationSection } from "./landing/FeatureSection";
 import PricingSection from "./landing/PricingSection";
 import GetStartedSteps from "./landing/GetStartedSteps";
-import OpenSourceSection from "./landing/OpenSourceSection";
 import CTASection from "./landing/CTASection";
 import Footer from "./landing/Footer";
 
@@ -164,9 +163,6 @@ function LandingPage() {
 
       {/* Get Started Steps */}
       <GetStartedSteps />
-
-      {/* Open Source Section */}
-      <OpenSourceSection />
 
       {/* CTA Section */}
       <CTASection onOpenAuthModal={handleOpenAuthModal} />

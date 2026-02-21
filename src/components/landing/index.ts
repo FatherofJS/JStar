@@ -10,7 +10,6 @@ export {
 export type { FeatureItem } from "./FeatureSection";
 export { default as PricingSection } from "./PricingSection";
 export { default as GetStartedSteps } from "./GetStartedSteps";
-export { default as OpenSourceSection } from "./OpenSourceSection";
 export { default as CTASection } from "./CTASection";
 export { default as Footer } from "./Footer";
 
