@@ -9,7 +9,7 @@ import {
   FooterCopyright,
   FooterLinks,
   FooterLink,
-} from "./Footer.styles";
+} from "./Footer.styles.ts";
 
 interface FooterProps {
   currentYear?: number;

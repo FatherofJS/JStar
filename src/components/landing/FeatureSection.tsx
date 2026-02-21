@@ -21,7 +21,7 @@ import {
   FeatureBadge,
   FeatureList,
   FeatureListItem,
-} from "./FeatureSection.styles";
+} from "./FeatureSection.styles.ts";
 
 // SVG Icons
 const ChartIcon = () => (
