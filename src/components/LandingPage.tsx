@@ -1,7 +1,7 @@
 // LandingPage Component - Main landing page using modular components
 
 import { useState, useCallback } from "react";
-import { Background } from "./Background";
+import { Background } from "./background/Background";
 import AuthModal from "./AuthModal";
 import { useSectionObserver } from "../hooks/useSectionObserver";
 import { SECTIONS } from "../constants";

@@ -4,7 +4,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from './components/LandingPage';
 import StarChartPage from './components/StarChartPage';
-import { Background } from './components/Background';
+import { Background } from './components/background/Background';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import './App.css';

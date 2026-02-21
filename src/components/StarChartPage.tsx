@@ -1,7 +1,7 @@
 // StarChartPage Component - Personalized astrology chart page
 import { useState, useCallback } from "react";
 import styled from "styled-components";
-import { Background } from "./Background";
+import { Background } from "./background/Background";
 import Layout from "./Layout";
 import { useAuth } from "../contexts/AuthContext";
 

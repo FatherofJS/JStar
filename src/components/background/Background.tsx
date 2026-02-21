@@ -11,7 +11,7 @@ import {
   StarsLayer,
   StarsLayer2,
   StarsLayer3,
-} from "../styles/Background.styles";
+} from "./Background.styles";
 
 // Generate shooting star data - more random falling stars like astrologerstudio.com
 const generateShootingStars = () =>
