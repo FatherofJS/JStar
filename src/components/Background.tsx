@@ -9,6 +9,9 @@ import {
   CosmicGlow,
   GrainOverlay,
   ShootingStar,
+  StarsLayer,
+  StarsLayer2,
+  StarsLayer3,
 } from "../styles/Background.styles";
 
 // Generate shooting star data
@@ -47,6 +50,11 @@ export function Background({ showShootingStars = true }: BackgroundProps) {
       
       {/* Aurora wave effect */}
       <AuroraLayer />
+      
+      {/* Scrolling stars layers */}
+      <StarsLayer />
+      <StarsLayer2 />
+      <StarsLayer3 />
       
       {/* Star field with scroll-based viewing angle - throttled */}
       <StarField $scrollY={displayScrollY}>

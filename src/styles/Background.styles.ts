@@ -41,6 +41,11 @@ const shoot = keyframes`
   100% { transform: translate(-700px,700px) rotate(-45deg); opacity:0; }
 `;
 
+const animStar = keyframes`
+  from { transform: translateY(0px); }
+  to { transform: translateY(-2000px); }
+`;
+
 // =============================================================================
 // STYLED COMPONENTS
 // =============================================================================
@@ -51,10 +56,94 @@ export const BackgroundWrapper = styled.div`
   z-index: -10;
   overflow: hidden;
   pointer-events: none;
-  background: var(--bg-wrapper);
+  height: 100%;
+  width: 100%;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
   
   [data-theme="light"] & {
-    background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #B8E4F9 100%);
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  }
+`;
+
+// =============================================================================
+// STAR LAYERS - Scrolling stars effect
+// =============================================================================
+
+// Generate random star positions at build time
+const generateStarPositions = (count: number): string => {
+  const positions: string[] = [];
+  for (let i = 0; i < count; i++) {
+    const x = Math.floor(Math.random() * 2000);
+    const y = Math.floor(Math.random() * 2000);
+    positions.push(`${x}px ${y}px #fff`);
+  }
+  return positions.join(', ');
+};
+
+const stars1Positions = generateStarPositions(700);
+const stars2Positions = generateStarPositions(200);
+const stars3Positions = generateStarPositions(100);
+
+export const StarsLayer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: ${stars1Positions};
+  animation: ${animStar} 50s linear infinite;
+  
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 2000px;
+    width: 1px;
+    height: 1px;
+    background: transparent;
+    box-shadow: ${stars1Positions};
+  }
+`;
+
+export const StarsLayer2 = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: ${stars2Positions};
+  animation: ${animStar} 100s linear infinite;
+  
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 2000px;
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    box-shadow: ${stars2Positions};
+  }
+`;
+
+export const StarsLayer3 = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: ${stars3Positions};
+  animation: ${animStar} 150s linear infinite;
+  
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 2000px;
+    width: 3px;
+    height: 3px;
+    background: transparent;
+    box-shadow: ${stars3Positions};
   }
 `;
 
@@ -266,5 +355,5 @@ export const ShootingStar = styled.span<ShootingStarProps>`
 `;
 
 // Export keyframes for external use if needed
-export { nebulaDrift, auroraWave, starTwinkle, grainShift, cosmicPulse, shoot };
+export { nebulaDrift, auroraWave, starTwinkle, grainShift, cosmicPulse, shoot, animStar };
 
