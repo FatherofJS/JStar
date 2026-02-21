@@ -13,14 +13,15 @@ import {
   StarsLayer3,
 } from "../styles/Background.styles";
 
-// Generate shooting star data
+// Generate shooting star data - more random falling stars like astrologerstudio.com
 const generateShootingStars = () =>
-  Array.from({ length: 3 }, (_, i) => ({
+  Array.from({ length: 4 }, (_, i) => ({
     id: i,
-    top: Math.random() * 60,
+    top: Math.random() * 50 + 5,
     left: Math.random() * 100,
-    delay: Math.random() * 15,
-    duration: 2 + Math.random() * 3,
+    delay: Math.random() * 20,
+    duration: 1.5 + Math.random() * 2.5,
+    width: 60 + Math.random() * 80,
   }));
 
 // Pre-generate shooting stars
@@ -73,7 +74,7 @@ export function Background({ showShootingStars = true }: BackgroundProps) {
       {/* Grain overlay - hidden */}
       <GrainOverlay />
       
-      {/* Shooting stars */}
+      {/* Shooting stars - more frequent like astrologerstudio.com */}
       {showShootingStars &&
         shootingStars.map((star) => (
           <ShootingStar
@@ -82,6 +83,7 @@ export function Background({ showShootingStars = true }: BackgroundProps) {
             $left={star.left}
             $delay={star.delay}
             $duration={star.duration}
+            style={{ width: star.width }}
           />
         ))}
     </BackgroundWrapper>

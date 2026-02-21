@@ -1103,3 +1103,875 @@ export const GlassBox = styled.div`
   }
 `;
 
+// =============================================================================
+// NEW LANDING PAGE SECTIONS STYLES (Similar to astrologerstudio.com)
+// =============================================================================
+
+// Feature Badge
+export const FeatureBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid var(--glass-border);
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  gap: 4px;
+  margin-bottom: 16px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+`;
+
+// Section Container
+export const SectionContainer = styled.section`
+  position: relative;
+  z-index: 10;
+  padding: 80px 16px;
+  
+  @media (max-width: 768px) {
+    padding: 60px 16px;
+  }
+`;
+
+export const SectionContainerAlt = styled(SectionContainer)`
+  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+`;
+
+// Max Width Container
+export const MaxWidthContainer = styled.div`
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+`;
+
+// Grid Layout
+export const GridTwoColumns = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 48px;
+  
+  @media (max-width: 1000px) {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+`;
+
+// Feature Content (Left)
+export const FeatureContent = styled.div`
+  @media (max-width: 1000px) {
+    order: 2;
+  }
+`;
+
+// Feature Content Reversed (Right)
+export const FeatureContentReversed = styled.div`
+  @media (max-width: 1000px) {
+    order: 2;
+  }
+`;
+
+// Feature Image Container
+export const FeatureImageWrapper = styled.div`
+  position: relative;
+  
+  @media (max-width: 1000px) {
+    order: 1;
+  }
+`;
+
+// Feature Image Card
+export const FeatureImageCard = styled.div`
+  position: relative;
+  cursor: zoom-in;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: all 0.5s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+  
+  &:hover .feature-overlay {
+    opacity: 1;
+  }
+`;
+
+export const FeatureImage = styled.img`
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.7s ease;
+  
+  ${FeatureImageCard}:hover & {
+    transform: scale(1.05);
+  }
+`;
+
+export const FeatureImageOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  backdrop-filter: blur(2px);
+  transition: all 0.3s ease;
+`;
+
+export const ZoomHint = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+// Glow Effects
+export const FeatureGlow = styled.div<{ $position: 'left' | 'right' }>`
+  position: absolute;
+  inset: -20px;
+  z-index: -10;
+  border-radius: 2rem;
+  opacity: 0.5;
+  background: linear-gradient(
+    ${({ $position }) => $position === 'left' 
+      ? 'to right, rgba(120, 140, 255, 0.2), transparent' 
+      : 'to left, rgba(120, 140, 255, 0.2), transparent'}
+  );
+  filter: blur(40px);
+  
+  @media (max-width: 1000px) {
+    display: none;
+  }
+`;
+
+export const FeatureGlowPurple = styled(FeatureGlow)`
+  background: linear-gradient(
+    ${({ $position }) => $position === 'left' 
+      ? 'to right, rgba(168, 85, 247, 0.2), transparent' 
+      : 'to left, rgba(168, 85, 247, 0.2), transparent'}
+  );
+`;
+
+// Section Title
+export const SectionTitle = styled.h2`
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  line-height: 1.2;
+  
+  @media (max-width: 768px) {
+    font-size: 28px;
+  }
+`;
+
+export const GradientText = styled.span`
+  background: linear-gradient(90deg, var(--hero-gradient-start), var(--hero-gradient-mid), var(--hero-gradient-end));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+`;
+
+// Section Description
+export const SectionDescription = styled.p`
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  max-width: 540px;
+  
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
+`;
+
+// Feature List
+export const FeatureList = styled.ul`
+  list-style: disc;
+  list-style-position: outside;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+export const FeatureListItem = styled.li`
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.5;
+`;
+
+// Aspect Grid Preview (CSS-based placeholder)
+export const AspectGridPreview = styled.div`
+  padding: 24px;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+`;
+
+// AI Interpretation Preview
+export const AIInterpretationPreview = styled.div`
+  height: 400px;
+  overflow: hidden;
+  padding: 24px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+`;
+
+export const AIBlinkingCursor = styled.span`
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background: var(--text-primary);
+  animation: pulse 1s ease-in-out infinite;
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+`;
+
+// =============================================================================
+// PRICING SECTION
+// =============================================================================
+
+export const PricingSection = styled(SectionContainer)`
+  text-align: center;
+`;
+
+export const PricingHeader = styled.div`
+  margin-bottom: 48px;
+`;
+
+export const PricingTitle = styled.h2`
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  
+  @media (max-width: 768px) {
+    font-size: 28px;
+  }
+`;
+
+export const PricingSubtitle = styled.p`
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+`;
+
+export const PricingCard = styled.div`
+  position: relative;
+  max-width: 420px;
+  margin: 0 auto;
+  border-radius: 16px;
+  border: 2px solid rgba(120, 140, 255, 0.3);
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  padding: 32px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  
+  @media (max-width: 768px) {
+    margin: 0 16px;
+  }
+`;
+
+export const PricingBadge = styled.div`
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--hero-gradient-start), var(--hero-gradient-mid));
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 20px rgba(120, 140, 255, 0.4);
+  
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+export const PricingIcon = styled.div`
+  margin: 16px auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(120, 140, 255, 0.1);
+  
+  svg {
+    width: 28px;
+    height: 28px;
+    color: var(--hero-gradient-start);
+  }
+`;
+
+export const PricingPlanName = styled.h3`
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+`;
+
+export const PricingPlanDesc = styled.p`
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+`;
+
+export const PricingAmount = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+`;
+
+export const PricingOriginalPrice = styled.span`
+  font-size: 24px;
+  color: var(--text-secondary);
+  text-decoration: line-through;
+`;
+
+export const PricingCurrentPrice = styled.span`
+  font-size: 56px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--hero-gradient-start), var(--hero-gradient-mid), var(--hero-gradient-end));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+`;
+
+export const PricingPeriod = styled.span`
+  font-size: 16px;
+  color: var(--text-secondary);
+`;
+
+export const PricingDiscount = styled.p`
+  font-size: 14px;
+  color: var(--hero-gradient-start);
+  font-weight: 500;
+  margin-bottom: 24px;
+`;
+
+export const PricingFeatures = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+`;
+
+export const PricingFeatureItem = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text-primary);
+  
+  svg {
+    width: 20px;
+    height: 20px;
+    color: var(--hero-gradient-start);
+    flex-shrink: 0;
+  }
+`;
+
+export const PricingButton = styled.button`
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, var(--hero-gradient-start), var(--hero-gradient-mid));
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(120, 140, 255, 0.4);
+  }
+  
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+export const PricingNote = styled.p`
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 16px;
+  text-align: center;
+`;
+
+// =============================================================================
+// GET STARTED STEPS
+// =============================================================================
+
+export const StepsSection = styled(SectionContainerAlt)`
+  text-align: center;
+`;
+
+export const StepsHeader = styled.div`
+  margin-bottom: 48px;
+`;
+
+export const StepsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+`;
+
+export const StepCard = styled.div`
+  position: relative;
+  text-align: center;
+`;
+
+export const StepNumber = styled.div`
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--hero-gradient-start), var(--hero-gradient-mid));
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+`;
+
+export const StepTitle = styled.h3`
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+`;
+
+export const StepDescription = styled.p`
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+`;
+
+// =============================================================================
+// OPEN SOURCE SECTION
+// =============================================================================
+
+export const OpenSourceSection = styled(SectionContainer)`
+  text-align: center;
+`;
+
+export const OpenSourceContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+`;
+
+export const OpenSourceBadge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  font-size: 14px;
+  font-weight: 500;
+  
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+export const OpenSourceTitle = styled.h2`
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  max-width: 700px;
+  
+  @media (max-width: 768px) {
+    font-size: 26px;
+  }
+`;
+
+export const OpenSourceDescription = styled.p`
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 700px;
+  
+  strong {
+    color: var(--text-primary);
+  }
+`;
+
+export const OpenSourceCards = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 32px;
+  max-width: 900px;
+  width: 100%;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const OpenSourceCard = styled.div`
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  text-align: left;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: var(--bg-secondary);
+  }
+  
+  svg {
+    width: 24px;
+    height: 24px;
+    color: var(--hero-gradient-start);
+    margin-bottom: 16px;
+  }
+`;
+
+export const OpenSourceCardTitle = styled.h3`
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+`;
+
+export const OpenSourceCardDesc = styled.p`
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+`;
+
+export const OpenSourceButtons = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+export const OpenSourceButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  &.primary {
+    background: linear-gradient(135deg, var(--hero-gradient-start), var(--hero-gradient-mid));
+    color: white;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(120, 140, 255, 0.4);
+    }
+  }
+  
+  &.secondary {
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    
+    &:hover {
+      background: var(--bg-secondary);
+    }
+  }
+  
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+// =============================================================================
+// FINAL CTA SECTION
+// =============================================================================
+
+export const CTASection = styled(SectionContainerAlt)`
+  text-align: center;
+`;
+
+export const CTAContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+`;
+
+export const CTATitle = styled.h2`
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  
+  @media (max-width: 768px) {
+    font-size: 26px;
+  }
+`;
+
+export const CTADescription = styled.p`
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.6;
+`;
+
+export const CTAButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, var(--hero-gradient-start), var(--hero-gradient-mid));
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(120, 140, 255, 0.4);
+  }
+  
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+export const CTANote = styled.p`
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+`;
+
+// =============================================================================
+// FOOTER
+// =============================================================================
+
+export const FooterWrapper = styled.footer`
+  position: relative;
+  z-index: 10;
+  padding: 32px 16px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--glass-border);
+`;
+
+export const FooterContent = styled.div`
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+`;
+
+export const FooterBrand = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  
+  @media (min-width: 768px) {
+    align-items: flex-start;
+  }
+`;
+
+export const FooterLogo = styled.span`
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+`;
+
+export const FooterCopyright = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  gap: 2px;
+  
+  @media (min-width: 768px) {
+    align-items: flex-start;
+  }
+  
+  a {
+    color: var(--text-secondary);
+    text-decoration: underline;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+`;
+
+export const FooterLinks = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+`;
+
+export const FooterLink = styled.a`
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: var(--text-primary);
+  }
+`;
+
+// =============================================================================
+// SCROLL TO FEATURE BUTTON
+// =============================================================================
+
+export const ScrollButton = styled.button`
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: bounce 2s ease-in-out infinite;
+  
+  &:hover {
+    border-color: var(--text-primary);
+    background: var(--bg-secondary);
+  }
+  
+  svg {
+    width: 24px;
+    height: 24px;
+    color: var(--text-secondary);
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
+  }
+  
+  @media (min-width: 1024px) {
+    bottom: 40px;
+  }
+`;
+
+// Aspect Grid Table (placeholder)
+export const AspectGridTable = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  font-size: 11px;
+  text-align: center;
+`;
+
+export const AspectGridCell = styled.div<{ $color?: string }>`
+  padding: 8px 4px;
+  border-radius: 4px;
+  background: ${({ $color }) => $color || 'var(--glass-bg)'};
+  color: ${({ $color }) => $color ? 'white' : 'var(--text-secondary)'};
+  font-weight: 500;
+`;
+
+export const AspectGridHeader = styled(AspectGridCell)`
+  background: transparent;
+  color: var(--text-primary);
+  font-weight: 600;
+`;
+

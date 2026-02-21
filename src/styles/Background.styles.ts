@@ -2,6 +2,7 @@
 // Beautiful cosmic background with vibrant nebula for dark mode
 
 import styled, { keyframes } from "styled-components";
+import type { CSSProperties } from "styled-components";
 
 // =============================================================================
 // ANIMATIONS - Beautiful and performant
@@ -193,19 +194,38 @@ interface ShootingStarProps {
   $left: number;
   $delay: number;
   $duration: number;
+  $direction?: number;
+  style?: CSSProperties;
 }
 
 export const ShootingStar = styled.span<ShootingStarProps>`
   position: absolute;
   width: 100px;
-  height: 1.5px;
-  background: linear-gradient(90deg, rgba(255,255,255,1), rgba(255,255,255,0.8), transparent);
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6), transparent);
   top: ${({ $top }) => $top}%;
   left: ${({ $left }) => $left}%;
   animation: ${shoot} ${({ $duration }) => $duration}s linear infinite;
   animation-delay: ${({ $delay }) => $delay}s;
   will-change: transform, opacity;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  transform: rotate(${({ $direction }) => $direction || -45}deg);
+  
+  /* Bright glowing head on the left (start of movement direction) */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 
+      0 0 4px 1px rgba(255, 255, 255, 1),
+      0 0 8px 2px rgba(255, 255, 255, 0.8),
+      0 0 12px 4px rgba(255, 255, 255, 0.5);
+  }
   
   [data-theme="light"] & {
     display: none;

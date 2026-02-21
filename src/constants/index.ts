@@ -140,6 +140,19 @@ export const SECTIONS = {
   ABOUT: "about",
   CHART: "chart",
   FORECAST: "forecast",
+  FEATURES: "features",
+  CHART_DATA: "chart-data",
+  TRANSIT_ANALYSIS: "transit-analysis",
+  ASPECT_GRID: "aspect-grid",
+  TRANSIT_TIMELINE: "transit-timeline",
+  EPHEMERIS: "ephemeris",
+  POSITION_TABLES: "position-tables",
+  DATA_MANAGEMENT: "data-management",
+  AI_INTERPRETATIONS: "ai-interpretations",
+  PRICING: "pricing",
+  GET_STARTED: "get-started",
+  OPEN_SOURCE: "open-source",
+  CONTACT: "contact",
 } as const;
 
 export type SectionId = typeof SECTIONS[keyof typeof SECTIONS];
