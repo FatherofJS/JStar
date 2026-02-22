@@ -125,12 +125,7 @@ function Header({
           >
             Pricing
           </NavItemMemo>
-          <NavItemMemo
-            $active={activeSection === SECTIONS.OPEN_SOURCE}
-            onClick={() => handleNavClick(SECTIONS.OPEN_SOURCE)}
-          >
-            Open Source
-          </NavItemMemo>
+
         </NavMenu>
       </HeaderLeft>
 
@@ -197,12 +192,6 @@ function Header({
           onClick={() => handleNavClick(SECTIONS.PRICING)}
         >
           Pricing
-        </NavItemMemo>
-        <NavItemMemo
-          $active={activeSection === SECTIONS.OPEN_SOURCE}
-          onClick={() => handleNavClick(SECTIONS.OPEN_SOURCE)}
-        >
-          Open Source
         </NavItemMemo>
         {isLoggedIn ? (
           <UserMenuWrapper className="user-menu-container">
