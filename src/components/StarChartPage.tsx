@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { Background } from "./background/Background";
 import Layout from "./Layout";
 import { useAuth } from "../contexts/AuthContext";
+import { LocationAutocomplete } from "./LocationAutocomplete";
+import type { LocationData } from "../types/location";
 
 const PageWrapper = styled.div`
   min-height: calc(100vh - 80px);
@@ -180,7 +182,7 @@ export default function StarChartPage() {
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
   const [birthTime, setBirthTime] = useState('');
-  const [birthPlace, setBirthPlace] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState<LocationData | null>(null);
   const [error, setError] = useState('');
   const [result, setResult] = useState<{
     zodiac: string;
@@ -312,13 +314,22 @@ export default function StarChartPage() {
 
             <FormSection>
               <FormLabel>Birth Place (Optional)</FormLabel>
-              <FormInput 
-                type="text" 
-                placeholder="City, Country"
-                value={birthPlace}
-                onChange={(e) => setBirthPlace(e.target.value)}
+              <LocationAutocomplete
+                value={selectedLocation?.display_name || ''}
+                onChange={(location) => setSelectedLocation(location)}
+                placeholder="Search for your city..."
               />
             </FormSection>
+
+            {selectedLocation && (
+              <ResultSection style={{ marginTop: '16px', padding: '16px' }}>
+                <ZodiacDescription style={{ fontSize: '14px' }}>
+                  📍 {selectedLocation.name}, {selectedLocation.country}<br/>
+                  🌐 Lat: {selectedLocation.latitude.toFixed(4)}, Lon: {selectedLocation.longitude.toFixed(4)}
+                  {selectedLocation.timezone && ` | 🕐 ${selectedLocation.timezone}`}
+                </ZodiacDescription>
+              </ResultSection>
+            )}
 
             {error && <ErrorMessage>{error}</ErrorMessage>}
 
