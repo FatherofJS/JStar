@@ -71,7 +71,7 @@ function PricingSection({ onOpenAuthModal }: PricingSectionProps) {
   ];
 
   return (
-    <PricingSectionWrapper data-section="pricing">
+    <PricingSectionWrapper data-section="pricing" className="zoom-section">
       <MaxWidthContainer>
         <PricingHeader>
           <PricingTitle>

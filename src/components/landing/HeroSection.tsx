@@ -22,8 +22,16 @@ import {
 
 // SVG Icons
 const ChevronDownIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="m6 9 6 6 6-6"/>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="m6 9 6 6 6-6" />
   </svg>
 );
 
@@ -38,7 +46,17 @@ function HeroSection({ onNavigateToStarChart }: HeroSectionProps) {
 
   const scrollTo = useCallback((sectionId: string) => {
     const element = document.querySelector(`[data-section="${sectionId}"]`);
-    element?.scrollIntoView({ behavior: "smooth" });
+    if (element) {
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
   }, []);
 
   const handleStarButtonClick = useCallback(() => {
@@ -65,15 +83,16 @@ function HeroSection({ onNavigateToStarChart }: HeroSectionProps) {
           </Title>
 
           <Description>
-            Professional astrology software for accurate natal charts, transits, 
-            synastry, and AI-powered interpretations. Discover your cosmic identity.
+            Professional astrology software for accurate natal charts, transits,
+            synastry, and AI-powered interpretations. Discover your cosmic
+            identity.
           </Description>
 
           <DividerGlow />
 
           <Actions>
             <StarPlayButton onClick={handleStarButtonClick} />
-            <SpaceStyleButton onClick={() => navigate('/your-star')}>
+            <SpaceStyleButton onClick={() => navigate("/your-star")}>
               SEE YOUR STAR
             </SpaceStyleButton>
           </Actions>
@@ -84,8 +103,8 @@ function HeroSection({ onNavigateToStarChart }: HeroSectionProps) {
         </HeroRight>
       </HeroLayout>
 
-      <ScrollButton 
-        onClick={() => scrollTo(SECTIONS.FEATURES)} 
+      <ScrollButton
+        onClick={() => scrollTo(SECTIONS.CHART_DATA)}
         aria-label="Scroll to features"
       >
         <ChevronDownIcon />
@@ -95,4 +114,3 @@ function HeroSection({ onNavigateToStarChart }: HeroSectionProps) {
 }
 
 export default memo(HeroSection);
-

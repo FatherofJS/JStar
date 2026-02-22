@@ -44,7 +44,7 @@ function GetStartedSteps({
   ]
 }: GetStartedStepsProps) {
   return (
-    <StepsSectionWrapper data-section="get-started">
+    <StepsSectionWrapper data-section="get-started" className="zoom-section">
       <MaxWidthContainer>
         <StepsHeader>
           <PricingTitle>

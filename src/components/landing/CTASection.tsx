@@ -26,7 +26,7 @@ interface CTASectionProps {
 
 function CTASection({ onOpenAuthModal }: CTASectionProps) {
   return (
-    <CTASectionWrapper data-section="contact">
+    <CTASectionWrapper data-section="contact" className="zoom-section">
       <MaxWidthContainer>
         <CTAContent>
           <CTATitle>

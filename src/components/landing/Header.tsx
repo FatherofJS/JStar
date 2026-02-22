@@ -114,8 +114,8 @@ function Header({
             Home
           </NavItemMemo>
           <NavItemMemo
-            $active={activeSection === SECTIONS.FEATURES}
-            onClick={() => handleNavClick(SECTIONS.FEATURES)}
+            $active={activeSection === SECTIONS.CHART_DATA}
+            onClick={() => handleNavClick(SECTIONS.CHART_DATA )}
           >
             Features
           </NavItemMemo>
@@ -182,8 +182,8 @@ function Header({
           Home
         </NavItemMemo>
         <NavItemMemo
-          $active={activeSection === SECTIONS.FEATURES}
-          onClick={() => handleNavClick(SECTIONS.FEATURES)}
+          $active={activeSection === SECTIONS.CHART_DATA}
+          onClick={() => handleNavClick(SECTIONS.CHART_DATA)}
         >
           Features
         </NavItemMemo>

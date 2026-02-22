@@ -84,7 +84,10 @@ function FeatureSection({ feature }: FeatureSectionProps) {
 
   return (
     <>
-      <SectionContainer data-section={badge?.toLowerCase().replace(/\s+/g, "-")}>
+      <SectionContainer 
+        data-section={badge?.toLowerCase().replace(/\s+/g, "-")} 
+        className="zoom-section"
+      >
         <MaxWidthContainer>
           <GridTwoColumns>
             {reversed ? (
@@ -211,7 +214,10 @@ function FeatureSectionAlt({ feature }: FeatureSectionProps) {
 
   return (
     <>
-      <SectionContainerAlt data-section={badge?.toLowerCase().replace(/\s+/g, "-")}>
+      <SectionContainerAlt 
+        data-section={badge?.toLowerCase().replace(/\s+/g, "-")} 
+        className="zoom-section"
+      >
         <MaxWidthContainer>
           <GridTwoColumns>
             {reversed ? (
@@ -315,7 +321,10 @@ function AIInterpretationSection({ feature }: FeatureSectionProps) {
   const BadgeIcon = badgeIcon === "sparkles" ? SparklesIcon : ChartIcon;
 
   return (
-    <SectionContainer data-section={badge?.toLowerCase().replace(/\s+/g, "-")}>
+    <SectionContainer 
+      data-section={badge?.toLowerCase().replace(/\s+/g, "-")} 
+      className="zoom-section"
+    >
       <MaxWidthContainer>
         <GridTwoColumns>
           <FeatureContent>
