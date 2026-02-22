@@ -1,6 +1,8 @@
 // FeatureSection Component - Reusable feature section with image and content
 
+import { useState } from "react";
 import type { FeatureItem } from "../../data/landingFeatures";
+import { ImageZoomModal } from "../ImageZoomModal";
 import {
   SectionContainer,
   SectionContainerAlt,
@@ -55,6 +57,8 @@ interface FeatureSectionProps {
 }
 
 function FeatureSection({ feature }: FeatureSectionProps) {
+  const [zoomImage, setZoomImage] = useState<{ src: string; alt: string } | null>(null);
+  
   const {
     title,
     description,
@@ -72,99 +76,117 @@ function FeatureSection({ feature }: FeatureSectionProps) {
   const ContentComponent = reversed ? FeatureContentReversed : FeatureContent;
   const GlowComponent = glowColor === "purple" ? FeatureGlowPurple : FeatureGlow;
 
+  const handleImageClick = () => {
+    if (imageSrc) {
+      setZoomImage({ src: imageSrc, alt: imageAlt });
+    }
+  };
+
   return (
-    <SectionContainer data-section={badge?.toLowerCase().replace(/\s+/g, "-")}>
-      <MaxWidthContainer>
-        <GridTwoColumns>
-          {reversed ? (
-            <>
-              <FeatureImageWrapper>
-                <GlowComponent $position="left" />
-                <FeatureImageCard>
-                  <FeatureImage 
-                    src={imageSrc} 
-                    alt={imageAlt}
-                    loading="lazy"
-                  />
-                  <FeatureImageOverlay className="feature-overlay">
-                    <ZoomHint>
-                      <ZoomInIcon />
-                      Zoom
-                    </ZoomHint>
-                  </FeatureImageOverlay>
-                </FeatureImageCard>
-              </FeatureImageWrapper>
-              <ContentComponent>
-                {badge && (
-                  <FeatureBadge>
-                    <BadgeIcon />
-                    {badge}
-                  </FeatureBadge>
-                )}
-                <SectionTitle>
-                  {title.split(" ").map((word, i) => 
-                    i === title.split(" ").length - 1 && title.includes("GradientText".toLowerCase()) ? (
-                      <GradientText key={i}>{word}</GradientText>
-                    ) : i === title.split(" ").length - 1 ? (
-                      <GradientText key={i}>{word}</GradientText>
-                    ) : (
-                      `${word} `
-                    )
+    <>
+      <SectionContainer data-section={badge?.toLowerCase().replace(/\s+/g, "-")}>
+        <MaxWidthContainer>
+          <GridTwoColumns>
+            {reversed ? (
+              <>
+                <FeatureImageWrapper>
+                  <GlowComponent $position="left" />
+                  <FeatureImageCard onClick={handleImageClick}>
+                    <FeatureImage 
+                      src={imageSrc} 
+                      alt={imageAlt}
+                      loading="lazy"
+                    />
+                    <FeatureImageOverlay className="feature-overlay">
+                      <ZoomHint>
+                        <ZoomInIcon />
+                        Zoom
+                      </ZoomHint>
+                    </FeatureImageOverlay>
+                  </FeatureImageCard>
+                </FeatureImageWrapper>
+                <ContentComponent>
+                  {badge && (
+                    <FeatureBadge>
+                      <BadgeIcon />
+                      {badge}
+                    </FeatureBadge>
                   )}
-                </SectionTitle>
-                <SectionDescription>{description}</SectionDescription>
-                <FeatureList>
-                  {items.map((item, index) => (
-                    <FeatureListItem key={index}>{item}</FeatureListItem>
-                  ))}
-                </FeatureList>
-              </ContentComponent>
-            </>
-          ) : (
-            <>
-              <ContentComponent>
-                {badge && (
-                  <FeatureBadge>
-                    <BadgeIcon />
-                    {badge}
-                  </FeatureBadge>
-                )}
-                <SectionTitle>
-                  {title}
-                </SectionTitle>
-                <SectionDescription>{description}</SectionDescription>
-                <FeatureList>
-                  {items.map((item, index) => (
-                    <FeatureListItem key={index}>{item}</FeatureListItem>
-                  ))}
-                </FeatureList>
-              </ContentComponent>
-              <FeatureImageWrapper>
-                <GlowComponent $position={reversed ? "left" : "right"} />
-                <FeatureImageCard>
-                  <FeatureImage 
-                    src={imageSrc} 
-                    alt={imageAlt}
-                    loading="lazy"
-                  />
-                  <FeatureImageOverlay className="feature-overlay">
-                    <ZoomHint>
-                      <ZoomInIcon />
-                      Zoom
-                    </ZoomHint>
-                  </FeatureImageOverlay>
-                </FeatureImageCard>
-              </FeatureImageWrapper>
-            </>
-          )}
-        </GridTwoColumns>
-      </MaxWidthContainer>
-    </SectionContainer>
+                  <SectionTitle>
+                    {title.split(" ").map((word, i) => 
+                      i === title.split(" ").length - 1 && title.includes("GradientText".toLowerCase()) ? (
+                        <GradientText key={i}>{word}</GradientText>
+                      ) : i === title.split(" ").length - 1 ? (
+                        <GradientText key={i}>{word}</GradientText>
+                      ) : (
+                        `${word} `
+                      )
+                    )}
+                  </SectionTitle>
+                  <SectionDescription>{description}</SectionDescription>
+                  <FeatureList>
+                    {items.map((item, index) => (
+                      <FeatureListItem key={index}>{item}</FeatureListItem>
+                    ))}
+                  </FeatureList>
+                </ContentComponent>
+              </>
+            ) : (
+              <>
+                <ContentComponent>
+                  {badge && (
+                    <FeatureBadge>
+                      <BadgeIcon />
+                      {badge}
+                    </FeatureBadge>
+                  )}
+                  <SectionTitle>
+                    {title}
+                  </SectionTitle>
+                  <SectionDescription>{description}</SectionDescription>
+                  <FeatureList>
+                    {items.map((item, index) => (
+                      <FeatureListItem key={index}>{item}</FeatureListItem>
+                    ))}
+                  </FeatureList>
+                </ContentComponent>
+                <FeatureImageWrapper>
+                  <GlowComponent $position={reversed ? "left" : "right"} />
+                  <FeatureImageCard onClick={handleImageClick}>
+                    <FeatureImage 
+                      src={imageSrc} 
+                      alt={imageAlt}
+                      loading="lazy"
+                    />
+                    <FeatureImageOverlay className="feature-overlay">
+                      <ZoomHint>
+                        <ZoomInIcon />
+                        Zoom
+                      </ZoomHint>
+                    </FeatureImageOverlay>
+                  </FeatureImageCard>
+                </FeatureImageWrapper>
+              </>
+            )}
+          </GridTwoColumns>
+        </MaxWidthContainer>
+      </SectionContainer>
+      
+      {zoomImage && (
+        <ImageZoomModal
+          src={zoomImage.src}
+          alt={zoomImage.alt}
+          onClose={() => setZoomImage(null)}
+        />
+      )}
+    </>
   );
 }
 
 // Alternate version with background
 function FeatureSectionAlt({ feature }: FeatureSectionProps) {
+  const [zoomImage, setZoomImage] = useState<{ src: string; alt: string } | null>(null);
+  
   const {
     title,
     description,
@@ -181,86 +203,102 @@ function FeatureSectionAlt({ feature }: FeatureSectionProps) {
   const ContentComponent = reversed ? FeatureContentReversed : FeatureContent;
   const GlowComponent = glowColor === "purple" ? FeatureGlowPurple : FeatureGlow;
 
+  const handleImageClick = () => {
+    if (imageSrc) {
+      setZoomImage({ src: imageSrc, alt: imageAlt });
+    }
+  };
+
   return (
-    <SectionContainerAlt data-section={badge?.toLowerCase().replace(/\s+/g, "-")}>
-      <MaxWidthContainer>
-        <GridTwoColumns>
-          {reversed ? (
-            <>
-              <FeatureImageWrapper>
-                <GlowComponent $position="left" />
-                <FeatureImageCard>
-                  <FeatureImage 
-                    src={imageSrc} 
-                    alt={imageAlt}
-                    loading="lazy"
-                  />
-                  <FeatureImageOverlay className="feature-overlay">
-                    <ZoomHint>
-                      <ZoomInIcon />
-                      Zoom
-                    </ZoomHint>
-                  </FeatureImageOverlay>
-                </FeatureImageCard>
-              </FeatureImageWrapper>
-              <ContentComponent>
-                {badge && (
-                  <FeatureBadge>
-                    <BadgeIcon />
-                    {badge}
-                  </FeatureBadge>
-                )}
-                <SectionTitle>
-                  {title}
-                </SectionTitle>
-                <SectionDescription>{description}</SectionDescription>
-                <FeatureList>
-                  {items.map((item, index) => (
-                    <FeatureListItem key={index}>{item}</FeatureListItem>
-                  ))}
-                </FeatureList>
-              </ContentComponent>
-            </>
-          ) : (
-            <>
-              <ContentComponent>
-                {badge && (
-                  <FeatureBadge>
-                    <BadgeIcon />
-                    {badge}
-                  </FeatureBadge>
-                )}
-                <SectionTitle>
-                  {title}
-                </SectionTitle>
-                <SectionDescription>{description}</SectionDescription>
-                <FeatureList>
-                  {items.map((item, index) => (
-                    <FeatureListItem key={index}>{item}</FeatureListItem>
-                  ))}
-                </FeatureList>
-              </ContentComponent>
-              <FeatureImageWrapper>
-                <GlowComponent $position={reversed ? "left" : "right"} />
-                <FeatureImageCard>
-                  <FeatureImage 
-                    src={imageSrc} 
-                    alt={imageAlt}
-                    loading="lazy"
-                  />
-                  <FeatureImageOverlay className="feature-overlay">
-                    <ZoomHint>
-                      <ZoomInIcon />
-                      Zoom
-                    </ZoomHint>
-                  </FeatureImageOverlay>
-                </FeatureImageCard>
-              </FeatureImageWrapper>
-            </>
-          )}
-        </GridTwoColumns>
-      </MaxWidthContainer>
-    </SectionContainerAlt>
+    <>
+      <SectionContainerAlt data-section={badge?.toLowerCase().replace(/\s+/g, "-")}>
+        <MaxWidthContainer>
+          <GridTwoColumns>
+            {reversed ? (
+              <>
+                <FeatureImageWrapper>
+                  <GlowComponent $position="left" />
+                  <FeatureImageCard onClick={handleImageClick}>
+                    <FeatureImage 
+                      src={imageSrc} 
+                      alt={imageAlt}
+                      loading="lazy"
+                    />
+                    <FeatureImageOverlay className="feature-overlay">
+                      <ZoomHint>
+                        <ZoomInIcon />
+                        Zoom
+                      </ZoomHint>
+                    </FeatureImageOverlay>
+                  </FeatureImageCard>
+                </FeatureImageWrapper>
+                <ContentComponent>
+                  {badge && (
+                    <FeatureBadge>
+                      <BadgeIcon />
+                      {badge}
+                    </FeatureBadge>
+                  )}
+                  <SectionTitle>
+                    {title}
+                  </SectionTitle>
+                  <SectionDescription>{description}</SectionDescription>
+                  <FeatureList>
+                    {items.map((item, index) => (
+                      <FeatureListItem key={index}>{item}</FeatureListItem>
+                    ))}
+                  </FeatureList>
+                </ContentComponent>
+              </>
+            ) : (
+              <>
+                <ContentComponent>
+                  {badge && (
+                    <FeatureBadge>
+                      <BadgeIcon />
+                      {badge}
+                    </FeatureBadge>
+                  )}
+                  <SectionTitle>
+                    {title}
+                  </SectionTitle>
+                  <SectionDescription>{description}</SectionDescription>
+                  <FeatureList>
+                    {items.map((item, index) => (
+                      <FeatureListItem key={index}>{item}</FeatureListItem>
+                    ))}
+                  </FeatureList>
+                </ContentComponent>
+                <FeatureImageWrapper>
+                  <GlowComponent $position={reversed ? "left" : "right"} />
+                  <FeatureImageCard onClick={handleImageClick}>
+                    <FeatureImage 
+                      src={imageSrc} 
+                      alt={imageAlt}
+                      loading="lazy"
+                    />
+                    <FeatureImageOverlay className="feature-overlay">
+                      <ZoomHint>
+                        <ZoomInIcon />
+                        Zoom
+                      </ZoomHint>
+                    </FeatureImageOverlay>
+                  </FeatureImageCard>
+                </FeatureImageWrapper>
+              </>
+            )}
+          </GridTwoColumns>
+        </MaxWidthContainer>
+      </SectionContainerAlt>
+      
+      {zoomImage && (
+        <ImageZoomModal
+          src={zoomImage.src}
+          alt={zoomImage.alt}
+          onClose={() => setZoomImage(null)}
+        />
+      )}
+    </>
   );
 }
 

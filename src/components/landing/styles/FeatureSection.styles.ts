@@ -138,7 +138,7 @@ export const ZoomHint = styled.div`
   padding: 8px 16px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.9);
-  color: var(--text-primary);
+  color: #000000;
   font-size: 14px;
   font-weight: 500;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
