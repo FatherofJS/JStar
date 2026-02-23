@@ -1,0 +1,22 @@
+name: jstar
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - flask==3.0.0
+      - flask-cors==4.0.0
+      - requests==2.31.0
+      - python-dotenv==1.0.0
+
+# To activate this environment, use:
+# conda activate jstar
+#
+# To deactivate this environment, use:
+# conda deactivate jstar
+#
+# To update packages, use:
+# conda env update -f environment.yml
+

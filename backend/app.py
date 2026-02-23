@@ -1,9 +1,19 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+
+# Get CORS origins from environment variable
+cors_origins = os.environ.get('CORS_ORIGINS', '*')
+# Convert comma-separated string to list
+origins_list = [origin.strip() for origin in cors_origins.split(',')] if cors_origins != '*' else '*'
+
+CORS(app, origins=origins_list, supports_credentials=True)
 
 # Import routes
 from src.routes.location import location_bp
@@ -14,5 +24,5 @@ def health_check():
     return jsonify({'status': 'ok', 'message': 'JStar API is running'})
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5001))
     app.run(host='0.0.0.0', port=port, debug=True)

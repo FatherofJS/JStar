@@ -2,6 +2,32 @@
 // Centralized configuration values
 
 // ============================================================================
+// API CONFIGURATION
+// ============================================================================
+
+// Backend API URL - configure via environment variable
+// In development: http://localhost:5001
+// In production: use your deployed backend URL
+const getApiUrl = (): string => {
+  // Vite uses VITE_ prefix for environment variables
+  return import.meta.env.VITE_API_URL || 'http://localhost:5001';
+};
+
+export const API = {
+  BASE_URL: getApiUrl(),
+  LOCATION: {
+    SEARCH: '/api/location/search',
+    REVERSE: '/api/location/reverse',
+  },
+  HEALTH: '/api/health',
+} as const;
+
+// Helper function to get full API URL
+export const getApiEndpoint = (endpoint: string): string => {
+  return `${API.BASE_URL}${endpoint}`;
+};
+
+// ============================================================================
 // ZODIAC CONFIGURATION
 // ============================================================================
 

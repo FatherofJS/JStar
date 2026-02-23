@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import type { LocationData, LocationSearchResponse } from '../types/location';
+import { API, getApiEndpoint } from '../constants';
 
 export function useLocationSearch() {
   const [locations, setLocations] = useState<LocationData[]>([]);
@@ -26,8 +27,10 @@ export function useLocationSearch() {
     try {
       abortControllerRef.current = new AbortController();
       
+      // Use API configuration for full URL
+      const apiUrl = getApiEndpoint(API.LOCATION.SEARCH);
       const response = await fetch(
-        `/api/location/search?q=${encodeURIComponent(query)}&limit=5`,
+        `${apiUrl}?q=${encodeURIComponent(query)}&limit=5`,
         { signal: abortControllerRef.current.signal }
       );
 

@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import type { LocationData } from '../types/location';
+import { API, getApiEndpoint } from '../constants';
 
 const AutocompleteWrapper = styled.div`
   position: relative;
@@ -124,8 +125,10 @@ export function LocationAutocomplete({
     setSearchError(null);
 
     try {
+      // Use API configuration for full URL
+      const apiUrl = getApiEndpoint(API.LOCATION.SEARCH);
       const response = await fetch(
-        `/api/location/search?q=${encodeURIComponent(query)}&limit=5`
+        `${apiUrl}?q=${encodeURIComponent(query)}&limit=5`
       );
 
       if (!response.ok) {
