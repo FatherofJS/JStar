@@ -182,7 +182,8 @@ export default function StarChartPage() {
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
   const [birthTime, setBirthTime] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState<LocationData | null>(null);
+  const [selectedCity, setSelectedCity] = useState<LocationData | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<LocationData | null>(null);
   const [error, setError] = useState('');
   const [result, setResult] = useState<{
     zodiac: string;
@@ -314,19 +315,40 @@ export default function StarChartPage() {
 
             <FormSection>
               <FormLabel>Birth Place (Optional)</FormLabel>
-              <LocationAutocomplete
-                value={selectedLocation?.display_name || ''}
-                onChange={(location) => setSelectedLocation(location)}
-                placeholder="Search for your city..."
-              />
+              <Row>
+                <div>
+                  <FormLabel style={{ fontSize: '12px', marginBottom: '8px', opacity: 0.8 }}>City</FormLabel>
+                  <LocationAutocomplete
+                    value={selectedCity?.display_name?.split(',')[0] || ''}
+                    onChange={(location) => setSelectedCity(location)}
+                    placeholder="Search for your city..."
+                    searchType="city"
+                  />
+                </div>
+                <div>
+                  <FormLabel style={{ fontSize: '12px', marginBottom: '8px', opacity: 0.8 }}>Country</FormLabel>
+                  <LocationAutocomplete
+                    value={selectedCountry?.name || ''}
+                    onChange={(location) => setSelectedCountry(location)}
+                    placeholder="Search for your country..."
+                    searchType="country"
+                  />
+                </div>
+              </Row>
             </FormSection>
 
-            {selectedLocation && (
+            {(selectedCity || selectedCountry) && (
               <ResultSection style={{ marginTop: '16px', padding: '16px' }}>
                 <ZodiacDescription style={{ fontSize: '14px' }}>
-                  📍 {selectedLocation.name}, {selectedLocation.country}<br/>
-                  🌐 Lat: {selectedLocation.latitude.toFixed(4)}, Lon: {selectedLocation.longitude.toFixed(4)}
-                  {selectedLocation.timezone && ` | 🕐 ${selectedLocation.timezone}`}
+                  📍 {selectedCity ? selectedCity.name : 'N/A'}
+                  {selectedCountry && `, ${selectedCountry.name}`}
+                  {selectedCity && (
+                    <>
+                      <br/>
+                      🌐 Lat: {selectedCity.latitude.toFixed(4)}, Lon: {selectedCity.longitude.toFixed(4)}
+                      {selectedCity.timezone && ` | 🕐 ${selectedCity.timezone}`}
+                    </>
+                  )}
                 </ZodiacDescription>
               </ResultSection>
             )}

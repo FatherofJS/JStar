@@ -1,5 +1,7 @@
 // Location types for geocoding API
 
+export type LocationSearchType = 'city' | 'country';
+
 export interface LocationData {
   id: string;
   name: string;

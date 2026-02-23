@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import type { LocationData } from '../types/location';
+import type { LocationData, LocationSearchType } from '../types/location';
 import { API, getApiEndpoint } from '../constants';
 
 const AutocompleteWrapper = styled.div`
@@ -95,13 +95,15 @@ interface LocationAutocompleteProps {
   onChange: (location: LocationData | null) => void;
   placeholder?: string;
   error?: string;
+  searchType?: LocationSearchType;
 }
 
 export function LocationAutocomplete({
   value,
   onChange,
   placeholder = "Search city...",
-  error
+  error,
+  searchType = 'city'
 }: LocationAutocompleteProps) {
   const [inputValue, setInputValue] = useState(value);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -125,8 +127,12 @@ export function LocationAutocomplete({
     setSearchError(null);
 
     try {
-      // Use API configuration for full URL
-      const apiUrl = getApiEndpoint(API.LOCATION.SEARCH);
+      // Use API configuration for full URL - choose endpoint based on searchType
+      const apiEndpoint = searchType === 'country' 
+        ? API.LOCATION.SEARCH_COUNTRIES 
+        : API.LOCATION.SEARCH;
+      const apiUrl = getApiEndpoint(apiEndpoint);
+      
       const response = await fetch(
         `${apiUrl}?q=${encodeURIComponent(query)}&limit=5`
       );
@@ -149,7 +155,7 @@ export function LocationAutocomplete({
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [searchType]);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
@@ -218,6 +224,9 @@ export function LocationAutocomplete({
     setInputValue(value);
   }, [value]);
 
+  // Update placeholder based on searchType
+  const defaultPlaceholder = searchType === 'country' ? 'Search country...' : 'Search city...';
+
   return (
     <AutocompleteWrapper ref={wrapperRef}>
       <InputWrapper>
@@ -227,7 +236,7 @@ export function LocationAutocomplete({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={() => inputValue.length >= 2 && setShowSuggestions(true)}
-          placeholder={placeholder}
+          placeholder={placeholder || defaultPlaceholder}
           $hasError={!!error}
           autoComplete="off"
         />
@@ -249,9 +258,11 @@ export function LocationAutocomplete({
             >
               <SuggestionText>{location.name}</SuggestionText>
               <SuggestionSubtext>
-                {[location.administrative_area, location.country]
-                  .filter(Boolean)
-                  .join(', ')}
+                {searchType === 'country' 
+                  ? location.country_code 
+                  : [location.administrative_area, location.country]
+                      .filter(Boolean)
+                      .join(', ')}
               </SuggestionSubtext>
             </SuggestionItem>
           ))}

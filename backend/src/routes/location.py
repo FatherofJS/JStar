@@ -166,6 +166,78 @@ def reverse_geocode():
         return jsonify({'error': str(e)}), 500
 
 
+@location_bp.route('/search-countries', methods=['GET'])
+def search_countries():
+    """
+    Search for countries by query string.
+    
+    Query params:
+        q: search query (country name, etc.)
+        limit: max number of results (default: 5)
+    
+    Returns list of countries
+    """
+    query = request.args.get('q', '').strip().lower()
+    
+    if not query or len(query) < 2:
+        return jsonify({'error': 'Query must be at least 2 characters'}), 400
+    
+    limit = min(int(request.args.get('limit', 5)), 10)
+    
+    try:
+        rate_limit()
+        
+        headers = {
+            'User-Agent': 'JStar-AstrologyApp/1.0',
+            'Accept-Language': 'en-US,en;q=0.9'
+        }
+        
+        # Search for countries using Nominatim
+        params = {
+            'q': query,
+            'format': 'json',
+            'addressdetails': 1,
+            'limit': limit,
+            'countrycodes': ''  # Search all countries
+        }
+        
+        response = requests.get(
+            f"{NOMINATIM_BASE_URL}/search",
+            params=params,
+            headers=headers,
+            timeout=10
+        )
+        response.raise_for_status()
+        data = response.json()
+        
+        results = []
+        seen_countries = set()
+        
+        for item in data:
+            address = item.get('address', {})
+            country_name = address.get('country', '')
+            country_code = address.get('country_code', '').upper()
+            
+            if country_name and country_code and country_code not in seen_countries:
+                seen_countries.add(country_code)
+                results.append({
+                    'id': country_code,
+                    'name': country_name,
+                    'country_code': country_code,
+                    'display_name': country_name,
+                    'latitude': float(item['lat']),
+                    'longitude': float(item['lon'])
+                })
+                
+            if len(results) >= limit:
+                break
+        
+        return jsonify({'success': True, 'data': results})
+        
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+
+
 def process_reverse(data):
     """Process reverse geocoding response"""
     if not data:

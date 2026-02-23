@@ -13,7 +13,8 @@ cors_origins = os.environ.get('CORS_ORIGINS', '*')
 # Convert comma-separated string to list
 origins_list = [origin.strip() for origin in cors_origins.split(',')] if cors_origins != '*' else '*'
 
-CORS(app, origins=origins_list, supports_credentials=True)
+# Allow all origins for development
+CORS(app, origins='*', supports_credentials=True)
 
 # Import routes
 from src.routes.location import location_bp

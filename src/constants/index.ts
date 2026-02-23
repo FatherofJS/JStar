@@ -17,6 +17,7 @@ export const API = {
   BASE_URL: getApiUrl(),
   LOCATION: {
     SEARCH: '/api/location/search',
+    SEARCH_COUNTRIES: '/api/location/search-countries',
     REVERSE: '/api/location/reverse',
   },
   HEALTH: '/api/health',
