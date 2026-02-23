@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700;900&display=swap');
 
 /* ===== BACKGROUND ANIMATIONS ===== */
 @keyframes nebulaPulse {
@@ -84,7 +84,7 @@
 /* Light Mode Theme */
 [data-theme="light"] {
   /* ===== BACKGROUNDS ===== */
-  --bg-primary: #f8fafc;
+  --bg-primary: #e0f2fe;
   --bg-secondary: #ffffff;
 
   /* ===== ACCENT ===== */
@@ -119,7 +119,7 @@
   --glass-border: rgba(0, 0, 0, 0.08);
   --nav-bg: rgba(255, 255, 255, 0.85);
   --shadow-color: rgba(0, 0, 0, 0.1);
-  --bg-wrapper: #f1f5f9;
+  --bg-wrapper: #e0f2fe;
 
   /* ===== ADDITIONAL ===== */
   --nav-item-active: #6366f1;

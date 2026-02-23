@@ -260,6 +260,7 @@ const DateInput = styled.input`
     margin: 0;
   }
   &[type=number] {
+    appearance: textfield;
     -moz-appearance: textfield;
   }
 `;

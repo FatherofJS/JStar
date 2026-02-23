@@ -52,8 +52,8 @@ export const BackgroundWrapper = styled.div`
   background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 30%, #0f1a2e 60%, #0a0a1a 100%);
   
   [data-theme="light"] & {
-    /* Light mode - Clean, modern gradient like astrologerstudio.com */
-    background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+    /* Light mode - Sky blue gradient like clear blue sky */
+    background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 40%, #ffffff 100%);
   }
 `;
 
