@@ -1,11 +1,30 @@
 // StarChartPage Component - Personalized astrology chart page
 import { useState, useCallback } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Background } from "./background/Background";
 import Layout from "./Layout";
-import { useAuth } from "../contexts/AuthContext";
 import { LocationAutocomplete } from "./LocationAutocomplete";
 import type { LocationData } from "../types/location";
+
+const shimmer = keyframes`
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+`;
+
+const twinkle = keyframes`
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+`;
+
+const float = keyframes`
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+`;
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
 
 const PageWrapper = styled.div`
   min-height: calc(100vh - 80px);
@@ -13,171 +32,422 @@ const PageWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+`;
+
+const StarDecoration = styled.div<{ $top: string; $left: string; $size: number; $delay: string }>`
+  position: absolute;
+  top: ${props => props.$top};
+  left: ${props => props.$left};
+  width: ${props => props.$size}px;
+  height: ${props => props.$size}px;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: ${twinkle} 3s ease-in-out infinite;
+  animation-delay: ${props => props.$delay};
+  pointer-events: none;
+  z-index: 0;
 `;
 
 const PageTitle = styled.h1`
-  font-size: clamp(28px, 5vw, 42px);
-  font-weight: 700;
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 800;
   margin-bottom: 8px;
-  background: linear-gradient(90deg, var(--hero-gradient-start), var(--hero-gradient-mid), var(--hero-gradient-end));
+  background: linear-gradient(90deg, 
+    #fff 0%, 
+    #c4b5fd 25%, 
+    #818cf8 50%, 
+    #c4b5fd 75%, 
+    #fff 100%
+  );
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   text-align: center;
+  animation: ${shimmer} 4s linear infinite;
+  letter-spacing: -1px;
+  text-shadow: 0 0 40px rgba(129, 140, 248, 0.3);
+  
+  @media (max-width: 768px) {
+    letter-spacing: 0;
+  }
 `;
 
 const WelcomeText = styled.p`
-  font-size: 16px;
+  font-size: 18px;
   color: var(--text-secondary);
   margin-bottom: 40px;
   text-align: center;
+  max-width: 500px;
+  line-height: 1.6;
+  opacity: 0.9;
 `;
 
 const ChartContainer = styled.div`
   width: 100%;
-  max-width: 800px;
-  background: var(--glass-bg);
+  max-width: 700px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
   backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 32px;
   padding: 40px;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  animation: ${fadeIn} 0.6s ease-out;
+  position: relative;
+  z-index: 1;
   
   @media (max-width: 768px) {
-    padding: 24px 16px;
-    border-radius: 16px;
+    padding: 28px 20px;
+    border-radius: 24px;
   }
 `;
 
 const FormSection = styled.div`
-  margin-bottom: 32px;
+  margin-bottom: 28px;
+  position: relative;
+`;
+
+const SectionDivider = styled.div`
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  margin: 8px 0 28px;
 `;
 
 const FormLabel = styled.label`
-  display: block;
-  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--text-inverse);
+  color: rgba(255, 255, 255, 0.7);
   margin-bottom: 12px;
-  letter-spacing: 1px;
-`;
-
-const FormInput = styled.input`
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 12px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-inverse);
-  font-size: 16px;
-  outline: none;
-  transition: all 0.2s ease;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   
-  &:focus {
-    border-color: var(--hero-gradient-start);
-    box-shadow: 0 0 0 3px rgba(120, 140, 255, 0.2);
-  }
-  
-  &::placeholder {
-    color: var(--text-secondary);
-    opacity: 0.6;
+  &::before {
+    content: '✦';
+    color: #818cf8;
+    font-size: 8px;
   }
 `;
 
-const FormSelect = styled.select`
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 12px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-inverse);
+const InputIcon = styled.span`
   font-size: 16px;
+  margin-right: 8px;
+`;
+
+const DatePickerWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 12px;
+  
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+`;
+
+const DateSelect = styled.select`
+  width: 100%;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23818cf8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  padding-right: 45px;
+  
+  &:hover {
+    border-color: rgba(129, 140, 248, 0.4);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.04) 100%
+    );
+  }
   
   &:focus {
-    border-color: var(--hero-gradient-start);
-    box-shadow: 0 0 0 3px rgba(120, 140, 255, 0.2);
+    border-color: #818cf8;
+    box-shadow: 
+      0 0 0 4px rgba(129, 140, 248, 0.15),
+      0 8px 32px rgba(129, 140, 248, 0.2);
+    transform: translateY(-2px);
   }
   
   option {
-    background: var(--nav-bg);
-    color: var(--text-inverse);
+    background: #1e1b4b;
+    color: #fff;
+    padding: 16px;
+    font-size: 15px;
+  }
+  
+  &:invalid, &:hover:invalid {
+    color: rgba(255, 255, 255, 0.4);
+  }
+`;
+
+const DateInput = styled.input`
+  width: 100%;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    border-color: rgba(129, 140, 248, 0.4);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.04) 100%
+    );
+  }
+  
+  &:focus {
+    border-color: #818cf8;
+    box-shadow: 
+      0 0 0 4px rgba(129, 140, 248, 0.15),
+      0 8px 32px rgba(129, 140, 248, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+  }
+  
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1) brightness(0.8);
+    transition: all 0.2s;
+    
+    &:hover {
+      filter: invert(1) brightness(1.2);
+    }
+  }
+  
+  /* Remove number input arrows */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+`;
+
+const FullNameInput = styled(DateInput)`
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 18px 20px;
+`;
+
+const TimeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: rgba(129, 140, 248, 0.4);
+  }
+  
+  &:focus-within {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.15);
+  }
+`;
+
+const TimeInput = styled.input`
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+  }
+  
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1) brightness(0.8);
   }
 `;
 
 const SubmitButton = styled.button`
   width: 100%;
-  padding: 16px 32px;
-  border-radius: 12px;
+  padding: 20px 40px;
+  border-radius: 16px;
   border: none;
-  background: linear-gradient(135deg, #787cff, #a85aff);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  background-size: 200% 200%;
   color: white;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  letter-spacing: 1px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  box-shadow: 
+    0 10px 40px -10px rgba(99, 102, 241, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  margin-top: 12px;
   
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(120, 140, 255, 0.4);
+    background-position: 100% 100%;
+    transform: translateY(-3px);
+    box-shadow: 
+      0 20px 60px -10px rgba(99, 102, 241, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
   
   &:active {
-    transform: translateY(0);
+    transform: translateY(-1px);
   }
 `;
 
 const ErrorMessage = styled.div`
-  color: #ff6b6b;
+  color: #fca5a5;
   font-size: 14px;
   text-align: center;
-  margin-top: 16px;
-  padding: 12px;
-  background: rgba(255, 107, 107, 0.1);
-  border-radius: 8px;
+  margin-top: 20px;
+  padding: 14px 20px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 12px;
+  animation: ${fadeIn} 0.3s ease-out;
 `;
 
 const ResultSection = styled.div`
-  margin-top: 32px;
+  margin-top: 36px;
   text-align: center;
-  padding: 24px;
-  background: rgba(120, 140, 255, 0.1);
-  border-radius: 16px;
-  border: 1px solid rgba(120, 140, 255, 0.2);
+  padding: 36px;
+  background: linear-gradient(
+    135deg,
+    rgba(129, 140, 248, 0.15) 0%,
+    rgba(168, 85, 247, 0.1) 100%
+  );
+  border-radius: 24px;
+  border: 1px solid rgba(129, 140, 248, 0.2);
+  animation: ${fadeIn} 0.5s ease-out;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #818cf8, #a855f7, transparent);
+  }
 `;
 
 const ZodiacIcon = styled.div`
-  font-size: 64px;
+  font-size: 80px;
   margin-bottom: 16px;
+  animation: ${float} 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(129, 140, 248, 0.5));
 `;
 
 const ZodiacName = styled.h2`
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
-  color: var(--text-inverse);
+  background: linear-gradient(135deg, #fff 0%, #c4b5fd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   margin-bottom: 8px;
 `;
 
 const ZodiacDescription = styled.p`
   font-size: 16px;
-  color: var(--text-secondary);
-  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.7;
+  max-width: 400px;
+  margin: 0 auto;
 `;
 
 const Row = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 12px;
   
   @media (max-width: 500px) {
     grid-template-columns: 1fr;
   }
 `;
 
+const SubLabel = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+`;
+
+const LocationResult = styled.div`
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+`;
+
+const LocationText = styled.p`
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.8;
+  
+  span {
+    color: #818cf8;
+    font-weight: 500;
+  }
+`;
+
 export default function StarChartPage() {
-  const { user } = useAuth();
+  const [fullName, setFullName] = useState('');
   const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
@@ -215,8 +485,13 @@ export default function StarChartPage() {
     setError('');
     setResult(null);
 
+    if (!fullName.trim()) {
+      setError('Please enter your full name.');
+      return;
+    }
+
     if (!day || !month || !year) {
-      setError('Please fill in your date of birth.');
+      setError('Please select your date of birth.');
       return;
     }
 
@@ -246,21 +521,44 @@ export default function StarChartPage() {
     } else {
       setError('Could not determine zodiac sign. Please check your date.');
     }
-  }, [day, month, year, getZodiacSign]);
+  }, [fullName, day, month, year, getZodiacSign]);
 
   return (
     <Layout>
       <Background showShootingStars={false} />
       <PageWrapper>
+        {/* Decorative stars */}
+        <StarDecoration $top="10%" $left="10%" $size={3} $delay="0s" />
+        <StarDecoration $top="20%" $left="85%" $size={2} $delay="0.5s" />
+        <StarDecoration $top="60%" $left="5%" $size={2} $delay="1s" />
+        <StarDecoration $top="70%" $left="90%" $size={3} $delay="1.5s" />
+        <StarDecoration $top="40%" $left="95%" $size={2} $delay="2s" />
+        <StarDecoration $top="80%" $left="15%" $size={2} $delay="0.3s" />
+        
         <PageTitle>Your Star</PageTitle>
-        <WelcomeText>Welcome, {user?.name}! Enter your birth details to discover your cosmic identity.</WelcomeText>
+        <WelcomeText>
+          Discover your cosmic identity. Enter your birth details and unlock the secrets of the stars.
+        </WelcomeText>
 
         <ChartContainer>
           <form onSubmit={handleSubmit}>
             <FormSection>
-              <FormLabel>Date of Birth *</FormLabel>
-              <Row>
-                <FormSelect 
+              <FormLabel>Full Name</FormLabel>
+              <FullNameInput 
+                type="text" 
+                placeholder="What should we call you?"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+            </FormSection>
+
+            <SectionDivider />
+
+            <FormSection>
+              <FormLabel>Date of Birth</FormLabel>
+              <DatePickerWrapper>
+                <DateSelect 
                   value={month} 
                   onChange={(e) => setMonth(e.target.value)}
                   required
@@ -278,59 +576,73 @@ export default function StarChartPage() {
                   <option value="10">October</option>
                   <option value="11">November</option>
                   <option value="12">December</option>
-                </FormSelect>
-                <FormInput 
-                  type="number" 
-                  placeholder="Day"
-                  min="1"
-                  max="31"
+                </DateSelect>
+                <DateSelect 
                   value={day}
                   onChange={(e) => setDay(e.target.value)}
                   required
+                >
+                  <option value="">Day</option>
+                  {Array.from({ length: 31 }, (_, i) => (
+                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                  ))}
+                </DateSelect>
+                <DateInput 
+                  type="number" 
+                  placeholder="Year"
+                  min="1900"
+                  max={new Date().getFullYear()}
+                  value={year}
+                  onChange={(e) => setYear(e.target.value)}
+                  required
                 />
-              </Row>
+              </DatePickerWrapper>
             </FormSection>
 
             <FormSection>
-              <FormLabel>Year *</FormLabel>
-              <FormInput 
-                type="number" 
-                placeholder="Year (e.g., 1995)"
-                min="1900"
-                max={new Date().getFullYear()}
-                value={year}
-                onChange={(e) => setYear(e.target.value)}
-                required
-              />
+              <FormLabel>Birth Time</FormLabel>
+              <TimeWrapper>
+                <InputIcon>🕐</InputIcon>
+                <TimeInput 
+                  type="time" 
+                  value={birthTime}
+                  onChange={(e) => setBirthTime(e.target.value)}
+                  placeholder="What time were you born?"
+                />
+              </TimeWrapper>
             </FormSection>
 
             <FormSection>
-              <FormLabel>Birth Time (Optional)</FormLabel>
-              <FormInput 
-                type="time" 
-                value={birthTime}
-                onChange={(e) => setBirthTime(e.target.value)}
-              />
-            </FormSection>
-
-            <FormSection>
-              <FormLabel>Birth Place (Optional)</FormLabel>
+              <FormLabel>Birth Place</FormLabel>
               <Row>
                 <div>
-                  <FormLabel style={{ fontSize: '12px', marginBottom: '8px', opacity: 0.8 }}>City</FormLabel>
+                  <SubLabel>City</SubLabel>
                   <LocationAutocomplete
                     value={selectedCity?.display_name?.split(',')[0] || ''}
-                    onChange={(location) => setSelectedCity(location)}
-                    placeholder="Search for your city..."
+                    onChange={(location) => {
+                      setSelectedCity(location);
+                      if (location && location.country) {
+                        setSelectedCountry({
+                          id: location.country_code,
+                          name: location.country,
+                          country_code: location.country_code,
+                          country: location.country,
+                          display_name: location.country,
+                          latitude: location.latitude,
+                          longitude: location.longitude
+                        });
+                      }
+                    }}
+                    placeholder="Search city..."
                     searchType="city"
                   />
                 </div>
                 <div>
-                  <FormLabel style={{ fontSize: '12px', marginBottom: '8px', opacity: 0.8 }}>Country</FormLabel>
+                  <SubLabel>Country</SubLabel>
                   <LocationAutocomplete
                     value={selectedCountry?.name || ''}
                     onChange={(location) => setSelectedCountry(location)}
-                    placeholder="Search for your country..."
+                    placeholder="Search country..."
                     searchType="country"
                   />
                 </div>
@@ -338,19 +650,19 @@ export default function StarChartPage() {
             </FormSection>
 
             {(selectedCity || selectedCountry) && (
-              <ResultSection style={{ marginTop: '16px', padding: '16px' }}>
-                <ZodiacDescription style={{ fontSize: '14px' }}>
-                  📍 {selectedCity ? selectedCity.name : 'N/A'}
+              <LocationResult>
+                <LocationText>
+                  <span>📍</span> {selectedCity ? selectedCity.name : 'N/A'}
                   {selectedCountry && `, ${selectedCountry.name}`}
                   {selectedCity && (
                     <>
-                      <br/>
-                      🌐 Lat: {selectedCity.latitude.toFixed(4)}, Lon: {selectedCity.longitude.toFixed(4)}
-                      {selectedCity.timezone && ` | 🕐 ${selectedCity.timezone}`}
+                      <br />
+                      <span>🌐</span> {selectedCity.latitude.toFixed(4)}, {selectedCity.longitude.toFixed(4)}
+                      {selectedCity.timezone && <> · <span>🕐</span> {selectedCity.timezone}</>}
                     </>
                   )}
-                </ZodiacDescription>
-              </ResultSection>
+                </LocationText>
+              </LocationResult>
             )}
 
             {error && <ErrorMessage>{error}</ErrorMessage>}
