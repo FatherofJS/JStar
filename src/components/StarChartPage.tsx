@@ -1,10 +1,11 @@
 // StarChartPage Component - Personalized astrology chart page
 import { useState, useCallback } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import { Background } from "./background/Background";
 import Layout from "./Layout";
 import { LocationAutocomplete } from "./LocationAutocomplete";
 import type { LocationData } from "../types/location";
+import { useTheme } from "../contexts/ThemeContext";
 
 const shimmer = keyframes`
   0% { background-position: -200% center; }
@@ -50,16 +51,16 @@ const StarDecoration = styled.div<{ $top: string; $left: string; $size: number; 
   z-index: 0;
 `;
 
-const PageTitle = styled.h1`
+const PageTitle = styled.h1<{ $isLight: boolean }>`
   font-size: clamp(36px, 6vw, 56px);
   font-weight: 800;
   margin-bottom: 8px;
   background: linear-gradient(90deg, 
-    #fff 0%, 
-    #c4b5fd 25%, 
-    #818cf8 50%, 
-    #c4b5fd 75%, 
-    #fff 100%
+    ${props => props.$isLight ? '#1e293b 0%' : '#fff 0%'}, 
+    ${props => props.$isLight ? '#4f46e5 25%' : '#c4b5fd 25%'}, 
+    ${props => props.$isLight ? '#7c3aed 50%' : '#818cf8 50%'}, 
+    ${props => props.$isLight ? '#4f46e5 75%' : '#c4b5fd 75%'}, 
+    ${props => props.$isLight ? '#1e293b 100%' : '#fff 100%'}
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -68,16 +69,18 @@ const PageTitle = styled.h1`
   text-align: center;
   animation: ${shimmer} 4s linear infinite;
   letter-spacing: -1px;
-  text-shadow: 0 0 40px rgba(129, 140, 248, 0.3);
+  text-shadow: ${props => props.$isLight 
+    ? '0 0 40px rgba(99, 102, 241, 0.15)' 
+    : '0 0 40px rgba(129, 140, 248, 0.3)'};
   
   @media (max-width: 768px) {
     letter-spacing: 0;
   }
 `;
 
-const WelcomeText = styled.p`
+const WelcomeText = styled.p<{ $isLight: boolean }>`
   font-size: 18px;
-  color: var(--text-secondary);
+  color: ${props => props.$isLight ? 'var(--text-secondary)' : 'rgba(255, 255, 255, 0.7)'};
   margin-bottom: 40px;
   text-align: center;
   max-width: 500px;
@@ -85,21 +88,21 @@ const WelcomeText = styled.p`
   opacity: 0.9;
 `;
 
-const ChartContainer = styled.div`
+const ChartContainer = styled.div<{ $isLight: boolean }>`
   width: 100%;
   max-width: 700px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.04) 100%
-  );
+  background: ${props => props.$isLight 
+    ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%)'
+    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%)'};
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid ${props => props.$isLight 
+    ? 'rgba(0, 0, 0, 0.08)' 
+    : 'rgba(255, 255, 255, 0.1)'};
   border-radius: 32px;
   padding: 40px;
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: ${props => props.$isLight 
+    ? '0 25px 50px -12px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
+    : '0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'};
   animation: ${fadeIn} 0.6s ease-out;
   position: relative;
   z-index: 1;
@@ -115,26 +118,30 @@ const FormSection = styled.div`
   position: relative;
 `;
 
-const SectionDivider = styled.div`
+const SectionDivider = styled.div<{ $isLight: boolean }>`
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(90deg, transparent, ${props => props.$isLight 
+    ? 'rgba(0, 0, 0, 0.1)' 
+    : 'rgba(255,255,255,0.1)'}, transparent);
   margin: 8px 0 28px;
 `;
 
-const FormLabel = styled.label`
+const FormLabel = styled.label<{ $isLight: boolean }>`
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
+  color: ${props => props.$isLight 
+    ? 'rgba(30, 41, 59, 0.7)' 
+    : 'rgba(255, 255, 255, 0.7)'};
   margin-bottom: 12px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   
   &::before {
     content: '✦';
-    color: #818cf8;
+    color: ${props => props.$isLight ? '#4f46e5' : '#818cf8'};
     font-size: 8px;
   }
 `;
@@ -155,101 +162,105 @@ const DatePickerWrapper = styled.div`
   }
 `;
 
-const DateSelect = styled.select`
+const DateSelect = styled.select<{ $isLight: boolean }>`
   width: 100%;
   padding: 16px 18px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.06) 0%,
-    rgba(255, 255, 255, 0.02) 100%
-  );
-  color: #fff;
+  border: 1px solid ${props => props.$isLight 
+    ? 'rgba(0, 0, 0, 0.1)' 
+    : 'rgba(255, 255, 255, 0.08)'};
+  background: ${props => props.$isLight 
+    ? 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)'
+    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)'};
+  color: ${props => props.$isLight ? '#1e293b' : '#fff'};
   font-size: 15px;
   font-weight: 500;
   outline: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23818cf8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='${props => props.$isLight ? '%234f46e5' : '%23818cf8'}' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 18px center;
   padding-right: 45px;
   
   &:hover {
-    border-color: rgba(129, 140, 248, 0.4);
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(255, 255, 255, 0.04) 100%
-    );
+    border-color: ${props => props.$isLight 
+      ? 'rgba(79, 70, 229, 0.4)' 
+      : 'rgba(129, 140, 248, 0.4)'};
+    background: ${props => props.$isLight 
+      ? 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)'
+      : 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.04) 100%)'};
   }
   
   &:focus {
-    border-color: #818cf8;
-    box-shadow: 
-      0 0 0 4px rgba(129, 140, 248, 0.15),
-      0 8px 32px rgba(129, 140, 248, 0.2);
+    border-color: ${props => props.$isLight ? '#4f46e5' : '#818cf8'};
+    box-shadow: ${props => props.$isLight 
+      ? '0 0 0 4px rgba(79, 70, 229, 0.15), 0 8px 32px rgba(79, 70, 229, 0.2)'
+      : '0 0 0 4px rgba(129, 140, 248, 0.15), 0 8px 32px rgba(129, 140, 248, 0.2)'};
     transform: translateY(-2px);
   }
   
   option {
-    background: #1e1b4b;
-    color: #fff;
+    background: ${props => props.$isLight ? '#ffffff' : '#1e1b4b'};
+    color: ${props => props.$isLight ? '#1e293b' : '#fff'};
     padding: 16px;
     font-size: 15px;
   }
   
   &:invalid, &:hover:invalid {
-    color: rgba(255, 255, 255, 0.4);
+    color: ${props => props.$isLight 
+      ? 'rgba(30, 41, 59, 0.4)' 
+      : 'rgba(255, 255, 255, 0.4)'};
   }
 `;
 
-const DateInput = styled.input`
+const DateInput = styled.input<{ $isLight: boolean }>`
   width: 100%;
   padding: 16px 18px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.06) 0%,
-    rgba(255, 255, 255, 0.02) 100%
-  );
-  color: #fff;
+  border: 1px solid ${props => props.$isLight 
+    ? 'rgba(0, 0, 0, 0.1)' 
+    : 'rgba(255, 255, 255, 0.08)'};
+  background: ${props => props.$isLight 
+    ? 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)'
+    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)'};
+  color: ${props => props.$isLight ? '#1e293b' : '#fff'};
   font-size: 15px;
   font-weight: 500;
   outline: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
-    border-color: rgba(129, 140, 248, 0.4);
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(255, 255, 255, 0.04) 100%
-    );
+    border-color: ${props => props.$isLight 
+      ? 'rgba(79, 70, 229, 0.4)' 
+      : 'rgba(129, 140, 248, 0.4)'};
+    background: ${props => props.$isLight 
+      ? 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)'
+      : 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.04) 100%)'};
   }
   
   &:focus {
-    border-color: #818cf8;
-    box-shadow: 
-      0 0 0 4px rgba(129, 140, 248, 0.15),
-      0 8px 32px rgba(129, 140, 248, 0.2);
+    border-color: ${props => props.$isLight ? '#4f46e5' : '#818cf8'};
+    box-shadow: ${props => props.$isLight 
+      ? '0 0 0 4px rgba(79, 70, 229, 0.15), 0 8px 32px rgba(79, 70, 229, 0.2)'
+      : '0 0 0 4px rgba(129, 140, 248, 0.15), 0 8px 32px rgba(129, 140, 248, 0.2)'};
     transform: translateY(-2px);
   }
   
   &::placeholder {
-    color: rgba(255, 255, 255, 0.35);
+    color: ${props => props.$isLight 
+      ? 'rgba(30, 41, 59, 0.35)' 
+      : 'rgba(255, 255, 255, 0.35)'};
   }
   
   &::-webkit-calendar-picker-indicator {
     cursor: pointer;
-    filter: invert(1) brightness(0.8);
+    filter: ${props => props.$isLight ? 'none' : 'invert(1) brightness(0.8)'};
     transition: all 0.2s;
     
     &:hover {
-      filter: invert(1) brightness(1.2);
+      filter: ${props => props.$isLight ? 'brightness(0.8)' : 'invert(1) brightness(1.2)'};
     }
   }
   
@@ -272,49 +283,55 @@ const FullNameInput = styled(DateInput)`
   padding: 18px 20px;
 `;
 
-const TimeWrapper = styled.div`
+const TimeWrapper = styled.div<{ $isLight: boolean }>`
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 16px 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.06) 0%,
-    rgba(255, 255, 255, 0.02) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: ${props => props.$isLight 
+    ? 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)'
+    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)'};
+  border: 1px solid ${props => props.$isLight 
+    ? 'rgba(0, 0, 0, 0.1)' 
+    : 'rgba(255, 255, 255, 0.08)'};
   border-radius: 16px;
   transition: all 0.3s ease;
   
   &:hover {
-    border-color: rgba(129, 140, 248, 0.4);
+    border-color: ${props => props.$isLight 
+      ? 'rgba(79, 70, 229, 0.4)' 
+      : 'rgba(129, 140, 248, 0.4)'};
   }
   
   &:focus-within {
-    border-color: #818cf8;
-    box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.15);
+    border-color: ${props => props.$isLight ? '#4f46e5' : '#818cf8'};
+    box-shadow: ${props => props.$isLight 
+      ? '0 0 0 4px rgba(79, 70, 229, 0.15)'
+      : '0 0 0 4px rgba(129, 140, 248, 0.15)'};
   }
 `;
 
-const TimeInput = styled.input`
+const TimeInput = styled.input<{ $isLight: boolean }>`
   flex: 1;
   background: transparent;
   border: none;
-  color: #fff;
+  color: ${props => props.$isLight ? '#1e293b' : '#fff'};
   font-size: 15px;
   outline: none;
   
   &::placeholder {
-    color: rgba(255, 255, 255, 0.35);
+    color: ${props => props.$isLight 
+      ? 'rgba(30, 41, 59, 0.35)' 
+      : 'rgba(255, 255, 255, 0.35)'};
   }
   
   &::-webkit-calendar-picker-indicator {
     cursor: pointer;
-    filter: invert(1) brightness(0.8);
+    filter: ${props => props.$isLight ? 'none' : 'invert(1) brightness(0.8)'};
   }
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled.button<{ $isLight: boolean }>`
   width: 100%;
   padding: 20px 40px;
   border-radius: 16px;
@@ -328,17 +345,17 @@ const SubmitButton = styled.button`
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  box-shadow: 
-    0 10px 40px -10px rgba(99, 102, 241, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: ${props => props.$isLight 
+    ? '0 10px 40px -10px rgba(99, 102, 241, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+    : '0 10px 40px -10px rgba(99, 102, 241, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2)'};
   margin-top: 12px;
   
   &:hover {
     background-position: 100% 100%;
     transform: translateY(-3px);
-    box-shadow: 
-      0 20px 60px -10px rgba(99, 102, 241, 0.6),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: ${props => props.$isLight 
+      ? '0 20px 60px -10px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+      : '0 20px 60px -10px rgba(99, 102, 241, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3)'};
   }
   
   &:active {
@@ -346,29 +363,33 @@ const SubmitButton = styled.button`
   }
 `;
 
-const ErrorMessage = styled.div`
-  color: #fca5a5;
+const ErrorMessage = styled.div<{ $isLight: boolean }>`
+  color: ${props => props.$isLight ? '#dc2626' : '#fca5a5'};
   font-size: 14px;
   text-align: center;
   margin-top: 20px;
   padding: 14px 20px;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: ${props => props.$isLight 
+    ? 'rgba(220, 38, 38, 0.08)' 
+    : 'rgba(239, 68, 68, 0.1)'};
+  border: 1px solid ${props => props.$isLight 
+    ? 'rgba(220, 38, 38, 0.2)' 
+    : 'rgba(239, 68, 68, 0.2)'};
   border-radius: 12px;
   animation: ${fadeIn} 0.3s ease-out;
 `;
 
-const ResultSection = styled.div`
+const ResultSection = styled.div<{ $isLight: boolean }>`
   margin-top: 36px;
   text-align: center;
   padding: 36px;
-  background: linear-gradient(
-    135deg,
-    rgba(129, 140, 248, 0.15) 0%,
-    rgba(168, 85, 247, 0.1) 100%
-  );
+  background: ${props => props.$isLight 
+    ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(168, 85, 247, 0.06) 100%)'
+    : 'linear-gradient(135deg, rgba(129, 140, 248, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%)'};
   border-radius: 24px;
-  border: 1px solid rgba(129, 140, 248, 0.2);
+  border: 1px solid ${props => props.$isLight 
+    ? 'rgba(99, 102, 241, 0.15)' 
+    : 'rgba(129, 140, 248, 0.2)'};
   animation: ${fadeIn} 0.5s ease-out;
   position: relative;
   overflow: hidden;
@@ -384,26 +405,30 @@ const ResultSection = styled.div`
   }
 `;
 
-const ZodiacIcon = styled.div`
+const ZodiacIcon = styled.div<{ $isLight: boolean }>`
   font-size: 80px;
   margin-bottom: 16px;
   animation: ${float} 3s ease-in-out infinite;
-  filter: drop-shadow(0 0 20px rgba(129, 140, 248, 0.5));
+  filter: drop-shadow(${props => props.$isLight 
+    ? '0 0 20px rgba(99, 102, 241, 0.3)' 
+    : '0 0 20px rgba(129, 140, 248, 0.5)'});
 `;
 
-const ZodiacName = styled.h2`
+const ZodiacName = styled.h2<{ $isLight: boolean }>`
   font-size: 32px;
   font-weight: 700;
-  background: linear-gradient(135deg, #fff 0%, #c4b5fd 100%);
+  background: linear-gradient(135deg, ${props => props.$isLight ? '#1e293b 0%' : '#fff 0%'}, ${props => props.$isLight ? '#4f46e5 100%' : '#c4b5fd 100%'});
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   margin-bottom: 8px;
 `;
 
-const ZodiacDescription = styled.p`
+const ZodiacDescription = styled.p<{ $isLight: boolean }>`
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.7);
+  color: ${props => props.$isLight 
+    ? 'rgba(30, 41, 59, 0.7)' 
+    : 'rgba(255, 255, 255, 0.7)'};
   line-height: 1.7;
   max-width: 400px;
   margin: 0 auto;
@@ -419,35 +444,46 @@ const Row = styled.div`
   }
 `;
 
-const SubLabel = styled.div`
+const SubLabel = styled.div<{ $isLight: boolean }>`
   font-size: 12px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.5);
+  color: ${props => props.$isLight 
+    ? 'rgba(30, 41, 59, 0.5)' 
+    : 'rgba(255, 255, 255, 0.5)'};
   margin-bottom: 8px;
   letter-spacing: 1px;
   text-transform: uppercase;
 `;
 
-const LocationResult = styled.div`
+const LocationResult = styled.div<{ $isLight: boolean }>`
   margin-top: 20px;
   padding: 16px;
-  background: rgba(255, 255, 255, 0.03);
+  background: ${props => props.$isLight 
+    ? 'rgba(0, 0, 0, 0.02)' 
+    : 'rgba(255, 255, 255, 0.03)'};
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid ${props => props.$isLight 
+    ? 'rgba(0, 0, 0, 0.05)' 
+    : 'rgba(255, 255, 255, 0.05)'};
 `;
 
-const LocationText = styled.p`
+const LocationText = styled.p<{ $isLight: boolean }>`
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
+  color: ${props => props.$isLight 
+    ? 'rgba(30, 41, 59, 0.6)' 
+    : 'rgba(255, 255, 255, 0.6)'};
   line-height: 1.8;
   
   span {
-    color: #818cf8;
+    color: ${props => props.$isLight ? '#4f46e5' : '#818cf8'};
     font-weight: 500;
   }
 `;
 
 export default function StarChartPage() {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+  
   const [fullName, setFullName] = useState('');
   const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
@@ -528,40 +564,46 @@ export default function StarChartPage() {
     <Layout>
       <Background showShootingStars={false} />
       <PageWrapper>
-        {/* Decorative stars */}
-        <StarDecoration $top="10%" $left="10%" $size={3} $delay="0s" />
-        <StarDecoration $top="20%" $left="85%" $size={2} $delay="0.5s" />
-        <StarDecoration $top="60%" $left="5%" $size={2} $delay="1s" />
-        <StarDecoration $top="70%" $left="90%" $size={3} $delay="1.5s" />
-        <StarDecoration $top="40%" $left="95%" $size={2} $delay="2s" />
-        <StarDecoration $top="80%" $left="15%" $size={2} $delay="0.3s" />
+        {/* Decorative stars - only show in dark mode */}
+        {!isLight && (
+          <>
+            <StarDecoration $top="10%" $left="10%" $size={3} $delay="0s" />
+            <StarDecoration $top="20%" $left="85%" $size={2} $delay="0.5s" />
+            <StarDecoration $top="60%" $left="5%" $size={2} $delay="1s" />
+            <StarDecoration $top="70%" $left="90%" $size={3} $delay="1.5s" />
+            <StarDecoration $top="40%" $left="95%" $size={2} $delay="2s" />
+            <StarDecoration $top="80%" $left="15%" $size={2} $delay="0.3s" />
+          </>
+        )}
         
-        <PageTitle>Your Star</PageTitle>
-        <WelcomeText>
+        <PageTitle $isLight={isLight}>Your Star</PageTitle>
+        <WelcomeText $isLight={isLight}>
           Discover your cosmic identity. Enter your birth details and unlock the secrets of the stars.
         </WelcomeText>
 
-        <ChartContainer>
+        <ChartContainer $isLight={isLight}>
           <form onSubmit={handleSubmit}>
             <FormSection>
-              <FormLabel>Full Name</FormLabel>
+              <FormLabel $isLight={isLight}>Full Name</FormLabel>
               <FullNameInput 
                 type="text" 
                 placeholder="What should we call you?"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
+                $isLight={isLight}
                 required
               />
             </FormSection>
 
-            <SectionDivider />
+            <SectionDivider $isLight={isLight} />
 
             <FormSection>
-              <FormLabel>Date of Birth</FormLabel>
+              <FormLabel $isLight={isLight}>Date of Birth</FormLabel>
               <DatePickerWrapper>
                 <DateSelect 
                   value={month} 
                   onChange={(e) => setMonth(e.target.value)}
+                  $isLight={isLight}
                   required
                 >
                   <option value="">Month</option>
@@ -581,6 +623,7 @@ export default function StarChartPage() {
                 <DateSelect 
                   value={day}
                   onChange={(e) => setDay(e.target.value)}
+                  $isLight={isLight}
                   required
                 >
                   <option value="">Day</option>
@@ -595,32 +638,34 @@ export default function StarChartPage() {
                   max={new Date().getFullYear()}
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
+                  $isLight={isLight}
                   required
                 />
               </DatePickerWrapper>
             </FormSection>
 
             <FormSection>
-              <FormLabel>Birth Time</FormLabel>
-              <TimeWrapper>
+              <FormLabel $isLight={isLight}>Birth Time</FormLabel>
+              <TimeWrapper $isLight={isLight}>
                 <InputIcon>🕐</InputIcon>
                 <TimeInput 
                   type="time" 
                   value={birthTime}
                   onChange={(e) => setBirthTime(e.target.value)}
                   placeholder="What time were you born?"
+                  $isLight={isLight}
                 />
               </TimeWrapper>
             </FormSection>
 
             <FormSection>
-              <FormLabel>Birth Place</FormLabel>
+              <FormLabel $isLight={isLight}>Birth Place</FormLabel>
               <Row>
                 <div>
-                  <SubLabel>City</SubLabel>
+                  <SubLabel $isLight={isLight}>City</SubLabel>
                   <LocationAutocomplete
                     value={selectedCity?.display_name?.split(',')[0] || ''}
-                    onChange={(location) => {
+                    onChange={(location: LocationData | null) => {
                       setSelectedCity(location);
                       if (location && location.country) {
                         setSelectedCountry({
@@ -636,23 +681,25 @@ export default function StarChartPage() {
                     }}
                     placeholder="Search city..."
                     searchType="city"
+                    isLight={isLight}
                   />
                 </div>
                 <div>
-                  <SubLabel>Country</SubLabel>
+                  <SubLabel $isLight={isLight}>Country</SubLabel>
                   <LocationAutocomplete
                     value={selectedCountry?.name || ''}
-                    onChange={(location) => setSelectedCountry(location)}
+                    onChange={(location: LocationData | null) => setSelectedCountry(location)}
                     placeholder="Search country..."
                     searchType="country"
+                    isLight={isLight}
                   />
                 </div>
               </Row>
             </FormSection>
 
             {(selectedCity || selectedCountry) && (
-              <LocationResult>
-                <LocationText>
+              <LocationResult $isLight={isLight}>
+                <LocationText $isLight={isLight}>
                   <span>📍</span> {selectedCity ? selectedCity.name : 'N/A'}
                   {selectedCountry && `, ${selectedCountry.name}`}
                   {selectedCity && (
@@ -666,16 +713,16 @@ export default function StarChartPage() {
               </LocationResult>
             )}
 
-            {error && <ErrorMessage>{error}</ErrorMessage>}
+            {error && <ErrorMessage $isLight={isLight}>{error}</ErrorMessage>}
 
-            <SubmitButton type="submit">Reveal Your Star</SubmitButton>
+            <SubmitButton type="submit" $isLight={isLight}>Reveal Your Star</SubmitButton>
           </form>
 
           {result && (
-            <ResultSection>
-              <ZodiacIcon>{result.icon}</ZodiacIcon>
-              <ZodiacName>{result.zodiac}</ZodiacName>
-              <ZodiacDescription>{result.description}</ZodiacDescription>
+            <ResultSection $isLight={isLight}>
+              <ZodiacIcon $isLight={isLight}>{result.icon}</ZodiacIcon>
+              <ZodiacName $isLight={isLight}>{result.zodiac}</ZodiacName>
+              <ZodiacDescription $isLight={isLight}>{result.description}</ZodiacDescription>
             </ResultSection>
           )}
         </ChartContainer>
@@ -683,4 +730,3 @@ export default function StarChartPage() {
     </Layout>
   );
 }
-
