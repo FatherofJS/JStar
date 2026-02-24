@@ -24,6 +24,7 @@ import {
   Star,
 } from "./AuthModal.styles.ts";
 import { useAuth } from "../../contexts/AuthContext";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -46,6 +47,7 @@ const stars = generateStars(8);
 
 export default function AuthModal({ isOpen, onClose, initialTab = "login", onLoginSuccess }: AuthModalProps) {
   const { login } = useAuth();
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<"login" | "register">(initialTab);
   const [isClosing, setIsClosing] = useState(false);
   const [formData, setFormData] = useState({
@@ -103,24 +105,24 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!formData.email) {
-      newErrors.email = "Email is required";
+      newErrors.email = t.emailIsRequired;
     } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = t.validEmail;
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = t.passwordIsRequired;
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = t.passwordMinLength;
     }
 
     if (activeTab === "register" && !formData.name) {
-      newErrors.name = "Name is required";
+      newErrors.name = t.nameIsRequired;
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }, [formData, activeTab]);
+  }, [formData, activeTab, t]);
 
   // Handle input change
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -153,7 +155,14 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
         handleClose();
         onLoginSuccess?.();
       } else {
-        setApiError(result.error || "Login failed. Please try again.");
+        // Translate known error messages
+        let translatedError = result.error;
+        if (result.error === 'Incorrect password. Please try again.') {
+          translatedError = t.incorrectPassword;
+        } else if (result.error === 'No account found with this email address.') {
+          translatedError = t.noAccountFound;
+        }
+        setApiError(translatedError || t.loginFailed);
         setShake(true);
         setTimeout(() => setShake(false), 500);
       }
@@ -164,7 +173,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
     }
 
     setIsLoading(false);
-  }, [formData, activeTab, validate, handleClose, login, onLoginSuccess]);
+  }, [formData, activeTab, validate, handleClose, login, onLoginSuccess, t]);
 
   // Switch tab
   const switchTab = useCallback((tab: "login" | "register") => {
@@ -195,8 +204,8 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
           <Logo>JSTAR</Logo>
           <Subtitle>
             {activeTab === "login" 
-              ? "Welcome back, cosmic traveler" 
-              : "Begin your cosmic journey"}
+              ? t.welcomeBack
+              : t.beginJourney}
           </Subtitle>
         </ModalHeader>
 
@@ -205,25 +214,25 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
             $active={activeTab === "login"} 
             onClick={() => switchTab("login")}
           >
-            Sign In
+            {t.signIn}
           </Tab>
           <Tab 
             $active={activeTab === "register"} 
             onClick={() => switchTab("register")}
           >
-            Sign Up
+            {t.signUp}
           </Tab>
         </TabContainer>
 
         <Form onSubmit={handleSubmit}>
           {activeTab === "register" && (
             <InputGroup>
-              <InputLabel htmlFor="name">Full Name</InputLabel>
+              <InputLabel htmlFor="name">{t.fullName}</InputLabel>
               <Input
                 id="name"
                 type="text"
                 name="name"
-                placeholder="Enter your name"
+                placeholder={t.enterYourName}
                 value={formData.name}
                 onChange={handleInputChange}
               />
@@ -232,12 +241,12 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
           )}
 
           <InputGroup>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
+            <InputLabel htmlFor="email">{t.emailAddress}</InputLabel>
             <Input
               id="email"
               type="email"
               name="email"
-              placeholder="Enter your email"
+              placeholder={t.enterYourEmail}
               value={formData.email}
               onChange={handleInputChange}
               autoComplete="email"
@@ -246,12 +255,12 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
           </InputGroup>
 
           <InputGroup>
-            <InputLabel htmlFor="password">Password</InputLabel>
+            <InputLabel htmlFor="password">{t.password}</InputLabel>
             <Input
               id="password"
               type="password"
               name="password"
-              placeholder="Enter your password"
+              placeholder={t.enterYourPassword}
               value={formData.password}
               onChange={handleInputChange}
               autoComplete={activeTab === "login" ? "current-password" : "new-password"}
@@ -264,16 +273,16 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
 
           {activeTab === "login" && (
             <ForgotPassword type="button">
-              Forgot Password?
+              {t.forgotPassword}
             </ForgotPassword>
           )}
 
           <SubmitButton type="submit" disabled={isLoading}>
-            {isLoading ? "Signing in..." : activeTab === "login" ? "Sign In" : "Create Account"}
+            {isLoading ? t.signingIn : activeTab === "login" ? t.signIn : t.createAccount}
           </SubmitButton>
 
           <Divider>
-            <span>or continue with</span>
+            <span>{t.orContinueWith}</span>
           </Divider>
 
           <SocialButtons>
@@ -298,11 +307,11 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
         <Footer>
           {activeTab === "login" ? (
             <>
-              Don't have an account? <a href="#" onClick={(e) => { e.preventDefault(); switchTab("register"); }}>Sign up</a>
+              {t.dontHaveAccount} <a href="#" onClick={(e) => { e.preventDefault(); switchTab("register"); }}>{t.signUp}</a>
             </>
           ) : (
             <>
-              Already have an account? <a href="#" onClick={(e) => { e.preventDefault(); switchTab("login"); }}>Sign in</a>
+              {t.alreadyHaveAccount} <a href="#" onClick={(e) => { e.preventDefault(); switchTab("login"); }}>{t.signIn}</a>
             </>
           )}
         </Footer>

@@ -7,21 +7,26 @@ import StarChartPage from './components/StarChartPage';
 import { Background } from './components/background/Background';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { Chatbot } from './components/chatbot';
 import './App.css';
 
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <BrowserRouter>
-          <Background showShootingStars={true} />
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/star-chart" element={<StarChartPage />} />
-            <Route path="/your-star" element={<StarChartPage />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Background showShootingStars={true} />
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/star-chart" element={<StarChartPage />} />
+              <Route path="/your-star" element={<StarChartPage />} />
+            </Routes>
+            <Chatbot />
+          </BrowserRouter>
+        </AuthProvider>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

@@ -23,7 +23,10 @@ import { useTheme } from "../contexts/ThemeContext";
 // Memoize star data to prevent recalculation on every render
 const useStarData = (zodiacName: string) => {
   return useMemo(() => {
-    const intensity = Math.random();
+    // Use a deterministic seed based on zodiac name to generate consistent random values
+    const seed = zodiacName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const pseudoRandom = (seed % 100) / 100;
+    const intensity = pseudoRandom;
     const size = intensity > 0.7 ? 1.2 : intensity > 0.4 ? 0.8 : 0.5;
     return { intensity, size };
   }, [zodiacName]);

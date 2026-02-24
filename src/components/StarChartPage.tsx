@@ -1,6 +1,6 @@
 // StarChartPage Component - Personalized astrology chart page
 import { useState, useCallback } from "react";
-import styled, { keyframes, css } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Background } from "./background/Background";
 import Layout from "./Layout";
 import { LocationAutocomplete } from "./LocationAutocomplete";

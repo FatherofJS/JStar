@@ -2,8 +2,10 @@
 
 import { memo, useCallback, useEffect, useState } from "react";
 import ThemeSwitch from "../themeSwitch/ThemeSwitch";
+import LanguageSwitch from "../themeSwitch/LanguageSwitch";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useAuth } from "../../contexts/AuthContext";
+import { useLanguage } from "../../contexts/LanguageContext";
 import { useSectionObserver } from "../../hooks/useSectionObserver";
 import { useScrollPosition } from "../../hooks/useScrollPosition";
 import { SECTIONS } from "../../constants";
@@ -61,6 +63,7 @@ function Header({
   const { activeSection } = useSectionObserver();
   const { theme, toggleTheme } = useTheme();
   const { user, isLoggedIn, logout } = useAuth();
+  const { t } = useLanguage();
 
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : "?";
 
@@ -132,6 +135,7 @@ function Header({
       </HeaderLeft>
 
       <HeaderRight>
+        <LanguageSwitch />
         <ThemeSwitch isDark={theme === "dark"} onToggle={toggleTheme} />
 
         {isLoggedIn ? (
@@ -143,7 +147,7 @@ function Header({
 
             <UserMenuDropdown $open={isUserMenuOpen}>
               <UserMenuSection>
-                <UserMenuLabel>Account</UserMenuLabel>
+                <UserMenuLabel>{t.account}</UserMenuLabel>
                 <UserMenuName>{user?.name}</UserMenuName>
                 <UserMenuEmail>{user?.email}</UserMenuEmail>
               </UserMenuSection>
@@ -155,20 +159,20 @@ function Header({
                 }}
               >
                 <LockIcon />
-                Change Password
+                {t.changePassword}
               </UserMenuItem>
 
               <UserMenuDivider />
 
               <UserMenuItem onClick={handleLogout} $danger>
                 <LogoutIcon />
-                Logout
+                {t.logout}
               </UserMenuItem>
             </UserMenuDropdown>
           </UserMenuWrapper>
         ) : (
           <NavItemMemo $active={false} onClick={onOpenAuthModal}>
-            Login
+            {t.login}
           </NavItemMemo>
         )}
 
@@ -204,7 +208,7 @@ function Header({
 
             <UserMenuDropdown $open={isUserMenuOpen}>
               <UserMenuSection>
-                <UserMenuLabel>Account</UserMenuLabel>
+                <UserMenuLabel>{t.account}</UserMenuLabel>
                 <UserMenuName>{user?.name}</UserMenuName>
                 <UserMenuEmail>{user?.email}</UserMenuEmail>
               </UserMenuSection>
@@ -216,20 +220,20 @@ function Header({
                 }}
               >
                 <LockIcon />
-                Change Password
+                {t.changePassword}
               </UserMenuItem>
 
               <UserMenuDivider />
 
               <UserMenuItem onClick={handleLogout} $danger>
                 <LogoutIcon />
-                Logout
+                {t.logout}
               </UserMenuItem>
             </UserMenuDropdown>
           </UserMenuWrapper>
         ) : (
           <NavItemMemo $active={false} onClick={onOpenAuthModal}>
-            Login
+            {t.login}
           </NavItemMemo>
         )}
       </NavMenuMobile>
