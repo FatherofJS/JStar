@@ -12,7 +12,7 @@ import {
   GalaxyStar,
   ConstellationSVG,
   Line,
-} from "../styles/LandingPage.styles";
+} from "./ZodiacCinematic.styles";
 import {
   zodiac,
   zodiacImages,

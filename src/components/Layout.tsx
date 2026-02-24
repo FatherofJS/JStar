@@ -25,7 +25,7 @@ import {
   UserMenuName,
   UserMenuItem,
   UserMenuDivider,
-} from "../styles/LandingPage.styles";
+} from "./Layout.styles";
 
 // Memoized nav item
 const NavItem = StyledNavItem;
