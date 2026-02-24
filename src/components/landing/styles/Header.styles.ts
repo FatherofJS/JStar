@@ -410,7 +410,8 @@ export const UserName = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 500;
-  
+  color: var(--text-primary);
+
   @media (max-width: 768px) {
     max-width: none;
   }
@@ -422,11 +423,11 @@ export const UserMenuDropdown = styled.div<{ $open: boolean }>`
   right: 0;
   min-width: 240px;
   /* Gradient background với glass effect */
-  background: linear-gradient(180deg, rgba(25, 30, 80, 0.95) 0%, rgba(20, 25, 70, 0.98) 100%);
+  background: var(--bg-secondary);
   backdrop-filter: blur(25px) saturate(180%);
-  border: 1px solid rgba(120, 140, 255, 0.2);
+  border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(120, 140, 255, 0.1);
+  box-shadow: 0 20px 50px var(--shadow-color), 0 0 30px rgba(120, 140, 255, 0.1);
   overflow: hidden;
   
   /* Glow border */
@@ -440,7 +441,7 @@ export const UserMenuDropdown = styled.div<{ $open: boolean }>`
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(120, 140, 255, 0.5) 50%,
+      var(--nav-item-active) 50%,
       transparent 100%
     );
   }
@@ -454,8 +455,8 @@ export const UserMenuDropdown = styled.div<{ $open: boolean }>`
 
 export const UserMenuSection = styled.div`
   padding: 16px;
-  border-bottom: 1px solid rgba(120, 140, 255, 0.15);
-  background: rgba(120, 140, 255, 0.05);
+  border-bottom: 1px solid var(--border);
+  background: var(--nav-item-hover);
 `;
 
 export const UserMenuLabel = styled.div`
@@ -469,7 +470,7 @@ export const UserMenuLabel = styled.div`
 
 export const UserMenuEmail = styled.div`
   font-size: 13px;
-  color: var(--text-inverse);
+  color: var(--text-primary);
   word-break: break-all;
   opacity: 0.85;
 `;
@@ -477,7 +478,7 @@ export const UserMenuEmail = styled.div`
 export const UserMenuName = styled.div`
   font-size: 15px;
   font-weight: 600;
-  color: var(--text-inverse);
+  color: var(--text-primary);
   margin-bottom: 4px;
 `;
 
@@ -489,7 +490,7 @@ export const UserMenuItem = styled.button<{ $danger?: boolean }>`
   padding: 14px 16px;
   background: transparent;
   border: none;
-  color: ${({ $danger }) => ($danger ? '#ff6b6b' : 'var(--text-inverse)')};
+  color: ${({ $danger }) => ($danger ? '#ff6b6b' : 'var(--text-primary)')};
   font-size: 14px;
   text-align: left;
   cursor: pointer;
@@ -510,7 +511,7 @@ export const UserMenuItem = styled.button<{ $danger?: boolean }>`
   }
 
   &:hover {
-    background: ${({ $danger }) => ($danger ? 'rgba(255, 107, 107, 0.12)' : 'rgba(122, 162, 255, 0.1)')};
+    background: var(--nav-item-hover);
     
     &::before {
       opacity: 1;
@@ -527,12 +528,7 @@ export const UserMenuItem = styled.button<{ $danger?: boolean }>`
 
 export const UserMenuDivider = styled.div`
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(120, 140, 255, 0.2) 50%,
-    transparent 100%
-  );
+  background: var(--border);
   margin: 4px 0;
 `;
 

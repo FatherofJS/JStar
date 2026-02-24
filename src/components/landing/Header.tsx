@@ -116,19 +116,19 @@ function Header({
             $active={activeSection === SECTIONS.HOME}
             onClick={() => handleNavClick(SECTIONS.HOME)}
           >
-            Home
+            {t.home}
           </NavItemMemo>
           <NavItemMemo
             $active={activeSection === SECTIONS.CHART_DATA}
             onClick={() => handleNavClick(SECTIONS.CHART_DATA )}
           >
-            Features
+            {t.features}
           </NavItemMemo>
           <NavItemMemo
             $active={activeSection === SECTIONS.PRICING}
             onClick={() => handleNavClick(SECTIONS.PRICING)}
           >
-            Pricing
+            {t.pricing}
           </NavItemMemo>
 
         </NavMenu>
@@ -185,19 +185,19 @@ function Header({
           $active={activeSection === SECTIONS.HOME}
           onClick={() => handleNavClick(SECTIONS.HOME)}
         >
-          Home
+          {t.home}
         </NavItemMemo>
         <NavItemMemo
           $active={activeSection === SECTIONS.CHART_DATA}
           onClick={() => handleNavClick(SECTIONS.CHART_DATA)}
         >
-          Features
+          {t.features}
         </NavItemMemo>
         <NavItemMemo
           $active={activeSection === SECTIONS.PRICING}
           onClick={() => handleNavClick(SECTIONS.PRICING)}
         >
-          Pricing
+          {t.pricing}
         </NavItemMemo>
         {isLoggedIn ? (
           <UserMenuWrapper className="user-menu-container">

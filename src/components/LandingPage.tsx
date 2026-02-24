@@ -4,9 +4,10 @@ import { useState, useCallback } from "react";
 import { Background } from "./background/Background";
 import AuthModal from "./auth/AuthModal";
 import { useSectionObserver } from "../hooks/useSectionObserver";
+import { useFeaturesFromAPI } from "../hooks/useFeaturesFromAPI";
 import { SECTIONS } from "../constants";
 import { useAuth } from "../contexts/AuthContext";
-import { featuresData } from "../data/landingFeatures";
+import { useLanguage } from "../contexts/LanguageContext";
 
 // Import modular components
 import Header from "./landing/Header";
@@ -33,6 +34,8 @@ function LandingPage() {
   // Custom hooks
   const { activeSection } = useSectionObserver();
   const { changePassword } = useAuth();
+  const { t } = useLanguage();
+  const { features: featuresData } = useFeaturesFromAPI();
 
   // Handle successful login
   const handleLoginSuccess = useCallback(() => {
@@ -78,19 +81,19 @@ function LandingPage() {
 
     // Validate
     if (!passwordForm.currentPassword) {
-      setPasswordError('Please enter your current password.');
+      setPasswordError(t.enterCurrentPassword);
       return;
     }
     if (!passwordForm.newPassword) {
-      setPasswordError('Please enter a new password.');
+      setPasswordError(t.enterNewPassword);
       return;
     }
     if (passwordForm.newPassword.length < 6) {
-      setPasswordError('New password must be at least 6 characters.');
+      setPasswordError(t.passwordTooShort);
       return;
     }
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      setPasswordError('New passwords do not match.');
+      setPasswordError(t.passwordsDoNotMatch);
       return;
     }
 
@@ -104,9 +107,9 @@ function LandingPage() {
         handleCloseChangePassword();
       }, 1500);
     } else {
-      setPasswordError(result.error || 'Failed to change password.');
+      setPasswordError(result.error || t.loginFailed);
     }
-  }, [passwordForm, changePassword, handleCloseChangePassword]);
+  }, [passwordForm, changePassword, handleCloseChangePassword, t]);
 
   // Render feature sections with alternating layout
   const renderFeatureSections = (): React.ReactNode[] => {
@@ -213,7 +216,7 @@ function LandingPage() {
               marginBottom: '24px',
             }}>
               <h3 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--text-inverse)', margin: 0 }}>
-                Change Password
+                {t.changePasswordTitle}
               </h3>
               <button 
                 onClick={handleCloseChangePassword}
@@ -248,16 +251,16 @@ function LandingPage() {
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                   <polyline points="22 4 12 14.01 9 11.01"/>
                 </svg>
-                Password changed successfully!
+                {t.passwordChangedSuccess}
               </div>
             ) : (
               <form onSubmit={handlePasswordSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Current Password</label>
+                  <label style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{t.currentPassword}</label>
                   <input
                     type="password"
                     name="currentPassword"
-                    placeholder="Enter current password"
+                    placeholder={t.enterCurrentPassword}
                     value={passwordForm.currentPassword}
                     onChange={handlePasswordFormChange}
                     autoComplete="current-password"
@@ -274,11 +277,11 @@ function LandingPage() {
                 </div>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>New Password</label>
+                  <label style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{t.newPassword}</label>
                   <input
                     type="password"
                     name="newPassword"
-                    placeholder="Enter new password"
+                    placeholder={t.enterNewPassword}
                     value={passwordForm.newPassword}
                     onChange={handlePasswordFormChange}
                     autoComplete="new-password"
@@ -295,11 +298,11 @@ function LandingPage() {
                 </div>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Confirm New Password</label>
+                  <label style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{t.confirmPassword}</label>
                   <input
                     type="password"
                     name="confirmPassword"
-                    placeholder="Confirm new password"
+                    placeholder={t.confirmNewPassword}
                     value={passwordForm.confirmPassword}
                     onChange={handlePasswordFormChange}
                     autoComplete="new-password"
@@ -344,7 +347,7 @@ function LandingPage() {
                     marginTop: '8px',
                   }}
                 >
-                  {isChangingPassword ? 'Changing...' : 'Change Password'}
+                  {isChangingPassword ? t.changingPassword : t.changePasswordBtn}
                 </button>
               </form>
             )}

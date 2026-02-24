@@ -1,5 +1,5 @@
 // AuthModal styled components with premium cosmic theme
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 
 // Premium animations
 const shimmer = keyframes`
@@ -46,12 +46,43 @@ const starGlow = keyframes`
   50% { opacity: 0.6; }
 `;
 
+// Theme-aware styles
+const overlayStyles = css`
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+`;
+
+const containerStyles = css`
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  box-shadow: 
+    0 30px 100px var(--shadow-color),
+    0 0 80px rgba(124, 140, 255, 0.08),
+    inset 0 1px 0 var(--glass-border);
+`;
+
+const inputStyles = css`
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+
+  &:focus {
+    border-color: var(--nav-item-active);
+    background: var(--bg-primary);
+    box-shadow: 0 0 0 4px rgba(124, 140, 255, 0.1), 0 0 30px rgba(124, 140, 255, 0.08);
+    animation: ${inputFocus} 0.6s ease;
+  }
+`;
+
 // Main modal overlay with blur backdrop
 export const ModalOverlay = styled.div<{ $isClosing: boolean }>`
   position: fixed;
   inset: 0;
-  background: rgba(5, 5, 15, 0.85);
-  backdrop-filter: blur(12px);
+  ${overlayStyles}
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,17 +95,8 @@ export const ModalContainer = styled.div<{ $isClosing: boolean }>`
   position: relative;
   width: 90%;
   max-width: 440px;
-  background: linear-gradient(160deg, 
-    rgba(20, 22, 40, 0.98) 0%, 
-    rgba(10, 12, 25, 0.98) 50%,
-    rgba(15, 18, 35, 0.98) 100%
-  );
+  ${containerStyles}
   border-radius: 28px;
-  border: 1px solid rgba(124, 140, 255, 0.15);
-  box-shadow: 
-    0 30px 100px rgba(0, 0, 0, 0.6),
-    0 0 80px rgba(124, 140, 255, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
   overflow: hidden;
   
   &::before {
@@ -86,7 +108,7 @@ export const ModalContainer = styled.div<{ $isClosing: boolean }>`
     height: 1px;
     background: linear-gradient(90deg, 
       transparent, 
-      rgba(124, 140, 255, 0.3), 
+      var(--nav-item-active), 
       transparent
     );
   }
@@ -141,9 +163,9 @@ export const CloseButton = styled.button`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
-  color: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
   font-size: 20px;
   cursor: pointer;
   display: flex;
@@ -153,10 +175,10 @@ export const CloseButton = styled.button`
   z-index: 10;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
+    background: var(--nav-item-hover);
+    color: var(--nav-item-active);
     transform: rotate(90deg) scale(1.05);
-    border-color: rgba(124, 140, 255, 0.3);
+    border-color: var(--nav-item-active);
   }
 `;
 
@@ -180,7 +202,7 @@ export const Logo = styled.div`
 `;
 
 export const Subtitle = styled.p`
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--text-secondary);
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.3px;
@@ -189,10 +211,10 @@ export const Subtitle = styled.p`
 export const TabContainer = styled.div`
   display: flex;
   margin: 0 28px 20px;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--bg-primary);
   border-radius: 14px;
   padding: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
 `;
 
 export const Tab = styled.button<{ $active: boolean }>`
@@ -206,21 +228,18 @@ export const Tab = styled.button<{ $active: boolean }>`
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   background: ${({ $active }) => ($active 
-    ? 'linear-gradient(135deg, rgba(124, 140, 255, 0.25), rgba(124, 140, 255, 0.15))' 
+    ? 'var(--nav-item-hover)' 
     : 'transparent'
   )};
-  color: ${({ $active }) => ($active ? 'white' : 'rgba(255, 255, 255, 0.4)')};
+  color: ${({ $active }) => ($active ? 'var(--nav-item-active)' : 'var(--text-secondary)')};
   border: 1px solid ${({ $active }) => ($active 
-    ? 'rgba(124, 140, 255, 0.3)' 
+    ? 'var(--nav-item-active)' 
     : 'transparent'
   )};
 
   &:hover {
-    color: white;
-    background: ${({ $active }) => ($active 
-      ? 'linear-gradient(135deg, rgba(124, 140, 255, 0.25), rgba(124, 140, 255, 0.15))' 
-      : 'rgba(255, 255, 255, 0.05)'
-    )};
+    color: var(--nav-item-active);
+    background: var(--nav-item-hover);
   }
 `;
 
@@ -238,7 +257,7 @@ export const InputGroup = styled.div`
 
 export const InputLabel = styled.label`
   display: block;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-secondary);
   font-size: 12px;
   font-weight: 500;
   margin-bottom: 8px;
@@ -249,25 +268,11 @@ export const Input = styled.input`
   width: 100%;
   padding: 16px 18px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 0, 0, 0.25);
-  color: white;
+  ${inputStyles}
   font-size: 15px;
   font-weight: 400;
   letter-spacing: 0.3px;
   transition: all 0.3s ease;
-
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.25);
-  }
-
-  &:focus {
-    outline: none;
-    border-color: rgba(124, 140, 255, 0.5);
-    background: rgba(0, 0, 0, 0.35);
-    box-shadow: 0 0 0 4px rgba(124, 140, 255, 0.1), 0 0 30px rgba(124, 140, 255, 0.08);
-    animation: ${inputFocus} 0.6s ease;
-  }
 `;
 
 export const SubmitButton = styled.button`
@@ -322,15 +327,11 @@ export const Divider = styled.div`
     content: '';
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, 
-      transparent, 
-      rgba(255, 255, 255, 0.08), 
-      transparent
-    );
+    background: var(--border);
   }
 
   span {
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--text-muted);
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 1px;
@@ -347,9 +348,9 @@ export const SocialButton = styled.button`
   flex: 1;
   padding: 14px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
-  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -360,9 +361,9 @@ export const SocialButton = styled.button`
   gap: 10px;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.15);
-    color: white;
+    background: var(--nav-item-hover);
+    border-color: var(--nav-item-active);
+    color: var(--nav-item-active);
     transform: translateY(-2px);
   }
 
@@ -384,7 +385,7 @@ export const ErrorMessage = styled.span<{ $shake?: boolean }>`
 export const ForgotPassword = styled.button`
   background: none;
   border: none;
-  color: rgba(124, 140, 255, 0.6);
+  color: var(--nav-item-active);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -395,7 +396,7 @@ export const ForgotPassword = styled.button`
   align-self: flex-end;
 
   &:hover {
-    color: rgba(124, 140, 255, 0.9);
+    color: var(--hero-gradient-start);
     text-decoration: underline;
   }
 `;
@@ -403,17 +404,17 @@ export const ForgotPassword = styled.button`
 export const Footer = styled.div`
   text-align: center;
   padding: 0 32px 24px;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--text-secondary);
   font-size: 13px;
   
   a {
-    color: rgba(124, 140, 255, 0.8);
+    color: var(--nav-item-active);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
     
     &:hover {
-      color: white;
+      color: var(--hero-gradient-start);
       text-decoration: underline;
     }
   }

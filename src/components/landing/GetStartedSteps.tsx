@@ -1,6 +1,7 @@
 // GetStartedSteps Component - Three simple steps to get started
 
 import { memo } from "react";
+import { useLanguage } from "../../contexts/LanguageContext";
 import {
   StepsSectionWrapper,
   StepsHeader,
@@ -25,35 +26,47 @@ interface GetStartedStepsProps {
 }
 
 function GetStartedSteps({ 
-  steps = [
+  steps
+}: GetStartedStepsProps) {
+  const { t } = useLanguage();
+  
+  const defaultSteps: Step[] = [
     {
       number: 1,
-      title: "Create Your Account",
-      description: "Sign up in seconds and set up your astrology preferences.",
+      title: t.step1Title,
+      description: t.step1Desc,
     },
     {
       number: 2,
-      title: "Add Your Data",
-      description: "Enter birth data for yourself, friends, or clients.",
+      title: t.step2Title,
+      description: t.step2Desc,
     },
     {
       number: 3,
-      title: "Generate & Interpret",
-      description: "Create charts, explore data, and get AI-powered insights.",
+      title: t.step3Title,
+      description: t.step3Desc,
     },
-  ]
-}: GetStartedStepsProps) {
+  ];
+
+  const stepsToUse = steps || defaultSteps;
+
   return (
     <StepsSectionWrapper data-section="get-started" className="zoom-section">
       <MaxWidthContainer>
         <StepsHeader>
           <PricingTitle>
-            Get Started in <GradientText>Three Simple Steps</GradientText>
+            {t.getStartedTitle.split(' ').map((word, i) => 
+              i === t.getStartedTitle.split(' ').length - 1 ? (
+                <GradientText key={i}>{word}</GradientText>
+              ) : (
+                `${word} `
+              )
+            )}
           </PricingTitle>
         </StepsHeader>
         
         <StepsGrid>
-          {steps.map((step) => (
+          {stepsToUse.map((step) => (
             <StepCard key={step.number}>
               <StepNumber>{step.number}</StepNumber>
               <StepTitle>{step.title}</StepTitle>

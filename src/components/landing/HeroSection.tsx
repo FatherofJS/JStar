@@ -6,6 +6,7 @@ import { ZodiacCinematic } from "../../components/ZodiacCinematic";
 import { StarPlayButton } from "../button/StarPlayButton";
 import { SpaceStyleButton } from "../button/SpaceStyleButton";
 import { useAuth } from "../../contexts/AuthContext";
+import { useLanguage } from "../../contexts/LanguageContext";
 import { SECTIONS } from "../../constants";
 import {
   HeroSectionWrapper,
@@ -43,6 +44,7 @@ function HeroSection({ onNavigateToStarChart }: HeroSectionProps) {
   const heroRef = useRef<HTMLElement>(null);
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
+  const { t } = useLanguage();
 
   const scrollTo = useCallback((sectionId: string) => {
     const element = document.querySelector(`[data-section="${sectionId}"]`);
@@ -78,22 +80,22 @@ function HeroSection({ onNavigateToStarChart }: HeroSectionProps) {
       <HeroLayout>
         <Content>
           <Title>
-            <span>JSTAR</span>
-            <br /> KNOW YOUR STAR
+            <span>{t.heroTitle}</span>
+            <br /> {t.heroSubtitle}
           </Title>
 
           <Description>
-            Professional astrology software for accurate natal charts, transits,
-            synastry, and AI-powered interpretations. Discover your cosmic
-            identity.
+            {t.heroDescription}
           </Description>
 
           <DividerGlow />
 
           <Actions>
-            <StarPlayButton onClick={handleStarButtonClick} />
+            <StarPlayButton onClick={handleStarButtonClick}>
+              {t.getStarted}
+            </StarPlayButton>
             <SpaceStyleButton onClick={() => navigate("/your-star")}>
-              SEE YOUR STAR
+              {t.seeYourStar}
             </SpaceStyleButton>
           </Actions>
         </Content>
@@ -105,7 +107,7 @@ function HeroSection({ onNavigateToStarChart }: HeroSectionProps) {
 
       <ScrollButton
         onClick={() => scrollTo(SECTIONS.CHART_DATA)}
-        aria-label="Scroll to features"
+        aria-label={t.scrollDown}
       >
         <ChevronDownIcon />
       </ScrollButton>

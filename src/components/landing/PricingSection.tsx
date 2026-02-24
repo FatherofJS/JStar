@@ -1,6 +1,7 @@
 // PricingSection Component - Simple, Transparent Pricing
 
 import { memo } from "react";
+import { useLanguage } from "../../contexts/LanguageContext";
 import {
   PricingSectionWrapper,
   PricingHeader,
@@ -61,13 +62,15 @@ interface PricingSectionProps {
 }
 
 function PricingSection({ onOpenAuthModal }: PricingSectionProps) {
+  const { t } = useLanguage();
+  
   const features = [
-    "Unlimited birth charts",
-    "All chart types (Transit, Synastry, Composite, Returns)",
-    "AI-powered interpretations",
-    "PDF export",
-    "Timeline analysis",
-    "Priority support",
+    t.pricingFeature1,
+    t.pricingFeature2,
+    t.pricingFeature3,
+    t.pricingFeature4,
+    t.pricingFeature5,
+    t.pricingFeature6,
   ];
 
   return (
@@ -75,32 +78,38 @@ function PricingSection({ onOpenAuthModal }: PricingSectionProps) {
       <MaxWidthContainer>
         <PricingHeader>
           <PricingTitle>
-            Simple, Transparent <GradientText>Pricing</GradientText>
+            {t.pricingTitle.split(' ').map((word, i) => 
+              i === t.pricingTitle.split(' ').length - 1 ? (
+                <GradientText key={i}>{word}</GradientText>
+              ) : (
+                `${word} `
+              )
+            )}
           </PricingTitle>
           <PricingSubtitle>
-            One plan, everything included. No hidden fees.
+            {t.pricingSubtitle}
           </PricingSubtitle>
         </PricingHeader>
         
         <PricingCard>
           <PricingBadge>
             <RocketIcon />
-            Launch Special
+            {t.launchSpecial}
           </PricingBadge>
           
           <PricingIcon>
             <SparklesIcon />
           </PricingIcon>
           
-          <PricingPlanName>Pro Plan</PricingPlanName>
-          <PricingPlanDesc>Full access to JSTAR</PricingPlanDesc>
+          <PricingPlanName>{t.proPlan}</PricingPlanName>
+          <PricingPlanDesc>{t.proPlanDesc}</PricingPlanDesc>
           
           <PricingAmount>
             <PricingOriginalPrice>$10</PricingOriginalPrice>
             <PricingCurrentPrice>$5</PricingCurrentPrice>
           </PricingAmount>
-          <PricingPeriod>per month</PricingPeriod>
-          <PricingDiscount>50% off — Launch price!</PricingDiscount>
+          <PricingPeriod>{t.perMonth}</PricingPeriod>
+          <PricingDiscount>{t.launchDiscount}</PricingDiscount>
           
           <PricingFeatures>
             {features.map((feature, index) => (
@@ -112,10 +121,10 @@ function PricingSection({ onOpenAuthModal }: PricingSectionProps) {
           </PricingFeatures>
           
           <PricingButton onClick={onOpenAuthModal}>
-            Get Started
+            {t.getStartedBtn}
             <ArrowRightIcon />
           </PricingButton>
-          <PricingNote>15-day free trial • Cancel anytime</PricingNote>
+          <PricingNote>{t.pricingNote}</PricingNote>
         </PricingCard>
       </MaxWidthContainer>
     </PricingSectionWrapper>

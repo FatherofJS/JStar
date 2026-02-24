@@ -1,6 +1,7 @@
 // Footer Component - Site footer with links
 
 import { memo } from "react";
+import { useLanguage } from "../../contexts/LanguageContext";
 import {
   FooterWrapper,
   FooterContent,
@@ -16,6 +17,8 @@ interface FooterProps {
 }
 
 function Footer({ currentYear = new Date().getFullYear() }: FooterProps) {
+  const { t } = useLanguage();
+  
   return (
     <FooterWrapper>
       <FooterContent>
@@ -37,11 +40,11 @@ function Footer({ currentYear = new Date().getFullYear() }: FooterProps) {
         </FooterBrand>
 
         <FooterLinks>
-          <FooterLink href="#">About</FooterLink>
-          <FooterLink href="#">Privacy</FooterLink>
-          <FooterLink href="#">Terms</FooterLink>
-          <FooterLink href="#">Accessibility</FooterLink>
-          <FooterLink href="#">Cookies</FooterLink>
+          <FooterLink href="#">{t.footerAbout}</FooterLink>
+          <FooterLink href="#">{t.footerPrivacy}</FooterLink>
+          <FooterLink href="#">{t.footerTerms}</FooterLink>
+          <FooterLink href="#">{t.footerAccessibility}</FooterLink>
+          <FooterLink href="#">{t.footerCookies}</FooterLink>
         </FooterLinks>
       </FooterContent>
     </FooterWrapper>

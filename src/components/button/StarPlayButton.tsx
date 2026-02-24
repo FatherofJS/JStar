@@ -5,6 +5,7 @@ import styled, { keyframes } from 'styled-components';
 
 interface StarPlayButtonProps {
   onClick?: () => void;
+  children?: React.ReactNode;
 }
 
 const animStar = keyframes`
@@ -233,7 +234,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-export const StarPlayButton: React.FC<StarPlayButtonProps> = ({ onClick }) => {
+export const StarPlayButton: React.FC<StarPlayButtonProps> = ({ onClick, children }) => {
   return (
     <StyledWrapper>
       <button type="button" className="btn" onClick={onClick}>
@@ -250,7 +251,7 @@ export const StarPlayButton: React.FC<StarPlayButtonProps> = ({ onClick }) => {
             <path fill="#e1f5fe" d="M15.078,19.043c1.957-0.326,5.122-0.529,4.435,1.304c-0.489,1.304-7.185,2.185-7.185,0.652 C12.328,19.467,15.078,19.043,15.078,19.043z" />
           </svg>
           <span className="now">now!</span>
-          <span className="play">SEE CHART</span>
+          <span className="play">{children || 'SEE CHART'}</span>
         </div>
         <div id="container-stars">
           <div id="stars" />

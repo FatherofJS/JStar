@@ -1,6 +1,7 @@
 // CTASection Component - Final Call to Action
 
 import { memo } from "react";
+import { useLanguage } from "../../contexts/LanguageContext";
 import {
   CTASectionWrapper,
   CTAContent,
@@ -25,25 +26,33 @@ interface CTASectionProps {
 }
 
 function CTASection({ onOpenAuthModal }: CTASectionProps) {
+  const { t } = useLanguage();
+  
   return (
     <CTASectionWrapper data-section="contact" className="zoom-section">
       <MaxWidthContainer>
         <CTAContent>
           <CTATitle>
-            Ready to Discover <GradientText>Your Cosmic Identity?</GradientText>
+            {t.ctaTitle.split(' ').map((word, i) => {
+              const lastWords = ['Cosmic Identity?', 'Vũ trụ của Bạn?', '宇宙のアイデンティティ?'];
+              const shouldBeGradient = lastWords.some(w => t.ctaTitle.endsWith(w));
+              if (shouldBeGradient && i === t.ctaTitle.split(' ').length - 1) {
+                return <GradientText key={i}>{word}</GradientText>;
+              }
+              return `${word} `;
+            })}
           </CTATitle>
           
           <CTADescription>
-            Join thousands of astrology enthusiasts using JSTAR to calculate faster 
-            and communicate more clearly. Your journey into the stars starts here.
+            {t.ctaDescription}
           </CTADescription>
           
           <CTAButton onClick={onOpenAuthModal}>
-            Start Your Free Trial
+            {t.ctaButton}
             <ArrowRightIcon />
           </CTAButton>
           
-          <CTANote>No credit card required • Free forever plan available</CTANote>
+          <CTANote>{t.ctaNote}</CTANote>
         </CTAContent>
       </MaxWidthContainer>
     </CTASectionWrapper>
