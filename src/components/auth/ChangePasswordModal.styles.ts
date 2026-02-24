@@ -11,17 +11,6 @@ const fadeIn = keyframes`
   to { opacity: 1; }
 `;
 
-const slideUp = keyframes`
-  from { 
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-  }
-  to { 
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-`;
-
 // =============================================================================
 // MODAL OVERLAY
 // =============================================================================
