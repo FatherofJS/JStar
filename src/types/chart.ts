@@ -95,6 +95,12 @@ export const ASPECT_SYMBOLS: Record<string, string> = {
     sextile: '⚹',
 };
 
-// Note: Aspect and element colors are defined in index.css as CSS variables
-// --aspect-conjunction, --aspect-opposition, --aspect-trine, --aspect-square, --aspect-sextile
-// --fire, --earth, --air, --water
+export const ASPECT_COLORS: Record<string, string> = {
+    conjunction: '#ffd93d',
+    opposition: '#ff6b8a',
+    trine: '#6bcbff',
+    square: '#ff4757',
+    sextile: '#50fa7b',
+};
+
+export const ZODIAC_ORDER = Object.keys(ZODIAC_SIGNS);

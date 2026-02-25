@@ -1,5 +1,6 @@
 // StarChartPage Component - Personalized astrology chart page
 import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { Background } from "./background/Background";
 import Layout from "./Layout";
@@ -363,6 +364,34 @@ const SubmitButton = styled.button<{ $isLight: boolean }>`
   }
 `;
 
+const ViewChartButton = styled.button<{ $isLight: boolean }>`
+  width: 100%;
+  padding: 16px 32px;
+  border-radius: 16px;
+  border: 2px solid ${props => props.$isLight ? '#4f46e5' : '#818cf8'};
+  background: transparent;
+  color: ${props => props.$isLight ? '#4f46e5' : '#818cf8'};
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 1px;
+  margin-top: 16px;
+  
+  &:hover {
+    background: ${props => props.$isLight ? '#4f46e5' : '#818cf8'};
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: ${props => props.$isLight 
+      ? '0 10px 30px -10px rgba(79, 70, 229, 0.4)'
+      : '0 10px 30px -10px rgba(129, 140, 248, 0.5)'};
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+  }
+`;
+
 const ErrorMessage = styled.div<{ $isLight: boolean }>`
   color: ${props => props.$isLight ? '#dc2626' : '#fca5a5'};
   font-size: 14px;
@@ -482,6 +511,7 @@ const LocationText = styled.p<{ $isLight: boolean }>`
 
 export default function StarChartPage() {
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const isLight = theme === 'light';
   
   const [fullName, setFullName] = useState('');
@@ -559,6 +589,10 @@ export default function StarChartPage() {
       setError('Could not determine zodiac sign. Please check your date.');
     }
   }, [fullName, day, month, year, getZodiacSign]);
+
+  const handleViewChart = () => {
+    navigate('/chartwheel');
+  };
 
   return (
     <Layout>
@@ -723,6 +757,9 @@ export default function StarChartPage() {
               <ZodiacIcon $isLight={isLight}>{result.icon}</ZodiacIcon>
               <ZodiacName $isLight={isLight}>{result.zodiac}</ZodiacName>
               <ZodiacDescription $isLight={isLight}>{result.description}</ZodiacDescription>
+              <ViewChartButton $isLight={isLight} onClick={handleViewChart}>
+                View Your Chart ✨
+              </ViewChartButton>
             </ResultSection>
           )}
         </ChartContainer>
