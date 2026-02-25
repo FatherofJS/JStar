@@ -45,6 +45,11 @@ const generateStars = (count: number) => {
 
 const stars = generateStars(8);
 
+function getApiUrl() {
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+    return `${baseUrl}/api/auth`;
+}
+
 export default function AuthModal({ isOpen, onClose, initialTab = "login", onLoginSuccess }: AuthModalProps) {
   const { login } = useAuth();
   const { t } = useLanguage();
@@ -134,6 +139,23 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
     }
   }, [errors]);
 
+  // Handle register
+  const handleRegister = async (name: string, email: string, password: string) => {
+    const authApiUrl = getApiUrl();
+    
+    console.log('Register to:', `${authApiUrl}/register`);
+    
+    const response = await fetch(`${authApiUrl}/register`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({name: name, email: email, password: password})
+    });
+    
+    return response;
+  };
+
   // Handle form submit
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,9 +189,24 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
         setTimeout(() => setShake(false), 500);
       }
     } else {
-      // Handle registration - for now just close the modal
-      console.log("Registration submitted:", formData);
-      handleClose();
+      // Handle registration - call API
+      const response = await handleRegister(formData.name, formData.email, formData.password);
+      
+      if (response.ok) {
+        // Registration successful, switch to login and auto-fill
+        setApiError(null);
+        switchTab("login");
+        // Optionally show success message
+      } else {
+        let errorMessage = 'Registration failed';
+        try {
+          const errData = await response.json();
+          errorMessage = errData.error || 'Registration failed';
+        } catch {}
+        setApiError(errorMessage);
+        setShake(true);
+        setTimeout(() => setShake(false), 500);
+      }
     }
 
     setIsLoading(false);
@@ -266,7 +303,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
               autoComplete={activeTab === "login" ? "current-password" : "new-password"}
             />
             {errors.password && <ErrorMessage $shake={shake}>{errors.password}</ErrorMessage>}
-            {apiError && activeTab === "login" && (
+            {apiError && (
               <ErrorMessage $shake={shake}>{apiError}</ErrorMessage>
             )}
           </InputGroup>
@@ -278,7 +315,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
           )}
 
           <SubmitButton type="submit" disabled={isLoading}>
-            {isLoading ? t.signingIn : activeTab === "login" ? t.signIn : t.createAccount}
+{isLoading ? (activeTab === "login" ? t.signingIn : t.signUp) : activeTab === "login" ? t.signIn : t.createAccount}
           </SubmitButton>
 
           <Divider>
@@ -319,4 +356,3 @@ export default function AuthModal({ isOpen, onClose, initialTab = "login", onLog
     </ModalOverlay>
   );
 }
-

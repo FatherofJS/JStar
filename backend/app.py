@@ -18,6 +18,9 @@ CORS(app, origins='*', supports_credentials=True)
 
 # Import routes
 from src.routes import location_bp, features_bp, chatbot_bp
+from src.routes.auth import auth_bp
+
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(location_bp, url_prefix='/api/location')
 app.register_blueprint(features_bp)
 app.register_blueprint(chatbot_bp)
