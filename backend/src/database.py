@@ -6,6 +6,20 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Check if we should use mock database
+def _should_use_mock_db() -> bool:
+    """Check if we should use mock database"""
+    database_url = os.environ.get('DATABASE_URL')
+    use_mock = os.environ.get('USE_MOCK_DB', 'false').lower()
+    
+    # Use mock if no DATABASE_URL or USE_MOCK_DB is explicitly set to true
+    if use_mock == 'true':
+        return True
+    if not database_url:
+        return True
+    return False
+
+
 class Database:
     def __init__(self):
         self.connection = None
@@ -14,10 +28,22 @@ class Database:
     
     def connect(self):
         """Establish database connection"""
-        database_url = os.environ.get('DATABASE_URL')
+        # Use mock database if no DATABASE_URL or USE_MOCK_DB is true
+        if _should_use_mock_db():
+            from src.database_mock import MockDatabase
+            print("🔧 Using Mock Database (no DATABASE_URL found)")
+            mock_instance = MockDatabase()
+            self.connection = mock_instance.connection
+            self.cursor = mock_instance.cursor
+            # Replace methods to use mock
+            self.get_cursor = mock_instance.get_cursor
+            self.execute = mock_instance.execute
+            self.fetch_one = mock_instance.fetch_one
+            self.fetch_all = mock_instance.fetch_all
+            self.close = mock_instance.close
+            return
         
-        if not database_url:
-            raise ValueError("DATABASE_URL environment variable is not set")
+        database_url = os.environ.get('DATABASE_URL')
         
         try:
             self.connection = psycopg2.connect(database_url)
