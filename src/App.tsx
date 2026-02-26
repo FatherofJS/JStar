@@ -4,7 +4,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import LandingPage from './components/LandingPage';
 import StarChartPage from './components/StarChartPage';
-import { ChartWheel } from './components/ChartWheel';
+import { ChartWheelWithTables } from './components/ChartWheelWithTables';
 import { Background } from './components/background/Background';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -23,7 +23,7 @@ function ChartWheelWrapper() {
   } | null;
   
   return (
-    <ChartWheel 
+    <ChartWheelWithTables 
       birthDate={state?.birthDate}
       birthTime={state?.birthTime}
       latitude={state?.latitude}

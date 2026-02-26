@@ -1,0 +1,118 @@
+.planet-table-container {
+    background-color: #1a1d29;
+    border-radius: 12px;
+    width: 280px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    color: #e5e7eb;
+    overflow: hidden;
+    margin-top: 16px;
+}
+
+/* Header Section */
+.planet-table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #2d3142;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.planet-table-header:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.table-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e5e7eb;
+    margin: 0;
+    letter-spacing: 0.01em;
+}
+
+.expand-btn {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.expand-btn:hover {
+    color: #e5e7eb;
+}
+
+.expand-btn.expanded {
+    transform: rotate(180deg);
+}
+
+/* Collapsible Content */
+.planet-table-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.planet-table-content.expanded {
+    max-height: 1000px;
+    transition: max-height 0.3s ease-in;
+}
+
+/* Table Styles */
+.planet-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.planet-row {
+    border-bottom: 1px solid #2d3142;
+}
+
+.planet-row:last-child {
+    border-bottom: none;
+}
+
+.planet-row td {
+    padding: 10px 20px;
+    font-size: 12px;
+}
+
+.planet-name {
+    color: #d1d5db;
+    width: 110px;
+}
+
+.planet-position {
+    color: #d1d5db;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+}
+
+.position-indicator {
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    border-radius: 2px;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.planet-house {
+    color: #9ca3af;
+    text-align: right;
+    width: 40px;
+}
+
+/* Responsive */
+@media (max-width: 320px) {
+    .planet-table-container {
+        width: 100%;
+    }
+}

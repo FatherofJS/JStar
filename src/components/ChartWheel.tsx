@@ -6,7 +6,7 @@ import {
     ZODIAC_SIGNS, ZODIAC_ORDER, ASPECT_COLORS,
     PLANET_SYMBOLS, ASPECT_SYMBOLS,
 } from '../types/chart';
-import type { Planet, Aspect } from '../types/chart';
+import type { Planet, Aspect, ChartData } from '../types/chart';
 
 import {
     IconZodiacAries, IconZodiacTaurus, IconZodiacGemini, IconZodiacCancer,
@@ -324,6 +324,7 @@ interface ChartWheelProps {
     latitude?: number;
     longitude?: number;
     timezone?: string;
+    externalChartData?: ChartData | null;
 }
 
 export function ChartWheel({ 
@@ -331,21 +332,26 @@ export function ChartWheel({
     birthTime = '12:00', 
     latitude = 0, 
     longitude = 0, 
-    timezone = 'UTC' 
+    timezone = 'UTC',
+    externalChartData = null 
 }: ChartWheelProps) {
-    const { chartData, loading, error, fetchChart } = useChartApi();
+    const { chartData: fetchedChartData, loading, error, fetchChart } = useChartApi();
+    
+    // Use external chartData if provided, otherwise use fetched data
+    const chartData = externalChartData || fetchedChartData;
+    
     const [scale, setScale] = useState(1);
     const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
     const [hoveredPlanets, setHoveredPlanets] = useState<Planet[]>([]);
     const [hoveredAspect, setHoveredAspect] = useState<{ x: number; y: number; aspect: Aspect } | null>(null);
     const dragRef = useRef({ dragging: false, startX: 0, startY: 0, origX: 0, origY: 0 });
 
-    // Fetch chart data if birthDate is provided
+    // Fetch chart data if birthDate is provided and no external data
     useEffect(() => {
-        if (birthDate) {
+        if (birthDate && !externalChartData) {
             fetchChart(birthDate, birthTime, latitude, longitude, timezone);
         }
-    }, [birthDate, birthTime, latitude, longitude, timezone, fetchChart]);
+    }, [birthDate, birthTime, latitude, longitude, timezone, fetchChart, externalChartData]);
 
     // Use fetched data or fall back to mock data
     const chart = chartData || MOCK_CHART;
