@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ChartWheel } from './ChartWheel';
 import PlanetTable from './PlanetTable';
@@ -11,16 +10,9 @@ import { MOCK_CHART } from '../data/mockData';
 const Container = styled.div`
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 100vw;
     min-height: 100vh;
-    gap: 20px;
-    padding: 20px;
-    box-sizing: border-box;
-    
-    @media (max-width: 1200px) {
-        flex-direction: column;
-        align-items: center;
-    }
+    position: relative;
 `;
 
 const ChartSection = styled.div`
@@ -29,6 +21,9 @@ const ChartSection = styled.div`
     justify-content: center;
     align-items: flex-start;
     min-width: 0;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
 `;
 
 const TablesSection = styled.div`
@@ -36,13 +31,13 @@ const TablesSection = styled.div`
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding-right: 20px;
-    
-    @media (max-width: 1200px) {
-        width: 100%;
-        max-width: 500px;
-        padding-right: 0;
-    }
+    padding: 20px;
+    padding-right: 30px;
+    max-height: 100vh;
+    overflow-y: auto;
+    background: rgba(10, 10, 20, 0.95);
+    position: relative;
+    z-index: 100;
 `;
 
 interface ChartWheelWithTablesProps {
@@ -54,15 +49,8 @@ interface ChartWheelWithTablesProps {
     externalChartData?: ChartData | null;
 }
 
-export function ChartWheelWithTables({
-    birthDate,
-    birthTime,
-    latitude,
-    longitude,
-    timezone,
-    externalChartData
-}: ChartWheelWithTablesProps) {
-    // Use external data or mock data for now
+export function ChartWheelWithTables(props: ChartWheelWithTablesProps) {
+    const { birthDate, birthTime, latitude, longitude, timezone, externalChartData } = props;
     const chartData = externalChartData || MOCK_CHART;
 
     return (
