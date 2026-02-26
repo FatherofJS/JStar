@@ -18,9 +18,23 @@ const Container = styled.div`
 const LeftSection = styled.div`
     flex: 1;
     display: flex;
+    flex-direction: column;
+    height: 100vh;
+`;
+
+const ChartWrapper = styled.div`
+    flex: 1;
+    display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+`;
+
+const LeftTablesWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 10px 20px;
+    background: rgba(10, 10, 20, 0.95);
 `;
 
 const RightSection = styled.div`
@@ -57,16 +71,29 @@ export function ChartWheelWithTables(props: ChartWheelWithTablesProps) {
     return (
         <Container>
             <LeftSection>
-                <ChartWheel
-                    birthDate={birthDate}
-                    birthTime={birthTime}
-                    latitude={latitude}
-                    longitude={longitude}
-                    timezone={timezone}
-                    externalChartData={chartData}
-                />
+                <ChartWrapper>
+                    <ChartWheel
+                        birthDate={birthDate}
+                        birthTime={birthTime}
+                        latitude={latitude}
+                        longitude={longitude}
+                        timezone={timezone}
+                        externalChartData={chartData}
+                    />
+                </ChartWrapper>
+                
+                {/* Left side: Birth Chart info + Natal Points */}
+                <LeftTablesWrapper>
+                    <TableWrapper>
+                        <InfoPanel chartData={chartData} />
+                    </TableWrapper>
+                    <TableWrapper>
+                        <PlanetTable chartData={chartData} />
+                    </TableWrapper>
+                </LeftTablesWrapper>
             </LeftSection>
             
+            {/* Right side: Natal Houses + Aspect */}
             <RightSection>
                 <TableWrapper>
                     <HousePanel chartData={chartData} />
