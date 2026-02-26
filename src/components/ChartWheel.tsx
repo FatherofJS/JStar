@@ -1,6 +1,7 @@
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { MOCK_CHART } from '../data/mockData';
+import { useChartApi } from '../hooks/useChartApi';
 import {
     ZODIAC_SIGNS, ZODIAC_ORDER, ASPECT_COLORS,
     PLANET_SYMBOLS, ASPECT_SYMBOLS,
@@ -224,6 +225,55 @@ const TooltipDivider = styled.hr`
     margin: 10px 0;
 `;
 
+const LoadingWrapper = styled.div`
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+`;
+
+const LoadingSpinner = styled.div`
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(129, 140, 248, 0.2);
+    border-top-color: #818cf8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+`;
+
+const LoadingText = styled.p`
+    margin-top: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+`;
+
+const ErrorWrapper = styled.div`
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    padding: 20px;
+`;
+
+const ErrorText = styled.p`
+    color: #fca5a5;
+    font-size: 1rem;
+    text-align: center;
+    max-width: 400px;
+`;
+
 const ZODIAC_ICONS: Record<string, Icon> = {
     Aries: IconZodiacAries, Taurus: IconZodiacTaurus, Gemini: IconZodiacGemini,
     Cancer: IconZodiacCancer, Leo: IconZodiacLeo, Virgo: IconZodiacVirgo,
@@ -268,8 +318,38 @@ function distance(x1: number, y1: number, x2: number, y2: number): number {
     return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 }
 
-export function ChartWheel() {
-    const { planets, houses, aspects } = MOCK_CHART;
+interface ChartWheelProps {
+    birthDate?: string;
+    birthTime?: string;
+    latitude?: number;
+    longitude?: number;
+    timezone?: string;
+}
+
+export function ChartWheel({ 
+    birthDate, 
+    birthTime = '12:00', 
+    latitude = 0, 
+    longitude = 0, 
+    timezone = 'UTC' 
+}: ChartWheelProps) {
+    const { chartData, loading, error, fetchChart } = useChartApi();
+    const [scale, setScale] = useState(1);
+    const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+    const [hoveredPlanets, setHoveredPlanets] = useState<Planet[]>([]);
+    const [hoveredAspect, setHoveredAspect] = useState<{ x: number; y: number; aspect: Aspect } | null>(null);
+    const dragRef = useRef({ dragging: false, startX: 0, startY: 0, origX: 0, origY: 0 });
+
+    // Fetch chart data if birthDate is provided
+    useEffect(() => {
+        if (birthDate) {
+            fetchChart(birthDate, birthTime, latitude, longitude, timezone);
+        }
+    }, [birthDate, birthTime, latitude, longitude, timezone, fetchChart]);
+
+    // Use fetched data or fall back to mock data
+    const chart = chartData || MOCK_CHART;
+    const { planets, houses, aspects } = chart;
 
     const size = 600;
     const cx = size / 2;
@@ -341,12 +421,6 @@ export function ChartWheel() {
         return groups;
     }, [planets, planetPositions]);
 
-    const [scale, setScale] = useState(1);
-    const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
-    const [hoveredPlanets, setHoveredPlanets] = useState<Planet[]>([]);
-    const [hoveredAspect, setHoveredAspect] = useState<{ x: number; y: number; aspect: Aspect } | null>(null);
-    const dragRef = useRef({ dragging: false, startX: 0, startY: 0, origX: 0, origY: 0 });
-
     const zoom = (delta: number) => setScale(prev => Math.max(0.5, Math.min(3, prev + delta)));
 
     const drag = {
@@ -369,7 +443,7 @@ export function ChartWheel() {
     aspectEndpoints['Midheaven'] = toXY(houses[9]?.cusp || 0, innerRadius);
     aspectEndpoints['Midheaven (MC)'] = aspectEndpoints['Midheaven'];
 
-    const handlePlanetGroupHover = (group: Planet[], x: number, y: number, isHovering: boolean) => {
+    const handlePlanetGroupHover = (group: Planet[], _x: number, _y: number, isHovering: boolean) => {
         if (isHovering) {
             setHoveredPlanets(group);
         } else {
@@ -400,6 +474,39 @@ export function ChartWheel() {
         : hoveredAspect?.y || 0;
 
     const showTooltip = hoveredPlanets.length > 0 || hoveredAspect !== null;
+
+    // Show loading state
+    if (loading) {
+        return (
+            <>
+                <DarkBackground>
+                    <TwinkleStar $top="10%" $left="15%" $size={2} $delay="0s" />
+                    <TwinkleStar $top="20%" $left="80%" $size={1} $delay="0.5s" />
+                    <TwinkleStar $top="60%" $left="10%" $size={2} $delay="1s" />
+                    <TwinkleStar $top="75%" $left="85%" $size={1} $delay="1.5s" />
+                </DarkBackground>
+                <LoadingWrapper>
+                    <LoadingSpinner />
+                    <LoadingText>Calculating your cosmic chart...</LoadingText>
+                </LoadingWrapper>
+            </>
+        );
+    }
+
+    // Show error state
+    if (error) {
+        return (
+            <>
+                <DarkBackground>
+                    <TwinkleStar $top="10%" $left="15%" $size={2} $delay="0s" />
+                    <TwinkleStar $top="20%" $left="80%" $size={1} $delay="0.5s" />
+                </DarkBackground>
+                <ErrorWrapper>
+                    <ErrorText>Error: {error}</ErrorText>
+                </ErrorWrapper>
+            </>
+        );
+    }
 
     return (
         <>

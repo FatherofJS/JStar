@@ -591,7 +591,27 @@ export default function StarChartPage() {
   }, [fullName, day, month, year, getZodiacSign]);
 
   const handleViewChart = () => {
-    navigate('/chartwheel');
+    // Format birth date as YYYY-MM-DD
+    const birthDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    
+    // Use default time if not provided
+    const time = birthTime || '12:00';
+    
+    // Use location data or default coordinates
+    const latitude = selectedCity?.latitude || 0;
+    const longitude = selectedCity?.longitude || 0;
+    const timezone = selectedCity?.timezone || 'UTC';
+    
+    // Navigate to chart wheel with birth data
+    navigate('/chartwheel', {
+      state: {
+        birthDate,
+        birthTime: time,
+        latitude,
+        longitude,
+        timezone
+      }
+    });
   };
 
   return (

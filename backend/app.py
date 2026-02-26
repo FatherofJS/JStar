@@ -19,11 +19,13 @@ CORS(app, origins='*', supports_credentials=True)
 # Import routes
 from src.routes import location_bp, features_bp, chatbot_bp
 from src.routes.auth import auth_bp
+from src.routes.chart import chart_bp
 
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(location_bp, url_prefix='/api/location')
 app.register_blueprint(features_bp)
 app.register_blueprint(chatbot_bp)
+app.register_blueprint(chart_bp)
 
 
 @app.route('/api/health')
@@ -34,4 +36,3 @@ def health_check():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))
     app.run(host='0.0.0.0', port=port, debug=True)
-
