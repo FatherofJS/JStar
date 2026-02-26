@@ -522,14 +522,72 @@ export function ChartWheel({
     return (
         <>
             <DarkBackground>
-                <TwinkleStar $top="10%" $left="15%" $size={2} $delay="0s" />
-                <TwinkleStar $top="20%" $left="80%" $size={1} $delay="0.5s" />
-                <TwinkleStar $top="60%" $left="10%" $size={2} $delay="1s" />
-                <TwinkleStar $top="75%" $left="85%" $size={1} $delay="1.5s" />
-                <TwinkleStar $top="40%" $left="90%" $size={2} $delay="2s" />
-                <TwinkleStar $top="85%" $left="20%" $size={1} $delay="0.3s" />
-                <TwinkleStar $top="15%" $left="50%" $size={1} $delay="2.5s" />
-                <TwinkleStar $top="70%" $left="50%" $size={2} $delay="1.8s" />
+                {/* Lots of twinkling stars */}
+                <TwinkleStar $top="3%" $left="5%" $size={3} $delay="0s" />
+                <TwinkleStar $top="7%" $left="15%" $size={2} $delay="0.2s" />
+                <TwinkleStar $top="10%" $left="25%" $size={4} $delay="0.4s" />
+                <TwinkleStar $top="5%" $left="35%" $size={2} $delay="0.6s" />
+                <TwinkleStar $top="12%" $left="45%" $size={3} $delay="0.8s" />
+                <TwinkleStar $top="8%" $left="55%" $size={2} $delay="1s" />
+                <TwinkleStar $top="15%" $left="65%" $size={4} $delay="1.2s" />
+                <TwinkleStar $top="6%" $left="75%" $size={2} $delay="1.4s" />
+                <TwinkleStar $top="11%" $left="85%" $size={3} $delay="1.6s" />
+                <TwinkleStar $top="9%" $left="95%" $size={2} $delay="1.8s" />
+                
+                <TwinkleStar $top="20%" $left="8%" $size={3} $delay="0.1s" />
+                <TwinkleStar $top="25%" $left="18%" $size={2} $delay="0.3s" />
+                <TwinkleStar $top="22%" $left="28%" $size={4} $delay="0.5s" />
+                <TwinkleStar $top="28%" $left="38%" $size={2} $delay="0.7s" />
+                <TwinkleStar $top="24%" $left="48%" $size={3} $delay="0.9s" />
+                <TwinkleStar $top="30%" $left="58%" $size={2} $delay="1.1s" />
+                <TwinkleStar $top="26%" $left="68%" $size={4} $delay="1.3s" />
+                <TwinkleStar $top="32%" $left="78%" $size={2} $delay="1.5s" />
+                <TwinkleStar $top="29%" $left="88%" $size={3} $delay="1.7s" />
+                <TwinkleStar $top="35%" $left="98%" $size={2} $delay="1.9s" />
+                
+                <TwinkleStar $top="40%" $left="3%" $size={3} $delay="0.15s" />
+                <TwinkleStar $top="45%" $left="13%" $size={2} $delay="0.35s" />
+                <TwinkleStar $top="42%" $left="23%" $size={4} $delay="0.55s" />
+                <TwinkleStar $top="48%" $left="33%" $size={2} $delay="0.75s" />
+                <TwinkleStar $top="44%" $left="43%" $size={3} $delay="0.95s" />
+                <TwinkleStar $top="50%" $left="53%" $size={2} $delay="1.15s" />
+                <TwinkleStar $top="46%" $left="63%" $size={4} $delay="1.35s" />
+                <TwinkleStar $top="52%" $left="73%" $size={2} $delay="1.55s" />
+                <TwinkleStar $top="49%" $left="83%" $size={3} $delay="1.75s" />
+                <TwinkleStar $top="55%" $left="93%" $size={2} $delay="1.95s" />
+                
+                <TwinkleStar $top="60%" $left="6%" $size={3} $delay="0.25s" />
+                <TwinkleStar $top="65%" $left="16%" $size={2} $delay="0.45s" />
+                <TwinkleStar $top="62%" $left="26%" $size={4} $delay="0.65s" />
+                <TwinkleStar $top="68%" $left="36%" $size={2} $delay="0.85s" />
+                <TwinkleStar $top="64%" $left="46%" $size={3} $delay="1.05s" />
+                <TwinkleStar $top="70%" $left="56%" $size={2} $delay="1.25s" />
+                <TwinkleStar $top="66%" $left="66%" $size={4} $delay="1.45s" />
+                <TwinkleStar $top="72%" $left="76%" $size={2} $delay="1.65s" />
+                <TwinkleStar $top="69%" $left="86%" $size={3} $delay="1.85s" />
+                <TwinkleStar $top="75%" $left="96%" $size={2} $delay="2.05s" />
+                
+                <TwinkleStar $top="80%" $left="4%" $size={3} $delay="0.12s" />
+                <TwinkleStar $top="85%" $left="14%" $size={2} $delay="0.32s" />
+                <TwinkleStar $top="82%" $left="24%" $size={4} $delay="0.52s" />
+                <TwinkleStar $top="88%" $left="34%" $size={2} $delay="0.72s" />
+                <TwinkleStar $top="84%" $left="44%" $size={3} $delay="0.92s" />
+                <TwinkleStar $top="90%" $left="54%" $size={2} $delay="1.12s" />
+                <TwinkleStar $top="86%" $left="64%" $size={4} $delay="1.32s" />
+                <TwinkleStar $top="92%" $left="74%" $size={2} $delay="1.52s" />
+                <TwinkleStar $top="89%" $left="84%" $size={3} $delay="1.72s" />
+                <TwinkleStar $top="94%" $left="94%" $size={2} $delay="1.92s" />
+                
+                <TwinkleStar $top="18%" $left="52%" $size={3} $delay="0.22s" />
+                <TwinkleStar $top="38%" $left="72%" $size={2} $delay="0.42s" />
+                <TwinkleStar $top="58%" $left="22%" $size={3} $delay="0.62s" />
+                <TwinkleStar $top="78%" $left="42%" $size={2} $delay="0.82s" />
+                <TwinkleStar $top="98%" $left="62%" $size={3} $delay="1.02s" />
+                <TwinkleStar $top="13%" $left="82%" $size={2} $delay="1.22s" />
+                <TwinkleStar $top="33%" $left="12%" $size={3} $delay="1.42s" />
+                <TwinkleStar $top="53%" $left="32%" $size={2} $delay="1.62s" />
+                <TwinkleStar $top="73%" $left="52%" $size={3} $delay="1.82s" />
+                <TwinkleStar $top="93%" $left="72%" $size={2} $delay="2.02s" />
             </DarkBackground>
             
             <ChartWheelContainer>
