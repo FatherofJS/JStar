@@ -13,9 +13,28 @@ const Container = styled.div`
     width: 100vw;
     min-height: 100vh;
     position: relative;
+    background: rgba(10, 10, 20, 0.95);
 `;
 
 const LeftSection = styled.div`
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    padding-left: 30px;
+    max-height: 100vh;
+    overflow-y: auto;
+    background: rgba(10, 10, 20, 0.95);
+    position: relative;
+    z-index: 100;
+`;
+
+const TableWrapper = styled.div`
+    width: 100%;
+`;
+
+const CenterSection = styled.div`
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -29,16 +48,8 @@ const ChartWrapper = styled.div`
     align-items: center;
 `;
 
-const LeftTablesWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    padding: 10px 20px;
-    background: rgba(10, 10, 20, 0.95);
-`;
-
 const RightSection = styled.div`
-    width: 400px;
+    width: 280px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -49,10 +60,6 @@ const RightSection = styled.div`
     background: rgba(10, 10, 20, 0.95);
     position: relative;
     z-index: 100;
-`;
-
-const TableWrapper = styled.div`
-    width: 100%;
 `;
 
 interface ChartWheelWithTablesProps {
@@ -70,7 +77,18 @@ export function ChartWheelWithTables(props: ChartWheelWithTablesProps) {
 
     return (
         <Container>
+            {/* Left side: Birth Info + Natal Points */}
             <LeftSection>
+                <TableWrapper>
+                    <InfoPanel chartData={chartData} />
+                </TableWrapper>
+                <TableWrapper>
+                    <PlanetTable chartData={chartData} />
+                </TableWrapper>
+            </LeftSection>
+            
+            {/* Center: ChartWheel */}
+            <CenterSection>
                 <ChartWrapper>
                     <ChartWheel
                         birthDate={birthDate}
@@ -81,17 +99,7 @@ export function ChartWheelWithTables(props: ChartWheelWithTablesProps) {
                         externalChartData={chartData}
                     />
                 </ChartWrapper>
-                
-                {/* Left side: Birth Chart info + Natal Points */}
-                <LeftTablesWrapper>
-                    <TableWrapper>
-                        <InfoPanel chartData={chartData} />
-                    </TableWrapper>
-                    <TableWrapper>
-                        <PlanetTable chartData={chartData} />
-                    </TableWrapper>
-                </LeftTablesWrapper>
-            </LeftSection>
+            </CenterSection>
             
             {/* Right side: Natal Houses + Aspect */}
             <RightSection>
