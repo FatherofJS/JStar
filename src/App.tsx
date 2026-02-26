@@ -20,6 +20,7 @@ function ChartWheelWrapper() {
     latitude?: number;
     longitude?: number;
     timezone?: string;
+    name?: string;
   } | null;
   
   return (
@@ -29,6 +30,7 @@ function ChartWheelWrapper() {
       latitude={state?.latitude}
       longitude={state?.longitude}
       timezone={state?.timezone}
+      name={state?.name}
     />
   );
 }

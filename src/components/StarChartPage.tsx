@@ -602,14 +602,15 @@ export default function StarChartPage() {
     const longitude = selectedCity?.longitude || 0;
     const timezone = selectedCity?.timezone || 'UTC';
     
-    // Navigate to chart wheel with birth data
+    // Navigate to chart wheel with birth data and user's name
     navigate('/chartwheel', {
       state: {
         birthDate,
         birthTime: time,
         latitude,
         longitude,
-        timezone
+        timezone,
+        name: fullName
       }
     });
   };

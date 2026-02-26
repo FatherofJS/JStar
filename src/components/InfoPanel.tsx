@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
-import './InfoPanel.css';
 import type { ChartData } from '../types/chart';
+import {
+    InfoPanelContainer,
+    InfoPanelHeader,
+    HeaderContent,
+    PanelTitle,
+    PanelSubtitle,
+    ExpandButton,
+    InfoPanelContent,
+    InfoSection,
+    SectionTitle,
+    SectionContent,
+    SectionDetail,
+    MoonPhaseText,
+    MoonIcon,
+} from './InfoPanel.styles';
 
 interface InfoPanelProps {
     chartData: ChartData;
@@ -31,13 +45,13 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ chartData }) => {
     const longitude = subject?.longitude || 0;
 
     return (
-        <div className="info-panel-container">
-            <div className="info-panel-header" onClick={toggleExpanded}>
-                <div className="header-content">
-                    <h2 className="panel-title">{name}</h2>
-                    <span className="panel-subtitle">Birth chart</span>
-                </div>
-                <button className="expand-btn" aria-expanded={isExpanded}>
+        <InfoPanelContainer>
+            <InfoPanelHeader onClick={toggleExpanded}>
+                <HeaderContent>
+                    <PanelTitle>{name}</PanelTitle>
+                    <PanelSubtitle>Birth chart</PanelSubtitle>
+                </HeaderContent>
+                <ExpandButton $expanded={isExpanded} aria-expanded={isExpanded}>
                     <svg 
                         width="12" 
                         height="12" 
@@ -50,40 +64,42 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ chartData }) => {
                     >
                         <path d="M6 9L3 6L9 6L6 9Z" fill="currentColor"/>
                     </svg>
-                </button>
-            </div>
+                </ExpandButton>
+            </InfoPanelHeader>
 
-            <div className={`info-panel-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
-                <div className="info-section">
-                    <h3 className="section-title">Birth date and time</h3>
-                    <p className="section-content">
+            <InfoPanelContent $expanded={isExpanded} $collapsed={!isExpanded}>
+                <InfoSection>
+                    <SectionTitle>Birth date and time</SectionTitle>
+                    <SectionContent>
                         {formatDateTime(birthDate, birthTime)}
-                    </p>
-                </div>
+                    </SectionContent>
+                </InfoSection>
 
-                <div className="info-section">
-                    <h3 className="section-title">Birth place</h3>
-                    <p className="section-content">{location}</p>
-                    <p className="section-detail">Timezone: {timezone}</p>
-                    <p className="section-detail">Latitude: {latitude.toFixed(6)}°</p>
-                    <p className="section-detail">Longitude: {longitude.toFixed(6)}°</p>
-                </div>
+                <InfoSection>
+                    <SectionTitle>Birth place</SectionTitle>
+                    <SectionContent>{location}</SectionContent>
+                    <SectionDetail>Timezone: {timezone}</SectionDetail>
+                    <SectionDetail>Latitude: {latitude.toFixed(6)}°</SectionDetail>
+                    <SectionDetail>Longitude: {longitude.toFixed(6)}°</SectionDetail>
+                </InfoSection>
 
-                <div className="info-section">
-                    <h3 className="section-title">Chart details</h3>
-                    <p className="section-detail">Perspective: Apparent Geocentric</p>
-                    <p className="section-detail">House System: Placidus</p>
-                </div>
+                <InfoSection>
+                    <SectionTitle>Chart details</SectionTitle>
+                    <SectionDetail>Perspective: Apparent Geocentric</SectionDetail>
+                    <SectionDetail>House System: Placidus</SectionDetail>
+                </InfoSection>
 
-                <div className="info-section moon-phase">
-                    <h3 className="section-title">Moon Phase</h3>
-                    <p className="section-detail">Phase Day: 28</p>
-                    <p className="section-detail moon-phase-text">
-                        Waning Crescent <span className="moon-icon">🌘</span>
-                    </p>
-                </div>
-            </div>
-        </div>
+                <InfoSection>
+                    <SectionTitle>Moon Phase</SectionTitle>
+                    <SectionDetail>Phase Day: 28</SectionDetail>
+                    <SectionDetail>
+                        <MoonPhaseText>
+                            Waning Crescent <MoonIcon>🌘</MoonIcon>
+                        </MoonPhaseText>
+                    </SectionDetail>
+                </InfoSection>
+            </InfoPanelContent>
+        </InfoPanelContainer>
     );
 };
 

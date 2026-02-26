@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { type ChartData, ASPECT_SYMBOLS } from '../types/chart';
-import './AspectPanel.css';
+import {
+    AspectPanelContainer,
+    AspectPanelHeader,
+    AspectPanelTitle,
+    ToggleIcon,
+    AspectPanelBody,
+    GridScrollContainer,
+    AspectGrid,
+    GridRow,
+    GridCell,
+    LabelCell,
+    AspectIcon,
+} from './AspectPanel.styles';
 
 interface AspectPanelProps {
     chartData: ChartData;
@@ -26,49 +38,49 @@ const AspectPanel: React.FC<AspectPanelProps> = ({ chartData }) => {
     };
 
     return (
-        <div className="aspect-panel-container">
-            <div className="aspect-panel-header" onClick={() => setIsExpanded(!isExpanded)}>
-                <span className="title">Aspects</span>
-                <span className={`toggle-icon ${isExpanded ? 'open' : ''}`}>
+        <AspectPanelContainer>
+            <AspectPanelHeader onClick={() => setIsExpanded(!isExpanded)}>
+                <AspectPanelTitle>Aspects</AspectPanelTitle>
+                <ToggleIcon $isOpen={isExpanded}>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M19 9l-7 7-7-7" />
                     </svg>
-                </span>
-            </div>
+                </ToggleIcon>
+            </AspectPanelHeader>
 
-            <div className={`aspect-panel-body ${isExpanded ? 'show' : ''}`}>
-                <div className="grid-scroll-container">
-                    <div className="aspect-grid">
+            <AspectPanelBody $show={isExpanded}>
+                <GridScrollContainer>
+                    <AspectGrid>
                         {points.map((rowPoint, rowIndex) => (
-                            <div key={`row-${rowIndex}`} className="grid-row">
+                            <GridRow key={`row-${rowIndex}`}>
                                 {points.map((colPoint, colIndex) => {
                                     if (colIndex < rowIndex) {
                                         const aspect = getAspectSymbol(rowPoint.name, colPoint.name);
                                         return (
-                                            <div key={`${rowIndex}-${colIndex}`} className="grid-cell">
+                                            <GridCell key={`${rowIndex}-${colIndex}`}>
                                                 {aspect && (
-                                                    <span className={`aspect-icon ${aspect.type}`}>
+                                                    <AspectIcon $aspectType={aspect.type}>
                                                         {aspect.symbol}
-                                                    </span>
+                                                    </AspectIcon>
                                                 )}
-                                            </div>
+                                            </GridCell>
                                         );
                                     }
                                     if (colIndex === rowIndex) {
                                         return (
-                                            <div key={`label-${rowIndex}`} className="grid-cell label-cell">
+                                            <LabelCell key={`label-${rowIndex}`}>
                                                 {rowPoint.symbol}
-                                            </div>
+                                            </LabelCell>
                                         );
                                     }
                                     return null;
                                 })}
-                            </div>
+                            </GridRow>
                         ))}
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </AspectGrid>
+                </GridScrollContainer>
+            </AspectPanelBody>
+        </AspectPanelContainer>
     );
 };
 

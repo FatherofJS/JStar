@@ -73,7 +73,7 @@ const ChartWheelContainer = styled.div`
     z-index: 1;
 `;
 
-const ChartTitle = styled.h1`
+const ChartTitle = styled.h1<{ $name?: string }>`
     position: absolute;
     top: 30px;
     left: 50%;
@@ -325,6 +325,7 @@ interface ChartWheelProps {
     longitude?: number;
     timezone?: string;
     externalChartData?: ChartData | null;
+    name?: string;
 }
 
 export function ChartWheel({ 
@@ -333,7 +334,8 @@ export function ChartWheel({
     latitude = 0, 
     longitude = 0, 
     timezone = 'UTC',
-    externalChartData = null 
+    externalChartData = null,
+    name 
 }: ChartWheelProps) {
     const { chartData: fetchedChartData, loading, error, fetchChart } = useChartApi();
     
@@ -427,7 +429,7 @@ export function ChartWheel({
         return groups;
     }, [planets, planetPositions]);
 
-    const zoom = (delta: number) => setScale(prev => Math.max(0.5, Math.min(3, prev + delta)));
+    const zoom = (delta: number) => setScale(prev => Math.max(0.5, Math.min(3, prev + delta)))
 
     const drag = {
         start: (e: React.MouseEvent) => {
@@ -514,6 +516,9 @@ export function ChartWheel({
         );
     }
 
+    // Display title - use user's name if available
+    const displayTitle = name ? `${name}'s Cosmic Chart` : 'Your Cosmic Chart';
+
     return (
         <>
             <DarkBackground>
@@ -528,7 +533,7 @@ export function ChartWheel({
             </DarkBackground>
             
             <ChartWheelContainer>
-                <ChartTitle>Your Cosmic Chart</ChartTitle>
+                <ChartTitle $name={name}>{displayTitle}</ChartTitle>
 
                 <ChartControls>
                     <ControlButton onClick={() => zoom(0.15)} title="Zoom In">+</ControlButton>

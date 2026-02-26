@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
-import './PlanetTable.css';
 import type { ChartData } from '../types/chart';
+import {
+    PlanetTableContainer,
+    PlanetTableHeader,
+    TableTitle,
+    ExpandButton,
+    PlanetTableContent,
+    PlanetTable as StyledPlanetTable,
+    PlanetRow,
+    PlanetCell,
+    PlanetName,
+    PlanetPosition,
+    PositionIndicator,
+    PlanetHouse,
+} from './PlanetTable.styles';
 
 interface PlanetTableProps {
     chartData: ChartData;
@@ -50,10 +63,10 @@ const PlanetTable: React.FC<PlanetTableProps> = ({ chartData }) => {
     };
 
     return (
-        <div className="planet-table-container">
-            <div className="planet-table-header" onClick={toggleExpanded}>
-                <h3 className="table-title">Natal Points</h3>
-                <button className="expand-btn" aria-expanded={isExpanded}>
+        <PlanetTableContainer>
+            <PlanetTableHeader onClick={toggleExpanded}>
+                <TableTitle>Natal Points</TableTitle>
+                <ExpandButton $expanded={isExpanded} aria-expanded={isExpanded}>
                     <svg 
                         width="12" 
                         height="12" 
@@ -66,26 +79,26 @@ const PlanetTable: React.FC<PlanetTableProps> = ({ chartData }) => {
                     >
                         <path d="M6 9L3 6L9 6L6 9Z" fill="currentColor"/>
                     </svg>
-                </button>
-            </div>
+                </ExpandButton>
+            </PlanetTableHeader>
 
-            <div className={`planet-table-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
-                <table className="planet-table">
+            <PlanetTableContent $expanded={isExpanded}>
+                <StyledPlanetTable>
                     <tbody>
                         {allPoints.map((point, index) => (
-                            <tr key={point.id || index} className="planet-row">
-                                <td className="planet-name">{point.name}:</td>
-                                <td className="planet-position">
-                                    <span className="position-indicator"></span>
+                            <PlanetRow key={point.id || index}>
+                                <PlanetName>{point.name}:</PlanetName>
+                                <PlanetPosition>
+                                    <PositionIndicator></PositionIndicator>
                                     {formatDegree(point.signDegree)}
-                                </td>
-                                <td className="planet-house">{getHouseOrdinal(point.house)}</td>
-                            </tr>
+                                </PlanetPosition>
+                                <PlanetHouse>{getHouseOrdinal(point.house)}</PlanetHouse>
+                            </PlanetRow>
                         ))}
                     </tbody>
-                </table>
-            </div>
-        </div>
+                </StyledPlanetTable>
+            </PlanetTableContent>
+        </PlanetTableContainer>
     );
 };
 

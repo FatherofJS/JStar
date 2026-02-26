@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
-import './HousePanel.css';
 import type { ChartData } from '../types/chart';
+import {
+    HousePanelContainer,
+    HousePanelHeader,
+    PanelTitle,
+    MenuButton,
+    ExpandButton,
+    HousePanelContent,
+    HouseTable,
+    HouseRow,
+    HouseCell,
+    HouseNumber,
+    HousePosition,
+    HouseIndicator,
+} from './HousePanel.styles';
 
 interface HousePanelProps {
     chartData: ChartData;
@@ -32,17 +45,17 @@ const HousePanel: React.FC<HousePanelProps> = ({ chartData }) => {
     };
 
     return (
-        <div className="house-panel-container">
-            <div className="house-panel-header" onClick={toggleExpanded}>
-                <h3 className="panel-title">Natal Houses</h3>
-                <button className="menu-btn">
+        <HousePanelContainer>
+            <HousePanelHeader onClick={toggleExpanded}>
+                <PanelTitle>Natal Houses</PanelTitle>
+                <MenuButton>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <circle cx="3" cy="8" r="1.5" fill="currentColor"/>
                         <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
                         <circle cx="13" cy="8" r="1.5" fill="currentColor"/>
                     </svg>
-                </button>
-                <button className="expand-btn" aria-expanded={isExpanded}>
+                </MenuButton>
+                <ExpandButton $expanded={isExpanded} aria-expanded={isExpanded}>
                     <svg 
                         width="12" 
                         height="12" 
@@ -55,25 +68,25 @@ const HousePanel: React.FC<HousePanelProps> = ({ chartData }) => {
                     >
                         <path d="M6 9L3 6L9 6L6 9Z" fill="currentColor"/>
                     </svg>
-                </button>
-            </div>
+                </ExpandButton>
+            </HousePanelHeader>
 
-            <div className={`house-panel-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
-                <table className="house-table">
+            <HousePanelContent $expanded={isExpanded}>
+                <HouseTable>
                     <tbody>
                         {houses.map((house) => (
-                            <tr key={house.id} className="house-row">
-                                <td className="house-number">{getHouseOrdinal(house.id)} House:</td>
-                                <td className="house-position">
-                                    <span className="house-indicator"></span>
+                            <HouseRow key={house.id}>
+                                <HouseNumber>{getHouseOrdinal(house.id)} House:</HouseNumber>
+                                <HousePosition>
+                                    <HouseIndicator></HouseIndicator>
                                     {formatDegree(house.signDegree)}
-                                </td>
-                            </tr>
+                                </HousePosition>
+                            </HouseRow>
                         ))}
                     </tbody>
-                </table>
-            </div>
-        </div>
+                </HouseTable>
+            </HousePanelContent>
+        </HousePanelContainer>
     );
 };
 
