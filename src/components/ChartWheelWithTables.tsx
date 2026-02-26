@@ -8,35 +8,49 @@ import type { ChartData } from '../types/chart';
 import { MOCK_CHART } from '../data/mockData';
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: row;
     width: 100vw;
     min-height: 100vh;
     position: relative;
-`;
-
-const ChartSection = styled.div`
-    flex: 1;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    min-width: 0;
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
+    align-items: center;
 `;
 
-const TablesSection = styled.div`
-    width: 380px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 20px;
-    padding-right: 30px;
-    max-height: 100vh;
-    overflow-y: auto;
-    background: rgba(10, 10, 20, 0.95);
+const ChartWrapper = styled.div`
     position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+// Table panels at corners
+const TopLeftPanel = styled.div`
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+`;
+
+const TopRightPanel = styled.div`
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+`;
+
+const BottomLeftPanel = styled.div`
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 100;
+`;
+
+const BottomRightPanel = styled.div`
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
     z-index: 100;
 `;
 
@@ -55,7 +69,7 @@ export function ChartWheelWithTables(props: ChartWheelWithTablesProps) {
 
     return (
         <Container>
-            <ChartSection>
+            <ChartWrapper>
                 <ChartWheel
                     birthDate={birthDate}
                     birthTime={birthTime}
@@ -64,14 +78,24 @@ export function ChartWheelWithTables(props: ChartWheelWithTablesProps) {
                     timezone={timezone}
                     externalChartData={chartData}
                 />
-            </ChartSection>
-            
-            <TablesSection>
-                <InfoPanel chartData={chartData} />
-                <PlanetTable chartData={chartData} />
-                <AspectPanel chartData={chartData} />
-                <HousePanel chartData={chartData} />
-            </TablesSection>
+                
+                {/* 4 tables at 4 corners */}
+                <TopLeftPanel>
+                    <InfoPanel chartData={chartData} />
+                </TopLeftPanel>
+                
+                <TopRightPanel>
+                    <PlanetTable chartData={chartData} />
+                </TopRightPanel>
+                
+                <BottomLeftPanel>
+                    <AspectPanel chartData={chartData} />
+                </BottomLeftPanel>
+                
+                <BottomRightPanel>
+                    <HousePanel chartData={chartData} />
+                </BottomRightPanel>
+            </ChartWrapper>
         </Container>
     );
 }
