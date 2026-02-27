@@ -15,15 +15,64 @@ import {
 } from '@tabler/icons-react';
 import type { Icon } from '@tabler/icons-react';
 
+// =============================================================================
+// ANIMATIONS - GPU-accelerated for smooth performance
+// =============================================================================
+
 const pulse = keyframes`
     0%, 100% { opacity: 0.6; }
     50% { opacity: 1; }
 `;
 
 const twinkle = keyframes`
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.8; }
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.2); }
 `;
+
+const slowTwinkle = keyframes`
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.6; }
+`;
+
+const nebulaPulse = keyframes`
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.5; }
+`;
+
+const glowPulse = keyframes`
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+`;
+
+const shoot = keyframes`
+    0% { transform: translate(0, 0) rotate(-45deg); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translate(-300px, 300px) rotate(-45deg); opacity: 0; }
+`;
+
+const drift = keyframes`
+    0% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(-1%, -0.5%, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+`;
+
+// =============================================================================
+// STYLED COMPONENTS - Enhanced Background
+// =============================================================================
+
+// Generate random star positions
+const generateStarPositions = (count: number): string => {
+    const positions: string[] = [];
+    for (let i = 0; i < count; i++) {
+        const x = Math.floor(Math.random() * 100);
+        const y = Math.floor(Math.random() * 100);
+        positions.push(`${x}% ${y}% #fff`);
+    }
+    return positions.join(', ');
+};
+
+const starsPositions = generateStarPositions(60);
+const starsPositions2 = generateStarPositions(40);
 
 const DarkBackground = styled.div`
     position: fixed;
@@ -31,34 +80,172 @@ const DarkBackground = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at center, #0a0a14 0%, #050508 100%);
     z-index: 0;
+    overflow: hidden;
+    
+    /* Multi-layer gradient for depth */
+    background: linear-gradient(135deg, #0a0a14 0%, #1a0a2e 30%, #0f1a2e 60%, #0a0a14 100%);
+    animation: ${drift} 30s ease-in-out infinite;
+    will-change: transform;
+`;
+
+// Nebula layer - subtle colored clouds
+const NebulaLayer = styled.div`
+    position: absolute;
+    inset: -20%;
+    overflow: hidden;
+    pointer-events: none;
     
     &::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: 
-            radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
-            radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.04) 0%, transparent 40%);
-        pointer-events: none;
+        top: 10%;
+        left: 10%;
+        width: 60%;
+        height: 60%;
+        background: radial-gradient(ellipse at 30% 40%, rgba(147, 51, 234, 0.15) 0%, transparent 60%);
+        animation: ${nebulaPulse} 12s ease-in-out infinite;
+    }
+    
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 10%;
+        right: 10%;
+        width: 50%;
+        height: 50%;
+        background: radial-gradient(ellipse at 70% 60%, rgba(59, 130, 246, 0.12) 0%, transparent 60%);
+        animation: ${nebulaPulse} 15s ease-in-out infinite 3s;
     }
 `;
 
+// Star field layer
+const StarsField = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    box-shadow: ${starsPositions};
+    
+    &::after {
+        content: " ";
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        box-shadow: ${starsPositions};
+    }
+    
+    will-change: opacity;
+`;
+
+// Secondary star layer with slower animation
+const StarsField2 = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    box-shadow: ${starsPositions2};
+    opacity: 0.6;
+    animation: ${slowTwinkle} 8s ease-in-out infinite;
+    
+    &::after {
+        content: " ";
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        box-shadow: ${starsPositions2};
+    }
+    
+    will-change: opacity;
+`;
+
+// Cosmic glow in center
+const CosmicGlow = styled.div`
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(
+        circle at 50% 50%,
+        rgba(147, 51, 234, 0.1) 0%,
+        rgba(59, 130, 246, 0.06) 30%,
+        rgba(236, 72, 153, 0.04) 50%,
+        transparent 70%
+    );
+    animation: ${glowPulse} 10s ease-in-out infinite;
+    pointer-events: none;
+    will-change: opacity;
+`;
+
+// Shooting star interface
+interface ShootingStarProps {
+    $top: number;
+    $left: number;
+    $delay: number;
+    $duration: number;
+}
+
+// Shooting star component
+const ShootingStar = styled.span<ShootingStarProps>`
+    position: absolute;
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5), transparent);
+    top: ${({ $top }) => $top}%;
+    left: ${({ $left }) => $left}%;
+    animation: ${shoot} ${({ $duration }) => $duration}s linear infinite;
+    animation-delay: ${({ $delay }) => $delay}s;
+    will-change: transform, opacity;
+    transform: rotate(-45deg);
+    opacity: 0;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 3px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 
+            0 0 4px 1px rgba(255, 255, 255, 1),
+            0 0 8px 2px rgba(255, 255, 255, 0.7);
+    }
+`;
+
+// TwinkleStar - Enhanced with glow
 const TwinkleStar = styled.div<{ $top: string; $left: string; $size: number; $delay: string }>`
     position: absolute;
     top: ${props => props.$top};
     left: ${props => props.$left};
     width: ${props => props.$size}px;
     height: ${props => props.$size}px;
-    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 70%);
     border-radius: 50%;
     animation: ${twinkle} 3s ease-in-out infinite;
     animation-delay: ${props => props.$delay};
     pointer-events: none;
+    will-change: transform, opacity;
+`;
+
+// Background wrapper combining all elements
+const BackgroundWrapper = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 `;
 
 const ChartWheelContainer = styled.div`
@@ -486,8 +673,12 @@ export function ChartWheel({
     // Show loading state
     if (loading) {
         return (
-            <>
+            <BackgroundWrapper>
                 <DarkBackground>
+                    <NebulaLayer />
+                    <StarsField />
+                    <StarsField2 />
+                    <CosmicGlow />
                     <TwinkleStar $top="10%" $left="15%" $size={2} $delay="0s" />
                     <TwinkleStar $top="20%" $left="80%" $size={1} $delay="0.5s" />
                     <TwinkleStar $top="60%" $left="10%" $size={2} $delay="1s" />
@@ -497,31 +688,52 @@ export function ChartWheel({
                     <LoadingSpinner />
                     <LoadingText>Calculating your cosmic chart...</LoadingText>
                 </LoadingWrapper>
-            </>
+            </BackgroundWrapper>
         );
     }
 
     // Show error state
     if (error) {
         return (
-            <>
+            <BackgroundWrapper>
                 <DarkBackground>
+                    <NebulaLayer />
+                    <StarsField />
+                    <StarsField2 />
+                    <CosmicGlow />
                     <TwinkleStar $top="10%" $left="15%" $size={2} $delay="0s" />
                     <TwinkleStar $top="20%" $left="80%" $size={1} $delay="0.5s" />
                 </DarkBackground>
                 <ErrorWrapper>
                     <ErrorText>Error: {error}</ErrorText>
                 </ErrorWrapper>
-            </>
+            </BackgroundWrapper>
         );
     }
 
     // Display title - use user's name if available
     const displayTitle = name ? `${name}'s Cosmic Chart` : 'Your Cosmic Chart';
 
+    // Generate shooting stars data
+    const shootingStars = useMemo(() => 
+        Array.from({ length: 3 }, (_, i) => ({
+            id: i,
+            top: Math.random() * 40 + 10,
+            left: Math.random() * 100,
+            delay: Math.random() * 15,
+            duration: 1.5 + Math.random() * 2,
+        })), 
+    []);
+
     return (
-        <>
+        <BackgroundWrapper>
             <DarkBackground>
+                <NebulaLayer />
+                <StarsField />
+                <StarsField2 />
+                <CosmicGlow />
+                
+                {/* Additional twinkling stars */}
                 <TwinkleStar $top="10%" $left="15%" $size={2} $delay="0s" />
                 <TwinkleStar $top="20%" $left="80%" $size={1} $delay="0.5s" />
                 <TwinkleStar $top="60%" $left="10%" $size={2} $delay="1s" />
@@ -530,6 +742,17 @@ export function ChartWheel({
                 <TwinkleStar $top="85%" $left="20%" $size={1} $delay="0.3s" />
                 <TwinkleStar $top="15%" $left="50%" $size={1} $delay="2.5s" />
                 <TwinkleStar $top="70%" $left="50%" $size={2} $delay="1.8s" />
+                
+                {/* Shooting stars */}
+                {shootingStars.map((star) => (
+                    <ShootingStar
+                        key={star.id}
+                        $top={star.top}
+                        $left={star.left}
+                        $delay={star.delay}
+                        $duration={star.duration}
+                    />
+                ))}
             </DarkBackground>
             
             <ChartWheelContainer>
@@ -818,6 +1041,6 @@ export function ChartWheel({
                     </ChartViewport>
                 </ChartWrapper>
             </ChartWheelContainer>
-        </>
+        </BackgroundWrapper>
     );
 }
