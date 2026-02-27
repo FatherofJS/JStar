@@ -728,12 +728,6 @@ export function ChartWheel({
     return (
         <BackgroundWrapper>
             <DarkBackground>
-                <NebulaLayer />
-                <StarsField />
-                <StarsField2 />
-                <CosmicGlow />
-                
-                {/* Additional twinkling stars */}
                 <TwinkleStar $top="10%" $left="15%" $size={2} $delay="0s" />
                 <TwinkleStar $top="20%" $left="80%" $size={1} $delay="0.5s" />
                 <TwinkleStar $top="60%" $left="10%" $size={2} $delay="1s" />
@@ -742,17 +736,6 @@ export function ChartWheel({
                 <TwinkleStar $top="85%" $left="20%" $size={1} $delay="0.3s" />
                 <TwinkleStar $top="15%" $left="50%" $size={1} $delay="2.5s" />
                 <TwinkleStar $top="70%" $left="50%" $size={2} $delay="1.8s" />
-                
-                {/* Shooting stars */}
-                {shootingStars.map((star) => (
-                    <ShootingStar
-                        key={star.id}
-                        $top={star.top}
-                        $left={star.left}
-                        $delay={star.delay}
-                        $duration={star.duration}
-                    />
-                ))}
             </DarkBackground>
             
             <ChartWheelContainer>
