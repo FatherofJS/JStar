@@ -1,6 +1,7 @@
 // Main App - Layout skeleton
 // DO NOT EDIT during Sprint One except to add routing state
 
+import { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { InfoPanel } from './components/InfoPanel';
@@ -11,24 +12,17 @@ import { AspectPanel } from './components/AspectPanel';
 import { BirthForm } from './components/BirthForm';
 import { LandingPage } from './components/LandingPage';
 import './App.css';
-
-import { useState } from "react";
-
-
+import './components/BirthForm.css';
 
 function App() {
-
-
-
-//close sidebar
+  // Sidebar collapse state
   const [isClosed, setIsClosed] = useState(false);
 
-
-
-
+  // BirthForm modal state
+  const [showBirthForm, setShowBirthForm] = useState(false);
 
   // TODO: Add state to toggle between landing page and chart view
-  const showLanding = false; // Set to true to test landing page
+  const showLanding = false;
 
   if (showLanding) {
     return <LandingPage />;
@@ -36,10 +30,14 @@ function App() {
 
   return (
     <div className="app-container">
-      <Sidebar isClosed={isClosed} setIsClosed={setIsClosed} />
+      <Sidebar
+        isClosed={isClosed}
+        setIsClosed={setIsClosed}
+        onOpenBirthForm={() => setShowBirthForm(true)}
+      />
 
       <div className="main-area">
-        <Header isClosed={isClosed}/>
+        <Header isClosed={isClosed} />
 
         <div className="content-grid">
           <aside className="left-panel">
@@ -58,10 +56,11 @@ function App() {
         </div>
       </div>
 
-      <BirthForm />
+      {showBirthForm && (
+        <BirthForm onClose={() => setShowBirthForm(false)} />
+      )}
     </div>
   );
 }
 
 export default App;
-
