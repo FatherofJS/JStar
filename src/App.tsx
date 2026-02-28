@@ -4,13 +4,14 @@
 import { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
-import { InfoPanel } from './components/InfoPanel';
-import { PlanetTable } from './components/PlanetTable';
+import InfoPanel from './components/InfoPanel';
+import PlanetTable from './components/PlanetTable';
 import { ChartWheel } from './components/ChartWheel';
-import { HousePanel } from './components/HousePanel';
-import { AspectPanel } from './components/AspectPanel';
+import HousePanel from './components/HousePanel';
+import AspectPanel from './components/AspectPanel';
 import { BirthForm } from './components/BirthForm';
 import { LandingPage } from './components/LandingPage';
+import { MOCK_CHART } from './data/mockData';
 import './App.css';
 import './components/BirthForm.css';
 
@@ -20,6 +21,9 @@ function App() {
 
   // BirthForm modal state
   const [showBirthForm, setShowBirthForm] = useState(false);
+
+  // Chart data (using mock data for now)
+  const [chartData] = useState(MOCK_CHART);
 
   // TODO: Add state to toggle between landing page and chart view
   const showLanding = false;
@@ -41,8 +45,8 @@ function App() {
 
         <div className="content-grid">
           <aside className="left-panel">
-            <InfoPanel />
-            <PlanetTable />
+            <InfoPanel chartData={chartData} />
+            <PlanetTable chartData={chartData} />
           </aside>
 
           <main className="chart-area">
@@ -50,8 +54,8 @@ function App() {
           </main>
 
           <aside className="right-panel">
-            <HousePanel />
-            <AspectPanel />
+            <HousePanel chartData={chartData} />
+            <AspectPanel data={chartData} />
           </aside>
         </div>
       </div>

@@ -1,53 +1,53 @@
+/* .home is now a regular wrapper inside .main-area */
+/* Positioning is handled by App.css .main-area */
 .home {
-  position: fixed;
-  left: 250px;
-  width: calc(100% - 250px);
-  transition: 0.3s;
-  height: 100%;
-}
-
-.home.expand {
-  left: 50px;
-  width: calc(100% - 50px);
+    width: 100%;
+    height: auto;
 }
 
 
-.header{
-    width:100% ;
+
+.header {
+    width: 100%;
     height: 150px;
     display: flex;
     flex-direction: column;
+    padding: 4px 0;
 }
+
 .topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
+
 }
-.header li{
+
+.header li {
     list-style-type: none;
 }
 
-.htext{
+.htext {
     color: aliceblue;
 
     font-size: 15px;
     font-family: Arial, Helvetica, sans-serif;
-    
+
 }
-.nowchart{
+
+.nowchart {
     margin: 0px;
     font-size: 30px;
 }
 
 
-.hmenu{
+.hmenu {
     display: flex;
     font-size: 14px;
     height: 50px;
-   
+
 }
-.menu0{
+
+.menu0 {
     margin: 5px;
     border-radius: 10px;
     background: #2c3e50;
@@ -56,56 +56,60 @@
 }
 
 
-.inmenu{
+.inmenu {
     display: flex;
 
 }
-.limenu{
-   
-    padding:5px ;
+
+.limenu {
+
+    padding: 5px;
 
 
 }
 
 
-.savesj{
+.savesj {
     margin-left: 5px;
-    padding:10px ;
+    padding: 10px;
     background: #2c3e50;
     border-radius: 10px;
 }
-.print{
+
+.print {
     margin-left: 10px;
-    padding:10px ;
+    padding: 10px;
     background: #2c3e50;
     border-radius: 10px;
     margin-right: 5px;
 }
 
-.box{
+.box {
     margin: 5px;
     cursor: pointer;
     transition: 0.5s;
 }
+
 .box.active {
     background: #0a1020;
     border-radius: 10px;
     opacity: 1;
 }
 
-.date{
+.date {
     margin: 5px;
 }
 
-.bottombar{
-    height: 60px;
+.bottombar {
+    height: 40px;
     width: calc(100% - 13px);
     border: #2c3e50 solid 2px;
-    margin:5px;
+    margin: 4px 5px;
     border-radius: 10px;
     display: flex;
 }
-.hheader{
+
+.hheader {
     border-radius: 6px;
     padding: 2px;
     margin: 5px;
@@ -114,34 +118,38 @@
     align-items: center;
     display: flex;
 }
-.bang{
+
+.bang {
     display: flex;
-    justify-content: center ;
+    justify-content: center;
     align-items: center;
     width: 150px;
     height: 60px;
- 
+
 }
 
-.bang input,select{
+.bang input,
+select {
     text-align: center;
     border-radius: 6px;
-    text-shadow: #0a1020 ;
+    text-shadow: #0a1020;
     width: 60px;
     border: #0a1020 solid 4px;
-    box-shadow:#0a1020 2px;
+    box-shadow: #0a1020 2px;
     height: 40px;
-    
+
 }
-.bang input{
+
+.bang input {
     height: 40px;
     width: 60px;
 }
-.chonsl{
+
+.chonsl {
     padding-left: 5px;
 }
 
-.hicons{
+.hicons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -152,42 +160,46 @@
     border-radius: 50%;
     cursor: pointer;
     margin: 10px;
-    
+
 }
-.tang{
+
+.tang {
     rotate: 0deg;
 
 }
-.giam{
+
+.giam {
     rotate: 180deg;
 }
 
-.reset{
+.reset {
     padding: 5px;
     margin: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left:auto ;
+    margin-left: auto;
     background: #2c3e50;
     border-radius: 10px;
     cursor: pointer;
 }
-.space{
+
+.space {
     padding: 1px;
 }
 
 
-.space .htext{
+.space .htext {
     font-size: medium;
 }
-.hbottom{
+
+.hbottom {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.hhnum{
+.hhnum {
     margin: auto;
     display: flex;
     justify-content: center;
@@ -195,43 +207,44 @@
 
 /* ------------------------------------- */
 
- .container{
-            text-align:center;
-            display: flex;
-        }
+.container {
+    text-align: center;
+    display: flex;
+}
 
-        #time{
-            margin-top: 5px;
-            color: aliceblue;
-            font-size:16px;
-            font-weight:bold;
-        }
+#time {
+    margin-top: 5px;
+    color: aliceblue;
+    font-size: 16px;
+    font-weight: bold;
+}
 
-        #date{
-            color: aliceblue;
-            font-size:16px;
-            }
-.cursor{
+#date {
+    color: aliceblue;
+    font-size: 16px;
+}
+
+.cursor {
     cursor: pointer;
 }
 
 
-.align{
+.align {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.resetnow{
+.resetnow {
     padding: 5px;
 }
 
 
-.align-j{
+.align-j {
     display: flex;
     align-items: center;
 }
 
-.traine{
+.traine {
     margin-right: 520px;
 }
