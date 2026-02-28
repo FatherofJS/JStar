@@ -1,0 +1,106 @@
+/* ─── Container ─────────────────────────────────────────────── */
+
+.chart-wheel-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    overflow: hidden;
+}
+
+.chart-controls {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    display: flex;
+    gap: var(--space-xs);
+    z-index: 10;
+}
+
+.chart-controls button {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s;
+    backdrop-filter: blur(4px);
+}
+
+.chart-controls button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+/* ─── SVG viewport ──────────────────────────────────────────── */
+
+.chart-viewport {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart-viewport svg {
+    overflow: visible;
+}
+
+/* ─── Planets ───────────────────────────────────────────────── */
+
+.planet-symbol {
+    cursor: pointer;
+}
+
+.planet-symbol:hover .planet-ring {
+    stroke-opacity: 0.9;
+    stroke-width: 2.5;
+}
+
+/* ─── Tooltip ───────────────────────────────────────────────── */
+
+.planet-tooltip {
+    position: absolute;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 6px 10px;
+    z-index: 100;
+    pointer-events: none;
+    min-width: 110px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+}
+
+.tooltip-header {
+    font-weight: 600;
+    font-size: 0.75rem;
+    margin-bottom: 3px;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 3px;
+    color: var(--text-primary);
+}
+
+.tooltip-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.68rem;
+    padding: 1px 0;
+}
+
+.tooltip-row span:first-child {
+    color: var(--text-secondary);
+}
+
+.tooltip-retrograde {
+    color: var(--accent);
+    font-size: 0.65rem;
+    margin-top: 3px;
+    font-weight: 500;
+}
