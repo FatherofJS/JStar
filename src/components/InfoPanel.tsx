@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './InfoPanel.css';
 import type { ChartData } from '../types/chart';
+import { MOCK_CHART } from '../data/mockData';
 
 interface InfoPanelProps {
     chartData: ChartData;
 }
 
-const InfoPanel: React.FC<InfoPanelProps> = ({ chartData }) => {
+export const InfoPanel: React.FC<InfoPanelProps> = ({ chartData = MOCK_CHART }) => {
     const { subject } = chartData;
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -79,4 +80,4 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ chartData }) => {
     );
 };
 
-export default InfoPanel;
+//export default InfoPanel;

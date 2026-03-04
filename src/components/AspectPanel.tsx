@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { type ChartData, ASPECT_SYMBOLS } from '../types/chart'; //
+import { type ChartData, ASPECT_SYMBOLS } from '../types/chart'; 
 import './AspectPanel.css';
+import { MOCK_CHART } from '../data/mockData';
 
 interface AspectPanelProps {
     data: ChartData;
 }
 
-const AspectPanel: React.FC<AspectPanelProps> = ({ data }) => {
+export const AspectPanel: React.FC<AspectPanelProps> = ({ data = MOCK_CHART }) => {
     const [isOpen, setIsOpen] = useState(true);
 
     // Gộp Planets và Angles để tạo trục tọa độ cho bảng
@@ -76,4 +77,4 @@ const AspectPanel: React.FC<AspectPanelProps> = ({ data }) => {
     );
 };
 
-export default AspectPanel;
+//export default AspectPanel;

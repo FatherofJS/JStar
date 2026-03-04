@@ -1,7 +1,7 @@
 .planet-table-container {
     background-color: #1a1d29;
     border-radius: 12px;
-    width: 280px;
+    width: 270px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     color: #e5e7eb;
     overflow: hidden;
@@ -59,7 +59,8 @@
 }
 
 .planet-table-content.expanded {
-    max-height: 1000px;
+    max-height: none;
+    overflow: visible;
     transition: max-height 0.3s ease-in;
 }
 
@@ -96,12 +97,17 @@
 }
 
 .position-indicator {
-    width: 12px;
-    height: 12px;
+    width: 18px;
+    height: 18px;
     background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-    border-radius: 2px;
-    display: inline-block;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
+    font-size: 10px;
+    color: #ffffff;
+    line-height: 1;
 }
 
 .planet-house {

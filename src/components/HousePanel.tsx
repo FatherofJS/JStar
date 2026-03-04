@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './HousePanel.css';
 import type { ChartData } from '../types/chart';
+import { ZODIAC_SIGNS } from '../types/chart';
+import { MOCK_CHART } from '../data/mockData';
 
 interface HousePanelProps {
     chartData: ChartData;
 }
 
-const HousePanel: React.FC<HousePanelProps> = ({ chartData }) => {
+export const HousePanel: React.FC<HousePanelProps> = ({ chartData = MOCK_CHART }) => {
     const { houses } = chartData;
     const [isExpanded, setIsExpanded] = useState(true);
 
@@ -17,31 +19,25 @@ const HousePanel: React.FC<HousePanelProps> = ({ chartData }) => {
     // Format degree display
     const formatDegree = (signDegree: number) => {
         const degrees = Math.floor(signDegree);
-        const minutes = Math.round((signDegree - degrees) * 60);
-        return `${degrees}°${minutes}'${Math.round((signDegree - degrees - minutes/60) * 3600)}"`;
+        const minutesDecimal = (signDegree - degrees) * 60;
+        const minutes = Math.floor(minutesDecimal);
+        const seconds = Math.round((minutesDecimal - minutes) * 60);
+        return `${degrees}°${minutes}'${seconds}"`;
     };
 
     // Get house ordinal
-    const getHouseOrdinal = (house: number) => {
-        if (house === 11 || house === 12 || house === 13) return `${house}th`;
-        const lastDigit = house % 10;
-        if (lastDigit === 1) return `${house}st`;
-        if (lastDigit === 2) return `${house}nd`;
-        if (lastDigit === 3) return `${house}rd`;
-        return `${house}th`;
+    const getHouseOrdinal = (house: number): string => {
+        const ordinals = [
+            'First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth',
+            'Seventh', 'Eighth', 'Ninth', 'Tenth', 'Eleventh', 'Twelfth'
+        ];
+        return ordinals[house - 1] || `${house}th`;
     };
 
     return (
         <div className="house-panel-container">
             <div className="house-panel-header" onClick={toggleExpanded}>
                 <h3 className="panel-title">Natal Houses</h3>
-                <button className="menu-btn">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <circle cx="3" cy="8" r="1.5" fill="currentColor"/>
-                        <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
-                        <circle cx="13" cy="8" r="1.5" fill="currentColor"/>
-                    </svg>
-                </button>
                 <button className="expand-btn" aria-expanded={isExpanded}>
                     <svg 
                         width="12" 
@@ -65,8 +61,8 @@ const HousePanel: React.FC<HousePanelProps> = ({ chartData }) => {
                             <tr key={house.id} className="house-row">
                                 <td className="house-number">{getHouseOrdinal(house.id)} House:</td>
                                 <td className="house-position">
-                                    <span className="house-indicator"></span>
-                                    {formatDegree(house.signDegree)}
+                                     <span className="house-indicator">{ZODIAC_SIGNS[house.sign]?.symbol}</span>
+                                     {formatDegree(house.signDegree)}
                                 </td>
                             </tr>
                         ))}
@@ -77,4 +73,4 @@ const HousePanel: React.FC<HousePanelProps> = ({ chartData }) => {
     );
 };
 
-export default HousePanel;
+//export default HousePanel;

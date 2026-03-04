@@ -1,18 +1,37 @@
 import React, { useState } from 'react';
 import './PlanetTable.css';
 import type { ChartData } from '../types/chart';
+import { MOCK_CHART } from '../data/mockData';
 
 interface PlanetTableProps {
     chartData: ChartData;
 }
 
-const PlanetTable: React.FC<PlanetTableProps> = ({ chartData }) => {
+export const PlanetTable: React.FC<PlanetTableProps> = ({ chartData = MOCK_CHART }) => {
     const { planets, angles } = chartData;
     const [isExpanded, setIsExpanded] = useState(true);
 
     const toggleExpanded = () => {
         setIsExpanded(!isExpanded);
     };
+
+    const getZodiacSymbol = (sign: string): string => {
+    const zodiacSymbols: Record<string, string> = {
+        'Aries': '♈',
+        'Taurus': '♉',
+        'Gemini': '♊',
+        'Cancer': '♋',
+        'Leo': '♌',
+        'Virgo': '♍',
+        'Libra': '♎',
+        'Scorpio': '♏',
+        'Sagittarius': '♐',
+        'Capricorn': '♑',
+        'Aquarius': '♒',
+        'Pisces': '♓'
+    };
+    return zodiacSymbols[sign] || '';
+};
 
     // Combine planets and angles
     const allPoints = [
@@ -76,7 +95,7 @@ const PlanetTable: React.FC<PlanetTableProps> = ({ chartData }) => {
                             <tr key={point.id || index} className="planet-row">
                                 <td className="planet-name">{point.name}:</td>
                                 <td className="planet-position">
-                                    <span className="position-indicator"></span>
+                                    <span className="position-indicator">{getZodiacSymbol(point.sign)}</span>
                                     {formatDegree(point.signDegree)}
                                 </td>
                                 <td className="planet-house">{getHouseOrdinal(point.house)}</td>
@@ -89,4 +108,4 @@ const PlanetTable: React.FC<PlanetTableProps> = ({ chartData }) => {
     );
 };
 
-export default PlanetTable;
+//export default PlanetTable;

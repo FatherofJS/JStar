@@ -5,7 +5,7 @@ import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { InfoPanel } from './components/InfoPanel';
 import { PlanetTable } from './components/PlanetTable';
-import { ChartWheel } from './components/ChartWheel';
+import { ChartWheel }  from './components/ChartWheel';
 import { HousePanel } from './components/HousePanel';
 import { AspectPanel } from './components/AspectPanel';
 import { BirthForm } from './components/BirthForm';
