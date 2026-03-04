@@ -1,142 +1,78 @@
-# JStar - Running Separate Frontend and Backend
+# JStar ✨
 
-This project is configured to run frontend (React + Vite) and backend (Python Flask) separately for better maintainability, permissions, and independent deployment.
+Astrology natal chart calculator. Enter birth details → get a visual chart wheel with zodiac signs, planet positions, house cusps, and aspect lines.
 
-## Prerequisites
+## Stack
 
-- **Frontend**: Node.js 18+, npm
-- **Backend**: Python 3.11+, Conda (or virtualenv)
+- **Frontend**: React 19 + Vite + TypeScript + styled-components
+- **Backend**: FastAPI + Kerykeion (astrology engine) + Nominatim (geocoding)
 
-## Project Structure
-
-```
-JStar/
-├── frontend/          # React + Vite (src/)
-├── backend/           # Python Flask
-│   ├── app.py        # Main Flask application
-│   ├── src/          # Backend source code
-│   └── .env          # Backend environment variables
-├── .env              # Frontend environment variables
-└── vite.config.ts    # Vite configuration
-```
-
-## Running the Application
-
-### Option 1: Run Both Separately (Recommended for Development)
-
-#### 1. Start Backend (Flask)
-
-Using Conda (recommended):
-```bash
-cd backend
-conda activate jstar
-python app.py
-```
-
-Or using the run script:
-```bash
-cd backend
-./run.sh
-```
-
-The backend will run on `http://localhost:5001`
-
-#### 2. Start Frontend (Vite)
-
-```bash
-npm install
-npm run dev
-```
-
-The frontend will run on `http://localhost:5173`
-
-### Option 2: Using Vite Proxy (Legacy)
-
-If you want to use Vite's proxy in development:
-1. Create or edit `.env` file:
-   ```
-   VITE_API_URL=http://localhost:5001
-   VITE_USE_PROXY=true
-   ```
-2. Run frontend: `npm run dev`
-3. The proxy will forward `/api` requests to the backend
-
-**Note**: This option is for backward compatibility only. It's recommended to run backend separately.
-
-## Environment Variables
-
-### Frontend (.env)
-
-```env
-VITE_API_URL=http://localhost:5001
-VITE_USE_PROXY=false
-```
-
-- `VITE_API_URL`: Backend API URL (use deployed URL in production)
-- `VITE_USE_PROXY`: Set to 'true' to use Vite proxy (default: false)
-
-### Backend (backend/.env)
-
-```env
-FLASK_APP=app.py
-FLASK_ENV=development
-PORT=5001
-SECRET_KEY=dev-secret-key-change-in-production
-CORS_ORIGINS=http://localhost:5173,http://localhost:3000
-```
-
-- `PORT`: Backend server port (default: 5001)
-- `CORS_ORIGINS`: Allowed origins for CORS (comma-separated)
-
-## Production Deployment
-
-### Backend
-
-```bash
-cd backend
-conda activate jstar
-export FLASK_ENV=production
-export SECRET_KEY=your-secure-secret-key
-python app.py
-```
-
-Or use a production WSGI server like Gunicorn:
-```bash
-pip install gunicorn
-gunicorn -w 4 -b 0.0.0.0:5001 app:app
-```
+## Setup
 
 ### Frontend
 
 ```bash
-npm run build
+cd JStar
+npm install
+npm run dev
 ```
 
-The built files will be in the `dist/` directory and can be deployed to any static hosting service (Netlify, Vercel, etc.).
+Runs on `http://localhost:5173`
+
+### Backend
+
+```bash
+cd JStar_Backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+Runs on `http://localhost:8000` — Swagger docs at `/docs`
+
+## Project Structure
+
+```
+JStar/                          # Frontend
+├── src/
+│   ├── App.tsx                 # Routes: / → /star-chart → /chart
+│   ├── components/
+│   │   ├── LandingPage.tsx     # Landing page
+│   │   ├── StarChartPage.tsx   # Birth data form
+│   │   ├── ChartViewPage.tsx   # Chart display page
+│   │   ├── ChartWheel.tsx      # SVG natal chart wheel
+│   │   ├── Header.tsx          # Chart controls
+│   │   ├── LocationAutocomplete.tsx
+│   │   ├── landing/            # Landing page sections
+│   │   ├── background/         # Star background animation
+│   │   └── button/             # Styled buttons
+│   ├── constants/index.ts      # API config
+│   ├── contexts/               # Theme + Language providers
+│   ├── data/                   # Mock data + zodiac data
+│   ├── hooks/                  # Custom hooks
+│   └── types/chart.ts          # Shared TypeScript types
+
+JStar_Backend/                  # Backend
+├── app/
+│   ├── main.py                 # FastAPI app setup + CORS
+│   ├── models.py               # Pydantic models
+│   └── routes/
+│       ├── chart.py            # POST /chart — natal chart
+│       └── location.py         # GET /api/location/search
+└── requirements.txt
+```
 
 ## API Endpoints
 
-- `GET /api/health` - Health check
-- `GET /api/location/search?q=<query>&limit=<n>` - Search locations
-- `GET /api/location/reverse?lat=<lat>&lon=<lon>` - Reverse geocoding
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/health` | Health check |
+| `POST` | `/chart` | Calculate natal chart |
+| `GET` | `/api/location/search?q=...` | City autocomplete |
+| `GET` | `/api/location/search-countries?q=...` | Country search |
 
-## Troubleshooting
+## Environment
 
-### CORS Errors
-
-If you encounter CORS errors:
-1. Check that `CORS_ORIGINS` in `backend/.env` includes your frontend URL
-2. Ensure the backend is running before the frontend makes API calls
-
-### Connection Refused
-
-If the frontend can't connect to the backend:
-1. Ensure the backend is running on the correct port
-2. Check that `VITE_API_URL` in `.env` matches the backend URL
-3. For development, you can also enable proxy in vite.config.ts
-
-### Environment Variables Not Loading
-
-- Frontend: Restart the Vite dev server after changing `.env`
-- Backend: Restart the Flask server after changing `backend/.env`
-
+Create `.env` in `JStar/` (optional):
+```
+VITE_API_URL=http://localhost:8000
+```
