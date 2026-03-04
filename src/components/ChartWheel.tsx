@@ -1,10 +1,9 @@
-import { useState, useRef } from 'react';
-import { MOCK_CHART } from '../data/mockData';
+import { useState, useRef, useEffect } from 'react';
 import {
     ZODIAC_SIGNS, ZODIAC_ORDER, ASPECT_COLORS,
     PLANET_SYMBOLS, ASPECT_SYMBOLS,
 } from '../types/chart';
-import type { Planet, Aspect } from '../types/chart';
+import type { Planet, Aspect, ChartData } from '../types/chart';
 
 import {
     IconZodiacAries, IconZodiacTaurus, IconZodiacGemini, IconZodiacCancer,
@@ -54,8 +53,8 @@ function normalizeAngle(angle: number): number {
     return ((angle % 360) + 360) % 360;
 }
 
-export function ChartWheel() {
-    const { planets, houses, aspects } = MOCK_CHART;
+export function ChartWheel({ data }: { data: ChartData }) {
+    const { planets, houses, aspects } = data;
 
     const size = 700;
     const cx = size / 2;
@@ -97,6 +96,19 @@ export function ChartWheel() {
     const dragRef = useRef({ dragging: false, startX: 0, startY: 0, origX: 0, origY: 0 });
 
     const zoom = (delta: number) => setScale(prev => Math.max(0.75, Math.min(3, prev + delta)));
+
+    // Attach wheel listener with { passive: false } so preventDefault works
+    const viewportRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const el = viewportRef.current;
+        if (!el) return;
+        const handleWheel = (e: WheelEvent) => {
+            e.preventDefault();
+            zoom(e.deltaY > 0 ? -0.01 : 0.01);
+        };
+        el.addEventListener('wheel', handleWheel, { passive: false });
+        return () => el.removeEventListener('wheel', handleWheel);
+    }, []);
 
     const drag = {
         start: (e: React.MouseEvent) => {
@@ -193,7 +205,7 @@ export function ChartWheel() {
 
             {/* SVG Chart */}
             <div className="chart-viewport"
-                onWheel={(e) => { e.preventDefault(); zoom(e.deltaY > 0 ? -0.01 : 0.01); }}
+                ref={viewportRef}
                 onMouseDown={drag.start}
                 onMouseMove={drag.move}
                 onMouseUp={drag.end}
@@ -317,11 +329,13 @@ export function ChartWheel() {
                     <circle cx={cx} cy={cy} r={houseOuterRadius} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth={2} />
                     <circle cx={cx} cy={cy} r={innerRadius} fill="#0a0e17" stroke="rgba(255,255,255,0.12)" strokeWidth={2} />
 
-                    {houses.map((house) => {
-                        const innerPos = toXY(house.cusp, innerRadius);
-                        const outerPos = toXY(house.cusp, zodiacInnerRadius);
+                    {houses.map((house, i) => {
+                        // Equal 30° sectors for visual display
+                        const startAngle = i * 30;
+                        const midAngle = startAngle + 15;
 
-                        const midAngle = house.cusp + house.size / 2;
+                        const innerPos = toXY(startAngle, innerRadius);
+                        const outerPos = toXY(startAngle, zodiacInnerRadius);
                         const labelPos = toXY(midAngle, (houseOuterRadius + innerRadius) / 2);
                         const isAngular = [1, 4, 7, 10].includes(house.id);
 

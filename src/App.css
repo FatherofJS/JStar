@@ -9,6 +9,10 @@
   height: 100vh;
   background-color: #0b0e14;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    min-height: auto;
+  }
 }
 
 /* main-area sits to the right of the fixed sidebar */
@@ -39,6 +43,26 @@
   padding: 12px;
   height: 100%;
   overflow: hidden;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 200px 1fr 240px;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 12px;
+    padding: 12px;
+    overflow-y: auto;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 8px;
+  }
 }
 
 .left-panel,
@@ -56,6 +80,23 @@
   align-items: center;
   overflow: hidden;
   min-width: 0;
+}
+
+/* Large centered chart wheel — fills most of the page */
+.chart-wheel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100vh - 180px);
+  padding: 10px;
+}
+
+.chart-wheel-container svg {
+  width: 100%;
+  height: 100%;
+  max-width: 90vmin;
+  max-height: 90vmin;
 }
 
 /* Placeholder Styling */
@@ -88,7 +129,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,8 +137,8 @@
 }
 
 .modal {
-  background: #161b24;
-  border: 1px solid rgba(100, 120, 150, 0.15);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px;
   min-width: 300px;

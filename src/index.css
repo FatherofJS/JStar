@@ -1,4 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700;900&display=swap');
+
+/* ===== BACKGROUND ANIMATIONS ===== */
+@keyframes nebulaPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.5; }
+}
 
 :root {
   /* ===== BACKGROUNDS ===== */
@@ -26,6 +37,7 @@
   --text-primary: #e0e6ed;
   --text-secondary: #8b9cb5;
   --text-muted: #4a5568;
+  --text-inverse: #ffffff;
 
   /* ===== BORDERS ===== */
   --border: rgba(100, 120, 150, 0.15);
@@ -47,6 +59,80 @@
   --transition-fast: 0.15s ease;
   --transition-normal: 0.2s ease;
   --transition-slow: 0.3s ease;
+
+  /* ===== COMPONENT SPECIFIC ===== */
+  --glass-bg: rgba(20, 25, 60, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --nav-bg: rgba(20, 25, 70, 0.7);
+  --shadow-color: rgba(0, 0, 0, 0.6);
+  --bg-wrapper: #01020a;
+
+  /* ===== ADDITIONAL ===== */
+  --nav-item-active: #7aa2ff;
+  --nav-item-hover: rgba(122, 162, 255, 0.1);
+  --divider-glow: #7aa2ff;
+  --hero-gradient-start: #7aa2ff;
+  --hero-gradient-mid: #c084fc;
+  --hero-gradient-end: #22d3ee;
+  --text-shadow: rgba(122, 162, 255, 0.6);
+
+  /* ===== SECONDARY BUTTON ===== */
+  --secondary-btn-bg: #ffffff;
+  --secondary-btn-color: #000000;
+}
+
+/* Light Mode Theme */
+[data-theme="light"] {
+  /* ===== BACKGROUNDS ===== */
+  --bg-primary: #e0f2fe;
+  --bg-secondary: #ffffff;
+
+  /* ===== ACCENT ===== */
+  --accent: #e11d48;
+  --accent-hover: #be123c;
+
+  /* ===== ELEMENT COLORS ===== */
+  --fire: #ea580c;
+  --earth: #16a34a;
+  --air: #0284c7;
+  --water: #9333ea;
+
+  /* ===== ASPECT COLORS ===== */
+  --aspect-conjunction: #d97706;
+  --aspect-opposition: #db2777;
+  --aspect-trine: #0891b2;
+  --aspect-square: #dc2626;
+  --aspect-sextile: #16a34a;
+
+  /* ===== TEXT ===== */
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-inverse: #1e293b;
+
+  /* ===== BORDERS ===== */
+  --border: rgba(100, 120, 150, 0.2);
+  --border-light: rgba(100, 120, 150, 0.1);
+
+  /* ===== COMPONENT SPECIFIC ===== */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --bg-wrapper: #e0f2fe;
+
+  /* ===== ADDITIONAL ===== */
+  --nav-item-active: #6366f1;
+  --nav-item-hover: rgba(99, 102, 241, 0.15);
+  --divider-glow: #6366f1;
+  --hero-gradient-start: #6366f1;
+  --hero-gradient-mid: #a855f7;
+  --hero-gradient-end: #06b6d4;
+  --text-shadow: rgba(99, 102, 241, 0.6);
+
+  /* ===== SECONDARY BUTTON ===== */
+  --secondary-btn-bg: #000000;
+  --secondary-btn-color: #ffffff;
 }
 
 /* ===== RESET ===== */
@@ -61,6 +147,8 @@ body,
 #root {
   height: 100%;
   width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
@@ -70,6 +158,8 @@ body {
   font-size: 14px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
 }
 
 /* ===== SCROLLBAR ===== */
@@ -106,6 +196,7 @@ body {
   border-bottom: 1px solid var(--border-light);
   font-weight: 600;
   font-size: 14px;
+  color: var(--text-primary);
 }
 
 /* Panel content - scrollable */
@@ -124,6 +215,8 @@ body {
   font-weight: 500;
   cursor: pointer;
   transition: background var(--transition-fast);
+  min-height: 44px;
+  min-width: 44px;
 }
 
 .btn-primary:hover {
@@ -140,6 +233,7 @@ body {
   font-size: 14px;
   width: 100%;
   transition: border-color var(--transition-fast);
+  min-height: 44px;
 }
 
 .input:focus {
@@ -149,4 +243,25 @@ body {
 
 .input::placeholder {
   color: var(--text-muted);
+}
+
+/* ===== RESPONSIVE TYPOGRAPHY ===== */
+@media (max-width: 768px) {
+  body {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 12px;
+  }
+}
+
+/* ===== SAFE AREA INSETS FOR NOTCHED DEVICES ===== */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
 }
