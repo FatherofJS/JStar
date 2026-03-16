@@ -659,3 +659,21 @@ body {
 }
 
 /* ------------------more------------------ */
+Button{
+    margin: 10px 0px
+}
+.text_button{
+    white-space: nowrap;
+  pointer-events: none;
+  overflow: hidden;
+}
+.sidebar.close .button > :not(.sparkle) {
+  display: none;
+}
+
+
+.sidebar.close .button::before,
+.sidebar.close .button::after {
+  display: none;
+  content: none;
+}

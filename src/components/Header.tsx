@@ -1,6 +1,8 @@
-// import { MOCK_CHART } from '../data/mockData';
+import { MOCK_CHART } from '../data/mockData';
 
+import styled from 'styled-components';
 
+import Button from './buttonnewsj.tsx';
 
 import { useEffect, useState } from "react";
 import './Header.css';
@@ -155,9 +157,11 @@ export function Header({ isClosed }: HeaderProps) {
 
                         </div>
                     </div>
+            <div >
 
+            </div>
 
-                </div>
+        </div>
             
             
            
