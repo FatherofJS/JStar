@@ -12,7 +12,7 @@ import { BirthForm } from './components/BirthForm';
 import { LandingPage } from './components/LandingPage';
 import './App.css';
 
-import { useState } from "react";
+
 
 
 
@@ -20,8 +20,6 @@ function App() {
 
 
 
-//close sidebar
-  const [isClosed, setIsClosed] = useState(false);
 
 
 
@@ -36,10 +34,10 @@ function App() {
 
   return (
     <div className="app-container">
-      <Sidebar isClosed={isClosed} setIsClosed={setIsClosed} />
+      <Sidebar />
 
       <div className="main-area">
-        <Header isClosed={isClosed}/>
+        <Header />
 
         <div className="content-grid">
           <aside className="left-panel">

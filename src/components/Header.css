@@ -1,15 +1,9 @@
-.home {
-  position: fixed;
-  left: 250px;
-  width: calc(100% - 250px);
-  transition: 0.3s;
-  height: 100%;
+@import url(https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Roboto+Slab:wght@700&display=swap);
+@import url('../index.css');
+*{
+    box-sizing: border-box;
 }
 
-.home.expand {
-  left: 50px;
-  width: calc(100% - 50px);
-}
 
 
 .header{
@@ -17,10 +11,14 @@
     height: 150px;
     display: flex;
     flex-direction: column;
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid rgba(159, 136, 221, 0.4);
+    box-shadow: 0 4px 20px rgba(159, 136, 221, 0.2);
 }
 .topbar {
+    width: 100%;
     display: flex;
-    align-items: center;
+    /*align-items: center;*/ 
     justify-content: space-between;
     
 }
@@ -28,212 +26,190 @@
     list-style-type: none;
 }
 
-.htext{
-    color: aliceblue;
 
-    font-size: 15px;
-    font-family: Arial, Helvetica, sans-serif;
-    
+.genbutton{
+    padding: 10px;
 }
-.nowchart{
-    margin: 0px;
-    font-size: 30px;
-}
-
-
-.hmenu{
+.gen{
+    padding: 0px 5%;
+    margin-top: 22px;
     display: flex;
-    font-size: 14px;
-    height: 50px;
-   
-}
-.menu0{
-    margin: 5px;
-    border-radius: 10px;
-    background: #2c3e50;
-    display: flex;
+    flex-direction: column;
     align-items: center;
-}
-
-
-.inmenu{
-    display: flex;
-
-}
-.limenu{
-   
-    padding:5px ;
-
-
-}
-
-
-.savesj{
-    margin-left: 5px;
-    padding:10px ;
-    background: #2c3e50;
-    border-radius: 10px;
-}
-.print{
-    margin-left: 10px;
-    padding:10px ;
-    background: #2c3e50;
-    border-radius: 10px;
-    margin-right: 5px;
-}
-
-.box{
-    margin: 5px;
-    cursor: pointer;
-    transition: 0.5s;
-}
-.box.active {
-    background: #0a1020;
-    border-radius: 10px;
-    opacity: 1;
-}
-
-.date{
-    margin: 5px;
-}
-
-.bottombar{
-    height: 60px;
-    width: calc(100% - 13px);
-    border: #2c3e50 solid 2px;
-    margin:5px;
-    border-radius: 10px;
-    display: flex;
-}
-.hheader{
-    border-radius: 6px;
-    padding: 2px;
-    margin: 5px;
-    background: #2c3e50;
     justify-content: center;
-    align-items: center;
-    display: flex;
-}
-.bang{
-    display: flex;
-    justify-content: center ;
-    align-items: center;
-    width: 150px;
-    height: 60px;
- 
 }
 
-.bang input,select{
-    text-align: center;
-    border-radius: 6px;
-    text-shadow: #0a1020 ;
-    width: 60px;
-    border: #0a1020 solid 4px;
-    box-shadow:#0a1020 2px;
-    height: 40px;
-    
-}
-.bang input{
-    height: 40px;
-    width: 60px;
-}
-.chonsl{
-    padding-left: 5px;
+.logogen{
+    min-width: 263px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.hicons{
+.menubutton{
+    margin: 0 auto;
     display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    padding: 5px;
-    width: 30px;
-    height: 30px;
-    background-color: #0a1020;
-    border-radius: 50%;
-    cursor: pointer;
-    margin: 10px;
-    
 }
-.tang{
-    rotate: 0deg;
 
+.chartbt{
+    margin: 0px 2%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.giam{
-    rotate: 180deg;
+
+
+
+.ENDH{
+    min-width: 263px;
+    display: flex;
+    flex-direction: row;
+    padding: 1% 0%;
+    align-items: center;
+    margin-bottom: auto;
 }
+
+.logsave{
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.savebt{
+    margin: 0px 10px;
+}
+.sett{
+    margin: 0px 5px;
+    margin-top: auto;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+
 
 .reset{
-    padding: 5px;
-    margin: 5px;
+    width: 55px;
+    height: 55px;
+    margin: 8px;    
+    margin-top: 43%;
+    margin-right: auto;    
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left:auto ;
-    background: #2c3e50;
-    border-radius: 10px;
+    background: var(--bg-secondary);
+    border-radius: 50%;
     cursor: pointer;
+    position: fixed;
+    border: #9f88dd solid 2px;
+    box-shadow: 0px 0px 3px 3px rgb(233, 198, 240);
+    transition: transform 1.5s ease-in-out;
 }
-.space{
-    padding: 1px;
+
+.reset:hover{
+    transform: rotate(-360deg) scale(110%);
+
+}
+.reseticon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
-.space .htext{
-    font-size: medium;
-}
 .hbottom{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.hhnum{
-    margin: auto;
-    display: flex;
-    justify-content: center;
-}
+
 
 /* ------------------------------------- */
 
- .container{
-            text-align:center;
-            display: flex;
-        }
-
-        #time{
-            margin-top: 5px;
-            color: aliceblue;
-            font-size:16px;
-            font-weight:bold;
-        }
-
-        #date{
-            color: aliceblue;
-            font-size:16px;
-            }
-.cursor{
-    cursor: pointer;
-}
 
 
-.align{
+
+
+
+
+
+
+
+/*logo--------------------------------------------------------------------------------------*/
+
+    .astrologer-text {
+        color:#24037e;
+        padding: 5px;
+        font-style: italic;
+      display: flex;
+      font-family: 'Lora', sans-serif;
+      font-size: 35px;
+      text-align: center;
+      letter-spacing: 1.5px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .astrologer-text span {
+      display: inline-block;
+      animation: colorChange 5s infinite alternate ease-in-out; 
+    }
+
+    .astrologer-text span:nth-child(1) {
+      animation-delay: 0s;
+    }
+    .astrologer-text span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .astrologer-text span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    .astrologer-text span:nth-child(4) {
+      animation-delay: 0.6s;
+    }
+    .astrologer-text span:nth-child(5) {
+      animation-delay: 0.8s;
+    }
+    .astrologer-text span:nth-child(6) {
+      animation-delay: 1s;
+    }
+    .astrologer-text span:nth-child(7) {
+      animation-delay: 1.2s;
+    }
+    .astrologer-text span:nth-child(8) {
+      animation-delay: 1.4s;
+    }
+    .astrologer-text span:nth-child(9) {
+      animation-delay: 1.6s;
+    }
+    .astrologer-text span:nth-child(10) {
+      animation-delay: 1.8s;
+    }
+
+    @keyframes colorChange {
+      0% {
+        color: #24037e; 
+      }
+      50% {
+        color: #800080; 
+      }
+      100% {
+        color: #ff1493; 
+      }
+    }
+
+/*logo*/
+
+
+.hey{
     display: flex;
     align-items: center;
-    justify-content: center;
+    margin: 300px;
 }
-
-.resetnow{
-    padding: 5px;
-}
-
-
-.align-j{
-    display: flex;
-    align-items: center;
-}
-
-.traine{
-    margin-right: 520px;
-}
-
-
