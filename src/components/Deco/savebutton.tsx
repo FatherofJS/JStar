@@ -1,114 +1,132 @@
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 const SaveButton = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(prev => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      const clickedInsideMenu = menuRef.current?.contains(target);
+      const clickedInsideButton = buttonRef.current?.contains(target);
+
+      if (!clickedInsideMenu && !clickedInsideButton) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   return (
     <StyledWrapper>
-      <button className="action_has has_saved" aria-label="save" type="button">
-        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={20} height={20} strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} viewBox="0 0 24 24" stroke="currentColor" fill="none">
-          <path d="m19,21H5c-1.1,0-2-.9-2-2V5c0-1.1.9-2,2-2h11l5,5v11c0,1.1-.9,2-2,2Z" strokeLinejoin="round" strokeLinecap="round" data-path="box" />
-          <path d="M7 3L7 8L15 8" strokeLinejoin="round" strokeLinecap="round" data-path="line-top" />
-          <path d="M17 20L17 13L7 13L7 20" strokeLinejoin="round" strokeLinecap="round" data-path="line-bottom" />
-        </svg>
-      </button>
+      <div style={{ position: 'relative' }}>
+        <button className="Btn" onClick={toggleMenu} ref={buttonRef}>
+          <svg className="svgIcon" viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg">
+            <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
+          </svg>
+          <span className="icon2" />
+        </button>
+
+        {isMenuOpen && (
+          <div ref={menuRef} className="tooltip">
+            <div className="left line">
+              <h5 className="text12 text123">Download</h5>
+            </div>
+            <div className="left space">
+              <h5 className="text12 text124">File Types</h5>
+              <select className="sesize">
+                <option value="png">PNG</option>
+                <option value="pdf">PDF</option>
+              </select>
+            </div>
+            <div className="left space">
+              <h5 className="text12 text124">Select chart</h5>
+              <select className="sesize">
+                <option value="natal">Natal Chart</option>
+                <option value="synastry">Synastry Chart</option>
+              </select>
+            </div>
+            <h5 className="left text12 buttonD text123">Download</h5>
+          </div>
+        )}
+      </div>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
-  .action_has {
-    --color: 0 0% 60%;
-    --color-has: 211deg 100% 48%;
-    --sz: 1rem;
-    cursor: pointer;
+  .Btn {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgb(27, 27, 27);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: calc(var(--sz) * 2.5);
-    width: calc(var(--sz) * 2.5);
-    padding: 0.4rem 0.5rem;
-    border-radius: 0.375rem;
-    border: 0.0625rem solid hsl(var(--color));
+    cursor: pointer;
+    position: relative;
+    transition-duration: .3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.11);
   }
 
-  .has_saved:hover {
-    border-color: hsl(var(--color-has));
-  }
-  .has_liked:hover svg,
-  .has_saved:hover svg {
-    color: hsl(var(--color-has));
+  .svgIcon {
+    fill: rgb(214, 178, 255);
   }
 
-  .has_liked svg,
-  .has_saved svg {
-    overflow: visible;
-    height: calc(var(--sz) * 1.75);
-    width: calc(var(--sz) * 1.75);
-    --ease: cubic-bezier(0.5, 0, 0.25, 1);
-    --zoom-from: 1.75;
-    --zoom-via: 0.75;
-    --zoom-to: 1;
-    --duration: 1s;
+  .icon2 {
+    width: 18px;
+    height: 5px;
+    border-bottom: 2px solid rgb(182, 143, 255);
+    border-left: 2px solid rgb(182, 143, 255);
+    border-right: 2px solid rgb(182, 143, 255);
   }
 
-  .has_saved:hover path[data-path="box"] {
-    transition: all 0.3s var(--ease);
-    animation: has-saved var(--duration) var(--ease) forwards;
-    fill: hsl(var(--color-has) / 0.35);
-  }
-  .has_saved:hover path[data-path="line-top"] {
-    animation: has-saved-line-top var(--duration) var(--ease) forwards;
-  }
-  .has_saved:hover path[data-path="line-bottom"] {
-    animation: has-saved-line-bottom var(--duration) var(--ease) forwards,
-      has-saved-line-bottom-2 calc(var(--duration) * 1) var(--ease)
-        calc(var(--duration) * 0.75);
+
+  .Btn:hover {
+    background-color: rgb(150, 94, 255);
+    transition-duration: .3s;
   }
 
-  @keyframes has-saved-line-top {
-    33.333% {
-      transform: rotate(0deg) translate(1px, 2px) scale(var(--zoom-from));
-      d: path("M 3 5 L 3 8 L 3 8");
-    }
-    66.666% {
-      transform: rotate(20deg) translate(2px, -2px) scale(var(--zoom-via));
-    }
-    99.999% {
-      transform: rotate(0deg) translate(0px, 0px) scale(var(--zoom-to));
-    }
+  .Btn:hover .icon2 {
+    border-bottom: 2px solid rgb(235, 235, 235);
+    border-left: 2px solid rgb(235, 235, 235);
+    border-right: 2px solid rgb(235, 235, 235);
   }
-  @keyframes has-saved-line-bottom {
-    33.333% {
-      transform: rotate(0deg) translate(1px, 2px) scale(var(--zoom-from));
-      d: path("M 17 20 L 17 13 L 7 13 L 7 20");
-    }
-    66.666% {
-      transform: rotate(20deg) translate(2px, -2px) scale(var(--zoom-via));
-    }
-    99.999% {
-      transform: rotate(0deg) translate(0px, 0px) scale(var(--zoom-to));
-      d: path("M 17 21 L 17 21 L 7 21 L 7 21");
-    }
+
+  .Btn:hover .svgIcon {
+    fill: rgb(255, 255, 255);
+    animation: slide-in-top 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
   }
-  @keyframes has-saved-line-bottom-2 {
-    from {
-      d: path("M 17 21 L 17 21 L 7 21 L 7 21");
+
+  @keyframes slide-in-top {
+    0% {
+      transform: translateY(-10px);
+      opacity: 0;
     }
-    to {
-      transform: rotate(0deg) translate(0px, 0px) scale(var(--zoom-to));
-      d: path("M 17 20 L 17 13 L 7 13 L 7 20");
-      fill: white;
+
+    100% {
+      transform: translateY(0px);
+      opacity: 1;
     }
-  }
-  @keyframes has-saved {
-    33.333% {
-      transform: rotate(0deg) translate(1px, 2px) scale(var(--zoom-from));
-    }
-    66.666% {
-      transform: rotate(20deg) translate(2px, -2px) scale(var(--zoom-via));
-    }
-    99.999% {
-      transform: rotate(0deg) translate(0px, 0px) scale(var(--zoom-to));
-    }
+
+
+
+    
   }`;
 
 export default SaveButton;

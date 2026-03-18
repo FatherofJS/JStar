@@ -1,40 +1,54 @@
 //import { MOCK_CHART } from '../data/mockData';
-
+import React, { useState, useEffect } from 'react';
 
 import './Header.css';
-import Button1 from './Deco/generatebutton' ;
 import Button2 from "./Deco/chartbutton";
 import Button3 from "./Deco/chartbutton2";
 import SaveButton from "./Deco/savebutton";
-import LogButton from "./Deco/loginbutton";
-import Switch from "./Deco/nightlightbt";
+import Switch from "./Deco/cop1";
+import useTheme from "./Deco/cop1";
+import ThemeSwitch from "./Deco/cop1";
+
+
+
 export function Header() {
-   
+    const [isScrolled, setIsScrolled] = useState(false);
+    useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setIsScrolled(true);  // Nếu cuộn xuống hơn 100px, header sẽ mờ đi
+      } else {
+        setIsScrolled(false);  // Nếu cuộn lên trên, header sẽ rõ
+      }
+    };
+
+    // Thêm event listener khi component mount
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup khi component unmount
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+
+
 
     return (
         <>
 
 
-                <div className="header">
+                <div className="header `header ${isScrolled ? 'scrolled' : ''}`">
                     <div className="topbar">
                         <div className="align-j traine">
                             <div className="logogen">
                                 <div className="astrologer-text">
                                     <span>J</span>
-                                    <span></span>
-                                    <span> </span>
                                     <span>S</span>
                                     <span>T</span>
                                     <span>A</span>
                                     <span>R</span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
                                 </div>
-                                <div className="genbutton">
-                                    <Button1></Button1>
-
-                                </div>    
                             </div>
                         </div>
 
@@ -95,4 +109,4 @@ export function Header() {
             
         </>
     )
-}
+};
