@@ -71,7 +71,7 @@ export const ZodiacSymbol = styled.img`
 
   mix-blend-mode: screen;
 
-  filter: drop-shadow(0 0 30px rgba(120, 140, 255, 0.4)) blur(0.2px);
+  filter: drop-shadow(0 0 20px rgba(120, 140, 255, 0.3));
 
   z-index: 1;
 `;
@@ -81,7 +81,9 @@ export const ConstellationContainer = styled.div`
   width: clamp(260px, 45vw, 420px);
   height: clamp(260px, 45vw, 420px);
   transform-style: preserve-3d;
-  transition: transform 0.3s ease;
+  transition: transform 120ms linear;
+  will-change: transform;
+  contain: layout paint;
 
   @media (max-width: 480px) {
     width: clamp(200px, 55vw, 260px);
@@ -94,8 +96,8 @@ export const DeepGlow = styled.div<{ color: string }>`
   inset: 0;
   border-radius: 50%;
   background: radial-gradient(circle, ${({ color }) => color}30, transparent 70%);
-  filter: blur(40px);
-  opacity: 0.5;
+  filter: blur(28px);
+  opacity: 0.38;
 `;
 
 export const AuraRing = styled.div`
@@ -110,6 +112,10 @@ export const AuraRing = styled.div`
     width: clamp(160px, 45vw, 200px);
     height: clamp(160px, 45vw, 200px);
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `;
 
 export const OrbitRing = styled.div`
@@ -123,6 +129,10 @@ export const OrbitRing = styled.div`
   @media (max-width: 480px) {
     width: clamp(120px, 35vw, 160px);
     height: clamp(120px, 35vw, 160px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 `;
 
@@ -166,5 +176,11 @@ export const Line = styled.line<{ color: string; delay: number }>`
   stroke-dashoffset: 140;
   animation: ${drawLine} 4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: ${(p) => p.delay}s;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
 `;
 

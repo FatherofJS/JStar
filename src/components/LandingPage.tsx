@@ -1,7 +1,7 @@
 // LandingPage Component - Main landing page using modular components
 // Auth removed — all "login" actions now navigate to /star-chart
 
-import { useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Background } from "./background/Background";
 import { useSectionObserver } from "../hooks/useSectionObserver";
@@ -26,37 +26,36 @@ function LandingPage() {
     navigate("/star-chart");
   }, [navigate]);
 
-  // Render feature sections with alternating layout
-  const renderFeatureSections = (): React.ReactNode[] => {
-    const sections: React.ReactNode[] = [];
+  const featureSections = useMemo(
+    () =>
+      featuresData.map((feature, index) => {
+        if (feature.id === "ai-interpretations") {
+          return (
+            <AIInterpretationSection
+              key={feature.id}
+              feature={feature}
+            />
+          );
+        }
 
-    featuresData.forEach((feature, index) => {
-      if (feature.id === "ai-interpretations") {
-        sections.push(
-          <AIInterpretationSection
-            key={feature.id}
-            feature={feature}
-          />
-        );
-      } else if (index % 2 === 0) {
-        sections.push(
-          <FeatureSection
-            key={feature.id}
-            feature={feature}
-          />
-        );
-      } else {
-        sections.push(
+        if (index % 2 === 0) {
+          return (
+            <FeatureSection
+              key={feature.id}
+              feature={feature}
+            />
+          );
+        }
+
+        return (
           <FeatureSectionAlt
             key={feature.id}
             feature={feature}
           />
         );
-      }
-    });
-
-    return sections;
-  };
+      }),
+    [featuresData]
+  );
 
   return (
     <>
@@ -70,7 +69,7 @@ function LandingPage() {
       <HeroSection />
 
       {/* Feature Sections */}
-      {renderFeatureSections()}
+      {featureSections}
 
       {/* Pricing Section */}
       <PricingSection onGetStarted={handleGetStarted} />
@@ -87,4 +86,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default memo(LandingPage);

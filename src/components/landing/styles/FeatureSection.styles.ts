@@ -42,7 +42,7 @@ export const SectionContainer = styled.section`
 export const SectionContainerAlt = styled(SectionContainer)`
   background: var(--bg-secondary);
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
 `;
 
 // Max Width Container
@@ -127,7 +127,6 @@ export const FeatureImageOverlay = styled.div`
   justify-content: center;
   background: rgba(0, 0, 0, 0.4);
   opacity: 0;
-  backdrop-filter: blur(2px);
   transition: all 0.3s ease;
 `;
 
@@ -142,7 +141,6 @@ export const ZoomHint = styled.div`
   font-size: 14px;
   font-weight: 500;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
   
   svg {
     width: 16px;
@@ -162,7 +160,7 @@ export const FeatureGlow = styled.div<{ $position: 'left' | 'right' }>`
       ? 'to right, rgba(120, 140, 255, 0.2), transparent' 
       : 'to left, rgba(120, 140, 255, 0.2), transparent'}
   );
-  filter: blur(40px);
+  filter: blur(24px);
   
   @media (max-width: 1000px) {
     display: none;

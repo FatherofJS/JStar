@@ -47,6 +47,8 @@ export const BackgroundWrapper = styled.div`
   pointer-events: none;
   height: 100%;
   width: 100%;
+  contain: layout paint style;
+  transform: translateZ(0);
   
   /* Dark mode - Rich cosmic gradient with galaxy colors */
   background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 30%, #0f1a2e 60%, #0a0a1a 100%);
@@ -61,41 +63,8 @@ export const BackgroundWrapper = styled.div`
 // STAR LAYER - Beautiful starfield for dark mode
 // =============================================================================
 
-const generateStarPositions = (count: number): string => {
-  const positions: string[] = [];
-  for (let i = 0; i < count; i++) {
-    const x = Math.floor(Math.random() * 100);
-    const y = Math.floor(Math.random() * 100);
-    positions.push(`${x}% ${y}% #fff`);
-  }
-  return positions.join(', ');
-};
-
-const starsPositions = generateStarPositions(80);
-
 export const StarsLayer = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  box-shadow: ${starsPositions};
-  
-  &::after {
-    content: " ";
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    box-shadow: ${starsPositions};
-  }
-  
-  [data-theme="light"] & {
-    display: none;
-  }
+  display: none;
 `;
 
 export const StarsLayer2 = styled.div`
@@ -116,6 +85,17 @@ export const NebulaLayer = styled.div`
   position: absolute;
   inset: 0;
   overflow: hidden;
+  will-change: opacity;
+
+  > div {
+    will-change: opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    > div {
+      animation: none !important;
+    }
+  }
 `;
 
 export const AuroraLayer = styled.div`
@@ -151,11 +131,17 @@ export const StarField = styled.div`
       radial-gradient(1px 1px at 65% 65%, rgba(255, 255, 255, 0.65) 0%, transparent 100%),
       radial-gradient(1px 1px at 90% 10%, rgba(255, 250, 240, 0.7) 0%, transparent 100%);
     background-size: 100% 100%;
-    animation: ${starTwinkle} 6s ease-in-out infinite;
+    animation: ${starTwinkle} 8s ease-in-out infinite;
   }
   
   [data-theme="light"] & {
     display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before {
+      animation: none;
+    }
   }
 `;
 
@@ -165,19 +151,22 @@ export const StarField = styled.div`
 
 export const CosmicGlow = styled.div`
   position: absolute;
-  inset: -30%;
+  inset: -20%;
   background: radial-gradient(
     circle at 50% 50%,
-    rgba(147, 51, 234, 0.12) 0%,
-    rgba(59, 130, 246, 0.08) 30%,
-    rgba(236, 72, 153, 0.05) 50%,
-    transparent 70%
+    rgba(147, 51, 234, 0.1) 0%,
+    rgba(59, 130, 246, 0.07) 32%,
+    transparent 68%
   );
-  animation: ${glowPulse} 10s ease-in-out infinite;
+  animation: ${glowPulse} 14s ease-in-out infinite;
   will-change: opacity;
   
   [data-theme="light"] & {
     display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 `;
 
@@ -200,8 +189,8 @@ interface ShootingStarProps {
 
 export const ShootingStar = styled.span<ShootingStarProps>`
   position: absolute;
-  width: 100px;
-  height: 2px;
+  width: 72px;
+  height: 1px;
   background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6), transparent);
   top: ${({ $top }) => $top}%;
   left: ${({ $left }) => $left}%;
@@ -229,6 +218,11 @@ export const ShootingStar = styled.span<ShootingStarProps>`
   
   [data-theme="light"] & {
     display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0;
   }
 `;
 

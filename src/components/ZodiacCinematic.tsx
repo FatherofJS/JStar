@@ -34,7 +34,10 @@ const useStarData = (zodiacName: string) => {
 
 export function ZodiacCinematic() {
   const [index, setIndex] = useState(0);
+  const [allowTiltInteraction, setAllowTiltInteraction] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<number | null>(null);
+  const pendingTransformRef = useRef("rotateY(0deg) rotateX(0deg)");
   const { theme } = useTheme();
   const isLightMode = theme === "light";
 
@@ -53,22 +56,60 @@ export function ZodiacCinematic() {
     return () => clearInterval(interval);
   }, []);
 
-  // Simplified mouse move handler - no throttling for smoother interaction
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(
+      "(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) and (min-width: 1001px)"
+    );
+
+    const updateInteractionMode = () => {
+      setAllowTiltInteraction(mediaQuery.matches);
+    };
+
+    updateInteractionMode();
+    mediaQuery.addEventListener("change", updateInteractionMode);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateInteractionMode);
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+      }
+    };
+  }, []);
+
+  // Batch pointer-driven transforms into animation frames to keep hover smooth.
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!allowTiltInteraction) return;
+
     const el = ref.current;
     if (!el) return;
 
     const rect = el.getBoundingClientRect();
     const x = (e.clientX - rect.left - rect.width / 2) / 40;
     const y = (e.clientY - rect.top - rect.height / 2) / 40;
-    el.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-  }, []);
+    pendingTransformRef.current = `rotateY(${x}deg) rotateX(${-y}deg)`;
+
+    if (frameRef.current !== null) return;
+
+    frameRef.current = window.requestAnimationFrame(() => {
+      if (ref.current) {
+        ref.current.style.transform = pendingTransformRef.current;
+      }
+      frameRef.current = null;
+    });
+  }, [allowTiltInteraction]);
 
   const handleMouseLeave = useCallback(() => {
-    if (ref.current) {
-      ref.current.style.transform = "rotateY(0) rotateX(0)";
+    if (!allowTiltInteraction) return;
+
+    if (frameRef.current !== null) {
+      cancelAnimationFrame(frameRef.current);
+      frameRef.current = null;
     }
-  }, []);
+
+    if (ref.current) {
+      ref.current.style.transform = "rotateY(0deg) rotateX(0deg)";
+    }
+  }, [allowTiltInteraction]);
 
   return (
     <ZodiacWrapper>
@@ -79,7 +120,7 @@ export function ZodiacCinematic() {
       >
         <DeepGlow
           color="rgba(120,140,255,0.2)"
-          style={{ filter: "blur(120px)", opacity: 0.3 }}
+          style={{ filter: "blur(72px)", opacity: 0.24 }}
         />
 
         <AuraRing />

@@ -78,8 +78,8 @@ export const HeroLight = styled.div`
       rgba(0, 200, 255, 0.12),
       transparent 50%
     );
-  filter: blur(80px);
-  opacity: 0.7;
+  filter: blur(56px);
+  opacity: 0.55;
   z-index: -1;
 `;
 
@@ -209,7 +209,7 @@ export const ScrollButton = styled.button`
   border-radius: 50%;
   border: 1px solid var(--glass-border);
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
   cursor: pointer;
   transition: all 0.3s ease;
   animation: ${bounce} 2s ease-in-out infinite;
@@ -227,6 +227,10 @@ export const ScrollButton = styled.button`
   
   @media (min-width: 1024px) {
     bottom: 40px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 `;
 

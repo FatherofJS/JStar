@@ -1,5 +1,5 @@
 // Background Component - Beautiful cosmic background with vibrant nebula
-import { useMemo } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import {
   BackgroundWrapper,
   NebulaLayer,
@@ -15,14 +15,19 @@ import {
 
 // Generate shooting star data - more random falling stars like astrologerstudio.com
 const generateShootingStars = () =>
-  Array.from({ length: 4 }, (_, i) => ({
-    id: i,
-    top: Math.random() * 50 + 5,
-    left: Math.random() * 100,
-    delay: Math.random() * 20,
-    duration: 1.5 + Math.random() * 2.5,
-    width: 60 + Math.random() * 80,
-  }));
+  Array.from({ length: 4 }, (_, i) => {
+    const duration = 1.5 + Math.random() * 2.5;
+
+    return {
+      id: i,
+      top: Math.random() * 50 + 5,
+      left: Math.random() * 100,
+      // Negative delay lets each star start mid-flight immediately on first paint.
+      delay: -(Math.random() * duration),
+      duration,
+      width: 60 + Math.random() * 80,
+    };
+  });
 
 // Pre-generate shooting stars
 const SHOOTING_STARS = generateShootingStars();
@@ -33,29 +38,49 @@ interface BackgroundProps {
 
 export function Background({ showShootingStars = true }: BackgroundProps) {
   const shootingStars = useMemo(() => SHOOTING_STARS, []);
-  
+  const [allowMotionEffects, setAllowMotionEffects] = useState(true);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce), (max-width: 768px), (hover: none), (pointer: coarse)"
+    );
+
+    const updateMotionPreference = () => {
+      setAllowMotionEffects(!mediaQuery.matches);
+    };
+
+    updateMotionPreference();
+    mediaQuery.addEventListener("change", updateMotionPreference);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateMotionPreference);
+    };
+  }, []);
+
+  const shouldShowShootingStars = showShootingStars && allowMotionEffects;
+
   return (
     <BackgroundWrapper>
-      {/* Nebula layers - multiple colorful nebulas */}
+      {/* Keep some depth, but avoid stacking too many blurred animated layers */}
       <NebulaLayer>
-        <div style={{
-          position: 'absolute',
-          inset: '-20%',
-          background: 'radial-gradient(ellipse at 20% 30%, rgba(147, 51, 234, 0.25) 0%, rgba(126, 34, 206, 0.15) 30%, transparent 60%)',
-          animation: 'nebulaPulse 15s ease-in-out infinite',
-        }} />
-        <div style={{
-          position: 'absolute',
-          inset: '-20%',
-          background: 'radial-gradient(ellipse at 70% 60%, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.12) 30%, transparent 60%)',
-          animation: 'nebulaPulse 12s ease-in-out infinite 2s',
-        }} />
-        <div style={{
-          position: 'absolute',
-          inset: '-20%',
-          background: 'radial-gradient(ellipse at 50% 80%, rgba(236, 72, 153, 0.15) 0%, rgba(219, 39, 119, 0.1) 30%, transparent 60%)',
-          animation: 'nebulaPulse 18s ease-in-out infinite 4s',
-        }} />
+        <div
+          style={{
+            position: "absolute",
+            inset: "-12%",
+            background:
+              "radial-gradient(ellipse at 22% 28%, rgba(147, 51, 234, 0.22) 0%, rgba(126, 34, 206, 0.12) 34%, transparent 62%)",
+            animation: "nebulaPulse 18s ease-in-out infinite",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: "-12%",
+            background:
+              "radial-gradient(ellipse at 74% 58%, rgba(59, 130, 246, 0.18) 0%, rgba(37, 99, 235, 0.1) 34%, transparent 62%)",
+            animation: "nebulaPulse 22s ease-in-out infinite 3s",
+          }}
+        />
       </NebulaLayer>
       
       {/* Aurora wave effect - hidden */}
@@ -75,7 +100,7 @@ export function Background({ showShootingStars = true }: BackgroundProps) {
       <GrainOverlay />
       
       {/* Shooting stars - more frequent like astrologerstudio.com */}
-      {showShootingStars &&
+      {shouldShowShootingStars &&
         shootingStars.map((star) => (
           <ShootingStar
             key={star.id}
@@ -89,4 +114,6 @@ export function Background({ showShootingStars = true }: BackgroundProps) {
     </BackgroundWrapper>
   );
 }
+
+export default memo(Background);
 
