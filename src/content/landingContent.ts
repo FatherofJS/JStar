@@ -9,7 +9,6 @@ export interface LandingContent {
   heroSubtitle: string;
   heroDescription: string;
   getStarted: string;
-  seeYourStar: string;
   scrollDown: string;
   featuresTitle: string;
   featuresDescription: string;
@@ -115,7 +114,6 @@ export const landingContent: LandingContent = {
   heroDescription:
     'Professional astrology software for accurate natal charts, transits, synastry, and AI-powered interpretations. Discover your cosmic identity.',
   getStarted: 'GET STARTED',
-  seeYourStar: 'SEE YOUR STAR',
   scrollDown: 'Scroll to features',
   featuresTitle: 'Features',
   featuresDescription: 'Discover our powerful astrology tools',

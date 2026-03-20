@@ -1,12 +1,11 @@
-// HeroSection Component - Hero with ZodiacCinematic, title, description, buttons
-// Auth removed - both buttons navigate to /star-chart
+// HeroSection Component - Hero with ZodiacCinematic, title, description, CTA
+// Auth removed - primary action navigates to /star-chart
 
 import { useRef, useCallback, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ZodiacCinematic } from "../../components/ZodiacCinematic";
 import { landingContent } from "../../content/landingContent";
 import { StarPlayButton } from "../button/StarPlayButton";
-import { SpaceStyleButton } from "../button/SpaceStyleButton";
 import { SECTIONS } from "../../constants";
 import {
   HeroSectionWrapper,
@@ -85,9 +84,6 @@ function HeroSection() {
             <StarPlayButton onClick={handleGetStarted}>
               {t.getStarted}
             </StarPlayButton>
-            <SpaceStyleButton onClick={handleGetStarted}>
-              {t.seeYourStar}
-            </SpaceStyleButton>
           </Actions>
         </Content>
 

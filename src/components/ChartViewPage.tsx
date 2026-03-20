@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { ChartWheel } from "./ChartWheel";
+import { ChartChatSidebar } from "./ChartChatSidebar";
 import Layout from "./Layout";
 import { MOCK_CHART } from "../data/mockData";
 import { API, getApiEndpoint } from "../constants";
@@ -73,17 +74,35 @@ const DismissButton = styled.button`
 `;
 
 const WheelStage = styled.div<{ $isLight: boolean }>`
-  height: calc(100dvh - 120px);
-  padding: 20px;
-  border-radius: 28px;
+  min-height: calc(100dvh - 120px);
+  padding: 18px;
+  border-radius: 30px;
   background: ${({ $isLight }) =>
     $isLight
-      ? "radial-gradient(circle at top, rgba(99, 102, 241, 0.1), transparent 45%), linear-gradient(180deg, rgba(255,255,255,0.92), rgba(241,245,249,0.92))"
-      : "transparent"};
-  border: ${({ $isLight }) =>
-    $isLight ? "1px solid rgba(148, 163, 184, 0.2)" : "none"};
+      ? "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(236, 245, 255, 0.94))"
+      : "linear-gradient(180deg, rgba(16, 22, 36, 0.96), rgba(9, 13, 22, 0.94))"};
+  border: 1px solid
+    ${({ $isLight }) =>
+      $isLight ? "rgba(148, 163, 184, 0.28)" : "rgba(129, 140, 248, 0.14)"};
   box-shadow: ${({ $isLight }) =>
     $isLight ? "0 24px 60px rgba(148, 163, 184, 0.18)" : "none"};
+  box-shadow: ${({ $isLight }) =>
+    $isLight
+      ? "0 24px 60px rgba(148, 163, 184, 0.18), inset 0 1px 0 rgba(255,255,255,0.75)"
+      : "0 28px 60px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255,255,255,0.05)"};
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: ${({ $isLight }) =>
+      $isLight
+        ? "radial-gradient(circle at top, rgba(99, 102, 241, 0.12), transparent 42%), linear-gradient(135deg, rgba(255,255,255,0.6), transparent 45%)"
+        : "radial-gradient(circle at top, rgba(99, 102, 241, 0.18), transparent 38%), linear-gradient(135deg, rgba(129, 140, 248, 0.08), transparent 48%)"};
+  }
 
   @media (max-width: 768px) {
     height: calc(100dvh - 104px);
@@ -95,6 +114,57 @@ const WheelStage = styled.div<{ $isLight: boolean }>`
     height: calc(100dvh - 96px);
     padding: 8px;
     border-radius: 16px;
+  }
+`;
+
+const WheelFrame = styled.div<{ $isLight: boolean }>`
+  position: relative;
+  height: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  background: transparent;
+  border: 1px solid
+    ${({ $isLight }) =>
+      $isLight ? "rgba(148, 163, 184, 0.2)" : "rgba(255,255,255,0.08)"};
+  box-shadow: ${({ $isLight }) =>
+    $isLight
+      ? "inset 0 1px 0 rgba(255,255,255,0.85), 0 14px 32px rgba(148, 163, 184, 0.14)"
+      : "inset 0 1px 0 rgba(255,255,255,0.05), 0 16px 36px rgba(0, 0, 0, 0.24)"};
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border-radius: 20px;
+    pointer-events: none;
+    border: 1px solid
+      ${({ $isLight }) =>
+        $isLight ? "rgba(99, 102, 241, 0.08)" : "rgba(129, 140, 248, 0.1)"};
+  }
+`;
+
+const ChartContentGrid = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 20px;
+  align-items: start;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const ChatStage = styled.div`
+  position: sticky;
+  top: 100px;
+  height: calc(100dvh - 120px);
+  align-self: start;
+
+  @media (max-width: 1100px) {
+    position: static;
+    top: auto;
+    height: auto;
+    min-height: 540px;
   }
 `;
 
@@ -176,11 +246,18 @@ export default function ChartViewPage() {
         )}
 
         {!loading && (
-          <WheelStage $isLight={isLight}>
-            <div className="chart-wheel-container" style={{ height: "100%" }}>
-              <ChartWheel data={displayedChartData} />
-            </div>
-          </WheelStage>
+          <ChartContentGrid>
+            <WheelStage $isLight={isLight}>
+              <WheelFrame $isLight={isLight}>
+                <div className="chart-wheel-container" style={{ height: "100%" }}>
+                  <ChartWheel data={displayedChartData} />
+                </div>
+              </WheelFrame>
+            </WheelStage>
+            <ChatStage>
+              <ChartChatSidebar chartData={displayedChartData} />
+            </ChatStage>
+          </ChartContentGrid>
         )}
       </ChartPageWrapper>
     </Layout>

@@ -8,6 +8,7 @@
     justify-content: center;
     align-items: center;
     background: transparent;
+    border-radius: 22px;
     overflow: hidden;
 }
 
@@ -135,6 +136,18 @@
     font-size: 0.65rem;
     margin-top: 3px;
     font-weight: 500;
+}
+
+.tooltip-stack-card {
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="light"] .tooltip-stack-card {
+    background: rgba(248, 250, 252, 0.95);
+    border-color: rgba(148, 163, 184, 0.18);
 }
 
 @media (max-width: 768px) {

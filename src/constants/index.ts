@@ -16,6 +16,7 @@ const getApiUrl = (): string => {
 export const API = {
   BASE_URL: getApiUrl(),
   CHART: '/chart',
+  CHAT: '/api/chat',
   LOCATION: {
     SEARCH: '/api/location/search',
     SEARCH_COUNTRIES: '/api/location/search-countries',

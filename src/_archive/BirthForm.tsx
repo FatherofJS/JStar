@@ -1,6 +1,6 @@
 // import { MOCK_CHART } from '../data/mockData';
 
-import { COUNTRIES } from "../data/location"
+import { COUNTRIES, type City, type Country } from "./location";
 import { useState } from "react";
 
 type BirthFormProps = {
@@ -154,14 +154,14 @@ export function BirthForm({ onClose }: BirthFormProps) {
                                             const searchableCountries =
                                                 country === "Chọn quốc gia"
                                                     ? COUNTRIES
-                                                    : COUNTRIES.filter((c) => c.name === country);
+                                                    : COUNTRIES.filter((c: Country) => c.name === country);
 
-                                            const results = searchableCountries.flatMap((c) =>
+                                            const results = searchableCountries.flatMap((c: Country) =>
                                                 c.cities
-                                                    .filter((city) =>
+                                                    .filter((city: City) =>
                                                         city.name.toLowerCase().includes(value.toLowerCase())
                                                     )
-                                                    .map((city) => ({
+                                                    .map((city: City) => ({
                                                         city: city.name,
                                                         countryCode: c.code,
                                                         countryName: c.name,
@@ -204,7 +204,7 @@ export function BirthForm({ onClose }: BirthFormProps) {
                                     </button>
                                     {isPickerOpen && (
                                         <div className="absolute w-full rounded-md border border-0 bg-background bg-popover flex flex-col">
-                                            {COUNTRIES.map((country) => (
+                                            {COUNTRIES.map((country: Country) => (
                                                 <div
                                                     key={country.name} className="flex flex-col w-full items-start px-3 py-2 text-left" onClick={() => {
                                                         setCountry(country.name);
@@ -217,7 +217,7 @@ export function BirthForm({ onClose }: BirthFormProps) {
 
                                                         const cityBelongsToCountry =
                                                             city &&
-                                                            country.cities.some((cityObj) => cityObj.name === city);
+                                                            country.cities.some((cityObj: City) => cityObj.name === city);
 
                                                         if (!cityBelongsToCountry) {
                                                             setCity(null);

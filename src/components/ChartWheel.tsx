@@ -54,22 +54,26 @@ function normalizeAngle(angle: number): number {
     return ((angle % 360) + 360) % 360;
 }
 
+function formatDegree(degree: number): string {
+    return `${Math.floor(degree)}°${Math.floor((degree % 1) * 60)}'`;
+}
+
 export function ChartWheel({ data }: { data: ChartData }) {
     const { planets, houses, aspects } = data;
     const { theme } = useTheme();
     const isLight = theme === 'light';
     const palette = {
-        signName: isLight ? 'rgba(15, 23, 42, 0.78)' : 'rgba(255,255,255,0.35)',
-        outerRing: isLight ? 'rgba(30, 41, 59, 0.46)' : 'rgba(255,255,255,0.25)',
-        innerRing: isLight ? 'rgba(51, 65, 85, 0.32)' : 'rgba(255,255,255,0.15)',
-        divider: isLight ? 'rgba(30, 41, 59, 0.34)' : 'rgba(255,255,255,0.2)',
-        planetFill: isLight ? 'rgba(255, 255, 255, 0.98)' : 'rgba(12,16,24,0.85)',
-        houseRing: isLight ? 'rgba(51, 65, 85, 0.28)' : 'rgba(255,255,255,0.12)',
-        innerFill: isLight ? '#f4f8ff' : '#0a0e17',
-        angularLine: isLight ? 'rgba(15, 23, 42, 0.55)' : 'rgba(255,255,255,0.35)',
-        houseLine: isLight ? 'rgba(51, 65, 85, 0.26)' : 'rgba(255,255,255,0.1)',
-        houseLabel: isLight ? 'rgba(15, 23, 42, 0.72)' : 'rgba(255,255,255,0.4)',
-        aspectGuide: isLight ? 'rgba(51, 65, 85, 0.16)' : 'rgba(255,255,255,0.06)',
+        signName: isLight ? 'rgba(15, 23, 42, 0.84)' : 'rgba(255,255,255,0.5)',
+        outerRing: isLight ? 'rgba(30, 41, 59, 0.62)' : 'rgba(255,255,255,0.38)',
+        innerRing: isLight ? 'rgba(51, 65, 85, 0.48)' : 'rgba(255,255,255,0.26)',
+        divider: isLight ? 'rgba(30, 41, 59, 0.44)' : 'rgba(255,255,255,0.28)',
+        planetFill: 'transparent',
+        houseRing: isLight ? 'rgba(51, 65, 85, 0.42)' : 'rgba(255,255,255,0.22)',
+        innerFill: 'transparent',
+        angularLine: isLight ? 'rgba(15, 23, 42, 0.72)' : 'rgba(255,255,255,0.5)',
+        houseLine: isLight ? 'rgba(51, 65, 85, 0.38)' : 'rgba(255,255,255,0.2)',
+        houseLabel: isLight ? 'rgba(15, 23, 42, 0.8)' : 'rgba(255,255,255,0.54)',
+        aspectGuide: isLight ? 'rgba(51, 65, 85, 0.24)' : 'rgba(255,255,255,0.12)',
         angleLabel: isLight ? '#0f172a' : '',
     };
 
@@ -106,7 +110,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
         return rot;
     }
 
-    const [hoveredPlanet, setHoveredPlanet] = useState<{ x: number; y: number; planet: Planet } | null>(null);
+    const [hoveredPlanet, setHoveredPlanet] = useState<{ x: number; y: number; planet: Planet; planets: Planet[] } | null>(null);
     const [hoveredAspect, setHoveredAspect] = useState<{ x: number; y: number; aspect: Aspect } | null>(null);
     const [scale, setScale] = useState(1);
     const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
@@ -152,6 +156,37 @@ export function ChartWheel({ data }: { data: ChartData }) {
     aspectEndpoints['Midheaven'] = toXY(houses[9]?.cusp || 0, innerRadius);
     aspectEndpoints['Midheaven (MC)'] = aspectEndpoints['Midheaven'];
 
+    const planetAnchors = planets.map((planet) => ({
+        planet,
+        pos: toXY(planet.longitude, planetRadius),
+    }));
+
+    const getHoveredPlanetCluster = (targetPlanet: Planet) => {
+        const target = planetAnchors.find(({ planet }) => planet.name === targetPlanet.name);
+        if (!target) return null;
+
+        const cluster = planetAnchors.filter(({ pos }) => {
+            const dx = pos.x - target.pos.x;
+            const dy = pos.y - target.pos.y;
+            return Math.hypot(dx, dy) <= 28;
+        });
+
+        const anchor = cluster.reduce(
+            (acc, item) => ({
+                x: acc.x + item.pos.x,
+                y: acc.y + item.pos.y,
+            }),
+            { x: 0, y: 0 }
+        );
+
+        return {
+            x: anchor.x / cluster.length,
+            y: anchor.y / cluster.length,
+            planet: target.planet,
+            planets: cluster.map(({ planet }) => planet),
+        };
+    };
+
     const tipAnchor = hoveredAspect || hoveredPlanet;
     const tooltipStyle = tipAnchor ? {
         left: `${(tipAnchor.x / size) * 100}%`,
@@ -175,12 +210,12 @@ export function ChartWheel({ data }: { data: ChartData }) {
                     {hoveredPlanet && !hoveredAspect && (
                         <>
                             <div className="tooltip-header">
-                                {PLANET_SYMBOLS[hoveredPlanet.planet.name]} {hoveredPlanet.planet.name}
+                                {PLANET_SYMBOLS[hoveredPlanet.planets[0].name]} {hoveredPlanet.planets[0].name}
                             </div>
                             <div className="tooltip-row">
                                 <span>Sign:</span>
-                                <span style={{ color: getSignColor(hoveredPlanet.planet.sign) }}>
-                                    {ZODIAC_SIGNS[hoveredPlanet.planet.sign]?.symbol} {hoveredPlanet.planet.sign}
+                                <span style={{ color: getSignColor(hoveredPlanet.planets[0].sign) }}>
+                                    {ZODIAC_SIGNS[hoveredPlanet.planets[0].sign]?.symbol} {hoveredPlanet.planets[0].sign}
                                 </span>
                             </div>
                             <div className="tooltip-row">
@@ -192,10 +227,65 @@ export function ChartWheel({ data }: { data: ChartData }) {
                             </div>
                             <div className="tooltip-row">
                                 <span>House:</span>
-                                <span>{hoveredPlanet.planet.house}</span>
+                                <span>{hoveredPlanet.planets[0].house}</span>
                             </div>
-                            {hoveredPlanet.planet.retrograde && (
+                            {false && (
+                                <>
+                                    <div className="tooltip-header" style={{ marginTop: '8px' }}>
+                                        Also Here
+                                    </div>
+                                    {hoveredPlanet!.planets
+                                        .filter((planet) => planet.name !== hoveredPlanet!.planet.name)
+                                        .map((planet) => (
+                                            <div key={planet.name} className="tooltip-row">
+                                                <span>{PLANET_SYMBOLS[planet.name]} {planet.name}</span>
+                                                <span style={{ color: getSignColor(planet.sign) }}>
+                                                    {ZODIAC_SIGNS[planet.sign]?.symbol} {formatDegree(planet.signDegree)}
+                                                </span>
+                                            </div>
+                                        ))}
+                                </>
+                            )}
+                            {hoveredPlanet.planets[0].retrograde && (
                                 <div className="tooltip-retrograde">℞ Retrograde</div>
+                            )}
+                            {hoveredPlanet.planets.length > 1 && (
+                                <>
+                                    <div className="tooltip-header" style={{ marginTop: '8px' }}>
+                                        All In This Stack
+                                    </div>
+                                    {hoveredPlanet.planets.map((planet, index) => (
+                                        <div
+                                            key={planet.name}
+                                            className="tooltip-stack-card"
+                                            style={{
+                                                marginBottom: index === hoveredPlanet.planets.length - 1 ? 0 : '8px',
+                                            }}
+                                        >
+                                            <div className="tooltip-row">
+                                                <span>Planet:</span>
+                                                <span>{PLANET_SYMBOLS[planet.name]} {planet.name}</span>
+                                            </div>
+                                            <div className="tooltip-row">
+                                                <span>Sign:</span>
+                                                <span style={{ color: getSignColor(planet.sign) }}>
+                                                    {ZODIAC_SIGNS[planet.sign]?.symbol} {planet.sign}
+                                                </span>
+                                            </div>
+                                            <div className="tooltip-row">
+                                                <span>Degree:</span>
+                                                <span>{formatDegree(planet.signDegree)}</span>
+                                            </div>
+                                            <div className="tooltip-row">
+                                                <span>House:</span>
+                                                <span>{planet.house}</span>
+                                            </div>
+                                            {planet.retrograde && (
+                                                <div className="tooltip-retrograde">℞ Retrograde</div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </>
                             )}
                         </>
                     )}
@@ -272,8 +362,8 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         Two concentric circles form a "band". Inside the
                         band: sign divider lines and zodiac icons.
                         ══════════════════════════════════════════════ */}
-                    <circle cx={cx} cy={cy} r={outerRadius} fill="none" stroke={palette.outerRing} strokeWidth={isLight ? 3 : 2.5} />
-                    <circle cx={cx} cy={cy} r={zodiacInnerRadius} fill="none" stroke={palette.innerRing} strokeWidth={isLight ? 2.4 : 2} />
+                    <circle cx={cx} cy={cy} r={outerRadius} fill="none" stroke={palette.outerRing} strokeWidth={isLight ? 3.4 : 3} />
+                    <circle cx={cx} cy={cy} r={zodiacInnerRadius} fill="none" stroke={palette.innerRing} strokeWidth={isLight ? 2.8 : 2.4} />
 
                     {ZODIAC_ORDER.map((sign, i) => {
                         const startAngle = i * 30;
@@ -289,7 +379,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
                             <g key={sign}>
                                 {/* Divider line between signs */}
                                 <line x1={divStart.x} y1={divStart.y} x2={divEnd.x} y2={divEnd.y}
-                                    stroke={palette.divider} strokeWidth={isLight ? 1.2 : 1} />
+                                    stroke={palette.divider} strokeWidth={isLight ? 1.5 : 1.3} />
 
                                 {/* Zodiac icon */}
                                 <foreignObject
@@ -315,7 +405,10 @@ export function ChartWheel({ data }: { data: ChartData }) {
 
                         return (
                             <g key={planet.name} className="planet-symbol"
-                                onMouseEnter={() => setHoveredPlanet({ x: pos.x, y: pos.y, planet })}
+                                onMouseEnter={() => {
+                                    const cluster = getHoveredPlanetCluster(planet);
+                                    if (cluster) setHoveredPlanet(cluster);
+                                }}
                                 onMouseLeave={() => setHoveredPlanet(null)}
                             >
                                 {/* Background circle */}
@@ -348,8 +441,8 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         12 houses divide the chart. House cusps are thin
                         lines; angular houses (1,4,7,10) are bolder.
                         ══════════════════════════════════════════════ */}
-                    <circle cx={cx} cy={cy} r={houseOuterRadius} fill="none" stroke={palette.houseRing} strokeWidth={isLight ? 2.4 : 2} />
-                    <circle cx={cx} cy={cy} r={innerRadius} fill={palette.innerFill} stroke={palette.houseRing} strokeWidth={isLight ? 2.4 : 2} />
+                    <circle cx={cx} cy={cy} r={houseOuterRadius} fill="none" stroke={palette.houseRing} strokeWidth={isLight ? 2.8 : 2.4} />
+                    <circle cx={cx} cy={cy} r={innerRadius} fill={palette.innerFill} stroke={palette.houseRing} strokeWidth={isLight ? 2.8 : 2.4} />
 
                     {houses.map((house, i) => {
                         // Equal 30° sectors for visual display
@@ -365,7 +458,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
                             <g key={`house-${house.id}`}>
                                 <line x1={innerPos.x} y1={innerPos.y} x2={outerPos.x} y2={outerPos.y}
                                     stroke={isAngular ? palette.angularLine : palette.houseLine}
-                                    strokeWidth={isAngular ? (isLight ? 2.3 : 2.0) : (isLight ? 1.3 : 1.0)}
+                                    strokeWidth={isAngular ? (isLight ? 2.8 : 2.4) : (isLight ? 1.6 : 1.25)}
                                 />
                                 <text x={labelPos.x} y={labelPos.y}
                                     fill={palette.houseLabel}
@@ -404,7 +497,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         ══════════════════════════════════════════════ */}
                     <circle cx={cx} cy={cy} r={innerRadius}
                         fill="none" stroke={palette.aspectGuide}
-                        strokeWidth={isLight ? 0.8 : 0.5} strokeDasharray="2,4" />
+                        strokeWidth={isLight ? 1.1 : 0.8} strokeDasharray="2,4" />
 
                     {aspects.map((aspect, i) => {
                         const pos1 = aspectEndpoints[aspect.planet1];
@@ -431,8 +524,8 @@ export function ChartWheel({ data }: { data: ChartData }) {
                                     x1={pos1.x} y1={pos1.y}
                                     x2={pos2.x} y2={pos2.y}
                                     stroke={color}
-                                    strokeWidth={isHovered ? 2.5 : 1.2}
-                                    opacity={isHovered ? 1 : (hoveredAspect ? 0.15 : 0.5)}
+                                    strokeWidth={isHovered ? 2.8 : 1.55}
+                                    opacity={isHovered ? 1 : (hoveredAspect ? 0.18 : 0.68)}
                                     style={{ transition: 'all 0.15s' }}
                                 />
                             </g>
