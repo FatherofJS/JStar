@@ -8,7 +8,6 @@ export {
   AIInterpretationSection 
 } from "./FeatureSection";
 export type { FeatureItem } from "./FeatureSection";
-export { default as PricingSection } from "./PricingSection";
 export { default as GetStartedSteps } from "./GetStartedSteps";
 export { default as CTASection } from "./CTASection";
 export { default as Footer } from "./Footer";

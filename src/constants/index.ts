@@ -177,7 +177,6 @@ export const SECTIONS = {
   POSITION_TABLES: "position-tables",
   DATA_MANAGEMENT: "data-management",
   AI_INTERPRETATIONS: "ai-interpretations",
-  PRICING: "pricing",
   GET_STARTED: "get-started",
   OPEN_SOURCE: "open-source",
   CONTACT: "contact",

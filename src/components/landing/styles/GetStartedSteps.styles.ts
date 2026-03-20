@@ -13,9 +13,21 @@ export const StepsSectionWrapper = styled.section`
   text-align: center;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
+  content-visibility: auto;
+  contain-intrinsic-size: 520px;
   
   @media (max-width: 768px) {
     padding: 60px 16px;
+  }
+
+  @media (max-width: 1280px) {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  [data-performance-mode="reduced"] & {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.015);
   }
 `;
 

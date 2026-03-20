@@ -96,6 +96,18 @@ export const NebulaLayer = styled.div`
       animation: none !important;
     }
   }
+
+  @media (max-width: 1280px) {
+    > div {
+      animation: none !important;
+      opacity: 0.35;
+    }
+  }
+
+  [data-performance-mode="reduced"] & > div {
+    animation: none !important;
+    opacity: 0.22;
+  }
 `;
 
 export const AuroraLayer = styled.div`
@@ -143,6 +155,18 @@ export const StarField = styled.div`
       animation: none;
     }
   }
+
+  @media (max-width: 1280px) {
+    &::before {
+      animation: none;
+      opacity: 0.75;
+    }
+  }
+
+  [data-performance-mode="reduced"] &::before {
+    animation: none;
+    opacity: 0.55;
+  }
 `;
 
 // =============================================================================
@@ -167,6 +191,16 @@ export const CosmicGlow = styled.div`
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
+  }
+
+  @media (max-width: 1280px) {
+    animation: none;
+    opacity: 0.22;
+  }
+
+  [data-performance-mode="reduced"] & {
+    animation: none;
+    opacity: 0.14;
   }
 `;
 

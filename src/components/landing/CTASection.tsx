@@ -1,7 +1,7 @@
 // CTASection Component - Final Call to Action
 
 import { memo } from "react";
-import { useLanguage } from "../../contexts/LanguageContext";
+import { landingContent } from "../../content/landingContent";
 import {
   CTASectionWrapper,
   CTAContent,
@@ -26,26 +26,23 @@ interface CTASectionProps {
 }
 
 function CTASection({ onGetStarted }: CTASectionProps) {
-  const { t } = useLanguage();
+  const t = landingContent;
 
   return (
     <CTASectionWrapper data-section="contact" className="zoom-section">
       <MaxWidthContainer>
         <CTAContent>
           <CTATitle>
-            {t.ctaTitle.split(' ').map((word, i) => {
-              const lastWords = ['Cosmic Identity?', 'Vũ trụ của Bạn?', '宇宙のアイデンティティ?'];
-              const shouldBeGradient = lastWords.some(w => t.ctaTitle.endsWith(w));
-              if (shouldBeGradient && i === t.ctaTitle.split(' ').length - 1) {
-                return <GradientText key={i}>{word}</GradientText>;
-              }
-              return `${word} `;
-            })}
+            {t.ctaTitle.split(" ").map((word, index, words) =>
+              index === words.length - 1 ? (
+                <GradientText key={index}>{word}</GradientText>
+              ) : (
+                `${word} `
+              )
+            )}
           </CTATitle>
 
-          <CTADescription>
-            {t.ctaDescription}
-          </CTADescription>
+          <CTADescription>{t.ctaDescription}</CTADescription>
 
           <CTAButton onClick={onGetStarted}>
             {t.ctaButton}
@@ -60,4 +57,3 @@ function CTASection({ onGetStarted }: CTASectionProps) {
 }
 
 export default memo(CTASection);
-

@@ -11,6 +11,7 @@ import {
     IconZodiacSagittarius, IconZodiacCapricorn, IconZodiacAquarius, IconZodiacPisces,
 } from '@tabler/icons-react';
 import type { Icon } from '@tabler/icons-react';
+import { useTheme } from '../contexts/ThemeContext';
 import './ChartWheel.css';
 
 const ZODIAC_ICONS: Record<string, Icon> = {
@@ -55,6 +56,22 @@ function normalizeAngle(angle: number): number {
 
 export function ChartWheel({ data }: { data: ChartData }) {
     const { planets, houses, aspects } = data;
+    const { theme } = useTheme();
+    const isLight = theme === 'light';
+    const palette = {
+        signName: isLight ? 'rgba(15, 23, 42, 0.78)' : 'rgba(255,255,255,0.35)',
+        outerRing: isLight ? 'rgba(30, 41, 59, 0.46)' : 'rgba(255,255,255,0.25)',
+        innerRing: isLight ? 'rgba(51, 65, 85, 0.32)' : 'rgba(255,255,255,0.15)',
+        divider: isLight ? 'rgba(30, 41, 59, 0.34)' : 'rgba(255,255,255,0.2)',
+        planetFill: isLight ? 'rgba(255, 255, 255, 0.98)' : 'rgba(12,16,24,0.85)',
+        houseRing: isLight ? 'rgba(51, 65, 85, 0.28)' : 'rgba(255,255,255,0.12)',
+        innerFill: isLight ? '#f4f8ff' : '#0a0e17',
+        angularLine: isLight ? 'rgba(15, 23, 42, 0.55)' : 'rgba(255,255,255,0.35)',
+        houseLine: isLight ? 'rgba(51, 65, 85, 0.26)' : 'rgba(255,255,255,0.1)',
+        houseLabel: isLight ? 'rgba(15, 23, 42, 0.72)' : 'rgba(255,255,255,0.4)',
+        aspectGuide: isLight ? 'rgba(51, 65, 85, 0.16)' : 'rgba(255,255,255,0.06)',
+        angleLabel: isLight ? '#0f172a' : '',
+    };
 
     const size = 700;
     const cx = size / 2;
@@ -93,6 +110,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
     const [hoveredAspect, setHoveredAspect] = useState<{ x: number; y: number; aspect: Aspect } | null>(null);
     const [scale, setScale] = useState(1);
     const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
     const dragRef = useRef({ dragging: false, startX: 0, startY: 0, origX: 0, origY: 0 });
 
     const zoom = (delta: number) => setScale(prev => Math.max(0.75, Math.min(3, prev + delta)));
@@ -113,6 +131,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
     const drag = {
         start: (e: React.MouseEvent) => {
             dragRef.current = { dragging: true, startX: e.clientX, startY: e.clientY, origX: panOffset.x, origY: panOffset.y };
+            setIsDragging(true);
         },
         move: (e: React.MouseEvent) => {
             if (!dragRef.current.dragging) return;
@@ -121,7 +140,10 @@ export function ChartWheel({ data }: { data: ChartData }) {
                 y: dragRef.current.origY + (e.clientY - dragRef.current.startY),
             });
         },
-        end: () => { dragRef.current.dragging = false; },
+        end: () => {
+            dragRef.current.dragging = false;
+            setIsDragging(false);
+        },
     };
 
     const aspectEndpoints: Record<string, { x: number; y: number }> = {};
@@ -210,7 +232,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
                 onMouseMove={drag.move}
                 onMouseUp={drag.end}
                 onMouseLeave={drag.end}
-                style={{ cursor: dragRef.current.dragging ? 'grabbing' : 'grab' }}
+                style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
             >
                 <svg
                     viewBox={`0 0 ${size} ${size}`}
@@ -234,8 +256,8 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         return (
                             <text key={`name-${sign}`}
                                 x={pos.x} y={pos.y}
-                                fill="rgba(255,255,255,0.35)"
-                                fontSize={11} fontWeight={700} letterSpacing="2.5px"
+                                fill={palette.signName}
+                                fontSize={11.5} fontWeight={800} letterSpacing="2.2px"
                                 textAnchor="middle" dominantBaseline="middle"
                                 transform={`rotate(${rot}, ${pos.x}, ${pos.y})`}
                                 style={{ fontFamily: 'Inter, sans-serif' }}
@@ -250,8 +272,8 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         Two concentric circles form a "band". Inside the
                         band: sign divider lines and zodiac icons.
                         ══════════════════════════════════════════════ */}
-                    <circle cx={cx} cy={cy} r={outerRadius} fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth={2.5} />
-                    <circle cx={cx} cy={cy} r={zodiacInnerRadius} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth={2} />
+                    <circle cx={cx} cy={cy} r={outerRadius} fill="none" stroke={palette.outerRing} strokeWidth={isLight ? 3 : 2.5} />
+                    <circle cx={cx} cy={cy} r={zodiacInnerRadius} fill="none" stroke={palette.innerRing} strokeWidth={isLight ? 2.4 : 2} />
 
                     {ZODIAC_ORDER.map((sign, i) => {
                         const startAngle = i * 30;
@@ -267,7 +289,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
                             <g key={sign}>
                                 {/* Divider line between signs */}
                                 <line x1={divStart.x} y1={divStart.y} x2={divEnd.x} y2={divEnd.y}
-                                    stroke="rgba(255,255,255,0.2)" strokeWidth={1} />
+                                    stroke={palette.divider} strokeWidth={isLight ? 1.2 : 1} />
 
                                 {/* Zodiac icon */}
                                 <foreignObject
@@ -298,8 +320,8 @@ export function ChartWheel({ data }: { data: ChartData }) {
                             >
                                 {/* Background circle */}
                                 <circle cx={pos.x} cy={pos.y} r={14}
-                                    fill="rgba(12,16,24,0.85)"
-                                    stroke={color} strokeWidth={1.5} strokeOpacity={0.3}
+                                    fill={palette.planetFill}
+                                    stroke={color} strokeWidth={isLight ? 1.9 : 1.5} strokeOpacity={isLight ? 0.55 : 0.3}
                                     className="planet-ring"
                                 />
 
@@ -326,8 +348,8 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         12 houses divide the chart. House cusps are thin
                         lines; angular houses (1,4,7,10) are bolder.
                         ══════════════════════════════════════════════ */}
-                    <circle cx={cx} cy={cy} r={houseOuterRadius} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth={2} />
-                    <circle cx={cx} cy={cy} r={innerRadius} fill="#0a0e17" stroke="rgba(255,255,255,0.12)" strokeWidth={2} />
+                    <circle cx={cx} cy={cy} r={houseOuterRadius} fill="none" stroke={palette.houseRing} strokeWidth={isLight ? 2.4 : 2} />
+                    <circle cx={cx} cy={cy} r={innerRadius} fill={palette.innerFill} stroke={palette.houseRing} strokeWidth={isLight ? 2.4 : 2} />
 
                     {houses.map((house, i) => {
                         // Equal 30° sectors for visual display
@@ -342,12 +364,12 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         return (
                             <g key={`house-${house.id}`}>
                                 <line x1={innerPos.x} y1={innerPos.y} x2={outerPos.x} y2={outerPos.y}
-                                    stroke={isAngular ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.1)'}
-                                    strokeWidth={isAngular ? 2.0 : 1.0}
+                                    stroke={isAngular ? palette.angularLine : palette.houseLine}
+                                    strokeWidth={isAngular ? (isLight ? 2.3 : 2.0) : (isLight ? 1.3 : 1.0)}
                                 />
                                 <text x={labelPos.x} y={labelPos.y}
-                                    fill="rgba(255,255,255,0.4)"
-                                    fontSize={10} fontWeight={800}
+                                    fill={palette.houseLabel}
+                                    fontSize={10.5} fontWeight={800}
                                     textAnchor="middle" dominantBaseline="middle">
                                     {house.id}
                                 </text>
@@ -366,7 +388,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         const pos = toXY(houses[idx].cusp, innerRadius - 15);
                         return (
                             <text key={label} x={pos.x} y={pos.y}
-                                fill={color} fontSize={10} fontWeight={700}
+                                fill={isLight ? palette.angleLabel : color} fontSize={10.5} fontWeight={800}
                                 textAnchor="middle" dominantBaseline="middle"
                                 style={{ letterSpacing: '1px' }}>
                                 {label}
@@ -381,8 +403,8 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         Each aspect type has its own color.
                         ══════════════════════════════════════════════ */}
                     <circle cx={cx} cy={cy} r={innerRadius}
-                        fill="none" stroke="rgba(255,255,255,0.06)"
-                        strokeWidth={0.5} strokeDasharray="2,4" />
+                        fill="none" stroke={palette.aspectGuide}
+                        strokeWidth={isLight ? 0.8 : 0.5} strokeDasharray="2,4" />
 
                     {aspects.map((aspect, i) => {
                         const pos1 = aspectEndpoints[aspect.planet1];

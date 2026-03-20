@@ -1,10 +1,8 @@
-// Hook to provide translated feature data for landing page
-// Uses local translations directly (no /api/features endpoint in backend)
+// Hook to provide landing page feature data from local content copy.
 
 import { useMemo } from 'react';
-import { useLanguage } from '../contexts/LanguageContext';
 import type { FeatureItem } from '../data/landingFeatures';
-import { translations } from '../contexts/LanguageContext';
+import { landingContent } from '../content/landingContent';
 
 interface UseFeaturesResponse {
   features: FeatureItem[];
@@ -13,9 +11,8 @@ interface UseFeaturesResponse {
   isFromAPI: boolean;
 }
 
-// Helper to convert translations to FeatureItem format
-function getLocalFeatures(lang: 'en' | 'vi' | 'ja'): FeatureItem[] {
-  const t = translations[lang];
+function getLocalFeatures(): FeatureItem[] {
+  const t = landingContent;
 
   return [
     {
@@ -130,8 +127,7 @@ function getLocalFeatures(lang: 'en' | 'vi' | 'ja'): FeatureItem[] {
 }
 
 export function useFeaturesFromAPI(): UseFeaturesResponse {
-  const { language } = useLanguage();
-  const features = useMemo(() => getLocalFeatures(language), [language]);
+  const features = useMemo(() => getLocalFeatures(), []);
 
   return { features, loading: false, error: null, isFromAPI: false };
 }

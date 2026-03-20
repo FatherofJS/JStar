@@ -1,7 +1,7 @@
 // Footer Component - Site footer with links
 
 import { memo } from "react";
-import { useLanguage } from "../../contexts/LanguageContext";
+import { landingContent } from "../../content/landingContent";
 import {
   FooterWrapper,
   FooterContent,
@@ -17,7 +17,7 @@ interface FooterProps {
 }
 
 function Footer({ currentYear = new Date().getFullYear() }: FooterProps) {
-  const { t } = useLanguage();
+  const t = landingContent;
   
   return (
     <FooterWrapper>

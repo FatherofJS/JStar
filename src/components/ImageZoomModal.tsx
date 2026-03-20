@@ -13,6 +13,7 @@ const Overlay = styled.div`
   justify-content: center;
   cursor: zoom-out;
   animation: fadeIn 0.3s ease;
+  padding: 16px;
 
   @keyframes fadeIn {
     from {
@@ -26,11 +27,17 @@ const Overlay = styled.div`
 
 const ZoomedImage = styled.img`
   max-width: 90vw;
-  max-height: 90vh;
+  max-height: 90dvh;
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   animation: scaleIn 0.3s ease;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    max-height: calc(100dvh - 88px);
+    border-radius: 12px;
+  }
 
   @keyframes scaleIn {
     from {
@@ -64,6 +71,11 @@ const CloseButton = styled.button`
   &:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: scale(1.1);
+  }
+
+  @media (max-width: 768px) {
+    top: max(12px, env(safe-area-inset-top));
+    right: 12px;
   }
 `;
 

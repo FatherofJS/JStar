@@ -3,7 +3,9 @@
 
 import { memo, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { Background } from "./background/Background";
+import { useLandingPerformanceMode } from "../hooks/useLandingPerformanceMode";
 import { useSectionObserver } from "../hooks/useSectionObserver";
 import { useFeaturesFromAPI } from "../hooks/useFeaturesFromAPI";
 import { SECTIONS } from "../constants";
@@ -12,14 +14,19 @@ import { SECTIONS } from "../constants";
 import Header from "./landing/Header";
 import HeroSection from "./landing/HeroSection";
 import { FeatureSection, FeatureSectionAlt, AIInterpretationSection } from "./landing/FeatureSection";
-import PricingSection from "./landing/PricingSection";
 import GetStartedSteps from "./landing/GetStartedSteps";
 import CTASection from "./landing/CTASection";
 import Footer from "./landing/Footer";
 
+const LandingPageShell = styled.div`
+  position: relative;
+  overflow-x: clip;
+`;
+
 function LandingPage() {
   const navigate = useNavigate();
   const { activeSection } = useSectionObserver();
+  const { isReduced } = useLandingPerformanceMode();
   const { features: featuresData } = useFeaturesFromAPI();
 
   const handleGetStarted = useCallback(() => {
@@ -58,22 +65,21 @@ function LandingPage() {
   );
 
   return (
-    <>
+    <LandingPageShell data-performance-mode={isReduced ? "reduced" : "default"}>
       {/* Reusable Background Component */}
-      <Background showShootingStars={activeSection === SECTIONS.HOME} />
+      <Background
+        showShootingStars={activeSection === SECTIONS.HOME}
+        forceReducedMotion={isReduced}
+      />
 
       {/* Fixed Navigation Header */}
-      <Header />
+      <Header activeSection={activeSection} />
 
       {/* Hero Section */}
       <HeroSection />
 
       {/* Feature Sections */}
       {featureSections}
-
-      {/* Pricing Section */}
-      <PricingSection onGetStarted={handleGetStarted} />
-
       {/* Get Started Steps */}
       <GetStartedSteps />
 
@@ -82,7 +88,7 @@ function LandingPage() {
 
       {/* Footer */}
       <Footer />
-    </>
+    </LandingPageShell>
   );
 }
 

@@ -1,7 +1,7 @@
 // GetStartedSteps Component - Three simple steps to get started
 
 import { memo } from "react";
-import { useLanguage } from "../../contexts/LanguageContext";
+import { landingContent } from "../../content/landingContent";
 import {
   StepsSectionWrapper,
   StepsHeader,
@@ -28,7 +28,7 @@ interface GetStartedStepsProps {
 function GetStartedSteps({ 
   steps
 }: GetStartedStepsProps) {
-  const { t } = useLanguage();
+  const t = landingContent;
   
   const defaultSteps: Step[] = [
     {

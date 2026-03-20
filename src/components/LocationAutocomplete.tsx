@@ -14,6 +14,8 @@ const InputWrapper = styled.div`
 
 const LocationInput = styled.input<{ $hasError?: boolean; $isLight?: boolean }>`
   width: 100%;
+  min-height: 52px;
+  box-sizing: border-box;
   padding: 14px 18px;
   border-radius: 12px;
   border: ${props => props.$hasError ? '1px solid #ff6b6b' : `1px solid ${props.$isLight ? 'rgba(0, 0, 0, 0.1)' : 'var(--glass-border)'}`};
@@ -36,6 +38,11 @@ const LocationInput = styled.input<{ $hasError?: boolean; $isLight?: boolean }>`
     color: ${props => props.$isLight ? 'rgba(30, 41, 59, 0.5)' : 'var(--text-secondary)'};
     opacity: 0.6;
   }
+
+  @media (max-width: 768px) {
+    padding: 13px 16px;
+    font-size: 16px;
+  }
 `;
 
 const SuggestionsList = styled.ul<{ $isLight?: boolean }>`
@@ -56,6 +63,11 @@ const SuggestionsList = styled.ul<{ $isLight?: boolean }>`
   box-shadow: ${props => props.$isLight 
     ? '0 4px 20px rgba(0, 0, 0, 0.15)'
     : '0 4px 20px rgba(0, 0, 0, 0.3)'};
+
+  @media (max-width: 768px) {
+    max-height: min(240px, 42dvh);
+    margin-top: 6px;
+  }
 `;
 
 const SuggestionItem = styled.li<{ $selected?: boolean; $isLight?: boolean }>`
@@ -68,6 +80,10 @@ const SuggestionItem = styled.li<{ $selected?: boolean; $isLight?: boolean }>`
 
   &:hover {
     background: ${props => props.$isLight ? 'rgba(79, 70, 229, 0.1)' : 'rgba(120, 140, 255, 0.1)'};
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px 16px;
   }
 `;
 

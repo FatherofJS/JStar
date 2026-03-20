@@ -16,7 +16,7 @@ import {
 } from "./Layout.styles";
 
 const LayoutWrapper = styled.div`
-  min-height: 100vh;
+  min-height: 100dvh;
   color: var(--text-inverse);
   overflow-x: hidden;
   position: relative;
@@ -24,7 +24,7 @@ const LayoutWrapper = styled.div`
 
 const Content = styled.main`
   padding-top: 80px;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100dvh - 80px);
 `;
 
 interface LayoutProps {

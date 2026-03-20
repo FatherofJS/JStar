@@ -38,6 +38,19 @@
     color: var(--text-primary);
 }
 
+[data-theme="light"] .chart-controls button {
+    background: rgba(255, 255, 255, 0.94);
+    border-color: rgba(51, 65, 85, 0.18);
+    color: #1e293b;
+    box-shadow: 0 10px 24px rgba(148, 163, 184, 0.2);
+}
+
+[data-theme="light"] .chart-controls button:hover {
+    background: #ffffff;
+    border-color: rgba(99, 102, 241, 0.32);
+    color: #0f172a;
+}
+
 /* ─── SVG viewport ──────────────────────────────────────────── */
 
 .chart-viewport {
@@ -78,6 +91,12 @@
     backdrop-filter: blur(12px);
 }
 
+[data-theme="light"] .planet-tooltip {
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(51, 65, 85, 0.16);
+    box-shadow: 0 16px 36px rgba(148, 163, 184, 0.24);
+}
+
 .tooltip-header {
     font-weight: 600;
     font-size: 0.75rem;
@@ -85,6 +104,11 @@
     border-bottom: 1px solid var(--border-light);
     padding-bottom: 3px;
     color: var(--text-primary);
+}
+
+[data-theme="light"] .tooltip-header {
+    border-bottom-color: rgba(51, 65, 85, 0.12);
+    color: #0f172a;
 }
 
 .tooltip-row {
@@ -98,9 +122,45 @@
     color: var(--text-secondary);
 }
 
+[data-theme="light"] .tooltip-row {
+    color: #1e293b;
+}
+
+[data-theme="light"] .tooltip-row span:first-child {
+    color: #475569;
+}
+
 .tooltip-retrograde {
     color: var(--accent);
     font-size: 0.65rem;
     margin-top: 3px;
     font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .chart-controls {
+        top: 10px;
+        right: 10px;
+        gap: 6px;
+    }
+
+    .chart-controls button {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .planet-tooltip {
+        min-width: 100px;
+        max-width: min(220px, calc(100vw - 24px));
+        padding: 8px 10px;
+    }
+
+    .tooltip-header {
+        font-size: 0.78rem;
+    }
+
+    .tooltip-row {
+        font-size: 0.72rem;
+    }
 }

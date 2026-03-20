@@ -13,9 +13,21 @@ export const CTASectionWrapper = styled.section`
   text-align: center;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
+  content-visibility: auto;
+  contain-intrinsic-size: 420px;
   
   @media (max-width: 768px) {
     padding: 60px 16px;
+  }
+
+  @media (max-width: 1280px) {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  [data-performance-mode="reduced"] & {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.015);
   }
 `;
 
@@ -68,7 +80,7 @@ export const CTAButton = styled.button`
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   
   &:hover {
     transform: translateY(-2px);
@@ -78,6 +90,24 @@ export const CTAButton = styled.button`
   svg {
     width: 16px;
     height: 16px;
+  }
+
+  @media (max-width: 1280px) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+
+  [data-performance-mode="reduced"] & {
+    transition: none;
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
   }
 `;
 

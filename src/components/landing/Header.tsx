@@ -3,17 +3,16 @@
 
 import { memo, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { landingContent } from "../../content/landingContent";
 import ThemeSwitch from "../themeSwitch/ThemeSwitch";
-import LanguageSwitch from "../themeSwitch/LanguageSwitch";
 import { useTheme } from "../../contexts/ThemeContext";
-import { useLanguage } from "../../contexts/LanguageContext";
-import { useSectionObserver } from "../../hooks/useSectionObserver";
 import { useScrollPosition } from "../../hooks/useScrollPosition";
-import { SECTIONS } from "../../constants";
+import { SECTIONS, type SectionId } from "../../constants";
 import {
   HeaderWrapper,
   HeaderLeft,
   HeaderRight,
+  DesktopOnly,
   Logo,
   NavMenu,
   NavMenuMobile,
@@ -21,14 +20,17 @@ import {
   NavItemMemo,
 } from "./styles/Header.styles.ts";
 
-function Header() {
+interface HeaderProps {
+  activeSection: SectionId;
+}
+
+function Header({ activeSection }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const { isScrolled } = useScrollPosition();
-  const { activeSection } = useSectionObserver();
   const { theme, toggleTheme } = useTheme();
-  const { t } = useLanguage();
+  const t = landingContent;
 
   const toggleMenu = useCallback(() => {
     setIsOpen((prev) => !prev);
@@ -65,22 +67,17 @@ function Header() {
           >
             {t.features}
           </NavItemMemo>
-          <NavItemMemo
-            $active={activeSection === SECTIONS.PRICING}
-            onClick={() => handleNavClick(SECTIONS.PRICING)}
-          >
-            {t.pricing}
-          </NavItemMemo>
         </NavMenu>
       </HeaderLeft>
 
       <HeaderRight>
-        <LanguageSwitch />
         <ThemeSwitch isDark={theme === "dark"} onToggle={toggleTheme} />
 
-        <NavItemMemo $active={false} onClick={handleGetStarted}>
-          {t.getStarted}
-        </NavItemMemo>
+        <DesktopOnly>
+          <NavItemMemo $active={false} onClick={handleGetStarted}>
+            {t.getStarted}
+          </NavItemMemo>
+        </DesktopOnly>
 
         <MobileToggle onClick={toggleMenu}>☰</MobileToggle>
       </HeaderRight>
@@ -98,12 +95,6 @@ function Header() {
           onClick={() => handleNavClick(SECTIONS.CHART_DATA)}
         >
           {t.features}
-        </NavItemMemo>
-        <NavItemMemo
-          $active={activeSection === SECTIONS.PRICING}
-          onClick={() => handleNavClick(SECTIONS.PRICING)}
-        >
-          {t.pricing}
         </NavItemMemo>
         <NavItemMemo $active={false} onClick={handleGetStarted}>
           {t.getStarted}

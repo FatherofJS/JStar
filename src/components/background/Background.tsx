@@ -34,19 +34,23 @@ const SHOOTING_STARS = generateShootingStars();
 
 interface BackgroundProps {
   showShootingStars?: boolean;
+  forceReducedMotion?: boolean;
 }
 
-export function Background({ showShootingStars = true }: BackgroundProps) {
+export function Background({
+  showShootingStars = true,
+  forceReducedMotion = false,
+}: BackgroundProps) {
   const shootingStars = useMemo(() => SHOOTING_STARS, []);
   const [allowMotionEffects, setAllowMotionEffects] = useState(true);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(
-      "(prefers-reduced-motion: reduce), (max-width: 768px), (hover: none), (pointer: coarse)"
+      "(prefers-reduced-motion: reduce), (max-width: 1280px), (hover: none), (pointer: coarse)"
     );
 
     const updateMotionPreference = () => {
-      setAllowMotionEffects(!mediaQuery.matches);
+      setAllowMotionEffects(!mediaQuery.matches && !forceReducedMotion);
     };
 
     updateMotionPreference();
@@ -55,7 +59,7 @@ export function Background({ showShootingStars = true }: BackgroundProps) {
     return () => {
       mediaQuery.removeEventListener("change", updateMotionPreference);
     };
-  }, []);
+  }, [forceReducedMotion]);
 
   const shouldShowShootingStars = showShootingStars && allowMotionEffects;
 
@@ -69,7 +73,9 @@ export function Background({ showShootingStars = true }: BackgroundProps) {
             inset: "-12%",
             background:
               "radial-gradient(ellipse at 22% 28%, rgba(147, 51, 234, 0.22) 0%, rgba(126, 34, 206, 0.12) 34%, transparent 62%)",
-            animation: "nebulaPulse 18s ease-in-out infinite",
+            animation: forceReducedMotion
+              ? undefined
+              : "nebulaPulse 18s ease-in-out infinite",
           }}
         />
         <div
@@ -78,7 +84,9 @@ export function Background({ showShootingStars = true }: BackgroundProps) {
             inset: "-12%",
             background:
               "radial-gradient(ellipse at 74% 58%, rgba(59, 130, 246, 0.18) 0%, rgba(37, 99, 235, 0.1) 34%, transparent 62%)",
-            animation: "nebulaPulse 22s ease-in-out infinite 3s",
+            animation: forceReducedMotion
+              ? undefined
+              : "nebulaPulse 22s ease-in-out infinite 3s",
           }}
         />
       </NebulaLayer>

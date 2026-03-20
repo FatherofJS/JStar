@@ -18,6 +18,9 @@ export function useSectionObserver(): UseSectionObserverReturn {
 
   useEffect(() => {
     const sections = document.querySelectorAll(".zoom-section");
+    const allowSectionAnimations = !window.matchMedia(
+      "(prefers-reduced-motion: reduce), (max-width: 1440px), (max-height: 900px)"
+    ).matches;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -25,13 +28,16 @@ export function useSectionObserver(): UseSectionObserverReturn {
           const id = entry.target.getAttribute("data-section") as SectionId;
 
           if (entry.isIntersecting) {
-            entry.target.classList.add("zoom-in");
-            entry.target.classList.remove("zoom-out");
-            if (id) {
+            if (allowSectionAnimations) {
+              entry.target.classList.add("zoom-in");
+              entry.target.classList.remove("zoom-out");
+            }
+
+            if (id && activeSectionRef.current !== id) {
               activeSectionRef.current = id;
               setActiveSection(id);
             }
-          } else {
+          } else if (allowSectionAnimations) {
             entry.target.classList.remove("zoom-in");
             entry.target.classList.add("zoom-out");
           }

@@ -29,13 +29,17 @@ const fadeIn = keyframes`
 `;
 
 const PageWrapper = styled.div`
-  min-height: calc(100vh - 80px);
+  min-height: calc(100dvh - 80px);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 40px 20px;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+
+  @media (max-width: 768px) {
+    padding: 28px 14px 40px;
+  }
 `;
 
 const StarDecoration = styled.div<{ $top: string; $left: string; $size: number; $delay: string }>`
@@ -87,6 +91,11 @@ const WelcomeText = styled.p<{ $isLight: boolean }>`
   max-width: 500px;
   line-height: 1.6;
   opacity: 0.9;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    margin-bottom: 28px;
+  }
 `;
 
 const ChartContainer = styled.div<{ $isLight: boolean }>`
@@ -111,6 +120,11 @@ const ChartContainer = styled.div<{ $isLight: boolean }>`
   @media (max-width: 768px) {
     padding: 28px 20px;
     border-radius: 24px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 22px 14px;
+    border-radius: 20px;
   }
 `;
 
@@ -154,8 +168,9 @@ const InputIcon = styled.span`
 
 const DatePickerWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr;
+  grid-template-columns: minmax(0, 1.45fr) minmax(110px, 0.9fr) minmax(120px, 1fr);
   gap: 12px;
+  align-items: stretch;
   
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
@@ -165,6 +180,9 @@ const DatePickerWrapper = styled.div`
 
 const DateSelect = styled.select<{ $isLight: boolean }>`
   width: 100%;
+  min-height: 58px;
+  box-sizing: border-box;
+  display: block;
   padding: 16px 18px;
   border-radius: 16px;
   border: 1px solid ${props => props.$isLight
@@ -175,15 +193,19 @@ const DateSelect = styled.select<{ $isLight: boolean }>`
     : 'linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)'};
   color: ${props => props.$isLight ? '#1e293b' : '#fff'};
   font-size: 15px;
+  line-height: 1.2;
   font-weight: 500;
+  font-family: inherit;
   outline: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='${props => props.$isLight ? '%234f46e5' : '%23818cf8'}' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 18px center;
-  padding-right: 45px;
+  background-position: right 16px center;
+  background-size: 12px;
+  padding-right: 42px;
+  text-overflow: ellipsis;
   
   &:hover {
     border-color: ${props => props.$isLight
@@ -218,6 +240,8 @@ const DateSelect = styled.select<{ $isLight: boolean }>`
 
 const DateInput = styled.input<{ $isLight: boolean }>`
   width: 100%;
+  min-height: 58px;
+  box-sizing: border-box;
   padding: 16px 18px;
   border-radius: 16px;
   border: 1px solid ${props => props.$isLight
@@ -228,7 +252,9 @@ const DateInput = styled.input<{ $isLight: boolean }>`
     : 'linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)'};
   color: ${props => props.$isLight ? '#1e293b' : '#fff'};
   font-size: 15px;
+  line-height: 1.2;
   font-weight: 500;
+  font-family: inherit;
   outline: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
@@ -282,6 +308,11 @@ const FullNameInput = styled(DateInput)`
   font-weight: 600;
   letter-spacing: 0.5px;
   padding: 18px 20px;
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+    padding: 16px 18px;
+  }
 `;
 
 const TimeWrapper = styled.div<{ $isLight: boolean }>`
@@ -361,6 +392,12 @@ const SubmitButton = styled.button<{ $isLight: boolean }>`
   
   &:active {
     transform: translateY(-1px);
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 20px;
+    font-size: 15px;
+    letter-spacing: 1px;
   }
 `;
 
@@ -456,30 +493,6 @@ const SubLabel = styled.div<{ $isLight: boolean }>`
   text-transform: uppercase;
 `;
 
-const LocationResult = styled.div<{ $isLight: boolean }>`
-  margin-top: 20px;
-  padding: 16px;
-  background: ${props => props.$isLight
-    ? 'rgba(0, 0, 0, 0.02)'
-    : 'rgba(255, 255, 255, 0.03)'};
-  border-radius: 12px;
-  border: 1px solid ${props => props.$isLight
-    ? 'rgba(0, 0, 0, 0.05)'
-    : 'rgba(255, 255, 255, 0.05)'};
-`;
-
-const LocationText = styled.p<{ $isLight: boolean }>`
-  font-size: 14px;
-  color: ${props => props.$isLight
-    ? 'rgba(30, 41, 59, 0.6)'
-    : 'rgba(255, 255, 255, 0.6)'};
-  line-height: 1.8;
-  
-  span {
-    color: ${props => props.$isLight ? '#4f46e5' : '#818cf8'};
-    font-weight: 500;
-  }
-`;
 
 export default function StarChartPage() {
   const { theme } = useTheme();
@@ -518,6 +531,8 @@ export default function StarChartPage() {
     if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return { zodiac: 'Pisces', icon: '♓', description: 'The Fish - Compassionate, artistic, and intuitive. Pisces is dreamy and sensitive.' };
     return null;
   }, []);
+
+  void getZodiacSign;
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();

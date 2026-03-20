@@ -65,7 +65,7 @@ const StyledWrapper = styled.div`
     cursor: pointer;
     backdrop-filter: blur(1rem);
     border-radius: 5rem;
-    transition: 0.5s;
+    transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
     animation: ${gradient_301} 5s ease infinite;
     border: double 4px transparent;
     background-image: linear-gradient(#212121, #212121),
@@ -86,7 +86,7 @@ const StyledWrapper = styled.div`
     width: 100%;
     height: 100%;
     overflow: hidden;
-    transition: 0.5s;
+    transition: background-color 0.3s ease;
     backdrop-filter: blur(1rem);
     border-radius: 5rem;
   }
@@ -184,6 +184,47 @@ const StyledWrapper = styled.div`
     }
     #glow {
       width: 13rem;
+    }
+  }
+
+  @media (max-width: 1280px), (prefers-reduced-motion: reduce) {
+    .btn {
+      animation: none;
+      backdrop-filter: none;
+    }
+
+    #container-stars {
+      display: none;
+      backdrop-filter: none;
+    }
+
+    #glow {
+      display: none;
+    }
+
+    .circle {
+      animation: none;
+      filter: blur(1rem);
+    }
+
+    .btn:hover {
+      transform: none;
+    }
+  }
+
+  [data-performance-mode="reduced"] & {
+    .btn {
+      animation: none;
+      backdrop-filter: none;
+    }
+
+    #container-stars,
+    #glow {
+      display: none;
+    }
+
+    .btn:hover {
+      transform: none;
     }
   }
 `;

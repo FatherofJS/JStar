@@ -71,7 +71,12 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
   box-shadow: ${({ $scrolled }) => 
     $scrolled ? "0 4px 30px var(--shadow-color), 0 0 40px rgba(122, 162, 255, 0.1)" : "none"};
 
-  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    height 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    padding 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 
   /* Gradient accent line at bottom - Dark mode */
   &::after {
@@ -124,7 +129,29 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
 
   @media (max-width: 768px) {
     height: 60px;
-    padding: 0 20px;
+    padding: 0 14px;
+  }
+
+  @media (max-width: 1280px) {
+    backdrop-filter: none;
+    animation: none;
+    box-shadow: ${({ $scrolled }) =>
+      $scrolled ? "0 4px 18px var(--shadow-color)" : "none"};
+
+    [data-theme="light"] & {
+      backdrop-filter: none;
+    }
+  }
+
+  [data-performance-mode="reduced"] & {
+    backdrop-filter: none;
+    animation: none;
+    box-shadow: ${({ $scrolled }) =>
+      $scrolled ? "0 2px 12px var(--shadow-color)" : "none"};
+
+    &::after {
+      opacity: ${({ $scrolled }) => ($scrolled ? 0.7 : 0.18)};
+    }
   }
 `;
 
@@ -134,7 +161,8 @@ export const HeaderLeft = styled.div`
   gap: 48px;
 
   @media (max-width: 768px) {
-    gap: 24px;
+    gap: 12px;
+    min-width: 0;
   }
 `;
 
@@ -144,7 +172,17 @@ export const HeaderRight = styled.div`
   gap: 20px;
 
   @media (max-width: 768px) {
-    gap: 12px;
+    gap: 8px;
+    min-width: 0;
+  }
+`;
+
+export const DesktopOnly = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -183,7 +221,8 @@ export const Logo = styled.div`
   }
 
   @media (max-width: 768px) {
-    font-size: 22px;
+    font-size: 18px;
+    letter-spacing: 2px;
   }
 `;
 
@@ -252,7 +291,9 @@ export const MobileToggle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 52px;
+    height: 44px;
+    width: 44px;
+    font-size: 18px;
   }
 `;
 
