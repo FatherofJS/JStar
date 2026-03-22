@@ -13,8 +13,6 @@ export const CTASectionWrapper = styled.section`
   text-align: center;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
-  content-visibility: auto;
-  contain-intrinsic-size: 420px;
   
   @media (max-width: 768px) {
     padding: 60px 16px;

@@ -3,10 +3,10 @@
 
 import { memo, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { landingContent } from "../../content/landingContent";
-import ThemeSwitch from "../themeSwitch/ThemeSwitch";
-import { useTheme } from "../../contexts/ThemeContext";
-import { useScrollPosition } from "../../hooks/useScrollPosition";
+import { landingContent } from "../../data/landingData";
+import ThemeSwitch from "../layout/ThemeSwitch";
+import { useTheme } from "../../theme";
+import { useScrollPosition } from "../../hooks/useScroll";
 import { SECTIONS, type SectionId } from "../../constants";
 import {
   HeaderWrapper,

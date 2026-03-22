@@ -1,0 +1,217 @@
+/* ─── Container ─────────────────────────────────────────────── */
+
+.synastry-wheel-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border-radius: 22px;
+    overflow: hidden;
+}
+
+.synastry-controls {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    display: flex;
+    gap: var(--space-xs);
+    z-index: 10;
+}
+
+.synastry-controls button {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s;
+    backdrop-filter: blur(4px);
+}
+
+.synastry-controls button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+[data-theme="light"] .synastry-controls button {
+    background: rgba(255, 255, 255, 0.94);
+    border-color: rgba(51, 65, 85, 0.18);
+    color: #1e293b;
+    box-shadow: 0 10px 24px rgba(148, 163, 184, 0.2);
+}
+
+[data-theme="light"] .synastry-controls button:hover {
+    background: #ffffff;
+    border-color: rgba(99, 102, 241, 0.32);
+    color: #0f172a;
+}
+
+/* ─── SVG viewport ──────────────────────────────────────────── */
+
+.synastry-viewport {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.synastry-viewport svg {
+    overflow: visible;
+}
+
+/* ─── Planets ───────────────────────────────────────────────── */
+
+.planet-symbol {
+    cursor: pointer;
+}
+
+.planet-symbol:hover .planet-ring {
+    stroke-opacity: 0.9;
+    stroke-width: 2.5;
+}
+
+/* ─── Tooltip ───────────────────────────────────────────────── */
+
+.synastry-tooltip {
+    position: absolute;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 6px 10px;
+    z-index: 100;
+    pointer-events: none;
+    min-width: 110px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+}
+
+[data-theme="light"] .synastry-tooltip {
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(51, 65, 85, 0.16);
+    box-shadow: 0 16px 36px rgba(148, 163, 184, 0.24);
+}
+
+.tooltip-header {
+    font-weight: 600;
+    font-size: 0.75rem;
+    margin-bottom: 3px;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 3px;
+    color: var(--text-primary);
+}
+
+[data-theme="light"] .tooltip-header {
+    border-bottom-color: rgba(51, 65, 85, 0.12);
+    color: #0f172a;
+}
+
+.tooltip-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.68rem;
+    padding: 1px 0;
+    gap: 8px;
+}
+
+.tooltip-row span:first-child {
+    color: var(--text-secondary);
+}
+
+[data-theme="light"] .tooltip-row {
+    color: #1e293b;
+}
+
+[data-theme="light"] .tooltip-row span:first-child {
+    color: #475569;
+}
+
+.tooltip-retrograde {
+    color: var(--accent);
+    font-size: 0.65rem;
+    margin-top: 3px;
+    font-weight: 500;
+}
+
+.tooltip-stack-card {
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="light"] .tooltip-stack-card {
+    background: rgba(248, 250, 252, 0.95);
+    border-color: rgba(148, 163, 184, 0.18);
+}
+
+.synastry-legend {
+    position: absolute;
+    bottom: var(--space-md);
+    left: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    border-radius: 12px;
+    z-index: 10;
+}
+
+[data-theme="light"] .synastry-legend {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+[data-theme="light"] .legend-item {
+    color: #1e293b;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+    .synastry-controls {
+        top: 10px;
+        right: 10px;
+        gap: 6px;
+    }
+
+    .synastry-controls button {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .synastry-tooltip {
+        min-width: 100px;
+        max-width: min(220px, calc(100vw - 24px));
+        padding: 8px 10px;
+    }
+
+    .synastry-legend {
+        bottom: 10px;
+        left: 10px;
+        padding: 8px 10px;
+    }
+}

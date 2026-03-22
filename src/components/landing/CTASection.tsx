@@ -1,7 +1,7 @@
 // CTASection Component - Final Call to Action
 
 import { memo } from "react";
-import { landingContent } from "../../content/landingContent";
+import { landingContent } from "../../data/landingData";
 import {
   CTASectionWrapper,
   CTAContent,

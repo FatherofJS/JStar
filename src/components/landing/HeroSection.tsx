@@ -3,9 +3,9 @@
 
 import { useRef, useCallback, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { ZodiacCinematic } from "../../components/ZodiacCinematic";
-import { landingContent } from "../../content/landingContent";
-import { StarPlayButton } from "../button/StarPlayButton";
+import { ZodiacCinematic } from "../../components/ui/ZodiacCinematic";
+import { landingContent } from "../../data/landingData";
+import { StarPlayButton } from "../ui/button/StarPlayButton";
 import { SECTIONS } from "../../constants";
 import {
   HeroSectionWrapper,

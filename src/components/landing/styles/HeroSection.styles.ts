@@ -32,8 +32,6 @@ export const HeroSectionWrapper = styled.section`
   align-items: center;
   position: relative;
   padding: 80px 0;
-  content-visibility: auto;
-  contain-intrinsic-size: 820px;
 
   @media (max-width: 768px) {
     min-height: 500px;

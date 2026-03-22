@@ -1,8 +1,8 @@
 // FeatureSection Component - Reusable feature section with image and content
 
 import { useState } from "react";
-import type { FeatureItem } from "../../data/landingFeatures";
-import { ImageZoomModal } from "../ImageZoomModal";
+import type { FeatureItem } from "../../data/landingData";
+import { ImageZoomModal } from "../ui/ImageZoomModal";
 import {
   SectionContainer,
   SectionContainerAlt,
@@ -358,5 +358,5 @@ function AIInterpretationSection({ feature }: FeatureSectionProps) {
 }
 
 export { FeatureSection, FeatureSectionAlt, AIInterpretationSection };
-export type { FeatureItem } from "../../data/landingFeatures";
+export type { FeatureItem } from "../../data/landingData";
 

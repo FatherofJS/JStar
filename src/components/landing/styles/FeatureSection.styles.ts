@@ -33,8 +33,6 @@ export const SectionContainer = styled.section`
   position: relative;
   z-index: 10;
   padding: 80px 16px;
-  content-visibility: auto;
-  contain-intrinsic-size: 760px;
   
   @media (max-width: 768px) {
     padding: 60px 16px;

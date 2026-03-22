@@ -57,6 +57,28 @@ export interface ChartData {
     angles: Angle[];
 }
 
+export interface SynastryAspect {
+    id?: string;
+    person1_planet: string;
+    person2_planet: string;
+    type: 'conjunction' | 'opposition' | 'trine' | 'square' | 'sextile';
+    angle: number;
+    orb: number;
+}
+
+export interface SynastryData {
+    id: string;
+    person1: Subject;
+    person2: Subject;
+    person1_planets: Planet[];
+    person2_planets: Planet[];
+    person1_houses: House[];
+    person2_houses: House[];
+    person1_angles: Angle[];
+    person2_angles: Angle[];
+    aspects: SynastryAspect[];
+}
+
 export interface ChartRequest {
     name: string;
     birthDate: string;   // YYYY-MM-DD

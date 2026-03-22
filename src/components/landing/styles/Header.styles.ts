@@ -50,12 +50,12 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
   padding: 0 40px;
 
   /* Glassmorphism với gradient nhẹ - Dark mode */
-  background: ${({ $scrolled }) => 
-    $scrolled 
-      ? "linear-gradient(135deg, rgba(20, 25, 70, 0.85) 0%, rgba(30, 35, 80, 0.9) 100%)" 
+  background: ${({ $scrolled }) =>
+    $scrolled
+      ? "linear-gradient(135deg, rgba(20, 25, 70, 0.85) 0%, rgba(30, 35, 80, 0.9) 100%)"
       : "linear-gradient(135deg, rgba(20, 25, 70, 0.4) 0%, rgba(30, 35, 80, 0.5) 100%)"};
   
-  backdrop-filter: ${({ $scrolled }) => 
+  backdrop-filter: ${({ $scrolled }) =>
     $scrolled ? "blur(25px) saturate(180%)" : "blur(15px) saturate(120%)"};
   
   border-bottom: 1px solid var(--glass-border);
@@ -68,7 +68,7 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
   /* Entry animation */
   animation: ${slideDown} 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 
-  box-shadow: ${({ $scrolled }) => 
+  box-shadow: ${({ $scrolled }) =>
     $scrolled ? "0 4px 30px var(--shadow-color), 0 0 40px rgba(122, 162, 255, 0.1)" : "none"};
 
   transition:
@@ -100,18 +100,18 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
 
   /* Light mode - More prominent header */
   [data-theme="light"] & {
-    background: ${({ $scrolled }) => 
-      $scrolled 
-        ? "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(224, 242, 254, 0.98) 100%)" 
-        : "linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(224, 242, 254, 0.9) 100%)"};
+    background: ${({ $scrolled }) =>
+    $scrolled
+      ? "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(224, 242, 254, 0.98) 100%)"
+      : "linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(224, 242, 254, 0.9) 100%)"};
     
-    backdrop-filter: ${({ $scrolled }) => 
-      $scrolled ? "blur(20px) saturate(100%)" : "blur(12px) saturate(100%)"};
+    backdrop-filter: ${({ $scrolled }) =>
+    $scrolled ? "blur(20px) saturate(100%)" : "blur(12px) saturate(100%)"};
     
     border-bottom: 1px solid rgba(186, 230, 253, 0.5);
     
-    box-shadow: ${({ $scrolled }) => 
-      $scrolled ? "0 4px 20px rgba(14, 165, 233, 0.15), 0 2px 8px rgba(0, 0, 0, 0.08)" : "0 2px 12px rgba(14, 165, 233, 0.08)"};
+    box-shadow: ${({ $scrolled }) =>
+    $scrolled ? "0 4px 20px rgba(14, 165, 233, 0.15), 0 2px 8px rgba(0, 0, 0, 0.08)" : "0 2px 12px rgba(14, 165, 233, 0.08)"};
 
     /* Light mode accent line */
     &::after {
@@ -136,7 +136,7 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
     backdrop-filter: none;
     animation: none;
     box-shadow: ${({ $scrolled }) =>
-      $scrolled ? "0 4px 18px var(--shadow-color)" : "none"};
+    $scrolled ? "0 4px 18px var(--shadow-color)" : "none"};
 
     [data-theme="light"] & {
       backdrop-filter: none;
@@ -147,7 +147,7 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
     backdrop-filter: none;
     animation: none;
     box-shadow: ${({ $scrolled }) =>
-      $scrolled ? "0 2px 12px var(--shadow-color)" : "none"};
+    $scrolled ? "0 2px 12px var(--shadow-color)" : "none"};
 
     &::after {
       opacity: ${({ $scrolled }) => ($scrolled ? 0.7 : 0.18)};
@@ -465,7 +465,7 @@ export const UserMenuDropdown = styled.div<{ $open: boolean }>`
   min-width: 240px;
   /* Gradient background với glass effect */
   background: var(--bg-secondary);
-  backdrop-filter: blur(25px) saturate(180%);
+  // backdrop-filter: blur(25px) saturate(180%);
   border: 1px solid var(--border);
   border-radius: 16px;
   box-shadow: 0 20px 50px var(--shadow-color), 0 0 30px rgba(120, 140, 255, 0.1);

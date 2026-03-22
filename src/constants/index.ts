@@ -1,21 +1,11 @@
-// Application constants and magic numbers
-// Centralized configuration values
-
-// ============================================================================
-// API CONFIGURATION
-// ============================================================================
-
-// Backend API URL - configure via environment variable
-// In development: http://localhost:8000
-// In production: use your deployed backend URL
 const getApiUrl = (): string => {
-  // Vite uses VITE_ prefix for environment variables
   return import.meta.env.VITE_API_URL || 'http://localhost:8000';
 };
 
 export const API = {
   BASE_URL: getApiUrl(),
   CHART: '/chart',
+  SYNASTRY: '/synastry',
   CHAT: '/api/chat',
   LOCATION: {
     SEARCH: '/api/location/search',
@@ -25,23 +15,13 @@ export const API = {
   HEALTH: '/api/health',
 } as const;
 
-// Helper function to get full API URL
 export const getApiEndpoint = (endpoint: string): string => {
   return `${API.BASE_URL}${endpoint}`;
 };
 
-// ============================================================================
-// ZODIAC CONFIGURATION
-// ============================================================================
-
 export const ZODIAC_CYCLE_INTERVAL = 7000; // Time between zodiac transitions (ms)
 
-// ============================================================================
-// ANIMATION TIMINGS
-// ============================================================================
-
 export const ANIMATION = {
-  // ZodiacCinematic
   FADE_IN_SYMBOL: 2.2,
   FADE_IN_DELAY: 4.8,
   DRAW_LINE_DURATION: 5.5,
@@ -50,38 +30,27 @@ export const ANIMATION = {
   AURA_ROTATION_DURATION: 90,
   ORBIT_ROTATION_DURATION: 40,
 
-  // SpaceButton
   VORTEX_SPIN: 6,
   SHOCKWAVE_DURATION: 0.8,
   GLOW_PULSE: 3,
   BUTTON_TILT_FACTOR: 0.25,
   BUTTON_SCALE: 1.05,
 
-  // Background
   STAR_TWINKLE: 6,
   COSMIC_PULSE: 12,
   NEBULA_DRIFT: 60,
   AURORA_WAVE: 20,
   GRAIN_SHIFT: 10,
 
-  // Section transitions
   ZOOM_IN: 0.8,
   ZOOM_OUT: 0.6,
 } as const;
-
-// ============================================================================
-// SCROLL CONFIGURATION
-// ============================================================================
 
 export const SCROLL = {
   TRIGGER_THRESHOLD: 40,
   INTERSECTION_THRESHOLD: 0.55,
   ROOT_MARGIN: "-10% 0px -10% 0px",
 } as const;
-
-// ============================================================================
-// STAR CONFIGURATION
-// ============================================================================
 
 export const STAR = {
   INTENSITY_THRESHOLDS: {
@@ -100,10 +69,6 @@ export const STAR = {
     HIGH: 1,
   },
 } as const;
-
-// ============================================================================
-// LAYOUT DIMENSIONS
-// ============================================================================
 
 export const LAYOUT = {
   ZODIAC: {
@@ -136,18 +101,10 @@ export const LAYOUT = {
   },
 } as const;
 
-// ============================================================================
-// BREAKPOINTS
-// ============================================================================
-
 export const BREAKPOINTS = {
   TABLET: 768,
   DESKTOP: 1000,
 } as const;
-
-// ============================================================================
-// COLORS (for reference)
-// ============================================================================
 
 export const COLORS = {
   PRIMARY: "#7aa2ff",
@@ -159,10 +116,6 @@ export const COLORS = {
   TEXT: "white",
   TEXT_SECONDARY: "rgba(255, 255, 255, 0.75)",
 } as const;
-
-// ============================================================================
-// SECTION IDs
-// ============================================================================
 
 export const SECTIONS = {
   HOME: "home",
