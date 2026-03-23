@@ -17,11 +17,6 @@ const twinkle = keyframes`
   50% { opacity: 1; transform: scale(1.2); }
 `;
 
-const float = keyframes`
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-`;
-
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -433,61 +428,6 @@ const ErrorMessage = styled.div<{ $isLight: boolean }>`
   animation: ${fadeIn} 0.3s ease-out;
 `;
 
-const ResultSection = styled.div<{ $isLight: boolean }>`
-  margin-top: 36px;
-  text-align: center;
-  padding: 36px;
-  background: ${props => props.$isLight
-    ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(168, 85, 247, 0.06) 100%)'
-    : 'linear-gradient(135deg, rgba(129, 140, 248, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%)'};
-  border-radius: 24px;
-  border: 1px solid ${props => props.$isLight
-    ? 'rgba(99, 102, 241, 0.15)'
-    : 'rgba(129, 140, 248, 0.2)'};
-  animation: ${fadeIn} 0.5s ease-out;
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #818cf8, #a855f7, transparent);
-  }
-`;
-
-const ZodiacIcon = styled.div<{ $isLight: boolean }>`
-  font-size: 80px;
-  margin-bottom: 16px;
-  animation: ${float} 3s ease-in-out infinite;
-  filter: drop-shadow(${props => props.$isLight
-    ? '0 0 20px rgba(99, 102, 241, 0.3)'
-    : '0 0 20px rgba(129, 140, 248, 0.5)'});
-`;
-
-const ZodiacName = styled.h2<{ $isLight: boolean }>`
-  font-size: 32px;
-  font-weight: 700;
-  background: linear-gradient(135deg, ${props => props.$isLight ? '#1e293b 0%' : '#fff 0%'}, ${props => props.$isLight ? '#4f46e5 100%' : '#c4b5fd 100%'});
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  margin-bottom: 8px;
-`;
-
-const ZodiacDescription = styled.p<{ $isLight: boolean }>`
-  font-size: 16px;
-  color: ${props => props.$isLight
-    ? 'rgba(30, 41, 59, 0.7)'
-    : 'rgba(255, 255, 255, 0.7)'};
-  line-height: 1.7;
-  max-width: 400px;
-  margin: 0 auto;
-`;
-
 const Row = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -589,11 +529,7 @@ export default function StarChartPage() {
   const [p2SelectedCountry, setP2SelectedCountry] = useState<LocationData | null>(null);
 
   const [error, setError] = useState('');
-  const [result, setResult] = useState<{
-    zodiac: string;
-    icon: string;
-    description: string;
-  } | null>(null);
+
 
   useEffect(() => {
     try {
@@ -613,31 +549,11 @@ export default function StarChartPage() {
     }
   }, []);
 
-  const getZodiacSign = useCallback((birthMonth: string, birthDay: string) => {
-    const month = parseInt(birthMonth);
-    const day = parseInt(birthDay);
-
-    if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return { zodiac: 'Aries', icon: '♈', description: 'The Ram - Bold, ambitious, and energetic. Aries leads with courage and determination.' };
-    if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return { zodiac: 'Taurus', icon: '♉', description: 'The Bull - Reliable, patient, and practical. Taurus values stability and security.' };
-    if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return { zodiac: 'Gemini', icon: '♊', description: 'The Twins - Adaptable, curious, and communicative. Gemini loves variety and new experiences.' };
-    if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return { zodiac: 'Cancer', icon: '♋', description: 'The Crab - Emotional, intuitive, and protective. Cancer values home and family deeply.' };
-    if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return { zodiac: 'Leo', icon: '♌', description: 'The Lion - Confident, creative, and generous. Leo loves to be the center of attention.' };
-    if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return { zodiac: 'Virgo', icon: '♍', description: 'The Maiden - Practical, analytical, and helpful. Virgo strives for perfection.' };
-    if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return { zodiac: 'Libra', icon: '♎', description: 'The Scales - Peaceful, fair, and diplomatic. Libra seeks harmony in all things.' };
-    if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return { zodiac: 'Scorpio', icon: '♏', description: 'The Scorpion - Passionate, resourceful, and determined. Scorpio is intense and transformative.' };
-    if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return { zodiac: 'Sagittarius', icon: '♐', description: 'The Archer - Optimistic, adventurous, and honest. Sagittarius loves freedom and exploration.' };
-    if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return { zodiac: 'Capricorn', icon: '♑', description: 'The Goat - Disciplined, responsible, and ambitious. Capricorn values achievement and status.' };
-    if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return { zodiac: 'Aquarius', icon: '♒', description: 'The Water Bearer - Independent, original, and humanitarian. Aquarius thinks outside the box.' };
-    if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return { zodiac: 'Pisces', icon: '♓', description: 'The Fish - Compassionate, artistic, and intuitive. Pisces is dreamy and sensitive.' };
-    return null;
-  }, []);
-
 
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setResult(null);
 
     if (!fullName.trim()) {
       setError('Please enter Person 1 full name.');
@@ -1044,13 +960,6 @@ export default function StarChartPage() {
             </SubmitButton>
           </form>
 
-          {result && (
-            <ResultSection $isLight={isLight}>
-              <ZodiacIcon $isLight={isLight}>{result.icon}</ZodiacIcon>
-              <ZodiacName $isLight={isLight}>{result.zodiac}</ZodiacName>
-              <ZodiacDescription $isLight={isLight}>{result.description}</ZodiacDescription>
-            </ResultSection>
-          )}
         </ChartContainer>
       </PageWrapper>
     </Layout>
