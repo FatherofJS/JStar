@@ -1,4 +1,3 @@
-// StarChartPage Component - Personalized astrology chart page
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
@@ -309,7 +308,6 @@ const DateInput = styled.input<{ $isLight: boolean }>`
     }
   }
   
-  /* Remove number input arrows */
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -574,7 +572,6 @@ export default function StarChartPage() {
 
   const [chartType, setChartType] = useState<'natal' | 'synastry'>('natal');
 
-  // Person 1 State
   const [fullName, setFullName] = useState('');
   const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
@@ -583,7 +580,6 @@ export default function StarChartPage() {
   const [selectedCity, setSelectedCity] = useState<LocationData | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<LocationData | null>(null);
 
-  // Person 2 State
   const [p2FullName, setP2FullName] = useState('');
   const [p2Day, setP2Day] = useState('');
   const [p2Month, setP2Month] = useState('');
@@ -599,7 +595,6 @@ export default function StarChartPage() {
     description: string;
   } | null>(null);
 
-  // Load autofill data on mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem('jstar_person1_autofill');
@@ -637,14 +632,13 @@ export default function StarChartPage() {
     return null;
   }, []);
 
-  void getZodiacSign;
+
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setResult(null);
 
-    // Validation for Person 1
     if (!fullName.trim()) {
       setError('Please enter Person 1 full name.');
       return;
@@ -667,7 +661,6 @@ export default function StarChartPage() {
       return;
     }
 
-    // Save Person 1 to autofill storage
     try {
       localStorage.setItem('jstar_person1_autofill', JSON.stringify({
         fullName: fullName.trim(),
@@ -678,7 +671,6 @@ export default function StarChartPage() {
       console.error("Failed to save autofill data", e);
     }
 
-    // Validation for Person 2
     if (chartType === 'synastry') {
       if (!p2FullName.trim()) {
         setError('Please enter Person 2 full name.');
@@ -756,7 +748,6 @@ export default function StarChartPage() {
     <Layout>
       <Background showShootingStars={false} />
       <PageWrapper>
-        {/* Decorative stars - only show in dark mode */}
         {!isLight && (
           <>
             <StarDecoration $top="10%" $left="10%" $size={3} $delay="0s" />

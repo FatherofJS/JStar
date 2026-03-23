@@ -1,5 +1,3 @@
-// CHART DATA TYPES - Shared across all components
-
 export interface Planet {
     id?: string;
     name: string;
@@ -31,8 +29,7 @@ export interface Aspect {
 }
 
 export interface Angle {
-    id?: string;
-    name: string;       // "Ascendant", "Midheaven", "Descendant", "Imum Coeli"
+    name: string;
     longitude: number;
     sign: string;
     signDegree: number;
@@ -81,13 +78,12 @@ export interface SynastryData {
 
 export interface ChartRequest {
     name: string;
-    birthDate: string;   // YYYY-MM-DD
-    birthTime: string;   // HH:MM
+    birthDate: string;
+    birthTime: string;
     city: string;
     country: string;
 }
 
-// ZODIAC DATA
 export const ZODIAC_SIGNS: Record<string, { symbol: string; color: string; element: string }> = {
     Aries: { symbol: '♈', color: '#f97316', element: 'Fire' },
     Taurus: { symbol: '♉', color: '#22c55e', element: 'Earth' },

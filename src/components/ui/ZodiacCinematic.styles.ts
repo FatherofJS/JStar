@@ -1,11 +1,5 @@
-// ZodiacCinematic styled components and keyframes
-// Optimized for performance
-
 import styled, { keyframes } from "styled-components";
 
-// =============================================================================
-// ANIMATIONS - Simplified for performance
-// =============================================================================
 
 export const floatSlow = keyframes`
   0% { transform: translateY(-3px) }
@@ -29,9 +23,6 @@ export const fadeInSymbol = keyframes`
   to { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
 `;
 
-// =============================================================================
-// ZODIAC CINEMATIC STYLES
-// =============================================================================
 
 export const ZodiacWrapper = styled.div`
   margin-top: 40px;

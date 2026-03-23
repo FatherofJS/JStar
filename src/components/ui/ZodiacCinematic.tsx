@@ -1,5 +1,3 @@
-// ZodiacCinematic Component - Optimized for performance
-
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import {
   ZodiacWrapper,
@@ -20,10 +18,8 @@ import {
 } from "../../data/zodiacData";
 import { useTheme } from "../../theme";
 
-// Memoize star data to prevent recalculation on every render
 const useStarData = (zodiacName: string) => {
   return useMemo(() => {
-    // Use a deterministic seed based on zodiac name to generate consistent random values
     const seed = zodiacName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const pseudoRandom = (seed % 100) / 100;
     const intensity = pseudoRandom;
@@ -44,10 +40,8 @@ export function ZodiacCinematic() {
   const current = zodiac[index];
   const map = constellationMap[current.name];
   
-  // Memoize star data for current zodiac
   const starData = useStarData(current.name);
 
-  // Cycle through zodiac signs every 12 seconds
   useEffect(() => {
     const interval = setInterval(
       () => setIndex((prev) => (prev + 1) % zodiac.length),
@@ -76,7 +70,6 @@ export function ZodiacCinematic() {
     };
   }, []);
 
-  // Batch pointer-driven transforms into animation frames to keep hover smooth.
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!allowTiltInteraction) return;
 
@@ -133,7 +126,6 @@ export function ZodiacCinematic() {
         <OrbitRing />
 
         <ConstellationSVG key={current.name} viewBox="0 0 100 100">
-          {/* Render constellation lines - hidden in light mode */}
           {!isLightMode && map.lines.map(([a, b], i) => {
             const s1 = map.stars[a];
             const s2 = map.stars[b];
@@ -151,7 +143,6 @@ export function ZodiacCinematic() {
             );
           })}
 
-          {/* Render constellation stars - hidden in light mode */}
           {!isLightMode && map.stars.map((s, i) => (
             <GalaxyStar
               key={`star-${i}-${current.name}`}

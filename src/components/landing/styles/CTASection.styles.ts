@@ -1,10 +1,5 @@
-// CTASection Component Styles
-
 import styled from "styled-components";
 
-// =============================================================================
-// CTA SECTION STYLES
-// =============================================================================
 
 export const CTASectionWrapper = styled.section`
   position: relative;

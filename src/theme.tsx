@@ -21,28 +21,22 @@ function getSystemTheme(): Theme {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
-    // Check localStorage first
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === 'light' || stored === 'dark') {
       return stored;
     }
-    // Fall back to system preference
     return getSystemTheme();
   });
 
   useEffect(() => {
-    // Store theme preference
     localStorage.setItem(STORAGE_KEY, theme);
-    // Apply to document for CSS selectors
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // Listen for system theme changes
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     
     const handleChange = (e: MediaQueryListEvent) => {
-      // Only auto-switch if user hasn't manually set a preference
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
         setTheme(e.matches ? 'dark' : 'light');

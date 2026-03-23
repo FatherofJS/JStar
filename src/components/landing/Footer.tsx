@@ -1,5 +1,3 @@
-// Footer Component - Site footer with links
-
 import { memo } from "react";
 import { landingContent } from "../../data/landingData";
 import {

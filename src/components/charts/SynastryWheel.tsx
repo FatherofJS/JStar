@@ -32,22 +32,19 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
     const cx = size / 2;
     const cy = size / 2;
 
-    const outerRadius = size * 0.4;              // 280
-    const nameRadius = size * 0.42;              // 294
-    const zodiacIconRadius = outerRadius * 0.925; // 259
-    const zodiacInnerRadius = outerRadius * 0.85; // 238
+    const outerRadius = size * 0.4;
+    const nameRadius = size * 0.42;
+    const zodiacIconRadius = outerRadius * 0.925;
+    const zodiacInnerRadius = outerRadius * 0.85;
     
-    // Person 2 Ring (Outer)
-    const p2PlanetRadius = outerRadius * 0.77;   // 215.6
-    const p2RingInner = outerRadius * 0.68;      // 190.4
+    const p2PlanetRadius = outerRadius * 0.77;
+    const p2RingInner = outerRadius * 0.68;
     
-    // Person 1 Ring (Inner)
-    const p1PlanetRadius = outerRadius * 0.60;   // 168
-    const p1RingInner = outerRadius * 0.52;      // 145.6
+    const p1PlanetRadius = outerRadius * 0.60;
+    const p1RingInner = outerRadius * 0.52;
     
-    // Houses & Aspects (Person 1's house system)
-    const houseOuterRadius = p1RingInner;        // 145.6
-    const innerRadius = outerRadius * 0.44;      // 123.2
+    const houseOuterRadius = p1RingInner;
+    const innerRadius = outerRadius * 0.44;
 
     const ascendant = person1_houses[0]?.cusp || 0;
 
@@ -255,7 +252,6 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
             <div className="synastry-viewport" ref={viewportRef} onMouseDown={drag.start} onMouseMove={drag.move} onMouseUp={drag.end} onMouseLeave={drag.end} style={{ cursor: isDragging ? 'grabbing' : 'grab' }}>
                 <svg viewBox={`0 0 ${size} ${size}`} style={{ width: '100%', height: '100%', maxWidth: size, maxHeight: size, transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${scale})` }}>
                     
-                    {/* LAYER 0: SIGN NAMES */}
                     {ZODIAC_ORDER.map((sign, i) => {
                         const midAngle = i * 30 + 15;
                         const pos = toXY(midAngle, nameRadius);
@@ -267,7 +263,6 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                         );
                     })}
 
-                    {/* LAYER 1: ZODIAC BAND */}
                     <circle cx={cx} cy={cy} r={outerRadius} fill="none" stroke={palette.outerRing} strokeWidth={isLight ? 3.4 : 3} />
                     <circle cx={cx} cy={cy} r={zodiacInnerRadius} fill="none" stroke={palette.innerRing} strokeWidth={isLight ? 2.8 : 2.4} />
 
@@ -291,7 +286,6 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                         );
                     })}
 
-                    {/* LAYER 2: PERSON 2 RING (OUTER) */}
                     <circle cx={cx} cy={cy} r={p2RingInner} fill="none" stroke={palette.divider} strokeWidth={1} strokeDasharray="4 4" />
                     {p2Anchors.map(({ planet, pos }, i) => {
                         const size = 20;
@@ -308,7 +302,6 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                         );
                     })}
 
-                    {/* LAYER 3: PERSON 1 RING (INNER) */}
                     <circle cx={cx} cy={cy} r={p1RingInner} fill="none" stroke={palette.divider} strokeWidth={1.5} />
                     {p1Anchors.map(({ planet, pos }, i) => {
                         const size = 20;
@@ -325,7 +318,6 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                         );
                     })}
 
-                    {/* LAYER 4: HOUSES (Person 1's houses) */}
                     <circle cx={cx} cy={cy} r={houseOuterRadius} fill="none" stroke={palette.houseRing} strokeWidth={isLight ? 2.5 : 2} />
                     {person1_houses.map((house, i) => {
                         const startObj = house.cusp;
@@ -349,7 +341,6 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                         );
                     })}
 
-                    {/* LAYER 5: SYNASTRY ASPECTS */}
                     <g className="aspect-lines">
                         {aspects.map((aspect, i) => {
                             const p1Pos = p1AspectEndpoints[aspect.person1_planet];
@@ -370,7 +361,6 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                                         onMouseLeave={() => setHoveredAspect(null)}
                                         style={{ cursor: 'pointer', transition: 'all 0.2s' }}
                                     />
-                                    {/* Invisible wider area for hover */}
                                     <line
                                         x1={p1Pos.x} y1={p1Pos.y} x2={p2Pos.x} y2={p2Pos.y}
                                         stroke="transparent"

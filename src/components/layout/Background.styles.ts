@@ -1,12 +1,5 @@
-// Background styled components and keyframes
-// Beautiful cosmic background with vibrant nebula for dark mode
-
 import styled, { keyframes } from "styled-components";
 import type { CSSProperties } from "styled-components";
-
-// =============================================================================
-// ANIMATIONS - Beautiful and performant
-// =============================================================================
 
 const slowDrift = keyframes`
   0% { transform: translate3d(0, 0, 0); }
@@ -35,10 +28,6 @@ const glowPulse = keyframes`
   50% { opacity: 0.5; }
 `;
 
-// =============================================================================
-// STYLED COMPONENTS
-// =============================================================================
-
 export const BackgroundWrapper = styled.div`
   position: fixed;
   inset: 0;
@@ -50,18 +39,12 @@ export const BackgroundWrapper = styled.div`
   contain: layout paint style;
   transform: translateZ(0);
   
-  /* Dark mode - Rich cosmic gradient with galaxy colors */
   background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 30%, #0f1a2e 60%, #0a0a1a 100%);
   
   [data-theme="light"] & {
-    /* Light mode - Sky blue gradient like clear blue sky */
     background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 40%, #ffffff 100%);
   }
 `;
-
-// =============================================================================
-// STAR LAYER - Beautiful starfield for dark mode
-// =============================================================================
 
 export const StarsLayer = styled.div`
   display: none;
@@ -75,12 +58,6 @@ export const StarsLayer3 = styled.div`
   display: none;
 `;
 
-// =============================================================================
-// NEBULA LAYERS - Beautiful colorful nebula for dark mode
-// Note: The actual nebula layers are rendered in Background.tsx using inline styles
-// for better animation control
-// =============================================================================
-
 export const NebulaLayer = styled.div`
   position: absolute;
   inset: 0;
@@ -89,6 +66,8 @@ export const NebulaLayer = styled.div`
 
   > div {
     will-change: opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -106,17 +85,13 @@ export const NebulaLayer = styled.div`
 
   [data-performance-mode="reduced"] & > div {
     animation: none !important;
-    opacity: 0.22;
+    opacity: 0.5;
   }
 `;
 
 export const AuroraLayer = styled.div`
   display: none;
 `;
-
-// =============================================================================
-// STARFIELD - Clean static stars
-// =============================================================================
 
 export const StarField = styled.div`
   position: absolute;
@@ -144,6 +119,9 @@ export const StarField = styled.div`
       radial-gradient(1px 1px at 90% 10%, rgba(255, 250, 240, 0.7) 0%, transparent 100%);
     background-size: 100% 100%;
     animation: ${starTwinkle} 8s ease-in-out infinite;
+    will-change: opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
   
   [data-theme="light"] & {
@@ -169,10 +147,6 @@ export const StarField = styled.div`
   }
 `;
 
-// =============================================================================
-// COSMIC GLOW - Beautiful center glow
-// =============================================================================
-
 export const CosmicGlow = styled.div`
   position: absolute;
   inset: -20%;
@@ -184,6 +158,8 @@ export const CosmicGlow = styled.div`
   );
   animation: ${glowPulse} 14s ease-in-out infinite;
   will-change: opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
   
   [data-theme="light"] & {
     display: none;
@@ -195,22 +171,18 @@ export const CosmicGlow = styled.div`
 
   @media (max-width: 1280px) {
     animation: none;
-    opacity: 0.22;
+    opacity: 0.4;
   }
 
   [data-performance-mode="reduced"] & {
     animation: none;
-    opacity: 0.14;
+    opacity: 0.4;
   }
 `;
 
 export const GrainOverlay = styled.div`
   display: none;
 `;
-
-// =============================================================================
-// SHOOTING STARS
-// =============================================================================
 
 interface ShootingStarProps {
   $top: number;
@@ -233,7 +205,6 @@ export const ShootingStar = styled.span<ShootingStarProps>`
   will-change: transform, opacity;
   transform: rotate(${({ $direction }) => $direction || -45}deg);
   
-  /* Bright glowing head on the left (start of movement direction) */
   &::before {
     content: '';
     position: absolute;
@@ -260,6 +231,5 @@ export const ShootingStar = styled.span<ShootingStarProps>`
   }
 `;
 
-// Export keyframes for external use if needed
 export { slowDrift, nebulaPulse, starTwinkle, shoot, glowPulse };
 

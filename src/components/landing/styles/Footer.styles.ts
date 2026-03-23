@@ -1,10 +1,5 @@
-// Footer Component Styles
-
 import styled from "styled-components";
 
-// =============================================================================
-// FOOTER STYLES
-// =============================================================================
 
 export const FooterWrapper = styled.footer`
   position: relative;

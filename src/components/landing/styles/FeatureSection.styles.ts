@@ -1,12 +1,6 @@
-// FeatureSection Component Styles
-
 import styled from "styled-components";
 
-// =============================================================================
-// FEATURE SECTION STYLES
-// =============================================================================
 
-// Feature Badge
 export const FeatureBadge = styled.span`
   display: inline-flex;
   align-items: center;
@@ -28,7 +22,6 @@ export const FeatureBadge = styled.span`
   }
 `;
 
-// Section Container
 export const SectionContainer = styled.section`
   position: relative;
   z-index: 10;
@@ -55,14 +48,12 @@ export const SectionContainerAlt = styled(SectionContainer)`
   }
 `;
 
-// Max Width Container
 export const MaxWidthContainer = styled.div`
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
 `;
 
-// Grid Layout
 export const GridTwoColumns = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -75,21 +66,18 @@ export const GridTwoColumns = styled.div`
   }
 `;
 
-// Feature Content (Left)
 export const FeatureContent = styled.div`
   @media (max-width: 1000px) {
     order: 2;
   }
 `;
 
-// Feature Content Reversed (Right)
 export const FeatureContentReversed = styled.div`
   @media (max-width: 1000px) {
     order: 2;
   }
 `;
 
-// Feature Image Container
 export const FeatureImageWrapper = styled.div`
   position: relative;
   
@@ -98,7 +86,6 @@ export const FeatureImageWrapper = styled.div`
   }
 `;
 
-// Feature Image Card
 export const FeatureImageCard = styled.div`
   position: relative;
   cursor: zoom-in;
@@ -201,7 +188,6 @@ export const ZoomHint = styled.div`
   }
 `;
 
-// Glow Effects
 export const FeatureGlow = styled.div<{ $position: 'left' | 'right' }>`
   position: absolute;
   inset: -20px;
@@ -237,7 +223,6 @@ export const FeatureGlowPurple = styled(FeatureGlow)`
   );
 `;
 
-// Section Title
 export const SectionTitle = styled.h2`
   font-size: 32px;
   font-weight: 700;
@@ -257,7 +242,6 @@ export const GradientText = styled.span`
   color: transparent;
 `;
 
-// Section Description
 export const SectionDescription = styled.p`
   font-size: 16px;
   line-height: 1.7;
@@ -270,7 +254,6 @@ export const SectionDescription = styled.p`
   }
 `;
 
-// Feature List
 export const FeatureList = styled.ul`
   list-style: disc;
   list-style-position: outside;

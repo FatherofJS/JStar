@@ -33,13 +33,13 @@ export function ChartWheel({ data }: { data: ChartData }) {
     const cx = size / 2;
     const cy = size / 2;
 
-    const outerRadius = size * 0.4;              // = 280px
-    const nameRadius = size * 0.42;              // = 294px
-    const zodiacIconRadius = outerRadius * 0.925; // = 259px
-    const zodiacInnerRadius = outerRadius * 0.85; // = 238px
-    const planetRadius = outerRadius * 0.77;     // = 216px
-    const houseOuterRadius = outerRadius * 0.58; // = 162px
-    const innerRadius = outerRadius * 0.50;      // = 140px (houses + aspects)
+    const outerRadius = size * 0.4;
+    const nameRadius = size * 0.42;
+    const zodiacIconRadius = outerRadius * 0.925;
+    const zodiacInnerRadius = outerRadius * 0.85;
+    const planetRadius = outerRadius * 0.77;
+    const houseOuterRadius = outerRadius * 0.58;
+    const innerRadius = outerRadius * 0.50;
 
     const ascendant = houses[0]?.cusp || 0;
 
@@ -71,7 +71,6 @@ export function ChartWheel({ data }: { data: ChartData }) {
 
     const zoom = (delta: number) => setScale(prev => Math.max(0.75, Math.min(3, prev + delta)));
 
-    // Attach wheel listener with { passive: false } so preventDefault works
     const viewportRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         const el = viewportRef.current;
@@ -149,14 +148,12 @@ export function ChartWheel({ data }: { data: ChartData }) {
     return (
         <div className="chart-wheel-container">
 
-            {/* Zoom */}
             <div className="chart-controls">
                 <button onClick={() => zoom(0.1)}>+</button>
                 <button onClick={() => zoom(-0.1)}>−</button>
                 <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}>⟳</button>
             </div>
 
-            {/* Tooltip */}
             {(hoveredPlanet || hoveredAspect) && (
                 <div className="planet-tooltip" style={tooltipStyle}>
                     {hoveredPlanet && !hoveredAspect && (
@@ -267,7 +264,6 @@ export function ChartWheel({ data }: { data: ChartData }) {
                 </div>
             )}
 
-            {/* SVG Chart */}
             <div className="chart-viewport"
                 ref={viewportRef}
                 onMouseDown={drag.start}
@@ -285,11 +281,6 @@ export function ChartWheel({ data }: { data: ChartData }) {
                     }}
                 >
 
-                    {/* ══════════════════════════════════════════════
-                        LAYER 0: SIGN NAMES (outermost text ring)
-                        Each of the 12 zodiac signs gets its name
-                        centered in its 30° sector, rotated tangentially.
-                        ══════════════════════════════════════════════ */}
                     {ZODIAC_ORDER.map((sign, i) => {
                         const midAngle = i * 30 + 15;
                         const pos = toXY(midAngle, nameRadius);
@@ -309,11 +300,6 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         );
                     })}
 
-                    {/* ══════════════════════════════════════════════
-                        LAYER 1: ZODIAC BAND (outer + inner rings)
-                        Two concentric circles form a "band". Inside the
-                        band: sign divider lines and zodiac icons.
-                        ══════════════════════════════════════════════ */}
                     <circle cx={cx} cy={cy} r={outerRadius} fill="none" stroke={palette.outerRing} strokeWidth={isLight ? 3.4 : 3} />
                     <circle cx={cx} cy={cy} r={zodiacInnerRadius} fill="none" stroke={palette.innerRing} strokeWidth={isLight ? 2.8 : 2.4} />
 
@@ -329,11 +315,9 @@ export function ChartWheel({ data }: { data: ChartData }) {
 
                         return (
                             <g key={sign}>
-                                {/* Divider line between signs */}
                                 <line x1={divStart.x} y1={divStart.y} x2={divEnd.x} y2={divEnd.y}
                                     stroke={palette.divider} strokeWidth={isLight ? 1.5 : 1.3} />
 
-                                {/* Zodiac icon */}
                                 <foreignObject
                                     x={iconPos.x - iconSize / 2} y={iconPos.y - iconSize / 2}
                                     width={iconSize} height={iconSize}
@@ -345,11 +329,6 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         );
                     })}
 
-                    {/* ══════════════════════════════════════════════
-                        LAYER 2: PLANETS
-                        Each planet is drawn as a circle with an SVG
-                        icon inside. Hovering shows a tooltip.
-                        ══════════════════════════════════════════════ */}
                     {planets.map((planet) => {
                         const pos = toXY(planet.longitude, planetRadius);
                         const color = getSignColor(planet.sign);
@@ -363,14 +342,12 @@ export function ChartWheel({ data }: { data: ChartData }) {
                                 }}
                                 onMouseLeave={() => setHoveredPlanet(null)}
                             >
-                                {/* Background circle */}
                                 <circle cx={pos.x} cy={pos.y} r={14}
                                     fill={palette.planetFill}
                                     stroke={color} strokeWidth={isLight ? 1.9 : 1.5} strokeOpacity={isLight ? 0.55 : 0.3}
                                     className="planet-ring"
                                 />
 
-                                {/* Planet SVG icon (rendered inside foreignObject for HTML-in-SVG) */}
                                 <foreignObject
                                     x={pos.x - iconSize / 2} y={pos.y - iconSize / 2}
                                     width={iconSize} height={iconSize}
@@ -379,7 +356,6 @@ export function ChartWheel({ data }: { data: ChartData }) {
                                     <PlanetIcon name={planet.name} size={iconSize} color={color} />
                                 </foreignObject>
 
-                                {/* "R" badge for retrograde planets */}
                                 {planet.retrograde && (
                                     <text x={pos.x + 11} y={pos.y - 9}
                                         fill={color} fontSize={7} fontWeight={700}>R</text>
@@ -388,16 +364,10 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         );
                     })}
 
-                    {/* ══════════════════════════════════════════════
-                        LAYER 3: HOUSES
-                        12 houses divide the chart. House cusps are thin
-                        lines; angular houses (1,4,7,10) are bolder.
-                        ══════════════════════════════════════════════ */}
                     <circle cx={cx} cy={cy} r={houseOuterRadius} fill="none" stroke={palette.houseRing} strokeWidth={isLight ? 2.8 : 2.4} />
                     <circle cx={cx} cy={cy} r={innerRadius} fill={palette.innerFill} stroke={palette.houseRing} strokeWidth={isLight ? 2.8 : 2.4} />
 
                     {houses.map((house, i) => {
-                        // Equal 30° sectors for visual display
                         const startAngle = i * 30;
                         const midAngle = startAngle + 15;
 
@@ -422,7 +392,6 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         );
                     })}
 
-                    {/* Angles: AC (Ascendant), MC (Midheaven), DC, IC */}
                     {[
                         { idx: 0, label: 'AC', color: '#ff6b8a' },
                         { idx: 9, label: 'MC', color: '#6bcbff' },
@@ -441,12 +410,6 @@ export function ChartWheel({ data }: { data: ChartData }) {
                         );
                     })}
 
-                    {/* ══════════════════════════════════════════════
-                        LAYER 4: ASPECT LINES
-                        Lines connecting planets that form angular
-                        relationships (trine=120°, square=90°, etc.)
-                        Each aspect type has its own color.
-                        ══════════════════════════════════════════════ */}
                     <circle cx={cx} cy={cy} r={innerRadius}
                         fill="none" stroke={palette.aspectGuide}
                         strokeWidth={isLight ? 1.1 : 0.8} strokeDasharray="2,4" />

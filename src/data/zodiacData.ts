@@ -1,6 +1,3 @@
-// Zodiac and constellation data for the LandingPage
-// Uses images from assets/zodiac directory
-
 import ariesImg from "../assets/zodiac/aries.png";
 import taurusImg from "../assets/zodiac/taurus.png";
 import geminiImg from "../assets/zodiac/gemini.png";
@@ -14,7 +11,6 @@ import capricornImg from "../assets/zodiac/capricorn.png";
 import aquariusImg from "../assets/zodiac/aquarius.png";
 import piscesImg from "../assets/zodiac/pisces.png";
 
-// Export zodiac images map
 export const zodiacImages: Record<string, string> = {
   Aries: ariesImg,
   Taurus: taurusImg,
@@ -30,7 +26,6 @@ export const zodiacImages: Record<string, string> = {
   Pisces: piscesImg,
 };
 
-// Zodiac data with name, symbol, and display color
 export interface ZodiacData {
   name: string;
   symbol: string;
@@ -52,22 +47,18 @@ export const zodiac: ZodiacData[] = [
   { name: "Pisces", symbol: "♓", color: "#10ac84" },
 ];
 
-// Star position type
 export interface StarPosition {
   x: number;
   y: number;
 }
 
-// Constellation line connection type (index pairs)
 export type ConstellationLines = [number, number][];
 
-// Constellation data type
 export interface ConstellationData {
   stars: StarPosition[];
   lines: ConstellationLines;
 }
 
-// All constellation star positions and line connections
 export const constellationMap: Record<string, ConstellationData> = {
   Aries: {
     stars: [
@@ -402,7 +393,6 @@ export const constellationMap: Record<string, ConstellationData> = {
   },
 };
 
-// Utility function to generate random star intensity
 export type StarIntensity = 0.2 | 0.5 | 1;
 
 export const getStarIntensity = (): StarIntensity => {
@@ -413,7 +403,6 @@ export const getStarIntensity = (): StarIntensity => {
   return 1;
 };
 
-// Get star size based on intensity
 export const getStarSize = (intensity: StarIntensity): number => {
   if (intensity === 1) return 1.4;
   if (intensity === 0.5) return 1;

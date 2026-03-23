@@ -134,8 +134,6 @@ const WheelFrame = styled.div<{ $isLight: boolean }>`
 const ContentContainer = styled.div`
   max-width: 1400px;
   margin: 0 auto;
-  
-  /* Will be updated to full-width in phase 3, already doing it here practically */
   width: 100%;
 `;
 
@@ -246,7 +244,6 @@ export default function SynastryViewPage() {
                 isOpen={isChatOpen} 
                 onClick={() => setIsChatOpen(!isChatOpen)} 
               />
-              {/* Interpretations will go here in Phase 4 */}
             </>
           ) : null}
         </ContentContainer>

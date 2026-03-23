@@ -38,7 +38,7 @@ const FAB = styled.button<{ $isOpen: boolean }>`
     right: 20px;
     width: 56px;
     height: 56px;
-    opacity: ${({ $isOpen }) => $isOpen ? 0 : 1}; /* Hide FAB completely when open on mobile since it goes full screen */
+    opacity: ${({ $isOpen }) => $isOpen ? 0 : 1};
     pointer-events: ${({ $isOpen }) => $isOpen ? 'none' : 'auto'};
   }
 `;

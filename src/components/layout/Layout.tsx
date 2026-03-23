@@ -1,5 +1,3 @@
-// Layout Component - Shared header and layout across pages
-// Auth removed — simple navigation layout
 import type { ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";

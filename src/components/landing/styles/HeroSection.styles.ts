@@ -1,10 +1,5 @@
-// HeroSection Component Styles
-
 import styled, { keyframes } from "styled-components";
 
-// =============================================================================
-// ANIMATIONS
-// =============================================================================
 
 const zoomIn = keyframes`
   from { opacity: 0; }
@@ -21,9 +16,6 @@ const bounce = keyframes`
   50% { transform: translateX(-50%) translateY(10px); }
 `;
 
-// =============================================================================
-// HERO SECTION STYLES
-// =============================================================================
 
 export const HeroSectionWrapper = styled.section`
   min-height: 100dvh;

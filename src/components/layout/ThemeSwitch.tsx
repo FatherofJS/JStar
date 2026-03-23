@@ -54,15 +54,8 @@ const Switch: React.FC<ThemeSwitchProps> = ({ isDark, onToggle }) => {
 const StyledWrapper = styled.div`
   cursor: pointer;
   
-  /* REMASTERED */
-  /* RTX-ON */
-  /* completely redone toggle and droid */
-
   .bb8-toggle {
     --toggle-size: 14px;
-    /* finally I removed the scale now everything depends on the font-size */
-    /* --margin-top-for-head: 1.75em; */
-    /* it's just in case 👆 */
     --toggle-width: 52px;
     --toggle-height: 28px;
     --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2);
@@ -613,7 +606,6 @@ const StyledWrapper = styled.div`
     transition: 0.8s;
   }
 
-  /* actions */
 
   .bb8-toggle__checkbox:checked
     + .bb8-toggle__container

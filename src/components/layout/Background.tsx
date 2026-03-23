@@ -1,4 +1,3 @@
-// Background Component - Beautiful cosmic background with vibrant nebula
 import { memo, useEffect, useMemo, useState } from "react";
 import {
   BackgroundWrapper,
@@ -13,7 +12,6 @@ import {
   StarsLayer3,
 } from "./Background.styles";
 
-// Generate shooting star data - more random falling stars like astrologerstudio.com
 const generateShootingStars = () =>
   Array.from({ length: 4 }, (_, i) => {
     const duration = 1.5 + Math.random() * 2.5;
@@ -22,14 +20,12 @@ const generateShootingStars = () =>
       id: i,
       top: Math.random() * 50 + 5,
       left: Math.random() * 100,
-      // Negative delay lets each star start mid-flight immediately on first paint.
       delay: -(Math.random() * duration),
       duration,
       width: 60 + Math.random() * 80,
     };
   });
 
-// Pre-generate shooting stars
 const SHOOTING_STARS = generateShootingStars();
 
 interface BackgroundProps {
@@ -65,7 +61,6 @@ export function Background({
 
   return (
     <BackgroundWrapper>
-      {/* Keep some depth, but avoid stacking too many blurred animated layers */}
       <NebulaLayer>
         <div
           style={{
@@ -91,23 +86,18 @@ export function Background({
         />
       </NebulaLayer>
 
-      {/* Aurora wave effect - hidden */}
       <AuroraLayer />
 
-      {/* Star layers */}
       <StarsLayer />
       <StarsLayer2 />
       <StarsLayer3 />
 
-      {/* Star field */}
       <StarField>
         <CosmicGlow />
       </StarField>
 
-      {/* Grain overlay - hidden */}
       <GrainOverlay />
 
-      {/* Shooting stars - more frequent like astrologerstudio.com */}
       {shouldShowShootingStars &&
         shootingStars.map((star) => (
           <ShootingStar

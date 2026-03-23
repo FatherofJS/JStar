@@ -1,5 +1,3 @@
-// StarPlayButton Component - Yellow button with star icon, Among Us animation and space-style effects
-
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
@@ -167,7 +165,6 @@ const StyledWrapper = styled.div`
     opacity: 0.5;
   }
 
-  /* Text and icon styling */
   .btn-content {
     display: flex;
     align-items: center;

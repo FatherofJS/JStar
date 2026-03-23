@@ -1,5 +1,3 @@
-// FeatureSection Component - Reusable feature section with image and content
-
 import { useState } from "react";
 import type { FeatureItem } from "../../data/landingData";
 import { ImageZoomModal } from "../ui/ImageZoomModal";
@@ -25,7 +23,6 @@ import {
   FeatureListItem,
 } from "./styles/FeatureSection.styles.ts";
 
-// SVG Icons
 const ChartIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/>
@@ -186,7 +183,6 @@ function FeatureSection({ feature }: FeatureSectionProps) {
   );
 }
 
-// Alternate version with background
 function FeatureSectionAlt({ feature }: FeatureSectionProps) {
   const [zoomImage, setZoomImage] = useState<{ src: string; alt: string } | null>(null);
   
@@ -308,7 +304,6 @@ function FeatureSectionAlt({ feature }: FeatureSectionProps) {
   );
 }
 
-// AI Interpretation section with custom content
 function AIInterpretationSection({ feature }: FeatureSectionProps) {
   const {
     title,

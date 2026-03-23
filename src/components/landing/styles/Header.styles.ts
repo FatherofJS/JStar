@@ -1,10 +1,5 @@
-// Header Component Styles
-
 import styled, { keyframes, css } from "styled-components";
 
-// =============================================================================
-// KEYFRAMES ANIMATIONS
-// =============================================================================
 
 const shimmer = keyframes`
   0% { background-position: -200% center; }
@@ -31,9 +26,6 @@ const borderGlow = keyframes`
   }
 `;
 
-// =============================================================================
-// HEADER STYLES
-// =============================================================================
 
 export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
   position: fixed;
@@ -49,7 +41,6 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
   height: ${({ $scrolled }) => ($scrolled ? "64px" : "80px")};
   padding: 0 40px;
 
-  /* Glassmorphism với gradient nhẹ - Dark mode */
   background: ${({ $scrolled }) =>
     $scrolled
       ? "linear-gradient(135deg, rgba(20, 25, 70, 0.85) 0%, rgba(30, 35, 80, 0.9) 100%)"
@@ -60,12 +51,10 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
   
   border-bottom: 1px solid var(--glass-border);
 
-  /* Animated border khi scroll */
   ${({ $scrolled }) => $scrolled && css`
     animation: ${borderGlow} 4s ease-in-out infinite;
   `}
 
-  /* Entry animation */
   animation: ${slideDown} 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 
   box-shadow: ${({ $scrolled }) =>
@@ -78,7 +67,6 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
     box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1),
     backdrop-filter 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* Gradient accent line at bottom - Dark mode */
   &::after {
     content: '';
     position: absolute;
@@ -98,7 +86,6 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
     transition: opacity 0.4s ease;
   }
 
-  /* Light mode - More prominent header */
   [data-theme="light"] & {
     background: ${({ $scrolled }) =>
     $scrolled
@@ -113,7 +100,6 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
     box-shadow: ${({ $scrolled }) =>
     $scrolled ? "0 4px 20px rgba(14, 165, 233, 0.15), 0 2px 8px rgba(0, 0, 0, 0.08)" : "0 2px 12px rgba(14, 165, 233, 0.08)"};
 
-    /* Light mode accent line */
     &::after {
       background: linear-gradient(
         90deg,
@@ -193,10 +179,8 @@ export const Logo = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
   
-  /* Font calligraphy đặc biệt */
   font-family: 'Cinzel Decorative', serif;
   
-  /* Màu gradient với hiệu ứng phát sáng - Dark mode */
   background: linear-gradient(135deg, #7aa2ff 0%, #c084fc 50%, #22d3ee 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -208,7 +192,6 @@ export const Logo = styled.div`
     filter: drop-shadow(0 0 20px rgba(122, 162, 255, 0.8));
   }
 
-  /* Light mode - Deeper sky colors */
   [data-theme="light"] & {
     background: linear-gradient(135deg, #0284c7 0%, #7c3aed 50%, #0891b2 100%);
     -webkit-background-clip: text;
@@ -257,7 +240,6 @@ export const NavMenuMobile = styled.div<{ $open: boolean }>`
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     
-    /* Gradient border at top */
     &::before {
       content: '';
       position: absolute;
@@ -297,7 +279,6 @@ export const MobileToggle = styled.div`
   }
 `;
 
-// Memoized nav item với underline animation
 export const NavItemMemo = styled.div<{ $active: boolean }>`
   position: relative;
   cursor: pointer;
@@ -308,7 +289,6 @@ export const NavItemMemo = styled.div<{ $active: boolean }>`
   transition: all 0.3s ease;
   padding: 8px 4px;
 
-  /* Underline effect */
   &::after {
     content: '';
     position: absolute;
@@ -335,7 +315,6 @@ export const NavItemMemo = styled.div<{ $active: boolean }>`
     }
   }
 
-  /* Light mode - Better contrast */
   [data-theme="light"] & {
     color: ${({ $active }) => ($active ? "#0284c7" : "#1e293b")};
     
@@ -371,9 +350,6 @@ export const NavItemMemo = styled.div<{ $active: boolean }>`
   }
 `;
 
-// =============================================================================
-// USER MENU STYLES
-// =============================================================================
 
 export const UserMenuWrapper = styled.div`
   position: relative;
@@ -384,7 +360,6 @@ export const UserInfoButton = styled.div<{ $hasMenu?: boolean }>`
   align-items: center;
   gap: 10px;
   padding: 8px 16px;
-  /* Gradient background - Dark mode */
   background: linear-gradient(135deg, rgba(120, 140, 255, 0.2) 0%, rgba(168, 90, 255, 0.15) 100%);
   border: 1px solid rgba(120, 140, 255, 0.25);
   border-radius: 24px;
@@ -400,7 +375,6 @@ export const UserInfoButton = styled.div<{ $hasMenu?: boolean }>`
     border-color: rgba(120, 140, 255, 0.5);
   }
 
-  /* Light mode - More prominent */
   [data-theme="light"] & {
     background: linear-gradient(135deg, rgba(2, 132, 199, 0.15) 0%, rgba(124, 58, 237, 0.12) 100%);
     border: 1px solid rgba(2, 132, 199, 0.3);
@@ -426,7 +400,6 @@ export const UserAvatar = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  /* Animated gradient - Dark mode */
   background: linear-gradient(135deg, #787cff 0%, #a85aff 50%, #6366f1 100%);
   background-size: 200% 200%;
   animation: ${shimmer} 3s ease infinite;
@@ -438,7 +411,6 @@ export const UserAvatar = styled.div`
   color: white;
   box-shadow: 0 2px 10px rgba(120, 140, 255, 0.4);
 
-  /* Light mode - Sky blue gradient */
   [data-theme="light"] & {
     background: linear-gradient(135deg, #0ea5e9 0%, #7c3aed 50%, #0284c7 100%);
     box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
@@ -463,7 +435,6 @@ export const UserMenuDropdown = styled.div<{ $open: boolean }>`
   top: calc(100% + 12px);
   right: 0;
   min-width: 240px;
-  /* Gradient background với glass effect */
   background: var(--bg-secondary);
   // backdrop-filter: blur(25px) saturate(180%);
   border: 1px solid var(--border);
@@ -471,7 +442,6 @@ export const UserMenuDropdown = styled.div<{ $open: boolean }>`
   box-shadow: 0 20px 50px var(--shadow-color), 0 0 30px rgba(120, 140, 255, 0.1);
   overflow: hidden;
   
-  /* Glow border */
   &::before {
     content: '';
     position: absolute;
@@ -538,7 +508,6 @@ export const UserMenuItem = styled.button<{ $danger?: boolean }>`
   transition: all 0.2s ease;
   position: relative;
 
-  /* Hover background */
   &::before {
     content: '';
     position: absolute;

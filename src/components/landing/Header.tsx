@@ -1,6 +1,3 @@
-// Header Component - Navigation with logo, menu, theme switch
-// Auth removed - "Get Started" button navigates to /star-chart
-
 import { memo, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { landingContent } from "../../data/landingData";
@@ -82,7 +79,6 @@ function Header({ activeSection }: HeaderProps) {
         <MobileToggle onClick={toggleMenu}>☰</MobileToggle>
       </HeaderRight>
 
-      {/* Mobile Navigation Menu */}
       <NavMenuMobile $open={isOpen}>
         <NavItemMemo
           $active={activeSection === SECTIONS.HOME}

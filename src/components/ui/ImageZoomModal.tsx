@@ -1,5 +1,3 @@
-// ImageZoomModal Component - Hiển thị ảnh to khi click
-
 import { useEffect, useCallback } from "react";
 import styled from "styled-components";
 

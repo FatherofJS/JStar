@@ -1,5 +1,3 @@
-// Landing Components Index - Export all landing page components
-
 export { default as Header } from "./Header";
 export { default as HeroSection } from "./HeroSection";
 export { 

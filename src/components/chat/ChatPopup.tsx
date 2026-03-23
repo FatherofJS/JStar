@@ -105,7 +105,7 @@ const CloseButton = styled.button<{ $isLight: boolean }>`
   }
 
   @media (min-width: 481px) {
-    display: none; /* Hide on desktop since FAB toggles it */
+    display: none;
   }
 `;
 
@@ -227,7 +227,6 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
   const [isClosing, setIsClosing] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Handle mount/unmount animations
   useEffect(() => {
     if (isOpen && !mounted) {
       setMounted(true);
@@ -237,7 +236,7 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
       setTimeout(() => {
         setMounted(false);
         setIsClosing(false);
-      }, 250); // wait for exit animation
+      }, 250);
     }
   }, [isOpen, mounted, isClosing]);
 

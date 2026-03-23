@@ -1,5 +1,3 @@
-// GetStartedSteps Component - Three simple steps to get started
-
 import { memo } from "react";
 import { landingContent } from "../../data/landingData";
 import {

@@ -19,7 +19,7 @@ export const getApiEndpoint = (endpoint: string): string => {
   return `${API.BASE_URL}${endpoint}`;
 };
 
-export const ZODIAC_CYCLE_INTERVAL = 7000; // Time between zodiac transitions (ms)
+export const ZODIAC_CYCLE_INTERVAL = 7000;
 
 export const ANIMATION = {
   FADE_IN_SYMBOL: 2.2,

@@ -1,10 +1,5 @@
-// GetStartedSteps Component Styles
-
 import styled from "styled-components";
 
-// =============================================================================
-// GET STARTED STEPS STYLES
-// =============================================================================
 
 export const StepsSectionWrapper = styled.section`
   position: relative;
