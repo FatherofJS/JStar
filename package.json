@@ -12,6 +12,7 @@
   "dependencies": {
     "@tabler/icons-react": "^3.37.1",
     "@types/styled-components": "^5.1.36",
+    "@vercel/speed-insights": "^2.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.0",

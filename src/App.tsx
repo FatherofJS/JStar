@@ -4,6 +4,7 @@ import StarChartPage from './pages/StarChartPage';
 import ChartViewPage from './pages/ChartViewPage';
 import SynastryViewPage from './pages/SynastryViewPage';
 import { ThemeProvider } from './theme';
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/synastry" element={<SynastryViewPage />} />
         </Routes>
       </Router>
+      <SpeedInsights />
     </ThemeProvider>
   );
 }
