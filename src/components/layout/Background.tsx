@@ -90,23 +90,23 @@ export function Background({
           }}
         />
       </NebulaLayer>
-      
+
       {/* Aurora wave effect - hidden */}
       <AuroraLayer />
-      
+
       {/* Star layers */}
       <StarsLayer />
       <StarsLayer2 />
       <StarsLayer3 />
-      
+
       {/* Star field */}
       <StarField>
         <CosmicGlow />
       </StarField>
-      
+
       {/* Grain overlay - hidden */}
       <GrainOverlay />
-      
+
       {/* Shooting stars - more frequent like astrologerstudio.com */}
       {shouldShowShootingStars &&
         shootingStars.map((star) => (
@@ -124,4 +124,3 @@ export function Background({
 }
 
 export default memo(Background);
-

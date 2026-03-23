@@ -1,6 +1,3 @@
-// HeroSection Component - Hero with ZodiacCinematic, title, description, CTA
-// Auth removed - primary action navigates to /star-chart
-
 import { useRef, useCallback, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ZodiacCinematic } from "../../components/ui/ZodiacCinematic";
@@ -20,7 +17,6 @@ import {
   ScrollButton,
 } from "./styles/HeroSection.styles.ts";
 
-// SVG Icons
 const ChevronDownIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
