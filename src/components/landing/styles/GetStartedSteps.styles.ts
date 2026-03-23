@@ -14,12 +14,12 @@ export const StepsSectionWrapper = styled.section`
   }
 
   @media (max-width: 1280px) {
-    backdrop-filter: none;
+    /* backdrop-filter: none; */
     background: rgba(255, 255, 255, 0.02);
   }
 
   [data-performance-mode="reduced"] & {
-    backdrop-filter: none;
+    /* backdrop-filter: none; */
     background: rgba(255, 255, 255, 0.015);
   }
 `;

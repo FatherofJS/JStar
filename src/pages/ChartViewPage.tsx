@@ -56,8 +56,39 @@ const StatusPanel = styled.div<{ $isLight: boolean }>`
   backdrop-filter: blur(14px);
 `;
 
+const LoadingOverlay = styled.div<{ $isLight: boolean }>`
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: ${({ $isLight }) =>
+    $isLight
+      ? "rgba(255, 255, 255, 0.8)"
+      : "rgba(10, 14, 23, 0.8)"};
+  backdrop-filter: blur(12px);
+  z-index: 100;
+  color: ${({ $isLight }) => ($isLight ? "#1e293b" : "#fff")};
+`;
+
+const LoadingSpinner = styled.div<{ $isLight: boolean }>`
+  width: 50px;
+  height: 50px;
+  border: 4px solid ${({ $isLight }) => ($isLight ? "rgba(99, 102, 241, 0.2)" : "rgba(129, 140, 248, 0.2)")};
+  border-top-color: ${({ $isLight }) => ($isLight ? "#4f46e5" : "#818cf8")};
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 24px;
+
+  @keyframes spin {
+    100% { transform: rotate(360deg); }
+  }
+`;
+
 const LoadingText = styled.p`
   font-size: 1.2rem;
+  letter-spacing: 1px;
 `;
 
 const ErrorText = styled.p<{ $isLight: boolean }>`
@@ -77,71 +108,24 @@ const DismissButton = styled.button`
 const WheelStage = styled.div<{ $isLight: boolean }>`
   min-height: calc(100dvh - 120px);
   padding: 18px;
-  border-radius: 30px;
-  background: ${({ $isLight }) =>
-    $isLight
-      ? "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(236, 245, 255, 0.94))"
-      : "linear-gradient(180deg, rgba(16, 22, 36, 0.96), rgba(9, 13, 22, 0.94))"};
-  border: 1px solid
-    ${({ $isLight }) =>
-    $isLight ? "rgba(148, 163, 184, 0.28)" : "rgba(129, 140, 248, 0.14)"};
-  box-shadow: ${({ $isLight }) =>
-    $isLight ? "0 24px 60px rgba(148, 163, 184, 0.18)" : "none"};
-  box-shadow: ${({ $isLight }) =>
-    $isLight
-      ? "0 24px 60px rgba(148, 163, 184, 0.18), inset 0 1px 0 rgba(255,255,255,0.75)"
-      : "0 28px 60px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255,255,255,0.05)"};
   position: relative;
   overflow: hidden;
-
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: ${({ $isLight }) =>
-    $isLight
-      ? "radial-gradient(circle at top, rgba(99, 102, 241, 0.12), transparent 42%), linear-gradient(135deg, rgba(255,255,255,0.6), transparent 45%)"
-      : "radial-gradient(circle at top, rgba(99, 102, 241, 0.18), transparent 38%), linear-gradient(135deg, rgba(129, 140, 248, 0.08), transparent 48%)"};
-  }
 
   @media (max-width: 768px) {
     height: calc(100dvh - 104px);
     padding: 12px;
-    border-radius: 20px;
   }
 
   @media (max-width: 480px) {
     height: calc(100dvh - 96px);
     padding: 8px;
-    border-radius: 16px;
   }
 `;
 
 const WheelFrame = styled.div<{ $isLight: boolean }>`
   position: relative;
   height: 100%;
-  border-radius: 24px;
-  overflow: hidden;
   background: transparent;
-  border: 1px solid
-    ${({ $isLight }) =>
-    $isLight ? "rgba(148, 163, 184, 0.2)" : "rgba(255,255,255,0.08)"};
-  box-shadow: ${({ $isLight }) =>
-    $isLight
-      ? "inset 0 1px 0 rgba(255,255,255,0.85), 0 14px 32px rgba(148, 163, 184, 0.14)"
-      : "inset 0 1px 0 rgba(255,255,255,0.05), 0 16px 36px rgba(0, 0, 0, 0.24)"};
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 14px;
-    border-radius: 20px;
-    pointer-events: none;
-    border: 1px solid
-      ${({ $isLight }) =>
-    $isLight ? "rgba(99, 102, 241, 0.08)" : "rgba(129, 140, 248, 0.1)"};
-  }
 `;
 
 const ContentContainer = styled.div`
@@ -149,6 +133,34 @@ const ContentContainer = styled.div`
   margin: 0 auto;
   width: 100%;
 `;
+
+const CHART_CACHE_KEY = "jstar_chart_cache";
+
+function isValidChartData(data: unknown): data is ChartData {
+  if (!data || typeof data !== "object") return false;
+  const d = data as Record<string, unknown>;
+  return Array.isArray(d.planets) && Array.isArray(d.houses) && Array.isArray(d.aspects);
+}
+
+function loadCachedChart(): ChartData | null {
+  try {
+    const raw = sessionStorage.getItem(CHART_CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return isValidChartData(parsed) ? parsed : null;
+  } catch {
+    sessionStorage.removeItem(CHART_CACHE_KEY);
+    return null;
+  }
+}
+
+function saveChartToCache(data: ChartData) {
+  try {
+    sessionStorage.setItem(CHART_CACHE_KEY, JSON.stringify(data));
+  } catch {
+    /* quota exceeded — silently ignore */
+  }
+}
 
 function normalizeChartData(data: ChartData): ChartData {
   return {
@@ -169,11 +181,12 @@ export default function ChartViewPage() {
     () => (locationState?.chartData ? normalizeChartData(locationState.chartData) : null),
     [locationState]
   );
+  const cachedData = useMemo(() => (!locationState ? loadCachedChart() : null), [locationState]);
   const shouldFetchChart =
     Boolean(locationState?.birthDate) &&
     locationState?.latitude !== undefined &&
     !locationState?.chartData;
-  const [chartData, setChartData] = useState<ChartData | null>(stateChartData ?? null);
+  const [chartData, setChartData] = useState<ChartData | null>(stateChartData ?? cachedData ?? null);
   const [loading, setLoading] = useState(shouldFetchChart);
   const [error, setError] = useState<string | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -201,12 +214,21 @@ export default function ChartViewPage() {
           return res.json();
         })
         .then((data) => {
-          setChartData(normalizeChartData(data as ChartData));
+          const normalized = normalizeChartData(data as ChartData);
+          setChartData(normalized);
+          saveChartToCache(normalized);
         })
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
     }
   }, [locationState]);
+
+  // Cache chart data passed via navigation state
+  useEffect(() => {
+    if (stateChartData) {
+      saveChartToCache(stateChartData);
+    }
+  }, [stateChartData]);
 
   const displayedChartData = stateChartData ?? chartData;
 
@@ -214,9 +236,10 @@ export default function ChartViewPage() {
     <Layout>
       <ChartPageWrapper className="chart-page" $isLight={isLight}>
         {loading && (
-          <StatusPanel $isLight={isLight}>
+          <LoadingOverlay $isLight={isLight}>
+            <LoadingSpinner $isLight={isLight} />
             <LoadingText>Calculating your cosmic chart...</LoadingText>
-          </StatusPanel>
+          </LoadingOverlay>
         )}
 
         {error && (

@@ -42,7 +42,7 @@ export function Background({
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(
-      "(prefers-reduced-motion: reduce), (max-width: 1280px), (hover: none), (pointer: coarse)"
+      "(prefers-reduced-motion: reduce)"
     );
 
     const updateMotionPreference = () => {

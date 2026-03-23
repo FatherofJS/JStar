@@ -138,7 +138,7 @@ export function ZodiacCinematic() {
                 x2={s2.x}
                 y2={s2.y}
                 color={current.color}
-                delay={i * 0.35}
+                $delay={i * 0.35}
               />
             );
           })}
@@ -149,7 +149,7 @@ export function ZodiacCinematic() {
               cx={s.x}
               cy={s.y}
               r={starData.size}
-              intensity={starData.intensity}
+              $intensity={starData.intensity}
             />
           ))}
         </ConstellationSVG>

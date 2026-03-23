@@ -5,7 +5,7 @@ import { Background } from "../components/layout/Background";
 import { useLanding } from "../hooks/useLanding";
 import { useSectionObserver } from "../hooks/useScroll";
 import { featuresData } from "../data/landingData";
-import { SECTIONS } from "../constants";
+// import { SECTIONS } from "../constants";
 
 import Header from "../components/landing/Header";
 import HeroSection from "../components/landing/HeroSection";
@@ -66,8 +66,8 @@ function LandingPage() {
     return (
         <LandingPageShell data-performance-mode={isReduced ? "reduced" : "default"}>
             <Background
-                showShootingStars={activeSection === SECTIONS.HOME}
-                forceReducedMotion={isReduced}
+                showShootingStars={true}
+                forceReducedMotion={false}
             />
 
             <Header activeSection={activeSection} />

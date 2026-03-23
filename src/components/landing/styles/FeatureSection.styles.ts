@@ -38,12 +38,12 @@ export const SectionContainerAlt = styled(SectionContainer)`
   backdrop-filter: blur(6px);
 
   @media (max-width: 1280px) {
-    backdrop-filter: none;
+    /* backdrop-filter: none; */
     background: rgba(255, 255, 255, 0.025);
   }
 
   [data-performance-mode="reduced"] & {
-    backdrop-filter: none;
+    /* backdrop-filter: none; */
     background: rgba(255, 255, 255, 0.018);
   }
 `;
@@ -207,11 +207,11 @@ export const FeatureGlow = styled.div<{ $position: 'left' | 'right' }>`
 
   @media (max-width: 1280px) {
     opacity: 0.28;
-    filter: blur(14px);
+    /* filter: blur(14px); */
   }
 
   [data-performance-mode="reduced"] & {
-    display: none;
+    /* display: none; */
   }
 `;
 

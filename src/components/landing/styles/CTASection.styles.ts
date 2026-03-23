@@ -14,12 +14,12 @@ export const CTASectionWrapper = styled.section`
   }
 
   @media (max-width: 1280px) {
-    backdrop-filter: none;
+    /* backdrop-filter: none; */
     background: rgba(255, 255, 255, 0.02);
   }
 
   [data-performance-mode="reduced"] & {
-    backdrop-filter: none;
+    /* backdrop-filter: none; */
     background: rgba(255, 255, 255, 0.015);
   }
 `;
@@ -86,20 +86,20 @@ export const CTAButton = styled.button`
   }
 
   @media (max-width: 1280px) {
-    transition: none;
+    /* transition: none; */
 
     &:hover {
-      transform: none;
-      box-shadow: none;
+      /* transform: none;
+      box-shadow: none; */
     }
   }
 
   [data-performance-mode="reduced"] & {
-    transition: none;
+    /* transition: none; */
 
     &:hover {
-      transform: none;
-      box-shadow: none;
+      /* transform: none;
+      box-shadow: none; */
     }
   }
 `;

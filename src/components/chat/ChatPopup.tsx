@@ -105,7 +105,7 @@ const CloseButton = styled.button<{ $isLight: boolean }>`
   }
 
   @media (min-width: 481px) {
-    display: none;
+    display: none; /* Hide on desktop since FAB toggles it */
   }
 `;
 
@@ -138,11 +138,11 @@ const Bubble = styled.div<{ $role: "assistant" | "user"; $isLight: boolean }>`
     $role === "user" ? "#ffffff" : $isLight ? "#0f172a" : "rgba(255,255,255,0.92)"};
   border: 1px solid
     ${({ $role, $isLight }) =>
-      $role === "user"
-        ? "transparent"
-        : $isLight
-          ? "rgba(148, 163, 184, 0.14)"
-          : "rgba(255,255,255,0.08)"};
+    $role === "user"
+      ? "transparent"
+      : $isLight
+        ? "rgba(148, 163, 184, 0.14)"
+        : "rgba(255,255,255,0.08)"};
 `;
 
 const Composer = styled.form<{ $isLight: boolean }>`
@@ -152,7 +152,7 @@ const Composer = styled.form<{ $isLight: boolean }>`
   padding: 14px 16px 16px;
   border-top: 1px solid
     ${({ $isLight }) =>
-      $isLight ? "rgba(148, 163, 184, 0.16)" : "rgba(255,255,255,0.07)"};
+    $isLight ? "rgba(148, 163, 184, 0.16)" : "rgba(255,255,255,0.07)"};
   
   @media (max-width: 480px) {
     padding-bottom: env(safe-area-inset-bottom, 24px);
@@ -161,8 +161,8 @@ const Composer = styled.form<{ $isLight: boolean }>`
 
 const TextArea = styled.textarea<{ $isLight: boolean }>`
   width: 100%;
-  min-height: 92px;
-  resize: vertical;
+  min-height: 50px;
+  resize: none;
   border-radius: 16px;
   padding: 12px 14px;
   font: inherit;
@@ -171,12 +171,12 @@ const TextArea = styled.textarea<{ $isLight: boolean }>`
     $isLight ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.04)"};
   border: 1px solid
     ${({ $isLight }) =>
-      $isLight ? "rgba(148, 163, 184, 0.2)" : "rgba(255,255,255,0.08)"};
+    $isLight ? "rgba(148, 163, 184, 0.2)" : "rgba(255,255,255,0.08)"};
   outline: none;
 
   &::placeholder {
     color: ${({ $isLight }) =>
-      $isLight ? "rgba(100, 116, 139, 0.86)" : "rgba(255,255,255,0.42)"};
+    $isLight ? "rgba(100, 116, 139, 0.86)" : "rgba(255,255,255,0.42)"};
   }
 `;
 
@@ -227,6 +227,7 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
   const [isClosing, setIsClosing] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  // Handle mount/unmount animations
   useEffect(() => {
     if (isOpen && !mounted) {
       setMounted(true);
@@ -236,7 +237,7 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
       setTimeout(() => {
         setMounted(false);
         setIsClosing(false);
-      }, 250);
+      }, 250); // wait for exit animation
     }
   }, [isOpen, mounted, isClosing]);
 

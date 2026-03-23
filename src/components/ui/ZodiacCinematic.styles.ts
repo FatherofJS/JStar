@@ -124,12 +124,12 @@ export const DeepGlow = styled.div<{ color: string }>`
   opacity: 0.38;
 
   @media (max-width: 1280px) {
-    filter: blur(16px);
-    opacity: 0.18;
+    /* filter: blur(16px);
+    opacity: 0.18; */
   }
 
   [data-performance-mode="reduced"] & {
-    display: none;
+    /* display: none; */
   }
 `;
 
@@ -151,13 +151,13 @@ export const AuraRing = styled.div`
   }
 
   @media (max-width: 1280px) {
-    animation: none;
-    opacity: 0.55;
+    /* animation: none;
+    opacity: 0.55; */
   }
 
   [data-performance-mode="reduced"] & {
-    animation: none;
-    opacity: 0.35;
+    /* animation: none;
+    opacity: 0.35; */
   }
 `;
 
@@ -179,13 +179,13 @@ export const OrbitRing = styled.div`
   }
 
   @media (max-width: 1280px) {
-    animation: none;
-    opacity: 0.45;
+    /* animation: none;
+    opacity: 0.45; */
   }
 
   [data-performance-mode="reduced"] & {
-    animation: none;
-    opacity: 0.28;
+    /* animation: none;
+    opacity: 0.28; */
   }
 `;
 
@@ -205,10 +205,10 @@ export const ZodiacName = styled.div`
   }
 `;
 
-export const GalaxyStar = styled.circle<{ intensity: number }>`
-  fill: rgba(255, 255, 255, ${(p) => 0.5 + p.intensity * 0.5});
+export const GalaxyStar = styled.circle<{ $intensity: number }>`
+  fill: rgba(255, 255, 255, ${(p) => 0.5 + p.$intensity * 0.5});
   filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
-  opacity: ${(p) => 0.5 + p.intensity * 0.5};
+  opacity: ${(p) => 0.5 + p.$intensity * 0.5};
 
   @media (max-width: 1280px) {
     filter: none;
@@ -216,7 +216,7 @@ export const GalaxyStar = styled.circle<{ intensity: number }>`
 
   [data-performance-mode="reduced"] & {
     filter: none;
-    opacity: ${(p) => 0.4 + p.intensity * 0.35};
+    opacity: ${(p) => 0.4 + p.$intensity * 0.35};
   }
 `;
 
@@ -231,13 +231,13 @@ export const ConstellationSVG = styled.svg`
   }
 `;
 
-export const Line = styled.line<{ color: string; delay: number }>`
+export const Line = styled.line<{ color: string; $delay: number }>`
   stroke: ${(p) => p.color};
   stroke-width: 0.5;
   stroke-dasharray: 140;
   stroke-dashoffset: 140;
   animation: ${drawLine} 4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: ${(p) => p.delay}s;
+  animation-delay: ${(p) => p.$delay}s;
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;

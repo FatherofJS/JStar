@@ -75,13 +75,13 @@ export const HeroLight = styled.div`
   z-index: -1;
 
   @media (max-width: 1280px) {
-    filter: blur(28px);
-    opacity: 0.3;
+    /* filter: blur(28px);
+    opacity: 0.3; */
   }
 
   [data-performance-mode="reduced"] & {
-    filter: blur(18px);
-    opacity: 0.18;
+    /* filter: blur(18px);
+    opacity: 0.18; */
   }
 `;
 
@@ -236,13 +236,13 @@ export const ScrollButton = styled.button`
   }
 
   @media (max-width: 1280px) {
-    backdrop-filter: none;
-    animation: none;
+    /* backdrop-filter: none;
+    animation: none; */
     transition: background 0.2s ease, border-color 0.2s ease;
   }
 
   [data-performance-mode="reduced"] & {
-    display: none;
+    /* display: none; */
   }
 
   @media (max-width: 768px) {
