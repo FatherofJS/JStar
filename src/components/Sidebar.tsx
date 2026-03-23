@@ -1,4 +1,3 @@
-
 export function Sidebar() {
-    return null;
+  return null;
 }

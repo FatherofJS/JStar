@@ -1,0 +1,259 @@
+*{
+    box-sizing: border-box;
+}
+
+.usercontainer{
+    padding: 50px 2%;
+    display: flex;
+    flex-direction: row-reverse; /* Thay đổi sang ngang */
+    align-items: center;
+    justify-content: center; /* Căn giữa cả 2 nhóm */
+    gap: 150px; /* Thu hẹp gap một chút để vừa màn hình ngang */
+    width: 100%;
+    min-height: 100vh;
+    transition: scale 0.3s ease, gap 0.3s ease;
+}
+
+
+.circle-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    perspective: 1500px;
+    transform-style: preserve-3d;
+    contain: layout style;
+}
+
+
+
+.group-circular {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Hiệu ứng xoay tròn tối ưu GPU */
+    animation: rotateCircle var(--speed, 40s) linear infinite;
+    will-change: transform;
+    transform-style: preserve-3d;
+}
+
+.group-title {
+    color: #fff;
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    z-index: 20;
+}
+
+@keyframes rotateCircle {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Dừng xoay khi hover để người dùng dễ quan sát và chọn thẻ */
+.circle-wrapper:hover .group-circular,
+.circle-wrapper:hover .upright-container {
+    animation-play-state: paused;
+}
+
+/* Dùng opacity overlay thay vì filter:brightness (nhẹ hơn rất nhiều, tránh repaint) */
+.group-circular:has(.flip-card:hover) .flip-card:not(:hover) .imgngon,
+.group-circular:has(.flip-card:hover) .flip-card:not(:hover) .imgngon-sau {
+    opacity: 0.5;
+}
+
+/* Thẻ ĐANG được di chuột trực tiếp: giữ sáng bình thường */
+.group-circular .flip-card:hover .imgngon,
+.group-circular .flip-card:hover .imgngon-sau {
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.7);
+}
+
+.ducanh:hover {
+    z-index: 100;
+}
+
+
+@keyframes counterRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+
+.upright-container {
+    scale: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: counterRotate var(--speed, 20s) linear infinite;
+}
+
+.imgngon{
+    max-width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ff6f0186;
+    transform: translate3d(0,0,0);
+    transition: opacity 0.3s ease;
+}
+
+/* Flip Card Container */
+.flip-card {
+    background-color: transparent;
+    width: 150px;
+    height: 150px;
+    perspective: 1000px;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+.flip-input {
+    display: none;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), scale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translate3d(0,0,0);
+    will-change: transform;
+}
+
+/* Trigger Flip */
+.flip-input:checked ~ .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Tốc độ biến mất shadow nhanh khi ấn (checked) */
+.flip-input:checked ~ .flip-card-inner .flip-card-front {
+    box-shadow: 0 0 0 rgba(255, 165, 0, 0), 0 0 0 rgba(0, 0, 0, 0);
+    transition: box-shadow 0.2s ease-out;
+}
+
+/* Bỏ hiệu ứng shadow hiện lại dần ở mặt sau */
+.flip-input:checked ~ .flip-card-inner .flip-card-back {
+    animation: none;
+    box-shadow: 0 0 50px rgba(255, 165, 0, 0.6), 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Khi quay ngược lại (not checked): mặt sau mất bóng nhanh */
+.flip-input:not(:checked) ~ .flip-card-inner .flip-card-back {
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+    animation: none;
+    transition: box-shadow 0.2s ease-out;
+}
+
+/* Bỏ shadowInward animation — giảm 11 animation threads */
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    box-shadow: 0 0 30px rgba(255, 165, 0, 0.5);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.flip-card-front {
+    background-color: transparent;
+}
+
+.flip-card-back {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    transform: rotateY(180deg);
+    border: 2px solid #fff;
+    overflow: hidden; /* Ensure image doesn't leak */
+}
+
+.imgngon-sau {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.imgngon-sau-icon {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Galaxy deep space gradient */
+    background: radial-gradient(circle at center, #27394d 0%, #151723 100%);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.imgngon-sau-icon svg {
+    width: 60%;
+    height: 60%;
+    /* Starlight Silver / Cyan Glow */
+    color: #f8fafc; 
+    filter: drop-shadow(0 0 5px #fff) 
+            drop-shadow(0 0 15px #38bdf8)
+            drop-shadow(0 0 30px rgba(56, 189, 248, 0.3));
+}
+
+.ducanh{
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    contain: layout style;
+}
+
+
+.ducanh .chucvu{
+    font-size: 0.9rem; /* Reduced size to fit better */
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+.ducanh .name{
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+.thongtin{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.flip-card:hover .flip-card-inner {
+    scale: 1.1;
+}
+
+
+
+
+@media (max-width: 600px) {
+    .usercontainer {
+        flex-direction: column;
+        gap: 160px;
+    }
+}
