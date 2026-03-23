@@ -530,14 +530,14 @@ const ToggleButton = styled.button<{ $active: boolean; $isLight: boolean }>`
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: ${props => props.$active 
-    ? (props.$isLight ? '#ffffff' : 'rgba(255, 255, 255, 0.15)') 
+  background: ${props => props.$active
+    ? (props.$isLight ? '#ffffff' : 'rgba(255, 255, 255, 0.15)')
     : 'transparent'};
-  color: ${props => props.$active 
-    ? (props.$isLight ? '#4f46e5' : '#fff') 
+  color: ${props => props.$active
+    ? (props.$isLight ? '#4f46e5' : '#fff')
     : (props.$isLight ? 'rgba(30, 41, 59, 0.6)' : 'rgba(255, 255, 255, 0.6)')};
-  box-shadow: ${props => props.$active && props.$isLight 
-    ? '0 4px 12px rgba(0, 0, 0, 0.05)' 
+  box-shadow: ${props => props.$active && props.$isLight
+    ? '0 4px 12px rgba(0, 0, 0, 0.05)'
     : 'none'};
 `;
 
@@ -767,18 +767,18 @@ export default function StarChartPage() {
         <ChartContainer $isLight={isLight} $isSynastry={chartType === 'synastry'}>
           <form onSubmit={handleSubmit}>
             <ToggleContainer $isLight={isLight}>
-              <ToggleButton 
-                type="button" 
-                $active={chartType === 'natal'} 
-                $isLight={isLight} 
+              <ToggleButton
+                type="button"
+                $active={chartType === 'natal'}
+                $isLight={isLight}
                 onClick={() => { setChartType('natal'); setError(''); }}
               >
                 Natal Chart
               </ToggleButton>
-              <ToggleButton 
-                type="button" 
-                $active={chartType === 'synastry'} 
-                $isLight={isLight} 
+              <ToggleButton
+                type="button"
+                $active={chartType === 'synastry'}
+                $isLight={isLight}
                 onClick={() => { setChartType('synastry'); setError(''); }}
               >
                 Synastry Chart
@@ -792,143 +792,16 @@ export default function StarChartPage() {
                 )}
 
                 <FormSection>
-              <FormLabel $isLight={isLight}>Full Name</FormLabel>
-              <FullNameInput
-                type="text"
-                name="name"
-                autoComplete="name"
-                placeholder="What should we call you?"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                $isLight={isLight}
-                required
-              />
-            </FormSection>
-
-            <SectionDivider $isLight={isLight} />
-
-            <FormSection>
-              <FormLabel $isLight={isLight}>Date of Birth</FormLabel>
-              <DatePickerWrapper>
-                <DateSelect
-                  name="bday-month"
-                  autoComplete="bday-month"
-                  value={month}
-                  onChange={(e) => setMonth(e.target.value)}
-                  $isLight={isLight}
-                  required
-                >
-                  <option value="">Month</option>
-                  <option value="1">January</option>
-                  <option value="2">February</option>
-                  <option value="3">March</option>
-                  <option value="4">April</option>
-                  <option value="5">May</option>
-                  <option value="6">June</option>
-                  <option value="7">July</option>
-                  <option value="8">August</option>
-                  <option value="9">September</option>
-                  <option value="10">October</option>
-                  <option value="11">November</option>
-                  <option value="12">December</option>
-                </DateSelect>
-                <DateSelect
-                  name="bday-day"
-                  autoComplete="bday-day"
-                  value={day}
-                  onChange={(e) => setDay(e.target.value)}
-                  $isLight={isLight}
-                  required
-                >
-                  <option value="">Day</option>
-                  {Array.from({ length: 31 }, (_, i) => (
-                    <option key={i + 1} value={i + 1}>{i + 1}</option>
-                  ))}
-                </DateSelect>
-                <DateInput
-                  type="number"
-                  name="bday-year"
-                  autoComplete="bday-year"
-                  placeholder="Year"
-                  min="1900"
-                  max={new Date().getFullYear()}
-                  value={year}
-                  onChange={(e) => setYear(e.target.value)}
-                  $isLight={isLight}
-                  required
-                />
-              </DatePickerWrapper>
-            </FormSection>
-
-            <FormSection>
-              <FormLabel $isLight={isLight}>Birth Time</FormLabel>
-              <TimeWrapper $isLight={isLight}>
-                <InputIcon>🕐</InputIcon>
-                <TimeInput
-                  type="time"
-                  name="bday-time"
-                  autoComplete="bday-time"
-                  value={birthTime}
-                  onChange={(e) => setBirthTime(e.target.value)}
-                  placeholder="What time were you born?"
-                  $isLight={isLight}
-                />
-              </TimeWrapper>
-            </FormSection>
-
-            <FormSection>
-              <FormLabel $isLight={isLight}>Birth Place</FormLabel>
-              <Row>
-                <div>
-                  <SubLabel $isLight={isLight}>City</SubLabel>
-                  <LocationAutocomplete
-                    value={selectedCity?.display_name?.split(',')[0] || ''}
-                    onChange={(location: LocationData | null) => {
-                      setSelectedCity(location);
-                      if (location && location.country) {
-                        setSelectedCountry({
-                          id: location.country_code,
-                          name: location.country,
-                          country_code: location.country_code,
-                          country: location.country,
-                          display_name: location.country,
-                          latitude: location.latitude,
-                          longitude: location.longitude
-                        });
-                      }
-                    }}
-                    placeholder="Search city..."
-                    searchType="city"
-                    isLight={isLight}
-                  />
-                </div>
-                <div>
-                  <SubLabel $isLight={isLight}>Country</SubLabel>
-                  <LocationAutocomplete
-                    value={selectedCountry?.name || ''}
-                    onChange={(location: LocationData | null) => setSelectedCountry(location)}
-                    placeholder="Search country..."
-                    searchType="country"
-                    isLight={isLight}
-                  />
-                </div>
-              </Row>
-            </FormSection>
-          </PersonColumn>
-
-            {chartType === 'synastry' && (
-              <PersonColumn>
-                <PersonTitle $isLight={isLight}>Person 2</PersonTitle>
-                
-                <FormSection>
                   <FormLabel $isLight={isLight}>Full Name</FormLabel>
                   <FullNameInput
                     type="text"
-                    placeholder="Their name"
-                    value={p2FullName}
-                    onChange={(e) => setP2FullName(e.target.value)}
+                    name="name"
+                    autoComplete="name"
+                    placeholder="What should we call you?"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
                     $isLight={isLight}
-                    required={chartType === 'synastry'}
+                    required
                   />
                 </FormSection>
 
@@ -938,10 +811,12 @@ export default function StarChartPage() {
                   <FormLabel $isLight={isLight}>Date of Birth</FormLabel>
                   <DatePickerWrapper>
                     <DateSelect
-                      value={p2Month}
-                      onChange={(e) => setP2Month(e.target.value)}
+                      name="bday-month"
+                      autoComplete="bday-month"
+                      value={month}
+                      onChange={(e) => setMonth(e.target.value)}
                       $isLight={isLight}
-                      required={chartType === 'synastry'}
+                      required
                     >
                       <option value="">Month</option>
                       <option value="1">January</option>
@@ -958,10 +833,12 @@ export default function StarChartPage() {
                       <option value="12">December</option>
                     </DateSelect>
                     <DateSelect
-                      value={p2Day}
-                      onChange={(e) => setP2Day(e.target.value)}
+                      name="bday-day"
+                      autoComplete="bday-day"
+                      value={day}
+                      onChange={(e) => setDay(e.target.value)}
                       $isLight={isLight}
-                      required={chartType === 'synastry'}
+                      required
                     >
                       <option value="">Day</option>
                       {Array.from({ length: 31 }, (_, i) => (
@@ -970,13 +847,15 @@ export default function StarChartPage() {
                     </DateSelect>
                     <DateInput
                       type="number"
+                      name="bday-year"
+                      autoComplete="bday-year"
                       placeholder="Year"
                       min="1900"
                       max={new Date().getFullYear()}
-                      value={p2Year}
-                      onChange={(e) => setP2Year(e.target.value)}
+                      value={year}
+                      onChange={(e) => setYear(e.target.value)}
                       $isLight={isLight}
-                      required={chartType === 'synastry'}
+                      required
                     />
                   </DatePickerWrapper>
                 </FormSection>
@@ -987,9 +866,11 @@ export default function StarChartPage() {
                     <InputIcon>🕐</InputIcon>
                     <TimeInput
                       type="time"
-                      value={p2BirthTime}
-                      onChange={(e) => setP2BirthTime(e.target.value)}
-                      placeholder="Time of birth?"
+                      name="bday-time"
+                      autoComplete="bday-time"
+                      value={birthTime}
+                      onChange={(e) => setBirthTime(e.target.value)}
+                      placeholder="What time were you born?"
                       $isLight={isLight}
                     />
                   </TimeWrapper>
@@ -1001,11 +882,11 @@ export default function StarChartPage() {
                     <div>
                       <SubLabel $isLight={isLight}>City</SubLabel>
                       <LocationAutocomplete
-                        value={p2SelectedCity?.display_name?.split(',')[0] || ''}
+                        value={selectedCity?.display_name?.split(',')[0] || ''}
                         onChange={(location: LocationData | null) => {
-                          setP2SelectedCity(location);
+                          setSelectedCity(location);
                           if (location && location.country) {
-                            setP2SelectedCountry({
+                            setSelectedCountry({
                               id: location.country_code,
                               name: location.country,
                               country_code: location.country_code,
@@ -1024,8 +905,8 @@ export default function StarChartPage() {
                     <div>
                       <SubLabel $isLight={isLight}>Country</SubLabel>
                       <LocationAutocomplete
-                        value={p2SelectedCountry?.name || ''}
-                        onChange={(location: LocationData | null) => setP2SelectedCountry(location)}
+                        value={selectedCountry?.name || ''}
+                        onChange={(location: LocationData | null) => setSelectedCountry(location)}
                         placeholder="Search country..."
                         searchType="country"
                         isLight={isLight}
@@ -1034,7 +915,126 @@ export default function StarChartPage() {
                   </Row>
                 </FormSection>
               </PersonColumn>
-            )}
+
+              {chartType === 'synastry' && (
+                <PersonColumn>
+                  <PersonTitle $isLight={isLight}>Person 2</PersonTitle>
+
+                  <FormSection>
+                    <FormLabel $isLight={isLight}>Full Name</FormLabel>
+                    <FullNameInput
+                      type="text"
+                      placeholder="Their name"
+                      value={p2FullName}
+                      onChange={(e) => setP2FullName(e.target.value)}
+                      $isLight={isLight}
+                      required={chartType === 'synastry'}
+                    />
+                  </FormSection>
+
+                  <SectionDivider $isLight={isLight} />
+
+                  <FormSection>
+                    <FormLabel $isLight={isLight}>Date of Birth</FormLabel>
+                    <DatePickerWrapper>
+                      <DateSelect
+                        value={p2Month}
+                        onChange={(e) => setP2Month(e.target.value)}
+                        $isLight={isLight}
+                        required={chartType === 'synastry'}
+                      >
+                        <option value="">Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </DateSelect>
+                      <DateSelect
+                        value={p2Day}
+                        onChange={(e) => setP2Day(e.target.value)}
+                        $isLight={isLight}
+                        required={chartType === 'synastry'}
+                      >
+                        <option value="">Day</option>
+                        {Array.from({ length: 31 }, (_, i) => (
+                          <option key={i + 1} value={i + 1}>{i + 1}</option>
+                        ))}
+                      </DateSelect>
+                      <DateInput
+                        type="number"
+                        placeholder="Year"
+                        min="1900"
+                        max={new Date().getFullYear()}
+                        value={p2Year}
+                        onChange={(e) => setP2Year(e.target.value)}
+                        $isLight={isLight}
+                        required={chartType === 'synastry'}
+                      />
+                    </DatePickerWrapper>
+                  </FormSection>
+
+                  <FormSection>
+                    <FormLabel $isLight={isLight}>Birth Time</FormLabel>
+                    <TimeWrapper $isLight={isLight}>
+                      <InputIcon>🕐</InputIcon>
+                      <TimeInput
+                        type="time"
+                        value={p2BirthTime}
+                        onChange={(e) => setP2BirthTime(e.target.value)}
+                        placeholder="Time of birth?"
+                        $isLight={isLight}
+                      />
+                    </TimeWrapper>
+                  </FormSection>
+
+                  <FormSection>
+                    <FormLabel $isLight={isLight}>Birth Place</FormLabel>
+                    <Row>
+                      <div>
+                        <SubLabel $isLight={isLight}>City</SubLabel>
+                        <LocationAutocomplete
+                          value={p2SelectedCity?.display_name?.split(',')[0] || ''}
+                          onChange={(location: LocationData | null) => {
+                            setP2SelectedCity(location);
+                            if (location && location.country) {
+                              setP2SelectedCountry({
+                                id: location.country_code,
+                                name: location.country,
+                                country_code: location.country_code,
+                                country: location.country,
+                                display_name: location.country,
+                                latitude: location.latitude,
+                                longitude: location.longitude
+                              });
+                            }
+                          }}
+                          placeholder="Search city..."
+                          searchType="city"
+                          isLight={isLight}
+                        />
+                      </div>
+                      <div>
+                        <SubLabel $isLight={isLight}>Country</SubLabel>
+                        <LocationAutocomplete
+                          value={p2SelectedCountry?.name || ''}
+                          onChange={(location: LocationData | null) => setP2SelectedCountry(location)}
+                          placeholder="Search country..."
+                          searchType="country"
+                          isLight={isLight}
+                        />
+                      </div>
+                    </Row>
+                  </FormSection>
+                </PersonColumn>
+              )}
             </FormGrid>
 
             {error && <ErrorMessage $isLight={isLight}>{error}</ErrorMessage>}
