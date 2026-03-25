@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import sun from "./Sun.jpg";
+import sun from "./sun.jpg";
 
 const Card = () => {
   return (
