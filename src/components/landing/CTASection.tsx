@@ -7,7 +7,6 @@ import {
   GradientText,
   CTADescription,
   CTAButton,
-  CTANote,
   MaxWidthContainer,
 } from "./styles/CTASection.styles.ts";
 
@@ -46,7 +45,6 @@ function CTASection({ onGetStarted }: CTASectionProps) {
             <ArrowRightIcon />
           </CTAButton>
 
-          <CTANote>{t.ctaNote}</CTANote>
         </CTAContent>
       </MaxWidthContainer>
     </CTASectionWrapper>

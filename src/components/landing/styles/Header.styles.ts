@@ -119,19 +119,19 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
   }
 
   @media (max-width: 1280px) {
-    backdrop-filter: none;
-    animation: none;
+    /* backdrop-filter: none;
+    animation: none; */
     box-shadow: ${({ $scrolled }) =>
     $scrolled ? "0 4px 18px var(--shadow-color)" : "none"};
 
     [data-theme="light"] & {
-      backdrop-filter: none;
+      /* backdrop-filter: none; */
     }
   }
 
   [data-performance-mode="reduced"] & {
-    backdrop-filter: none;
-    animation: none;
+    /* backdrop-filter: none;
+    animation: none; */
     box-shadow: ${({ $scrolled }) =>
     $scrolled ? "0 2px 12px var(--shadow-color)" : "none"};
 

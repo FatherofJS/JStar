@@ -133,6 +133,7 @@ export const SECTIONS = {
   AI_INTERPRETATIONS: "ai-interpretations",
   GET_STARTED: "get-started",
   OPEN_SOURCE: "open-source",
+  DOCS: "docs",
   CONTACT: "contact",
 } as const;
 

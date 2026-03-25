@@ -14,22 +14,7 @@ import {
   DividerGlow,
   Actions,
   HeroRight,
-  ScrollButton,
 } from "./styles/HeroSection.styles.ts";
-
-const ChevronDownIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="m6 9 6 6 6-6" />
-  </svg>
-);
 
 function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
@@ -87,13 +72,6 @@ function HeroSection() {
           <ZodiacCinematic />
         </HeroRight>
       </HeroLayout>
-
-      <ScrollButton
-        onClick={() => scrollTo(SECTIONS.CHART_DATA)}
-        aria-label={t.scrollDown}
-      >
-        <ChevronDownIcon />
-      </ScrollButton>
     </HeroSectionWrapper>
   );
 }

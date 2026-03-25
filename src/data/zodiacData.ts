@@ -393,19 +393,5 @@ export const constellationMap: Record<string, ConstellationData> = {
   },
 };
 
-export type StarIntensity = 0.2 | 0.5 | 1;
 
-export const getStarIntensity = (): StarIntensity => {
-  const r = Math.random();
-
-  if (r < 0.7) return 0.2;
-  if (r < 0.9) return 0.5;
-  return 1;
-};
-
-export const getStarSize = (intensity: StarIntensity): number => {
-  if (intensity === 1) return 1.4;
-  if (intensity === 0.5) return 1;
-  return 0.6;
-};
 

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import {
     ZODIAC_SIGNS, ZODIAC_ORDER, ASPECT_COLORS,
     PLANET_SYMBOLS, ASPECT_SYMBOLS,
+    PLANET_NAMES_VI, ASPECT_NAMES_VI
 } from '../../types/chart';
 import type { Planet, SynastryData, SynastryAspect } from '../../types/chart';
 
@@ -28,7 +29,7 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
         person2Color: '#6bcbff',
     };
 
-    const size = 700;
+    const size = 800;
     const cx = size / 2;
     const cy = size / 2;
 
@@ -36,13 +37,13 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
     const nameRadius = size * 0.42;
     const zodiacIconRadius = outerRadius * 0.925;
     const zodiacInnerRadius = outerRadius * 0.85;
-    
+
     const p2PlanetRadius = outerRadius * 0.77;
     const p2RingInner = outerRadius * 0.68;
-    
+
     const p1PlanetRadius = outerRadius * 0.60;
     const p1RingInner = outerRadius * 0.52;
-    
+
     const houseOuterRadius = p1RingInner;
     const innerRadius = outerRadius * 0.44;
 
@@ -156,8 +157,8 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
     } : {};
 
     return (
-        <div className="synastry-wheel-container">
-            <div className="synastry-controls">
+        <div className="synastry-wheel-container" style={{ width: "fit-content", margin: "0 auto", position: "relative" }}>
+            <div className="chart-controls">
                 <button onClick={() => zoom(0.1)}>+</button>
                 <button onClick={() => zoom(-0.1)}>−</button>
                 <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}>⟳</button>
@@ -179,43 +180,43 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                     {hoveredPlanet && !hoveredAspect && (
                         <>
                             <div className="tooltip-header">
-                                {PLANET_SYMBOLS[hoveredPlanet.planets[0].name]} {hoveredPlanet.planets[0].name}
+                                {PLANET_SYMBOLS[hoveredPlanet.planets[0].name]} {PLANET_NAMES_VI[hoveredPlanet.planets[0].name] || hoveredPlanet.planets[0].name}
                                 <span style={{ marginLeft: '4px', fontSize: '10px', color: hoveredPlanet.person === 1 ? palette.person1Color : palette.person2Color }}>
                                     (P{hoveredPlanet.person})
                                 </span>
                             </div>
                             <div className="tooltip-row">
-                                <span>Sign:</span>
+                                <span>Cung hoàng đạo:</span>
                                 <span style={{ color: getSignColor(hoveredPlanet.planets[0].sign) }}>
-                                    {ZODIAC_SIGNS[hoveredPlanet.planets[0].sign]?.symbol} {hoveredPlanet.planets[0].sign}
+                                    {ZODIAC_SIGNS[hoveredPlanet.planets[0].sign]?.symbol} {ZODIAC_SIGNS[hoveredPlanet.planets[0].sign]?.vi || hoveredPlanet.planets[0].sign}
                                 </span>
                             </div>
                             <div className="tooltip-row">
-                                <span>Degree:</span>
+                                <span>Độ:</span>
                                 <span>{Math.floor(hoveredPlanet.planet.signDegree)}°{Math.floor((hoveredPlanet.planet.signDegree % 1) * 60)}'</span>
                             </div>
                             {hoveredPlanet.planets[0].retrograde && (
-                                <div className="tooltip-retrograde">℞ Retrograde</div>
+                                <div className="tooltip-retrograde">℞ Đi lùi (Retrograde)</div>
                             )}
                             {hoveredPlanet.planets.length > 1 && (
                                 <>
                                     <div className="tooltip-header" style={{ marginTop: '8px' }}>
-                                        All In This Stack
+                                        Cùng vị trí
                                     </div>
                                     {hoveredPlanet.planets.map((planet, index) => (
                                         <div key={planet.name} className="tooltip-stack-card" style={{ marginBottom: index === hoveredPlanet.planets.length - 1 ? 0 : '8px' }}>
                                             <div className="tooltip-row">
-                                                <span>Planet:</span>
-                                                <span>{PLANET_SYMBOLS[planet.name]} {planet.name}</span>
+                                                <span>Hành tinh:</span>
+                                                <span>{PLANET_SYMBOLS[planet.name]} {PLANET_NAMES_VI[planet.name] || planet.name}</span>
                                             </div>
                                             <div className="tooltip-row">
-                                                <span>Sign:</span>
+                                                <span>Cung hoàng đạo:</span>
                                                 <span style={{ color: getSignColor(planet.sign) }}>
-                                                    {ZODIAC_SIGNS[planet.sign]?.symbol} {planet.sign}
+                                                    {ZODIAC_SIGNS[planet.sign]?.symbol} {ZODIAC_SIGNS[planet.sign]?.vi || planet.sign}
                                                 </span>
                                             </div>
                                             <div className="tooltip-row">
-                                                <span>Degree:</span>
+                                                <span>Độ:</span>
                                                 <span>{formatDegree(planet.signDegree)}</span>
                                             </div>
                                         </div>
@@ -227,22 +228,18 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                     {hoveredAspect && !hoveredPlanet && (
                         <>
                             <div className="tooltip-header" style={{ color: ASPECT_COLORS[hoveredAspect.aspect.type] }}>
-                                {ASPECT_SYMBOLS[hoveredAspect.aspect.type]} {hoveredAspect.aspect.type.charAt(0).toUpperCase() + hoveredAspect.aspect.type.slice(1)}
+                                                {ASPECT_SYMBOLS[hoveredAspect.aspect.type]} {ASPECT_NAMES_VI[hoveredAspect.aspect.type] || hoveredAspect.aspect.type.charAt(0).toUpperCase() + hoveredAspect.aspect.type.slice(1)}
                             </div>
                             <div className="tooltip-row">
-                                <span>Planets:</span>
+                                <span>Hành tinh:</span>
                                 <span>
-                                    <span style={{color: palette.person1Color}}>{PLANET_SYMBOLS[hoveredAspect.aspect.person1_planet] || hoveredAspect.aspect.person1_planet}</span> ↔ 
-                                    <span style={{color: palette.person2Color}}> {PLANET_SYMBOLS[hoveredAspect.aspect.person2_planet] || hoveredAspect.aspect.person2_planet}</span>
+                                    <span style={{ color: palette.person1Color }}>{PLANET_SYMBOLS[hoveredAspect.aspect.person1_planet] || hoveredAspect.aspect.person1_planet}</span> ↔
+                                    <span style={{ color: palette.person2Color }}> {PLANET_SYMBOLS[hoveredAspect.aspect.person2_planet] || hoveredAspect.aspect.person2_planet}</span>
                                 </span>
                             </div>
                             <div className="tooltip-row">
-                                <span>Angle:</span>
+                                <span>Góc Chiếu:</span>
                                 <span>{hoveredAspect.aspect.angle.toFixed(1)}°</span>
-                            </div>
-                            <div className="tooltip-row">
-                                <span>Orb:</span>
-                                <span>{hoveredAspect.aspect.orb.toFixed(2)}°</span>
                             </div>
                         </>
                     )}
@@ -250,15 +247,15 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
             )}
 
             <div className="synastry-viewport" ref={viewportRef} onMouseDown={drag.start} onMouseMove={drag.move} onMouseUp={drag.end} onMouseLeave={drag.end} style={{ cursor: isDragging ? 'grabbing' : 'grab' }}>
-                <svg viewBox={`0 0 ${size} ${size}`} style={{ width: '100%', height: '100%', maxWidth: size, maxHeight: size, transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${scale})` }}>
-                    
+                <svg viewBox={`0 0 ${size} ${size}`} style={{ width: size, height: size, maxWidth: '100%', transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${scale})` }}>
+
                     {ZODIAC_ORDER.map((sign, i) => {
                         const midAngle = i * 30 + 15;
                         const pos = toXY(midAngle, nameRadius);
                         const rot = getTangentRotation(midAngle);
                         return (
                             <text key={`name-${sign}`} x={pos.x} y={pos.y} fill={palette.signName} fontSize={11.5} fontWeight={800} letterSpacing="2.2px" textAnchor="middle" dominantBaseline="middle" transform={`rotate(${rot}, ${pos.x}, ${pos.y})`} style={{ fontFamily: 'Inter, sans-serif' }}>
-                                {sign.toUpperCase()}
+                                {(ZODIAC_SIGNS[sign]?.vi || sign).toUpperCase()}
                             </text>
                         );
                     })}
@@ -324,7 +321,7 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                         const endObj = person1_houses[(i + 1) % 12].cusp;
                         let midAngle = (startObj + endObj) / 2;
                         if (startObj > endObj) { midAngle = ((startObj + endObj + 360) / 2) % 360; }
-                        
+
                         const isAngular = [1, 4, 7, 10].includes(i + 1);
                         const start = toXY(startObj, innerRadius);
                         const end = toXY(startObj, houseOuterRadius);
@@ -343,6 +340,15 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
 
                     <g className="aspect-lines">
                         {aspects.map((aspect, i) => {
+                            // Filter: only major aspects between core planets
+                            const validPlanets = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Ascendant'];
+                            const validAspectTypes = ['conjunction', 'trine', 'sextile', 'square', 'opposition'];
+
+                            if (!validAspectTypes.includes(aspect.type.toLowerCase())) return null;
+                            if (!validPlanets.includes(aspect.person1_planet)) return null;
+                            if (!validPlanets.includes(aspect.person2_planet)) return null;
+                            if (aspect.orb > 7) return null;
+
                             const p1Pos = p1AspectEndpoints[aspect.person1_planet];
                             const p2Pos = p2AspectEndpoints[aspect.person2_planet];
                             if (!p1Pos || !p2Pos) return null;

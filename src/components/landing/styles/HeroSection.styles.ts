@@ -18,8 +18,8 @@ const bounce = keyframes`
 
 
 export const HeroSectionWrapper = styled.section`
+  height: 100dvh;
   min-height: 100dvh;
-  min-height: 600px;
   display: flex;
   align-items: center;
   position: relative;
@@ -75,13 +75,13 @@ export const HeroLight = styled.div`
   z-index: -1;
 
   @media (max-width: 1280px) {
-    filter: blur(28px);
-    opacity: 0.3;
+    /* filter: blur(28px);
+    opacity: 0.3; */
   }
 
   [data-performance-mode="reduced"] & {
-    filter: blur(18px);
-    opacity: 0.18;
+    /* filter: blur(18px);
+    opacity: 0.18; */
   }
 `;
 
@@ -178,6 +178,10 @@ export const Actions = styled.div`
   flex-wrap: wrap;
   gap: 16px;
 
+  @media (max-width: 1000px) {
+    justify-content: center;
+  }
+
   @media (max-width: 480px) {
     gap: 12px;
   }
@@ -236,13 +240,13 @@ export const ScrollButton = styled.button`
   }
 
   @media (max-width: 1280px) {
-    backdrop-filter: none;
-    animation: none;
+    /* backdrop-filter: none;
+    animation: none; */
     transition: background 0.2s ease, border-color 0.2s ease;
   }
 
   [data-performance-mode="reduced"] & {
-    display: none;
+    /* display: none; */
   }
 
   @media (max-width: 768px) {
