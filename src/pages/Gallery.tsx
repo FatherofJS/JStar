@@ -3,8 +3,16 @@ import Layout from "../components/layout/Layout";
 
 const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 
+import { useEffect, useState } from "react";
+
 export default function Gallery() {
-  const images = ["98303acd63b73b65e3aa2f96dbbed252_eq71uq", "IMG_2878_nmn5vx", "IMG_2881_ogch7s", "IMG_2879_zucsjs", "IMG_2887_b9ucqp", "IMG_2880_epaunp", "IMG_2999_vhbrmn", "124d033dbdbbedc4998de3803c6303a4_iacfq9", "IMG_2977_fbzi1a"];
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/fatherofjs")
+      .then(res => res.json())
+      .then(data => setImages(data));
+  }, []);
 
   return (
     <Layout>
@@ -50,11 +58,10 @@ export default function Gallery() {
       </style>
 
       <div className="gallery">
-        {images.map((id) => (
-          <div className="img-wrapper" key={id}>
+        {images.map((img: any) => (
+          <div className="img-wrapper" key={img.public_id}>
             <img
-              key={id}
-              src={`https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/${id}.jpg`}
+              src={`https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/${img.public_id}`}
               alt=""
             />
           </div>
