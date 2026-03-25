@@ -222,7 +222,14 @@ export const ShootingStar = styled.span<ShootingStarProps>`
   }
   
   [data-theme="light"] & {
-    display: none;
+    background: linear-gradient(90deg, rgba(30,41,59,0.7), rgba(30,41,59,0.4), transparent);
+    &::before {
+      background: #1e293b;
+      box-shadow: 
+        0 0 4px 1px rgba(30,41,59, 1),
+        0 0 8px 2px rgba(30,41,59, 0.6),
+        0 0 12px 4px rgba(30,41,59, 0.3);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

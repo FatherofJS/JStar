@@ -19,8 +19,8 @@ function DocsSection() {
   const activeSection = DOCS_SECTIONS.find((s) => s.id === activeId) || DOCS_SECTIONS[0];
 
   return (
-    <DocsWrapper data-section="docs">
-      <DocsHeading>Cosmic Guide</DocsHeading>
+    <DocsWrapper data-section="docs" className="zoom-section">
+      <DocsHeading>Kiến Thức Vũ Trụ</DocsHeading>
       <DocsLayout>
         <Sidebar>
           {DOCS_SECTIONS.map((s) => (

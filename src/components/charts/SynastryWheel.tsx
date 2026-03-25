@@ -10,6 +10,7 @@ import { useTheme } from "../../theme";
 import { ZODIAC_ICONS, PlanetIcon, getSignColor, normalizeAngle, formatDegree } from './chartUtils';
 import './SynastryWheel.css';
 
+import { IconZoomIn, IconZoomOut, IconRefresh, IconUser } from '@tabler/icons-react';
 
 export function SynastryWheel({ data }: { data: SynastryData }) {
     const { person1_planets, person2_planets, person1_houses, aspects } = data;
@@ -159,19 +160,24 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
     return (
         <div className="synastry-wheel-container" style={{ width: "fit-content", margin: "0 auto", position: "relative" }}>
             <div className="chart-controls">
-                <button onClick={() => zoom(0.1)}>+</button>
-                <button onClick={() => zoom(-0.1)}>−</button>
-                <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}>⟳</button>
+                <button onClick={() => zoom(0.1)}><IconZoomIn size={20} stroke={2} /></button>
+                <button onClick={() => zoom(-0.1)}><IconZoomOut size={20} stroke={2} /></button>
+                <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}><IconRefresh size={20} stroke={2} /></button>
             </div>
 
             <div className="synastry-legend">
                 <div className="legend-item">
-                    <div className="legend-color" style={{ background: palette.person1Color }}></div>
-                    <span>{data.person1.name || 'Person 1'}</span>
+                    <div className="legend-color" style={{ background: palette.person1Color, boxShadow: `0 0 12px ${palette.person1Color}60` }}>
+                        <IconUser size={14} color="#fff" stroke={2.5} />
+                    </div>
+                    <span className="legend-name">{data.person1.name || 'Person 1'}</span>
                 </div>
+                <div className="legend-divider"></div>
                 <div className="legend-item">
-                    <div className="legend-color" style={{ background: palette.person2Color }}></div>
-                    <span>{data.person2.name || 'Person 2'}</span>
+                    <div className="legend-color" style={{ background: palette.person2Color, boxShadow: `0 0 12px ${palette.person2Color}60` }}>
+                        <IconUser size={14} color="#fff" stroke={2.5} />
+                    </div>
+                    <span className="legend-name">{data.person2.name || 'Person 2'}</span>
                 </div>
             </div>
 
@@ -228,7 +234,7 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                     {hoveredAspect && !hoveredPlanet && (
                         <>
                             <div className="tooltip-header" style={{ color: ASPECT_COLORS[hoveredAspect.aspect.type] }}>
-                                                {ASPECT_SYMBOLS[hoveredAspect.aspect.type]} {ASPECT_NAMES_VI[hoveredAspect.aspect.type] || hoveredAspect.aspect.type.charAt(0).toUpperCase() + hoveredAspect.aspect.type.slice(1)}
+                                {ASPECT_SYMBOLS[hoveredAspect.aspect.type]} {ASPECT_NAMES_VI[hoveredAspect.aspect.type] || hoveredAspect.aspect.type.charAt(0).toUpperCase() + hoveredAspect.aspect.type.slice(1)}
                             </div>
                             <div className="tooltip-row">
                                 <span>Hành tinh:</span>

@@ -152,31 +152,45 @@
 
 .synastry-legend {
     position: absolute;
-    bottom: var(--space-md);
-    left: var(--space-md);
+    bottom: 24px;
+    left: 24px;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 12px;
-    border-radius: 12px;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 18px;
+    border-radius: 100px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     z-index: 10;
 }
 
 [data-theme="light"] .synastry-legend {
-    background: rgba(255, 255, 255, 0.8);
-    border-color: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(99, 102, 241, 0.15);
+    box-shadow: 0 12px 32px rgba(148, 163, 184, 0.25), inset 0 1px 0 #ffffff;
+}
+
+.legend-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .legend-divider {
+    background: rgba(51, 65, 85, 0.15);
 }
 
 .legend-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.8rem;
-    font-weight: 600;
+    gap: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
     color: var(--text-primary);
+    letter-spacing: 0.3px;
 }
 
 [data-theme="light"] .legend-item {
@@ -184,9 +198,20 @@
 }
 
 .legend-color {
-    width: 12px;
-    height: 12px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.legend-name {
+    max-width: 140px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @media (max-width: 768px) {
@@ -209,8 +234,12 @@
     }
 
     .synastry-legend {
-        bottom: 10px;
-        left: 10px;
-        padding: 8px 10px;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 16px;
+        gap: 12px;
+        width: max-content;
+        max-width: 90vw;
     }
 }

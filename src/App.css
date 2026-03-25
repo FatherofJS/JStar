@@ -1,77 +1,62 @@
-/* App Layout
-   Sidebar = position:fixed, width 250px (50px when closed)
-   Header  = position:fixed, left 250px, height ~150px
-   Content = must be offset by both sidebar width AND header height
-*/
-
+/* App Layout */
 .app-container {
+  display: flex;
+  min-height: 100vh;
   width: 100%;
-  height: 100vh;
   background-color: #0b0e14;
-  overflow: hidden;
-
-  @media (max-width: 768px) {
-    min-height: auto;
-  }
 }
 
-/* main-area sits to the right of the fixed sidebar */
 .main-area {
-  position: fixed;
-  top: 0;
-  left: 250px;
-  width: calc(100% - 250px);
-  height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  transition: left 0.3s ease, width 0.3s ease;
   overflow: hidden;
 }
 
-/* When sidebar is closed, expand main-area */
-.sidebar.close~.main-area,
-.app-container:has(.sidebar.close) .main-area {
-  left: 50px;
-  width: calc(100% - 50px);
+/* Header */
+.header {
+  height: 90px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid rgba(100, 120, 150, 0.15);
+
+}
+
+.header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #e0e6ed;
+}
+
+.page-subtitle {
+  color: #6b7a8f;
+  font-size: 0.85rem;
 }
 
 /* Content Grid */
 .content-grid {
+  flex: 1;
   display: grid;
-  grid-template-columns: 280px 1fr 340px;
-  gap: 12px;
-  padding: 12px;
-  height: 100%;
+  grid-template-columns: 240px 1fr 280px;
+  gap: 16px;
+  padding: 16px;
   overflow: hidden;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: 200px 1fr 240px;
-    gap: 12px;
-    padding: 12px;
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 12px;
-    padding: 12px;
-    overflow-y: auto;
-  }
-
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 8px;
-  }
 }
 
 .left-panel,
 .right-panel {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   overflow-y: auto;
-  min-height: 0;
 }
 
 .chart-area {
@@ -79,24 +64,6 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  min-width: 0;
-}
-
-/* Large centered chart wheel — fills most of the page */
-.chart-wheel-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: calc(100vh - 180px);
-  padding: 10px;
-}
-
-.chart-wheel-container svg {
-  width: 100%;
-  height: 100%;
-  max-width: 90vmin;
-  max-height: 90vmin;
 }
 
 /* Placeholder Styling */
@@ -125,11 +92,13 @@
   color: #ff4757;
 }
 
+/* Panel and Button styles are in index.css */
+
 /* Modal Overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,10 +106,9 @@
 }
 
 .modal {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
+  background: #161b24;
+  border: 1px solid rgba(100, 120, 150, 0.15);
   border-radius: 12px;
   padding: 24px;
   min-width: 300px;
-  z-index: 1001;
 }

@@ -5,7 +5,7 @@ import { Background } from "../components/layout/Background";
 import { useLanding } from "../hooks/useLanding";
 import { useSectionObserver } from "../hooks/useScroll";
 import { featuresData } from "../data/landingData";
-// import { SECTIONS } from "../constants";
+
 
 import Header from "../components/landing/Header";
 import HeroSection from "../components/landing/HeroSection";
@@ -13,6 +13,7 @@ import { AIInterpretationSection, FeatureSection, FeatureSectionAlt } from "../c
 import DocsSection from "../components/landing/DocsSection";
 import CTASection from "../components/landing/CTASection";
 import Footer from "../components/landing/Footer";
+import AboutUs from "../components/AboutUs/AboutUs";
 
 const LandingPageShell = styled.div`
   position: relative;
@@ -81,6 +82,10 @@ function LandingPage() {
             <Header activeSection={activeSection} />
 
             <HeroSection />
+
+            <div data-section="about" className="zoom-section">
+                <AboutUs />
+            </div>
 
             <div data-section="features">
                 {featureSections}

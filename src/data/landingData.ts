@@ -1,8 +1,4 @@
 export interface LandingContent {
-  account: string;
-  changePassword: string;
-  logout: string;
-  login: string;
   home: string;
   features: string;
   docs: string;
@@ -65,48 +61,8 @@ export interface LandingContent {
   footerTerms: string;
   footerAccessibility: string;
   footerCookies: string;
-  changePasswordTitle: string;
-  currentPassword: string;
-  enterCurrentPassword: string;
-  newPassword: string;
-  enterNewPassword: string;
-  confirmPassword: string;
-  confirmNewPassword: string;
-  passwordChangedSuccess: string;
-  passwordsDoNotMatch: string;
-  passwordTooShort: string;
-  changePasswordBtn: string;
-  changingPassword: string;
-  signIn: string;
-  signUp: string;
-  welcomeBack: string;
-  beginJourney: string;
-  fullName: string;
-  emailAddress: string;
-  password: string;
-  enterYourName: string;
-  enterYourEmail: string;
-  enterYourPassword: string;
-  emailIsRequired: string;
-  validEmail: string;
-  passwordIsRequired: string;
-  passwordMinLength: string;
-  nameIsRequired: string;
-  signingIn: string;
-  createAccount: string;
-  orContinueWith: string;
-  forgotPassword: string;
-  dontHaveAccount: string;
-  alreadyHaveAccount: string;
-  incorrectPassword: string;
-  noAccountFound: string;
-  loginFailed: string;
 }
 export const landingContent: LandingContent = {
-  account: 'Tài khoản',
-  changePassword: 'Đổi mật khẩu',
-  logout: 'Đăng xuất',
-  login: 'Đăng nhập',
   home: 'Home',
   features: 'Features',
   docs: 'Docs',
@@ -203,52 +159,6 @@ export const landingContent: LandingContent = {
   footerAccessibility: 'Trợ năng',
   footerCookies: 'Cookies',
 
-  changePasswordTitle: 'Đổi mật khẩu',
-  currentPassword: 'Mật khẩu cũ',
-  enterCurrentPassword: 'Nhập mật khẩu cũ',
-  newPassword: 'Mật khẩu mới',
-  enterNewPassword: 'Nhập mật khẩu mới',
-  confirmPassword: 'Xác nhận mật khẩu',
-  confirmNewPassword: 'Nhập lại mật khẩu',
-
-  passwordChangedSuccess: 'Đổi xong rồi',
-  passwordsDoNotMatch: 'Không khớp',
-  passwordTooShort: 'Ít nhất 6 ký tự',
-
-  changePasswordBtn: 'Đổi',
-  changingPassword: 'Đang xử lý...',
-
-  signIn: 'Đăng nhập',
-  signUp: 'Đăng ký',
-
-  welcomeBack: 'Lại quay về rồi à',
-  beginJourney: 'Bắt đầu xem mình là ai',
-
-  fullName: 'Tên',
-  emailAddress: 'Email',
-  password: 'Mật khẩu',
-
-  enterYourName: 'Nhập tên',
-  enterYourEmail: 'Nhập email',
-  enterYourPassword: 'Nhập mật khẩu',
-
-  emailIsRequired: 'Thiếu email',
-  validEmail: 'Email không hợp lệ',
-  passwordIsRequired: 'Thiếu mật khẩu',
-  passwordMinLength: 'Ít nhất 6 ký tự',
-  nameIsRequired: 'Thiếu tên',
-
-  signingIn: 'Đang đăng nhập...',
-  createAccount: 'Tạo tài khoản',
-
-  orContinueWith: 'hoặc',
-  forgotPassword: 'Quên mật khẩu?',
-  dontHaveAccount: 'Chưa có tài khoản?',
-  alreadyHaveAccount: 'Có rồi?',
-
-  incorrectPassword: 'Sai mật khẩu',
-  noAccountFound: 'Không tìm thấy tài khoản',
-  loginFailed: 'Đăng nhập thất bại',
 };
 
 export interface FeatureItem {

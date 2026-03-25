@@ -46,7 +46,7 @@ export const Tooltip = styled.div.attrs<{
   background: rgba(30, 41, 59, 1);
   border: 1px solid rgba(99, 102, 241, 0.25);
   border-radius: 18px;
-  padding: 24px;
+  padding: 24px 24px 28px;
   backdrop-filter: blur(20px);
   pointer-events: auto;
   box-shadow:
@@ -64,7 +64,7 @@ export const Tooltip = styled.div.attrs<{
 
   @media (max-width: 480px) {
     width: calc(100vw - 32px);
-    padding: 18px 20px;
+    padding: 20px 20px 24px;
   }
 `;
 

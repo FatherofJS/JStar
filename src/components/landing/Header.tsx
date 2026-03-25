@@ -59,7 +59,13 @@ function Header({ activeSection }: HeaderProps) {
             {t.home}
           </NavItemMemo>
           <NavItemMemo
-            $active={activeSection === SECTIONS.FEATURES}
+            $active={activeSection === 'about'}
+            onClick={() => handleNavClick('about')}
+          >
+            About Us
+          </NavItemMemo>
+          <NavItemMemo
+            $active={activeSection === SECTIONS.FEATURES || ['natal', 'synastry', 'chatbot'].includes(activeSection)}
             onClick={() => handleNavClick(SECTIONS.FEATURES)}
           >
             {t.features}
@@ -93,7 +99,13 @@ function Header({ activeSection }: HeaderProps) {
           {t.home}
         </NavItemMemo>
         <NavItemMemo
-          $active={activeSection === SECTIONS.FEATURES}
+          $active={activeSection === 'about'}
+          onClick={() => handleNavClick('about')}
+        >
+          About Us
+        </NavItemMemo>
+        <NavItemMemo
+          $active={activeSection === SECTIONS.FEATURES || ['natal', 'synastry', 'chatbot'].includes(activeSection)}
           onClick={() => handleNavClick(SECTIONS.FEATURES)}
         >
           {t.features}

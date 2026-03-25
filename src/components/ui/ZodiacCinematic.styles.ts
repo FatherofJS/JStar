@@ -72,9 +72,9 @@ export const ZodiacSymbol = styled.img`
   opacity: 0;
 
   animation: 
-    ${fadeInSymbol} 2.5s ease forwards 2s,
-    ${breathe} 8s ease-in-out infinite 4.5s,
-    ${fadeOutElement} 1.5s ease forwards 13.5s;
+    ${fadeInSymbol} 1s ease forwards 3s,
+    ${breathe} 8s ease-in-out infinite 4s,
+    ${fadeOutElement} 1s ease forwards 5.5s;
 
   mix-blend-mode: screen;
 
@@ -84,9 +84,9 @@ export const ZodiacSymbol = styled.img`
 
   @media (max-width: 1280px) {
     animation: 
-      ${fadeInSymbol} 2.5s ease forwards 0.8s,
-      ${breathe} 8s ease-in-out infinite 3.3s,
-      ${fadeOutElement} 1.5s ease forwards 13.5s;
+      ${fadeInSymbol} 1s ease forwards 3s,
+      ${breathe} 8s ease-in-out infinite 4s,
+      ${fadeOutElement} 1s ease forwards 5.5s;
     filter: drop-shadow(0 0 12px rgba(120, 140, 255, 0.18));
   }
 
@@ -217,6 +217,10 @@ export const ZodiacName = styled.div`
     letter-spacing: 3px;
     font-size: 14px;
   }
+
+  [data-theme="light"] & {
+    color: #1e293b;
+  }
 `;
 
 export const GalaxyStar = styled.circle<{ $intensity: number }>`
@@ -224,10 +228,15 @@ export const GalaxyStar = styled.circle<{ $intensity: number }>`
   filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
   opacity: ${(p) => 0.5 + p.$intensity * 0.5};
   
-  animation: ${fadeOutElement} 1.5s ease forwards 13.5s;
+  animation: ${fadeOutElement} 1s ease forwards 5.5s;
 
   @media (max-width: 1280px) {
     filter: none;
+  }
+
+  [data-theme="light"] & {
+    fill: rgba(30, 41, 59, ${(p) => 0.5 + p.$intensity * 0.5});
+    filter: drop-shadow(0 0 2px rgba(30, 41, 59, 0.4));
   }
 
   [data-performance-mode="reduced"] & {
@@ -254,8 +263,8 @@ export const Line = styled.line<{ color: string; $delay: number }>`
   stroke-dashoffset: 140;
 
   animation: 
-    ${drawLine} 3.5s cubic-bezier(0.22, 1, 0.36, 1) forwards ${(p) => p.$delay}s,
-    ${fadeOutElement} 1.5s ease forwards 13.5s;
+    ${drawLine} 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards ${(p) => p.$delay}s,
+    ${fadeOutElement} 1s ease forwards 5.5s;
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -265,8 +274,12 @@ export const Line = styled.line<{ color: string; $delay: number }>`
 
   @media (max-width: 1280px) {
     animation: 
-      ${drawLine} 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards ${(p) => p.$delay}s,
-      ${fadeOutElement} 1.5s ease forwards 13.5s;
+      ${drawLine} 1s cubic-bezier(0.22, 1, 0.36, 1) forwards ${(p) => p.$delay}s,
+      ${fadeOutElement} 1s ease forwards 5.5s;
+  }
+
+  [data-theme="light"] & {
+    stroke: #1e293b;
   }
 
   [data-performance-mode="reduced"] & {

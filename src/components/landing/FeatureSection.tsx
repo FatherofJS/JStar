@@ -61,7 +61,7 @@ function FeatureSection({ feature }: FeatureSectionProps) {
   return (
     <>
       <SectionContainer 
-        data-section={badge?.toLowerCase().replace(/\s+/g, "-")} 
+        data-section={feature.id} 
         className="zoom-section"
       >
         <MaxWidthContainer>
@@ -186,7 +186,7 @@ function FeatureSectionAlt({ feature }: FeatureSectionProps) {
   return (
     <>
       <SectionContainerAlt 
-        data-section={badge?.toLowerCase().replace(/\s+/g, "-")} 
+        data-section={feature.id} 
         className="zoom-section"
       >
         <MaxWidthContainer>
@@ -287,7 +287,7 @@ function AIInterpretationSection({ feature }: FeatureSectionProps) {
 
   return (
     <SectionContainer 
-      data-section={badge?.toLowerCase().replace(/\s+/g, "-")} 
+      data-section={feature.id} 
       className="zoom-section"
     >
       <MaxWidthContainer>

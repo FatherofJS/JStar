@@ -44,7 +44,7 @@ export function ZodiacCinematic() {
   useEffect(() => {
     const interval = setInterval(
       () => setIndex((prev) => (prev + 1) % zodiac.length),
-      15000
+      6500
     );
     return () => clearInterval(interval);
   }, []);
@@ -137,7 +137,7 @@ export function ZodiacCinematic() {
                 x2={s2.x}
                 y2={s2.y}
                 color={current.color}
-                $delay={i * 0.35}
+                $delay={i * 0.15}
               />
             );
           })}

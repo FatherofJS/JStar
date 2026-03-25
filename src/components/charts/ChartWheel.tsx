@@ -11,6 +11,8 @@ import { ZODIAC_ICONS, PlanetIcon, getSignColor, normalizeAngle, formatDegree } 
 import './ChartWheel.css';
 
 
+import { IconZoomIn, IconZoomOut, IconRefresh } from '@tabler/icons-react';
+
 export function ChartWheel({ data }: { data: ChartData }) {
     const { planets, houses, aspects } = data;
     const { theme } = useTheme();
@@ -150,9 +152,9 @@ export function ChartWheel({ data }: { data: ChartData }) {
         <div className="chart-wheel-container" style={{ width: "fit-content", margin: "0 auto", position: "relative" }}>
 
             <div className="chart-controls">
-                <button onClick={() => zoom(0.1)}>+</button>
-                <button onClick={() => zoom(-0.1)}>−</button>
-                <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}>⟳</button>
+                <button onClick={() => zoom(0.1)}><IconZoomIn size={20} stroke={2} /></button>
+                <button onClick={() => zoom(-0.1)}><IconZoomOut size={20} stroke={2} /></button>
+                <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}><IconRefresh size={20} stroke={2} /></button>
             </div>
 
             {(hoveredPlanet || hoveredAspect) && (
