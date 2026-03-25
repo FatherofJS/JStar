@@ -21,20 +21,7 @@ function HeroSection() {
   const navigate = useNavigate();
   const t = landingContent;
 
-  const scrollTo = useCallback((sectionId: string) => {
-    const element = document.querySelector(`[data-section="${sectionId}"]`);
-    if (element) {
-      const headerOffset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition =
-        elementPosition + window.pageYOffset - headerOffset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
-  }, []);
 
   const handleGetStarted = useCallback(() => {
     navigate("/star-chart");
