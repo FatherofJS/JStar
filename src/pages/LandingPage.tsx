@@ -9,8 +9,8 @@ import { featuresData } from "../data/landingData";
 
 import Header from "../components/landing/Header";
 import HeroSection from "../components/landing/HeroSection";
-import { FeatureSection, FeatureSectionAlt, AIInterpretationSection } from "../components/landing/FeatureSection";
-import GetStartedSteps from "../components/landing/GetStartedSteps";
+import { AIInterpretationSection, FeatureSection, FeatureSectionAlt } from "../components/landing/FeatureSection";
+import DocsSection from "../components/landing/DocsSection";
 import CTASection from "../components/landing/CTASection";
 import Footer from "../components/landing/Footer";
 
@@ -28,6 +28,14 @@ function LandingPage() {
         document.documentElement.setAttribute('data-performance-mode', isReduced ? 'reduced' : 'default');
     }, [isReduced]);
 
+    useEffect(() => {
+        if (window.location.hash === '#docs') {
+            setTimeout(() => {
+                document.querySelector('[data-section="docs"]')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    }, []);
+
     const handleGetStarted = useCallback(() => {
         navigate("/star-chart");
     }, [navigate]);
@@ -35,7 +43,7 @@ function LandingPage() {
     const featureSections = useMemo(
         () =>
             featuresData.map((feature, index) => {
-                if (feature.id === "ai-interpretations") {
+                if (feature.id === "ai-interpretations" || feature.id === "chatbot") {
                     return (
                         <AIInterpretationSection
                             key={feature.id}
@@ -74,9 +82,11 @@ function LandingPage() {
 
             <HeroSection />
 
-            {featureSections}
+            <div data-section="features">
+                {featureSections}
+            </div>
 
-            <GetStartedSteps />
+            <DocsSection />
 
             <CTASection onGetStarted={handleGetStarted} />
 

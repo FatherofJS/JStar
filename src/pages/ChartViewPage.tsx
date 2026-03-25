@@ -5,6 +5,8 @@ import { ChartWheel } from "../components/charts/ChartWheel";
 import { ChatPopup } from "../components/chat/ChatPopup";
 import { ChatFAB } from "../components/chat/ChatFAB";
 import { NatalInfoPanel } from "../components/panels/NatalInfoPanel";
+import { GuidedTour } from "../components/ui/GuidedTour";
+import { natalTourSteps } from "../data/tourSteps";
 import Layout from "../components/layout/Layout";
 import { API, getApiEndpoint } from "../constants";
 import type { Aspect, ChartData } from "../types/chart";
@@ -106,25 +108,21 @@ const DismissButton = styled.button`
 `;
 
 const WheelStage = styled.div<{ $isLight: boolean }>`
-  min-height: calc(100dvh - 120px);
   padding: 18px;
   position: relative;
   overflow: hidden;
 
   @media (max-width: 768px) {
-    height: calc(100dvh - 104px);
     padding: 12px;
   }
 
   @media (max-width: 480px) {
-    height: calc(100dvh - 96px);
     padding: 8px;
   }
 `;
 
 const WheelFrame = styled.div<{ $isLight: boolean }>`
   position: relative;
-  height: 100%;
   background: transparent;
 `;
 
@@ -190,6 +188,13 @@ export default function ChartViewPage() {
   const [loading, setLoading] = useState(shouldFetchChart);
   const [error, setError] = useState<string | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isTourActive, setIsTourActive] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setIsTourActive(true);
+    window.addEventListener('jstar-start-tour', handler);
+    return () => window.removeEventListener('jstar-start-tour', handler);
+  }, []);
 
   useEffect(() => {
     const state = locationState;
@@ -238,7 +243,7 @@ export default function ChartViewPage() {
         {loading && (
           <LoadingOverlay $isLight={isLight}>
             <LoadingSpinner $isLight={isLight} />
-            <LoadingText>Calculating your cosmic chart...</LoadingText>
+            <LoadingText>Đang tính toán bản đồ sao...</LoadingText>
           </LoadingOverlay>
         )}
 
@@ -246,18 +251,16 @@ export default function ChartViewPage() {
           <StatusPanel $isLight={isLight}>
             <ErrorText $isLight={isLight}>{error}</ErrorText>
             <DismissButton onClick={() => setError(null)}>
-              Dismiss
+              Đóng
             </DismissButton>
           </StatusPanel>
         )}
 
         {!loading && displayedChartData && (
           <ContentContainer>
-            <WheelStage $isLight={isLight}>
+            <WheelStage $isLight={isLight} data-tour="natal-chart">
               <WheelFrame $isLight={isLight}>
-                <div className="chart-wheel-container" style={{ height: "100%" }}>
-                  <ChartWheel data={displayedChartData!} />
-                </div>
+                <ChartWheel data={displayedChartData!} />
               </WheelFrame>
             </WheelStage>
             <NatalInfoPanel data={displayedChartData!} isLight={isLight} />
@@ -270,6 +273,16 @@ export default function ChartViewPage() {
             <ChatFAB
               isOpen={isChatOpen}
               onClick={() => setIsChatOpen(!isChatOpen)}
+            />
+            <GuidedTour
+              steps={natalTourSteps}
+              storageKey="natal-tour"
+              isActive={isTourActive}
+              onComplete={() => setIsTourActive(false)}
+              onStepChange={(i) => {
+                if (i === natalTourSteps.length - 1) setIsChatOpen(true);
+                else setIsChatOpen(false);
+              }}
             />
           </ContentContainer>
         )}

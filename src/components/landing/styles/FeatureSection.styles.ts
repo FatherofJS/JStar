@@ -11,15 +11,9 @@ export const FeatureBadge = styled.span`
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
-  gap: 4px;
   margin-bottom: 16px;
   background: var(--bg-secondary);
   color: var(--text-secondary);
-  
-  svg {
-    width: 12px;
-    height: 12px;
-  }
 `;
 
 export const SectionContainer = styled.section`

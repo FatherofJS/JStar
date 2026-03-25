@@ -5,6 +5,8 @@ import { SynastryWheel } from "../components/charts/SynastryWheel";
 import { ChatPopup } from "../components/chat/ChatPopup";
 import { ChatFAB } from "../components/chat/ChatFAB";
 import { SynastryInfoPanel } from "../components/panels/SynastryInfoPanel";
+import { GuidedTour } from "../components/ui/GuidedTour";
+import { synastryTourSteps } from "../data/tourSteps";
 import Layout from "../components/layout/Layout";
 import { API, getApiEndpoint } from "../constants";
 import type { SynastryData, Subject } from "../types/chart";
@@ -101,20 +103,17 @@ const DismissButton = styled.button`
 `;
 
 const WheelStage = styled.div<{ $isLight: boolean }>`
-  min-height: calc(100dvh - 120px);
   padding: 18px;
   position: relative;
   overflow: hidden;
 
   @media (max-width: 768px) {
-    height: calc(100dvh - 104px);
     padding: 12px;
   }
 `;
 
 const WheelFrame = styled.div<{ $isLight: boolean }>`
   position: relative;
-  height: 100%;
   background: transparent;
 `;
 
@@ -171,6 +170,13 @@ export default function SynastryViewPage() {
   const [loading, setLoading] = useState(!!locationState);
   const [error, setError] = useState<string | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isTourActive, setIsTourActive] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setIsTourActive(true);
+    window.addEventListener('jstar-start-tour', handler);
+    return () => window.removeEventListener('jstar-start-tour', handler);
+  }, []);
 
   useEffect(() => {
     // If no state from navigation AND no cached data, redirect
@@ -241,21 +247,21 @@ export default function SynastryViewPage() {
           {loading ? (
             <LoadingOverlay $isLight={isLight}>
               <LoadingSpinner $isLight={isLight} />
-              <LoadingText>Aligning the stars...</LoadingText>
+              <LoadingText>Đang căn chỉnh các vì sao...</LoadingText>
               <p style={{ marginTop: 8, fontSize: '0.9rem', opacity: 0.8 }}>
-                Calculating planetary positions for {locationState?.person1?.name} and {locationState?.person2?.name}
+                Đang tính vị trí hành tinh cho {locationState?.person1?.name} và {locationState?.person2?.name}
               </p>
             </LoadingOverlay>
           ) : error ? (
             <StatusPanel $isLight={isLight}>
               <ErrorText $isLight={isLight}>{error}</ErrorText>
               <DismissButton onClick={() => navigate('/star-chart')}>
-                Try Again
+                Thử lại
               </DismissButton>
             </StatusPanel>
           ) : chartData ? (
             <>
-              <WheelStage $isLight={isLight}>
+              <WheelStage $isLight={isLight} data-tour="synastry-chart">
                 <WheelFrame $isLight={isLight}>
                   <SynastryWheel data={chartData} />
                 </WheelFrame>
@@ -270,6 +276,16 @@ export default function SynastryViewPage() {
               <ChatFAB 
                 isOpen={isChatOpen} 
                 onClick={() => setIsChatOpen(!isChatOpen)} 
+              />
+              <GuidedTour
+                steps={synastryTourSteps}
+                storageKey="synastry-tour"
+                isActive={isTourActive}
+                onComplete={() => setIsTourActive(false)}
+                onStepChange={(i) => {
+                  if (i === synastryTourSteps.length - 1) setIsChatOpen(true);
+                  else setIsChatOpen(false);
+                }}
               />
             </>
           ) : null}

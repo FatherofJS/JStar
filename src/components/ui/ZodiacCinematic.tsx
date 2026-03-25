@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import {
   ZodiacWrapper,
-  ZodiacSymbol,
   ConstellationContainer,
   DeepGlow,
   AuraRing,
@@ -10,13 +9,14 @@ import {
   GalaxyStar,
   ConstellationSVG,
   Line,
+  ZodiacSymbol,
 } from "./ZodiacCinematic.styles";
 import {
   zodiac,
-  zodiacImages,
   constellationMap,
+  zodiacImages,
 } from "../../data/zodiacData";
-import { useTheme } from "../../theme";
+
 
 const useStarData = (zodiacName: string) => {
   return useMemo(() => {
@@ -34,8 +34,7 @@ export function ZodiacCinematic() {
   const ref = useRef<HTMLDivElement>(null);
   const frameRef = useRef<number | null>(null);
   const pendingTransformRef = useRef("rotateY(0deg) rotateX(0deg)");
-  const { theme } = useTheme();
-  const isLightMode = theme === "light";
+
 
   const current = zodiac[index];
   const map = constellationMap[current.name];
@@ -45,7 +44,7 @@ export function ZodiacCinematic() {
   useEffect(() => {
     const interval = setInterval(
       () => setIndex((prev) => (prev + 1) % zodiac.length),
-      12000
+      15000
     );
     return () => clearInterval(interval);
   }, []);
@@ -117,16 +116,16 @@ export function ZodiacCinematic() {
         />
 
         <AuraRing />
-        <ZodiacSymbol
-          key={`img-${current.name}`}
-          src={zodiacImages[current.name]}
-          alt={`${current.name} zodiac symbol`}
-        />
-
         <OrbitRing />
 
-        <ConstellationSVG key={current.name} viewBox="0 0 100 100">
-          {!isLightMode && map.lines.map(([a, b], i) => {
+        <ZodiacSymbol
+          key={`symbol-${current.name}`}
+          src={zodiacImages[current.name]}
+          alt={current.name}
+        />
+
+        <ConstellationSVG key={`constellation-${current.name}`} viewBox="0 0 100 100">
+          {map.lines.map(([a, b], i) => {
             const s1 = map.stars[a];
             const s2 = map.stars[b];
 
@@ -143,7 +142,7 @@ export function ZodiacCinematic() {
             );
           })}
 
-          {!isLightMode && map.stars.map((s, i) => (
+          {map.stars.map((s, i) => (
             <GalaxyStar
               key={`star-${i}-${current.name}`}
               cx={s.x}

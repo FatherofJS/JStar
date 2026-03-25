@@ -46,7 +46,7 @@ const PopupContainer = styled.div<{ $isLight: boolean; $isClosing: boolean }>`
   border-radius: 24px;
   overflow: hidden;
   border: 1px solid ${({ $isLight }) => $isLight ? "rgba(148, 163, 184, 0.22)" : "rgba(255,255,255,0.08)"};
-  background: ${({ $isLight }) => $isLight ? "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(241,245,249,0.94))" : "linear-gradient(180deg, rgba(10,14,23,0.92), rgba(15,23,42,0.88))"};
+  background: ${({ $isLight }) => $isLight ? "rgba(255, 255, 255, 0.98)" : "rgba(10, 14, 23, 0.96)"};
   box-shadow: ${({ $isLight }) => $isLight ? "0 24px 60px rgba(148, 163, 184, 0.25)" : "0 24px 50px rgba(0, 0, 0, 0.4)"};
   backdrop-filter: blur(14px);
   transform-origin: bottom right;
@@ -216,8 +216,8 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
       id: "welcome",
       role: "assistant",
       content: chartType === 'synastry'
-        ? "Hi, I'm your astrology guide. Ask me anything about this synastry chart, the cross-aspects, and how these two interact."
-        : "Hi, I'm your astrology guide. Ask me anything about this chart and I'll keep it focused on the placements, aspects, and overall themes.",
+        ? "Chào đằng ấy! Tớ là trợ lý tâm linh mỏ hỗn đây. Cứ mạnh dạn hỏi tớ bất cứ thứ gì về bản đồ sao cặp đôi này nhé. Tớ sẽ bóc trần sự thật về nhân duyên của hai người!"
+        : "Chào đằng ấy! Tớ là trợ lý tâm linh mỏ hỗn đây. Cứ mạnh dạn hỏi tớ bất cứ thứ gì về bản đồ sao của bạn nhé. Tớ sẽ không nương tay đâu!",
     },
   ]);
   const [question, setQuestion] = useState("");
@@ -264,6 +264,9 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
     setError(null);
     setLoading(true);
 
+    // Force the AI to respond in Vietnamese with a slightly unhinged persona
+    const promptWithInstruction = `${trimmedQuestion}\n\n[SYSTEM INSTRUCTION: Please respond ENTIRELY in Vietnamese. Adopt a slightly funny, sarcastic, and unhinged 'mỏ hỗn' gen-z astrology reader persona. Do not use em-dashes. Keep the styling clean with newlines.]`;
+
     try {
       const response = await fetch(getApiEndpoint(`${API.CHAT}/`), {
         method: "POST",
@@ -272,7 +275,7 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
           'ngrok-skip-browser-warning': '69420'
         },
         body: JSON.stringify({
-          question: trimmedQuestion,
+          question: promptWithInstruction,
           chart_data: chartData,
           chart_type: chartType
         }),
@@ -317,11 +320,11 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
   if (!mounted) return null;
 
   return (
-    <PopupContainer $isLight={isLight} $isClosing={isClosing}>
+    <PopupContainer $isLight={isLight} $isClosing={isClosing} className="chat-popup-container">
       <Header $isLight={isLight}>
         <TitleBlock>
-          <Title>AI Astrologer</Title>
-          <Subtitle $isLight={isLight}>Insights &amp; Interpretations</Subtitle>
+          <Title>Trợ Lý Tâm Linh</Title>
+          <Subtitle $isLight={isLight}>Giải ngải &amp; Đọc vị</Subtitle>
         </TitleBlock>
         <CloseButton $isLight={isLight} onClick={onClose} aria-label="Close chat">
           <IconX size={20} />
@@ -336,7 +339,7 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
         ))}
         {loading && (
           <Bubble $role="assistant" $isLight={isLight}>
-            <span style={{ opacity: 0.6 }}>Reading the stars...</span>
+            <span style={{ opacity: 0.6 }}>Đang rặn chữ...</span>
           </Bubble>
         )}
       </MessageList>
@@ -347,13 +350,13 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Ask about personality, strengths, love style, or any placement..."
+          placeholder="Hỏi xiên xỏ, hỏi ngang ngược, hỏi gì cũng được..."
           disabled={loading}
         />
         <FooterRow>
           {error && <ErrorTextPopup>{error}</ErrorTextPopup>}
           <SendButton type="submit" disabled={!question.trim() || loading}>
-            {loading ? "Sending..." : "Send"}
+            {loading ? "Đang gửi..." : "Gửi"}
           </SendButton>
         </FooterRow>
       </Composer>

@@ -18,8 +18,8 @@ const bounce = keyframes`
 
 
 export const HeroSectionWrapper = styled.section`
+  height: 100dvh;
   min-height: 100dvh;
-  min-height: 600px;
   display: flex;
   align-items: center;
   position: relative;
@@ -177,6 +177,10 @@ export const Actions = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
+
+  @media (max-width: 1000px) {
+    justify-content: center;
+  }
 
   @media (max-width: 480px) {
     gap: 12px;

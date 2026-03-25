@@ -84,19 +84,19 @@ export interface ChartRequest {
     country: string;
 }
 
-export const ZODIAC_SIGNS: Record<string, { symbol: string; color: string; element: string }> = {
-    Aries: { symbol: '♈', color: '#f97316', element: 'Fire' },
-    Taurus: { symbol: '♉', color: '#22c55e', element: 'Earth' },
-    Gemini: { symbol: '♊', color: '#38bdf8', element: 'Air' },
-    Cancer: { symbol: '♋', color: '#a855f7', element: 'Water' },
-    Leo: { symbol: '♌', color: '#f97316', element: 'Fire' },
-    Virgo: { symbol: '♍', color: '#22c55e', element: 'Earth' },
-    Libra: { symbol: '♎', color: '#38bdf8', element: 'Air' },
-    Scorpio: { symbol: '♏', color: '#a855f7', element: 'Water' },
-    Sagittarius: { symbol: '♐', color: '#f97316', element: 'Fire' },
-    Capricorn: { symbol: '♑', color: '#22c55e', element: 'Earth' },
-    Aquarius: { symbol: '♒', color: '#38bdf8', element: 'Air' },
-    Pisces: { symbol: '♓', color: '#a855f7', element: 'Water' },
+export const ZODIAC_SIGNS: Record<string, { symbol: string; color: string; element: string; vi: string }> = {
+    Aries: { symbol: '♈', color: '#f97316', element: 'Fire', vi: 'Bạch Dương' },
+    Taurus: { symbol: '♉', color: '#22c55e', element: 'Earth', vi: 'Kim Ngưu' },
+    Gemini: { symbol: '♊', color: '#38bdf8', element: 'Air', vi: 'Song Tử' },
+    Cancer: { symbol: '♋', color: '#a855f7', element: 'Water', vi: 'Cự Giải' },
+    Leo: { symbol: '♌', color: '#f97316', element: 'Fire', vi: 'Sư Tử' },
+    Virgo: { symbol: '♍', color: '#22c55e', element: 'Earth', vi: 'Xử Nữ' },
+    Libra: { symbol: '♎', color: '#38bdf8', element: 'Air', vi: 'Thiên Bình' },
+    Scorpio: { symbol: '♏', color: '#a855f7', element: 'Water', vi: 'Bọ Cạp' },
+    Sagittarius: { symbol: '♐', color: '#f97316', element: 'Fire', vi: 'Nhân Mã' },
+    Capricorn: { symbol: '♑', color: '#22c55e', element: 'Earth', vi: 'Ma Kết' },
+    Aquarius: { symbol: '♒', color: '#38bdf8', element: 'Air', vi: 'Bảo Bình' },
+    Pisces: { symbol: '♓', color: '#a855f7', element: 'Water', vi: 'Song Ngư' },
 };
 
 export const PLANET_SYMBOLS: Record<string, string> = {
@@ -105,12 +105,26 @@ export const PLANET_SYMBOLS: Record<string, string> = {
     Chiron: '⚷', 'North Node': '☊', 'South Node': '☋',
 };
 
+export const PLANET_NAMES_VI: Record<string, string> = {
+    Sun: 'Mặt Trời', Moon: 'Mặt Trăng', Mercury: 'Thủy Tinh', Venus: 'Kim Tinh', Mars: 'Hỏa Tinh',
+    Jupiter: 'Mộc Tinh', Saturn: 'Thổ Tinh', Uranus: 'Thiên Vương Tinh', Neptune: 'Hải Vương Tinh', Pluto: 'Diêm Vương Tinh',
+    Chiron: 'Chiron', 'North Node': 'Bắc Giao Điểm', 'South Node': 'Nam Giao Điểm', Ascendant: 'Cung Mọc'
+};
+
 export const ASPECT_SYMBOLS: Record<string, string> = {
     conjunction: '☌',
     opposition: '☍',
     trine: '△',
     square: '□',
     sextile: '⚹',
+};
+
+export const ASPECT_NAMES_VI: Record<string, string> = {
+    conjunction: 'Trùng Tụ',
+    opposition: 'Đối Đỉnh',
+    trine: 'Tam Hợp',
+    square: 'Vuông Góc',
+    sextile: 'Lục Hợp',
 };
 
 export const ASPECT_COLORS: Record<string, string> = {
