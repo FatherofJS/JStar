@@ -279,10 +279,11 @@ export function AboutUs() {
   const dynamicScale = useDynamicScale();
 
   return (
-    <>
+    <div className="about-us-wrapper">
+      <h2 className="about-us-title">Our Team</h2>
       <div
         className="usercontainer"
-        style={{ scale: dynamicScale.toString() } as React.CSSProperties}
+        style={{ zoom: dynamicScale } as React.CSSProperties}
       >
         <CircularGroup
           data={group1Members}
@@ -309,7 +310,7 @@ export function AboutUs() {
           </div>
         </CircularGroup>
       </div>
-    </>
+    </div>
   );
 }
 

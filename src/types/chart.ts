@@ -1,5 +1,3 @@
-// CHART DATA TYPES - Shared across all components
-
 export interface Planet {
     id?: string;
     name: string;
@@ -31,8 +29,7 @@ export interface Aspect {
 }
 
 export interface Angle {
-    id?: string;
-    name: string;       // "Ascendant", "Midheaven", "Descendant", "Imum Coeli"
+    name: string;
     longitude: number;
     sign: string;
     signDegree: number;
@@ -57,34 +54,61 @@ export interface ChartData {
     angles: Angle[];
 }
 
+export interface SynastryAspect {
+    id?: string;
+    person1_planet: string;
+    person2_planet: string;
+    type: 'conjunction' | 'opposition' | 'trine' | 'square' | 'sextile';
+    angle: number;
+    orb: number;
+}
+
+export interface SynastryData {
+    id: string;
+    person1: Subject;
+    person2: Subject;
+    person1_planets: Planet[];
+    person2_planets: Planet[];
+    person1_houses: House[];
+    person2_houses: House[];
+    person1_angles: Angle[];
+    person2_angles: Angle[];
+    aspects: SynastryAspect[];
+}
+
 export interface ChartRequest {
     name: string;
-    birthDate: string;   // YYYY-MM-DD
-    birthTime: string;   // HH:MM
+    birthDate: string;
+    birthTime: string;
     city: string;
     country: string;
 }
 
-// ZODIAC DATA
-export const ZODIAC_SIGNS: Record<string, { symbol: string; color: string; element: string }> = {
-    Aries: { symbol: '♈', color: '#f97316', element: 'Fire' },
-    Taurus: { symbol: '♉', color: '#22c55e', element: 'Earth' },
-    Gemini: { symbol: '♊', color: '#38bdf8', element: 'Air' },
-    Cancer: { symbol: '♋', color: '#a855f7', element: 'Water' },
-    Leo: { symbol: '♌', color: '#f97316', element: 'Fire' },
-    Virgo: { symbol: '♍', color: '#22c55e', element: 'Earth' },
-    Libra: { symbol: '♎', color: '#38bdf8', element: 'Air' },
-    Scorpio: { symbol: '♏', color: '#a855f7', element: 'Water' },
-    Sagittarius: { symbol: '♐', color: '#f97316', element: 'Fire' },
-    Capricorn: { symbol: '♑', color: '#22c55e', element: 'Earth' },
-    Aquarius: { symbol: '♒', color: '#38bdf8', element: 'Air' },
-    Pisces: { symbol: '♓', color: '#a855f7', element: 'Water' },
+export const ZODIAC_SIGNS: Record<string, { symbol: string; color: string; element: string; vi: string }> = {
+    Aries: { symbol: '♈', color: '#f97316', element: 'Fire', vi: 'Bạch Dương' },
+    Taurus: { symbol: '♉', color: '#22c55e', element: 'Earth', vi: 'Kim Ngưu' },
+    Gemini: { symbol: '♊', color: '#38bdf8', element: 'Air', vi: 'Song Tử' },
+    Cancer: { symbol: '♋', color: '#a855f7', element: 'Water', vi: 'Cự Giải' },
+    Leo: { symbol: '♌', color: '#f97316', element: 'Fire', vi: 'Sư Tử' },
+    Virgo: { symbol: '♍', color: '#22c55e', element: 'Earth', vi: 'Xử Nữ' },
+    Libra: { symbol: '♎', color: '#38bdf8', element: 'Air', vi: 'Thiên Bình' },
+    Scorpio: { symbol: '♏', color: '#a855f7', element: 'Water', vi: 'Bọ Cạp' },
+    Sagittarius: { symbol: '♐', color: '#f97316', element: 'Fire', vi: 'Nhân Mã' },
+    Capricorn: { symbol: '♑', color: '#22c55e', element: 'Earth', vi: 'Ma Kết' },
+    Aquarius: { symbol: '♒', color: '#38bdf8', element: 'Air', vi: 'Bảo Bình' },
+    Pisces: { symbol: '♓', color: '#a855f7', element: 'Water', vi: 'Song Ngư' },
 };
 
 export const PLANET_SYMBOLS: Record<string, string> = {
     Sun: '☉', Moon: '☽', Mercury: '☿', Venus: '♀', Mars: '♂',
     Jupiter: '♃', Saturn: '♄', Uranus: '♅', Neptune: '♆', Pluto: '♇',
     Chiron: '⚷', 'North Node': '☊', 'South Node': '☋',
+};
+
+export const PLANET_NAMES_VI: Record<string, string> = {
+    Sun: 'Mặt Trời', Moon: 'Mặt Trăng', Mercury: 'Thủy Tinh', Venus: 'Kim Tinh', Mars: 'Hỏa Tinh',
+    Jupiter: 'Mộc Tinh', Saturn: 'Thổ Tinh', Uranus: 'Thiên Vương Tinh', Neptune: 'Hải Vương Tinh', Pluto: 'Diêm Vương Tinh',
+    Chiron: 'Chiron', 'North Node': 'Bắc Giao Điểm', 'South Node': 'Nam Giao Điểm', Ascendant: 'Cung Mọc'
 };
 
 export const ASPECT_SYMBOLS: Record<string, string> = {
@@ -95,6 +119,20 @@ export const ASPECT_SYMBOLS: Record<string, string> = {
     sextile: '⚹',
 };
 
-// Note: Aspect and element colors are defined in index.css as CSS variables
-// --aspect-conjunction, --aspect-opposition, --aspect-trine, --aspect-square, --aspect-sextile
-// --fire, --earth, --air, --water
+export const ASPECT_NAMES_VI: Record<string, string> = {
+    conjunction: 'Trùng Tụ',
+    opposition: 'Đối Đỉnh',
+    trine: 'Tam Hợp',
+    square: 'Vuông Góc',
+    sextile: 'Lục Hợp',
+};
+
+export const ASPECT_COLORS: Record<string, string> = {
+    conjunction: '#ffd93d',
+    opposition: '#ff6b8a',
+    trine: '#6bcbff',
+    square: '#ff4757',
+    sextile: '#50fa7b',
+};
+
+export const ZODIAC_ORDER = Object.keys(ZODIAC_SIGNS);

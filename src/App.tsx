@@ -1,48 +1,23 @@
-// Main App - Layout skeleton
-// DO NOT EDIT during Sprint One except to add routing state
-import { Routes, Route } from "react-router-dom";
-import { Sidebar } from "./components/Sidebar";
-import { Header } from "./components/Header";
-import { InfoPanel } from "./components/InfoPanel";
-import { PlanetTable } from "./components/PlanetTable";
-import { ChartWheel } from "./components/ChartWheel";
-import { HousePanel } from "./components/HousePanel";
-import { AspectPanel } from "./components/AspectPanel";
-import { BirthForm } from "./components/BirthForm";
-import { LandingPage } from "./components/LandingPage";
-import "./App.css";
+import { Routes, Route } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
+import StarChartPage from './pages/StarChartPage';
+import ChartViewPage from './pages/ChartViewPage';
+import SynastryViewPage from './pages/SynastryViewPage';
+import { ThemeProvider } from './theme';
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import './App.css';
+
 function App() {
   return (
-    <div className="app-container">
+    <ThemeProvider>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route
-          path="*"
-          element={
-            <>
-              <Sidebar />
-              <div className="main-area">
-                <Header />
-                <div className="content-grid">
-                  <aside className="left-panel">
-                    <InfoPanel />
-                    <PlanetTable />
-                  </aside>
-                  <main className="chart-area">
-                    <ChartWheel />
-                  </main>
-                  <aside className="right-panel">
-                    <HousePanel />
-                    <AspectPanel />
-                  </aside>
-                </div>
-              </div>
-              <BirthForm />
-            </>
-          }
-        />
+        <Route path="/star-chart" element={<StarChartPage />} />
+        <Route path="/chart" element={<ChartViewPage />} />
+        <Route path="/synastry" element={<SynastryViewPage />} />
       </Routes>
-    </div>
+      <SpeedInsights />
+    </ThemeProvider>
   );
 }
 
