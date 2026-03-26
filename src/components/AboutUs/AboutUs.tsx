@@ -5,6 +5,9 @@ import { IconZodiacLeo } from "@tabler/icons-react";
 import { IconZodiacVirgo } from "@tabler/icons-react";
 import { IconZodiacTaurus } from "@tabler/icons-react";
 import { IconZodiacAries } from "@tabler/icons-react";
+import { IconZodiacPisces } from "@tabler/icons-react";
+import { IconZodiacAquarius } from "@tabler/icons-react";
+import { IconZodiacCancer } from "@tabler/icons-react";
 
 import AnhDuc from "./TVimg/DoneDucAnh.jpg";
 import Huy from "./TVimg/Huy.jpg";
@@ -166,7 +169,7 @@ export function AboutUs() {
         name: "Đức Mạnh",
         role: "Take Care",
         imgSrc: Manh, // Ảnh mặt trước (Hãy import ảnh mới ở trên và thay vào đây)
-        backImgSrc: AnhDuc, // Ảnh mặt sau (Hãy import ảnh mới ở trên và thay vào đây)
+        backImgSrc: <IconZodiacLeo />, // Ảnh mặt sau (Hãy import ảnh mới ở trên và thay vào đây)
       },
       {
         id: "g1-2",
@@ -180,7 +183,7 @@ export function AboutUs() {
         name: "Thái Minh",
         role: "Take Care",
         imgSrc: ThaiMinh,
-        backImgSrc: AnhDuc,
+        backImgSrc: <IconZodiacCancer />,
       },
       {
         id: "g1-4",
@@ -194,7 +197,7 @@ export function AboutUs() {
         name: "Ngọc Bích",
         role: "Take Care",
         imgSrc: NgocBich,
-        backImgSrc: AnhDuc,
+        backImgSrc: <IconZodiacTaurus />,
       },
     ],
     [],
@@ -215,28 +218,28 @@ export function AboutUs() {
         name: "Đức Huy",
         role: "CTV",
         imgSrc: Huy,
-        backImgSrc: AnhDuc,
+        backImgSrc: <IconZodiacPisces />,
       },
       {
         id: "g2-3",
         name: "Khánh Huyền",
         role: "CTV",
         imgSrc: Huyen,
-        backImgSrc: AnhDuc,
+        backImgSrc: <IconZodiacLeo />,
       },
       {
         id: "g2-4",
         name: "Quang Toàn",
         role: "CTV",
         imgSrc: Toan,
-        backImgSrc: <IconZodiacLeo />,
+        backImgSrc: <IconZodiacCancer />,
       },
       {
         id: "g2-5",
         name: "Hữu Tường",
         role: "CTV",
         imgSrc: Tuong,
-        backImgSrc: AnhDuc,
+        backImgSrc: <IconZodiacAquarius />,
       },
       {
         id: "g2-6",
