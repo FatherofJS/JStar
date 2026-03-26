@@ -21,30 +21,7 @@ export const getApiEndpoint = (endpoint: string): string => {
 
 export const ZODIAC_CYCLE_INTERVAL = 7000;
 
-export const ANIMATION = {
-  FADE_IN_SYMBOL: 2.2,
-  FADE_IN_DELAY: 4.8,
-  DRAW_LINE_DURATION: 5.5,
-  LINE_DRAW_DELAY_MULTIPLIER: 0.35,
-  FLOAT_DURATION: 8,
-  AURA_ROTATION_DURATION: 90,
-  ORBIT_ROTATION_DURATION: 40,
 
-  VORTEX_SPIN: 6,
-  SHOCKWAVE_DURATION: 0.8,
-  GLOW_PULSE: 3,
-  BUTTON_TILT_FACTOR: 0.25,
-  BUTTON_SCALE: 1.05,
-
-  STAR_TWINKLE: 6,
-  COSMIC_PULSE: 12,
-  NEBULA_DRIFT: 60,
-  AURORA_WAVE: 20,
-  GRAIN_SHIFT: 10,
-
-  ZOOM_IN: 0.8,
-  ZOOM_OUT: 0.6,
-} as const;
 
 export const SCROLL = {
   TRIGGER_THRESHOLD: 40,
@@ -70,41 +47,7 @@ export const STAR = {
   },
 } as const;
 
-export const LAYOUT = {
-  ZODIAC: {
-    WRAPPER_HEIGHT: 440,
-    CONTAINER_SIZE: 420,
-    SYMBOL_SIZE: 320,
-    AURA_DIAMETER: 340,
-    ORBIT_DIAMETER: 280,
-    NAME_BOTTOM_OFFSET: -38,
-    NAME_FONT_SIZE: 22,
-    NAME_LETTER_SPACING: 5,
-  },
-  HERO: {
-    GRID_GAP: 120,
-    CONTENT_MAX_WIDTH: 620,
-    DIVIDER_WIDTH: 120,
-    DIVIDER_HEIGHT: 2,
-  },
-  GLASS_BOX: {
-    WIDTH: "80%",
-    PADDING: 60,
-    BORDER_RADIUS: 28,
-  },
-  BUTTON: {
-    WIDTH: "16rem",
-    HEIGHT: "3.6rem",
-    BORDER_RADIUS: 60,
-    SHOCKWAVE_SIZE: 140,
-    PARTICLE_SIZE: 6,
-  },
-} as const;
 
-export const BREAKPOINTS = {
-  TABLET: 768,
-  DESKTOP: 1000,
-} as const;
 
 export const COLORS = {
   PRIMARY: "#7aa2ff",
@@ -133,6 +76,7 @@ export const SECTIONS = {
   AI_INTERPRETATIONS: "ai-interpretations",
   GET_STARTED: "get-started",
   OPEN_SOURCE: "open-source",
+  DOCS: "docs",
   CONTACT: "contact",
 } as const;
 

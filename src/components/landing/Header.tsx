@@ -59,10 +59,22 @@ function Header({ activeSection }: HeaderProps) {
             {t.home}
           </NavItemMemo>
           <NavItemMemo
-            $active={activeSection === SECTIONS.CHART_DATA}
-            onClick={() => handleNavClick(SECTIONS.CHART_DATA)}
+            $active={activeSection === 'about'}
+            onClick={() => handleNavClick('about')}
+          >
+            About Us
+          </NavItemMemo>
+          <NavItemMemo
+            $active={activeSection === SECTIONS.FEATURES || ['natal', 'synastry', 'chatbot'].includes(activeSection)}
+            onClick={() => handleNavClick(SECTIONS.FEATURES)}
           >
             {t.features}
+          </NavItemMemo>
+          <NavItemMemo
+            $active={activeSection === SECTIONS.DOCS}
+            onClick={() => handleNavClick(SECTIONS.DOCS)}
+          >
+            {t.docs}
           </NavItemMemo>
         </NavMenu>
       </HeaderLeft>
@@ -87,10 +99,22 @@ function Header({ activeSection }: HeaderProps) {
           {t.home}
         </NavItemMemo>
         <NavItemMemo
-          $active={activeSection === SECTIONS.CHART_DATA}
-          onClick={() => handleNavClick(SECTIONS.CHART_DATA)}
+          $active={activeSection === 'about'}
+          onClick={() => handleNavClick('about')}
+        >
+          About Us
+        </NavItemMemo>
+        <NavItemMemo
+          $active={activeSection === SECTIONS.FEATURES || ['natal', 'synastry', 'chatbot'].includes(activeSection)}
+          onClick={() => handleNavClick(SECTIONS.FEATURES)}
         >
           {t.features}
+        </NavItemMemo>
+        <NavItemMemo
+          $active={activeSection === SECTIONS.DOCS}
+          onClick={() => handleNavClick(SECTIONS.DOCS)}
+        >
+          {t.docs}
         </NavItemMemo>
         <NavItemMemo $active={false} onClick={handleGetStarted}>
           {t.getStarted}

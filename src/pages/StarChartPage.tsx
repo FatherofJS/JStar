@@ -165,18 +165,8 @@ const FormLabel = styled.label<{ $isLight: boolean }>`
   margin-bottom: 12px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  
-  &::before {
-    content: '✦';
-    color: ${props => props.$isLight ? '#4f46e5' : '#818cf8'};
-    font-size: 8px;
-  }
 `;
 
-const InputIcon = styled.span`
-  font-size: 16px;
-  margin-right: 8px;
-`;
 
 const DatePickerWrapper = styled.div`
   display: grid;
@@ -384,6 +374,7 @@ const SubmitButton = styled.button<{ $isLight: boolean }>`
   color: white;
   font-size: 17px;
   font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   letter-spacing: 1.5px;
@@ -556,15 +547,15 @@ export default function StarChartPage() {
     setError('');
 
     if (!fullName.trim()) {
-      setError('Please enter Person 1 full name.');
+      setError('Vui lòng nhập họ tên.');
       return;
     }
     if (!day || !month || !year) {
-      setError('Please select Person 1 date of birth.');
+      setError('Vui lòng chọn ngày sinh.');
       return;
     }
     if (!selectedCity) {
-      setError('Please search and select a birth city from the dropdown for Person 1 (autofilled text doesn\'t count).');
+      setError('Vui lòng tìm và chọn thành phố sinh từ danh sách.');
       return;
     }
 
@@ -573,7 +564,7 @@ export default function StarChartPage() {
     const yearNum = parseInt(year);
 
     if (dayNum < 1 || dayNum > 31 || monthNum < 1 || monthNum > 12 || yearNum < 1900 || yearNum > new Date().getFullYear()) {
-      setError('Please enter a valid date for Person 1.');
+      setError('Ngày sinh không hợp lệ.');
       return;
     }
 
@@ -589,15 +580,15 @@ export default function StarChartPage() {
 
     if (chartType === 'synastry') {
       if (!p2FullName.trim()) {
-        setError('Please enter Person 2 full name.');
+        setError('Vui lòng nhập họ tên người 2.');
         return;
       }
       if (!p2Day || !p2Month || !p2Year) {
-        setError('Please select Person 2 date of birth.');
+        setError('Vui lòng chọn ngày sinh người 2.');
         return;
       }
       if (!p2SelectedCity) {
-        setError('Please select a birth city for Person 2.');
+        setError('Vui lòng chọn thành phố sinh cho người 2.');
         return;
       }
       const p2DayNum = parseInt(p2Day);
@@ -605,7 +596,7 @@ export default function StarChartPage() {
       const p2YearNum = parseInt(p2Year);
 
       if (p2DayNum < 1 || p2DayNum > 31 || p2MonthNum < 1 || p2MonthNum > 12 || p2YearNum < 1900 || p2YearNum > new Date().getFullYear()) {
-        setError('Please enter a valid date for Person 2.');
+        setError('Ngày sinh người 2 không hợp lệ.');
         return;
       }
 
@@ -662,7 +653,7 @@ export default function StarChartPage() {
 
   return (
     <Layout>
-      <Background showShootingStars={false} />
+      <Background showShootingStars={true} />
       <PageWrapper>
         {!isLight && (
           <>
@@ -675,9 +666,9 @@ export default function StarChartPage() {
           </>
         )}
 
-        <PageTitle $isLight={isLight}>Your Star</PageTitle>
+        <PageTitle $isLight={isLight}>Ngôi Sao Của Bạn</PageTitle>
         <WelcomeText $isLight={isLight}>
-          Discover your cosmic identity. Enter your birth details and unlock the secrets of the stars.
+          Khám phá bản đồ sao cá nhân. Điền thông tin sinh nhật để mở khóa bí mật vũ trụ.
         </WelcomeText>
 
         <ChartContainer $isLight={isLight} $isSynastry={chartType === 'synastry'}>
@@ -689,7 +680,7 @@ export default function StarChartPage() {
                 $isLight={isLight}
                 onClick={() => { setChartType('natal'); setError(''); }}
               >
-                Natal Chart
+                Bản Đồ Cá Nhân
               </ToggleButton>
               <ToggleButton
                 type="button"
@@ -697,23 +688,23 @@ export default function StarChartPage() {
                 $isLight={isLight}
                 onClick={() => { setChartType('synastry'); setError(''); }}
               >
-                Synastry Chart
+                Bản Đồ Cặp Đôi
               </ToggleButton>
             </ToggleContainer>
 
             <FormGrid $isSynastry={chartType === 'synastry'}>
               <PersonColumn>
                 {chartType === 'synastry' && (
-                  <PersonTitle $isLight={isLight}>Person 1</PersonTitle>
+                  <PersonTitle $isLight={isLight}>Người 1</PersonTitle>
                 )}
 
                 <FormSection>
-                  <FormLabel $isLight={isLight}>Full Name</FormLabel>
+                  <FormLabel $isLight={isLight}>Họ Tên</FormLabel>
                   <FullNameInput
                     type="text"
                     name="name"
                     autoComplete="name"
-                    placeholder="What should we call you?"
+                    placeholder="Bạn tên gì?"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     $isLight={isLight}
@@ -724,30 +715,8 @@ export default function StarChartPage() {
                 <SectionDivider $isLight={isLight} />
 
                 <FormSection>
-                  <FormLabel $isLight={isLight}>Date of Birth</FormLabel>
+                  <FormLabel $isLight={isLight}>Ngày Sinh</FormLabel>
                   <DatePickerWrapper>
-                    <DateSelect
-                      name="bday-month"
-                      autoComplete="bday-month"
-                      value={month}
-                      onChange={(e) => setMonth(e.target.value)}
-                      $isLight={isLight}
-                      required
-                    >
-                      <option value="">Month</option>
-                      <option value="1">January</option>
-                      <option value="2">February</option>
-                      <option value="3">March</option>
-                      <option value="4">April</option>
-                      <option value="5">May</option>
-                      <option value="6">June</option>
-                      <option value="7">July</option>
-                      <option value="8">August</option>
-                      <option value="9">September</option>
-                      <option value="10">October</option>
-                      <option value="11">November</option>
-                      <option value="12">December</option>
-                    </DateSelect>
                     <DateSelect
                       name="bday-day"
                       autoComplete="bday-day"
@@ -756,16 +725,38 @@ export default function StarChartPage() {
                       $isLight={isLight}
                       required
                     >
-                      <option value="">Day</option>
+                      <option value="">Ngày</option>
                       {Array.from({ length: 31 }, (_, i) => (
                         <option key={i + 1} value={i + 1}>{i + 1}</option>
                       ))}
+                    </DateSelect>
+                    <DateSelect
+                      name="bday-month"
+                      autoComplete="bday-month"
+                      value={month}
+                      onChange={(e) => setMonth(e.target.value)}
+                      $isLight={isLight}
+                      required
+                    >
+                      <option value="">Tháng</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
                     </DateSelect>
                     <DateInput
                       type="number"
                       name="bday-year"
                       autoComplete="bday-year"
-                      placeholder="Year"
+                      placeholder="Năm"
                       min="1900"
                       max={new Date().getFullYear()}
                       value={year}
@@ -777,26 +768,25 @@ export default function StarChartPage() {
                 </FormSection>
 
                 <FormSection>
-                  <FormLabel $isLight={isLight}>Birth Time</FormLabel>
+                  <FormLabel $isLight={isLight}>Giờ Sinh</FormLabel>
                   <TimeWrapper $isLight={isLight}>
-                    <InputIcon>🕐</InputIcon>
                     <TimeInput
                       type="time"
                       name="bday-time"
                       autoComplete="bday-time"
                       value={birthTime}
                       onChange={(e) => setBirthTime(e.target.value)}
-                      placeholder="What time were you born?"
+                      placeholder="Bạn sinh lúc mấy giờ?"
                       $isLight={isLight}
                     />
                   </TimeWrapper>
                 </FormSection>
 
                 <FormSection>
-                  <FormLabel $isLight={isLight}>Birth Place</FormLabel>
+                  <FormLabel $isLight={isLight}>Nơi Sinh</FormLabel>
                   <Row>
                     <div>
-                      <SubLabel $isLight={isLight}>City</SubLabel>
+                      <SubLabel $isLight={isLight}>Thành phố</SubLabel>
                       <LocationAutocomplete
                         value={selectedCity?.display_name?.split(',')[0] || ''}
                         onChange={(location: LocationData | null) => {
@@ -819,11 +809,11 @@ export default function StarChartPage() {
                       />
                     </div>
                     <div>
-                      <SubLabel $isLight={isLight}>Country</SubLabel>
+                      <SubLabel $isLight={isLight}>Quốc gia</SubLabel>
                       <LocationAutocomplete
                         value={selectedCountry?.name || ''}
                         onChange={(location: LocationData | null) => setSelectedCountry(location)}
-                        placeholder="Search country..."
+                        placeholder="Tìm quốc gia..."
                         searchType="country"
                         isLight={isLight}
                       />
@@ -834,13 +824,13 @@ export default function StarChartPage() {
 
               {chartType === 'synastry' && (
                 <PersonColumn>
-                  <PersonTitle $isLight={isLight}>Person 2</PersonTitle>
+                  <PersonTitle $isLight={isLight}>Người 2</PersonTitle>
 
                   <FormSection>
-                    <FormLabel $isLight={isLight}>Full Name</FormLabel>
+                    <FormLabel $isLight={isLight}>Họ Tên</FormLabel>
                     <FullNameInput
                       type="text"
-                      placeholder="Their name"
+                      placeholder="Tên người kia?"
                       value={p2FullName}
                       onChange={(e) => setP2FullName(e.target.value)}
                       $isLight={isLight}
@@ -851,42 +841,42 @@ export default function StarChartPage() {
                   <SectionDivider $isLight={isLight} />
 
                   <FormSection>
-                    <FormLabel $isLight={isLight}>Date of Birth</FormLabel>
+                    <FormLabel $isLight={isLight}>Ngày Sinh</FormLabel>
                     <DatePickerWrapper>
-                      <DateSelect
-                        value={p2Month}
-                        onChange={(e) => setP2Month(e.target.value)}
-                        $isLight={isLight}
-                        required={chartType === 'synastry'}
-                      >
-                        <option value="">Month</option>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                      </DateSelect>
                       <DateSelect
                         value={p2Day}
                         onChange={(e) => setP2Day(e.target.value)}
                         $isLight={isLight}
                         required={chartType === 'synastry'}
                       >
-                        <option value="">Day</option>
+                        <option value="">Ngày</option>
                         {Array.from({ length: 31 }, (_, i) => (
                           <option key={i + 1} value={i + 1}>{i + 1}</option>
                         ))}
                       </DateSelect>
+                      <DateSelect
+                        value={p2Month}
+                        onChange={(e) => setP2Month(e.target.value)}
+                        $isLight={isLight}
+                        required={chartType === 'synastry'}
+                      >
+                        <option value="">Tháng</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                      </DateSelect>
                       <DateInput
                         type="number"
-                        placeholder="Year"
+                        placeholder="Năm"
                         min="1900"
                         max={new Date().getFullYear()}
                         value={p2Year}
@@ -898,24 +888,23 @@ export default function StarChartPage() {
                   </FormSection>
 
                   <FormSection>
-                    <FormLabel $isLight={isLight}>Birth Time</FormLabel>
+                    <FormLabel $isLight={isLight}>Giờ Sinh</FormLabel>
                     <TimeWrapper $isLight={isLight}>
-                      <InputIcon>🕐</InputIcon>
                       <TimeInput
                         type="time"
                         value={p2BirthTime}
                         onChange={(e) => setP2BirthTime(e.target.value)}
-                        placeholder="Time of birth?"
+                        placeholder="Sinh lúc mấy giờ?"
                         $isLight={isLight}
                       />
                     </TimeWrapper>
                   </FormSection>
 
                   <FormSection>
-                    <FormLabel $isLight={isLight}>Birth Place</FormLabel>
+                    <FormLabel $isLight={isLight}>Nơi Sinh</FormLabel>
                     <Row>
                       <div>
-                        <SubLabel $isLight={isLight}>City</SubLabel>
+                        <SubLabel $isLight={isLight}>Thành phố</SubLabel>
                         <LocationAutocomplete
                           value={p2SelectedCity?.display_name?.split(',')[0] || ''}
                           onChange={(location: LocationData | null) => {
@@ -932,17 +921,17 @@ export default function StarChartPage() {
                               });
                             }
                           }}
-                          placeholder="Search city..."
+                          placeholder="Tìm thành phố..."
                           searchType="city"
                           isLight={isLight}
                         />
                       </div>
                       <div>
-                        <SubLabel $isLight={isLight}>Country</SubLabel>
+                        <SubLabel $isLight={isLight}>Quốc gia</SubLabel>
                         <LocationAutocomplete
                           value={p2SelectedCountry?.name || ''}
                           onChange={(location: LocationData | null) => setP2SelectedCountry(location)}
-                          placeholder="Search country..."
+                          placeholder="Tìm quốc gia..."
                           searchType="country"
                           isLight={isLight}
                         />
@@ -956,7 +945,7 @@ export default function StarChartPage() {
             {error && <ErrorMessage $isLight={isLight}>{error}</ErrorMessage>}
 
             <SubmitButton type="submit" $isLight={isLight}>
-              {chartType === 'synastry' ? 'Reveal Your Synastry' : 'Reveal Your Star'}
+              {chartType === 'synastry' ? 'Xem Bản Đồ Cặp Đôi' : 'Xem Bản Đồ Sao'}
             </SubmitButton>
           </form>
 

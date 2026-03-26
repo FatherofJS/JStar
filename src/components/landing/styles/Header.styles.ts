@@ -1,10 +1,7 @@
 import styled, { keyframes, css } from "styled-components";
 
 
-const shimmer = keyframes`
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-`;
+
 
 const slideDown = keyframes`
   from {
@@ -119,19 +116,11 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
   }
 
   @media (max-width: 1280px) {
-    backdrop-filter: none;
-    animation: none;
     box-shadow: ${({ $scrolled }) =>
     $scrolled ? "0 4px 18px var(--shadow-color)" : "none"};
-
-    [data-theme="light"] & {
-      backdrop-filter: none;
-    }
   }
 
   [data-performance-mode="reduced"] & {
-    backdrop-filter: none;
-    animation: none;
     box-shadow: ${({ $scrolled }) =>
     $scrolled ? "0 2px 12px var(--shadow-color)" : "none"};
 
@@ -351,194 +340,4 @@ export const NavItemMemo = styled.div<{ $active: boolean }>`
 `;
 
 
-export const UserMenuWrapper = styled.div`
-  position: relative;
-`;
-
-export const UserInfoButton = styled.div<{ $hasMenu?: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 16px;
-  background: linear-gradient(135deg, rgba(120, 140, 255, 0.2) 0%, rgba(168, 90, 255, 0.15) 100%);
-  border: 1px solid rgba(120, 140, 255, 0.25);
-  border-radius: 24px;
-  font-size: 13px;
-  color: var(--text-inverse);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-
-  &:hover {
-    background: linear-gradient(135deg, rgba(120, 140, 255, 0.35) 0%, rgba(168, 90, 255, 0.3) 100%);
-    box-shadow: 0 0 25px rgba(120, 140, 255, 0.4), 0 4px 15px rgba(0, 0, 0, 0.2);
-    transform: translateY(-1px);
-    border-color: rgba(120, 140, 255, 0.5);
-  }
-
-  [data-theme="light"] & {
-    background: linear-gradient(135deg, rgba(2, 132, 199, 0.15) 0%, rgba(124, 58, 237, 0.12) 100%);
-    border: 1px solid rgba(2, 132, 199, 0.3);
-    color: #1e293b;
-    
-    &:hover {
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.25) 0%, rgba(124, 58, 237, 0.2) 100%);
-      box-shadow: 0 0 20px rgba(2, 132, 199, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
-      border-color: rgba(2, 132, 199, 0.5);
-    }
-  }
-
-  @media (max-width: 768px) {
-    font-size: 14px;
-    padding: 10px 14px;
-    width: 100%;
-    justify-content: center;
-    border-radius: 12px;
-  }
-`;
-
-export const UserAvatar = styled.div`
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #787cff 0%, #a85aff 50%, #6366f1 100%);
-  background-size: 200% 200%;
-  animation: ${shimmer} 3s ease infinite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 12px;
-  color: white;
-  box-shadow: 0 2px 10px rgba(120, 140, 255, 0.4);
-
-  [data-theme="light"] & {
-    background: linear-gradient(135deg, #0ea5e9 0%, #7c3aed 50%, #0284c7 100%);
-    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
-  }
-`;
-
-export const UserName = styled.span`
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: 500;
-  color: var(--text-primary);
-
-  @media (max-width: 768px) {
-    max-width: none;
-  }
-`;
-
-export const UserMenuDropdown = styled.div<{ $open: boolean }>`
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
-  min-width: 240px;
-  background: var(--bg-secondary);
-  // backdrop-filter: blur(25px) saturate(180%);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: 0 20px 50px var(--shadow-color), 0 0 30px rgba(120, 140, 255, 0.1);
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      var(--nav-item-active) 50%,
-      transparent 100%
-    );
-  }
-  
-  opacity: ${({ $open }) => ($open ? 1 : 0)};
-  visibility: ${({ $open }) => ($open ? 'visible' : 'hidden')};
-  transform: ${({ $open }) => ($open ? 'translateY(0)' : 'translateY(-15px)')};
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 1000;
-`;
-
-export const UserMenuSection = styled.div`
-  padding: 16px;
-  border-bottom: 1px solid var(--border);
-  background: var(--nav-item-hover);
-`;
-
-export const UserMenuLabel = styled.div`
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--text-secondary);
-  margin-bottom: 10px;
-  font-weight: 600;
-`;
-
-export const UserMenuEmail = styled.div`
-  font-size: 13px;
-  color: var(--text-primary);
-  word-break: break-all;
-  opacity: 0.85;
-`;
-
-export const UserMenuName = styled.div`
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-`;
-
-export const UserMenuItem = styled.button<{ $danger?: boolean }>`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
-  background: transparent;
-  border: none;
-  color: ${({ $danger }) => ($danger ? '#ff6b6b' : 'var(--text-primary)')};
-  font-size: 14px;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: ${({ $danger }) => ($danger ? '#ff6b6b' : 'var(--nav-item-active)')};
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  &:hover {
-    background: var(--nav-item-hover);
-    
-    &::before {
-      opacity: 1;
-    }
-  }
-
-  svg {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-    opacity: 0.8;
-  }
-`;
-
-export const UserMenuDivider = styled.div`
-  height: 1px;
-  background: var(--border);
-  margin: 4px 0;
-`;
 

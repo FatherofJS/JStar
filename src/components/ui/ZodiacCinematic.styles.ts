@@ -23,6 +23,15 @@ export const fadeInSymbol = keyframes`
   to { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
 `;
 
+export const fadeOutElement = keyframes`
+  to { opacity: 0; }
+`;
+
+export const breathe = keyframes`
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.06); }
+`;
+
 
 export const ZodiacWrapper = styled.div`
   margin-top: 40px;
@@ -62,8 +71,10 @@ export const ZodiacSymbol = styled.img`
 
   opacity: 0;
 
-  animation: ${fadeInSymbol} 2s ease forwards;
-  animation-delay: 4s;
+  animation: 
+    ${fadeInSymbol} 1s ease forwards 3s,
+    ${breathe} 8s ease-in-out infinite 4s,
+    ${fadeOutElement} 1s ease forwards 5.5s;
 
   mix-blend-mode: screen;
 
@@ -72,7 +83,10 @@ export const ZodiacSymbol = styled.img`
   z-index: 1;
 
   @media (max-width: 1280px) {
-    animation-delay: 0.8s;
+    animation: 
+      ${fadeInSymbol} 1s ease forwards 3s,
+      ${breathe} 8s ease-in-out infinite 4s,
+      ${fadeOutElement} 1s ease forwards 5.5s;
     filter: drop-shadow(0 0 12px rgba(120, 140, 255, 0.18));
   }
 
@@ -124,12 +138,12 @@ export const DeepGlow = styled.div<{ color: string }>`
   opacity: 0.38;
 
   @media (max-width: 1280px) {
-    filter: blur(16px);
-    opacity: 0.18;
+    /* filter: blur(16px);
+    opacity: 0.18; */
   }
 
   [data-performance-mode="reduced"] & {
-    display: none;
+    /* display: none; */
   }
 `;
 
@@ -151,13 +165,13 @@ export const AuraRing = styled.div`
   }
 
   @media (max-width: 1280px) {
-    animation: none;
-    opacity: 0.55;
+    /* animation: none;
+    opacity: 0.55; */
   }
 
   [data-performance-mode="reduced"] & {
-    animation: none;
-    opacity: 0.35;
+    /* animation: none;
+    opacity: 0.35; */
   }
 `;
 
@@ -179,13 +193,13 @@ export const OrbitRing = styled.div`
   }
 
   @media (max-width: 1280px) {
-    animation: none;
-    opacity: 0.45;
+    /* animation: none;
+    opacity: 0.45; */
   }
 
   [data-performance-mode="reduced"] & {
-    animation: none;
-    opacity: 0.28;
+    /* animation: none;
+    opacity: 0.28; */
   }
 `;
 
@@ -203,20 +217,31 @@ export const ZodiacName = styled.div`
     letter-spacing: 3px;
     font-size: 14px;
   }
+
+  [data-theme="light"] & {
+    color: #1e293b;
+  }
 `;
 
-export const GalaxyStar = styled.circle<{ intensity: number }>`
-  fill: rgba(255, 255, 255, ${(p) => 0.5 + p.intensity * 0.5});
+export const GalaxyStar = styled.circle<{ $intensity: number }>`
+  fill: rgba(255, 255, 255, ${(p) => 0.5 + p.$intensity * 0.5});
   filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
-  opacity: ${(p) => 0.5 + p.intensity * 0.5};
+  opacity: ${(p) => 0.5 + p.$intensity * 0.5};
+  
+  animation: ${fadeOutElement} 1s ease forwards 5.5s;
 
   @media (max-width: 1280px) {
     filter: none;
   }
 
+  [data-theme="light"] & {
+    fill: rgba(30, 41, 59, ${(p) => 0.5 + p.$intensity * 0.5});
+    filter: drop-shadow(0 0 2px rgba(30, 41, 59, 0.4));
+  }
+
   [data-performance-mode="reduced"] & {
     filter: none;
-    opacity: ${(p) => 0.4 + p.intensity * 0.35};
+    opacity: ${(p) => 0.4 + p.$intensity * 0.35};
   }
 `;
 
@@ -231,13 +256,15 @@ export const ConstellationSVG = styled.svg`
   }
 `;
 
-export const Line = styled.line<{ color: string; delay: number }>`
+export const Line = styled.line<{ color: string; $delay: number }>`
   stroke: ${(p) => p.color};
   stroke-width: 0.5;
   stroke-dasharray: 140;
   stroke-dashoffset: 140;
-  animation: ${drawLine} 4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: ${(p) => p.delay}s;
+
+  animation: 
+    ${drawLine} 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards ${(p) => p.$delay}s,
+    ${fadeOutElement} 1s ease forwards 5.5s;
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
@@ -246,7 +273,13 @@ export const Line = styled.line<{ color: string; delay: number }>`
   }
 
   @media (max-width: 1280px) {
-    animation-duration: 1.2s;
+    animation: 
+      ${drawLine} 1s cubic-bezier(0.22, 1, 0.36, 1) forwards ${(p) => p.$delay}s,
+      ${fadeOutElement} 1s ease forwards 5.5s;
+  }
+
+  [data-theme="light"] & {
+    stroke: #1e293b;
   }
 
   [data-performance-mode="reduced"] & {

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const PanelContainer = styled.div<{ $isLight: boolean }>`
-  margin-top: 24px;
+  margin-top: 0;
   padding: 32px;
   border-radius: 24px;
   background: ${({ $isLight }) => $isLight ? "rgba(255, 255, 255, 0.85)" : "rgba(16, 22, 36, 0.6)"};

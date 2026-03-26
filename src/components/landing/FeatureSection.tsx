@@ -23,23 +23,6 @@ import {
   FeatureListItem,
 } from "./styles/FeatureSection.styles.ts";
 
-const ChartIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/>
-    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-    <path d="M2 12h20"/>
-  </svg>
-);
-
-const SparklesIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
-    <path d="M20 2v4"/>
-    <path d="M22 4h-4"/>
-    <circle cx="4" cy="20" r="2"/>
-  </svg>
-);
-
 const ZoomInIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="11" cy="11" r="8"/>
@@ -55,7 +38,6 @@ interface FeatureSectionProps {
 
 function FeatureSection({ feature }: FeatureSectionProps) {
   const [zoomImage, setZoomImage] = useState<{ src: string; alt: string } | null>(null);
-  
   const {
     title,
     description,
@@ -63,12 +45,9 @@ function FeatureSection({ feature }: FeatureSectionProps) {
     imageSrc,
     imageAlt,
     badge,
-    badgeIcon = "chart",
     reversed = false,
     glowColor = "blue",
   } = feature;
-
-  const BadgeIcon = badgeIcon === "sparkles" ? SparklesIcon : ChartIcon;
 
   const ContentComponent = reversed ? FeatureContentReversed : FeatureContent;
   const GlowComponent = glowColor === "purple" ? FeatureGlowPurple : FeatureGlow;
@@ -82,7 +61,7 @@ function FeatureSection({ feature }: FeatureSectionProps) {
   return (
     <>
       <SectionContainer 
-        data-section={badge?.toLowerCase().replace(/\s+/g, "-")} 
+        data-section={feature.id} 
         className="zoom-section"
       >
         <MaxWidthContainer>
@@ -108,7 +87,6 @@ function FeatureSection({ feature }: FeatureSectionProps) {
                 <ContentComponent>
                   {badge && (
                     <FeatureBadge>
-                      <BadgeIcon />
                       {badge}
                     </FeatureBadge>
                   )}
@@ -136,7 +114,6 @@ function FeatureSection({ feature }: FeatureSectionProps) {
                 <ContentComponent>
                   {badge && (
                     <FeatureBadge>
-                      <BadgeIcon />
                       {badge}
                     </FeatureBadge>
                   )}
@@ -193,12 +170,10 @@ function FeatureSectionAlt({ feature }: FeatureSectionProps) {
     imageSrc,
     imageAlt,
     badge,
-    badgeIcon = "chart",
     reversed = false,
     glowColor = "blue",
   } = feature;
 
-  const BadgeIcon = badgeIcon === "sparkles" ? SparklesIcon : ChartIcon;
   const ContentComponent = reversed ? FeatureContentReversed : FeatureContent;
   const GlowComponent = glowColor === "purple" ? FeatureGlowPurple : FeatureGlow;
 
@@ -211,7 +186,7 @@ function FeatureSectionAlt({ feature }: FeatureSectionProps) {
   return (
     <>
       <SectionContainerAlt 
-        data-section={badge?.toLowerCase().replace(/\s+/g, "-")} 
+        data-section={feature.id} 
         className="zoom-section"
       >
         <MaxWidthContainer>
@@ -237,7 +212,6 @@ function FeatureSectionAlt({ feature }: FeatureSectionProps) {
                 <ContentComponent>
                   {badge && (
                     <FeatureBadge>
-                      <BadgeIcon />
                       {badge}
                     </FeatureBadge>
                   )}
@@ -257,7 +231,6 @@ function FeatureSectionAlt({ feature }: FeatureSectionProps) {
                 <ContentComponent>
                   {badge && (
                     <FeatureBadge>
-                      <BadgeIcon />
                       {badge}
                     </FeatureBadge>
                   )}
@@ -310,21 +283,17 @@ function AIInterpretationSection({ feature }: FeatureSectionProps) {
     description,
     items,
     badge,
-    badgeIcon = "sparkles",
   } = feature;
-
-  const BadgeIcon = badgeIcon === "sparkles" ? SparklesIcon : ChartIcon;
 
   return (
     <SectionContainer 
-      data-section={badge?.toLowerCase().replace(/\s+/g, "-")} 
+      data-section={feature.id} 
       className="zoom-section"
     >
       <MaxWidthContainer>
         <GridTwoColumns>
           <FeatureContent>
             <FeatureBadge>
-              <BadgeIcon />
               {badge}
             </FeatureBadge>
             <SectionTitle>

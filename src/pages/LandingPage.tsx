@@ -5,14 +5,15 @@ import { Background } from "../components/layout/Background";
 import { useLanding } from "../hooks/useLanding";
 import { useSectionObserver } from "../hooks/useScroll";
 import { featuresData } from "../data/landingData";
-import { SECTIONS } from "../constants";
+
 
 import Header from "../components/landing/Header";
 import HeroSection from "../components/landing/HeroSection";
-import { FeatureSection, FeatureSectionAlt, AIInterpretationSection } from "../components/landing/FeatureSection";
-import GetStartedSteps from "../components/landing/GetStartedSteps";
+import { AIInterpretationSection, FeatureSection, FeatureSectionAlt } from "../components/landing/FeatureSection";
+import DocsSection from "../components/landing/DocsSection";
 import CTASection from "../components/landing/CTASection";
 import Footer from "../components/landing/Footer";
+import AboutUs from "../components/AboutUs/AboutUs";
 
 const LandingPageShell = styled.div`
   position: relative;
@@ -28,6 +29,14 @@ function LandingPage() {
         document.documentElement.setAttribute('data-performance-mode', isReduced ? 'reduced' : 'default');
     }, [isReduced]);
 
+    useEffect(() => {
+        if (window.location.hash === '#docs') {
+            setTimeout(() => {
+                document.querySelector('[data-section="docs"]')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    }, []);
+
     const handleGetStarted = useCallback(() => {
         navigate("/star-chart");
     }, [navigate]);
@@ -35,7 +44,7 @@ function LandingPage() {
     const featureSections = useMemo(
         () =>
             featuresData.map((feature, index) => {
-                if (feature.id === "ai-interpretations") {
+                if (feature.id === "ai-interpretations" || feature.id === "chatbot") {
                     return (
                         <AIInterpretationSection
                             key={feature.id}
@@ -66,17 +75,23 @@ function LandingPage() {
     return (
         <LandingPageShell data-performance-mode={isReduced ? "reduced" : "default"}>
             <Background
-                showShootingStars={activeSection === SECTIONS.HOME}
-                forceReducedMotion={isReduced}
+                showShootingStars={true}
+                forceReducedMotion={false}
             />
 
             <Header activeSection={activeSection} />
 
             <HeroSection />
 
-            {featureSections}
+            <div data-section="about" className="zoom-section">
+                <AboutUs />
+            </div>
 
-            <GetStartedSteps />
+            <div data-section="features">
+                {featureSections}
+            </div>
+
+            <DocsSection />
 
             <CTASection onGetStarted={handleGetStarted} />
 

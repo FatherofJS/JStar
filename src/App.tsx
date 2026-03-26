@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import StarChartPage from './pages/StarChartPage';
 import ChartViewPage from './pages/ChartViewPage';
@@ -11,7 +11,6 @@ import './App.css';
 function App() {
   return (
     <ThemeProvider>
-      <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/star-chart" element={<StarChartPage />} />
@@ -19,7 +18,6 @@ function App() {
           <Route path="/synastry" element={<SynastryViewPage />} />
           <Route path="/fatherofjs" element={<Gallery />} />
         </Routes>
-      </Router>
       <SpeedInsights />
     </ThemeProvider>
   );

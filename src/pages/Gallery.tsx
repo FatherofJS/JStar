@@ -4,12 +4,13 @@ import Layout from "../components/layout/Layout";
 const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 
 import { useEffect, useState } from "react";
+import { API } from "../constants";
 
 export default function Gallery() {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/fatherofjs")
+    fetch(`${API.BASE_URL}/fatherofjs`)
       .then(res => res.json())
       .then(data => setImages(data));
   }, []);

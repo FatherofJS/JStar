@@ -11,15 +11,9 @@ export const FeatureBadge = styled.span`
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
-  gap: 4px;
   margin-bottom: 16px;
   background: var(--bg-secondary);
   color: var(--text-secondary);
-  
-  svg {
-    width: 12px;
-    height: 12px;
-  }
 `;
 
 export const SectionContainer = styled.section`
@@ -38,12 +32,10 @@ export const SectionContainerAlt = styled(SectionContainer)`
   backdrop-filter: blur(6px);
 
   @media (max-width: 1280px) {
-    backdrop-filter: none;
     background: rgba(255, 255, 255, 0.025);
   }
 
   [data-performance-mode="reduced"] & {
-    backdrop-filter: none;
     background: rgba(255, 255, 255, 0.018);
   }
 `;
@@ -195,9 +187,9 @@ export const FeatureGlow = styled.div<{ $position: 'left' | 'right' }>`
   border-radius: 2rem;
   opacity: 0.5;
   background: linear-gradient(
-    ${({ $position }) => $position === 'left' 
-      ? 'to right, rgba(120, 140, 255, 0.2), transparent' 
-      : 'to left, rgba(120, 140, 255, 0.2), transparent'}
+    ${({ $position }) => $position === 'left'
+    ? 'to right, rgba(120, 140, 255, 0.2), transparent'
+    : 'to left, rgba(120, 140, 255, 0.2), transparent'}
   );
   filter: blur(24px);
   
@@ -207,19 +199,17 @@ export const FeatureGlow = styled.div<{ $position: 'left' | 'right' }>`
 
   @media (max-width: 1280px) {
     opacity: 0.28;
-    filter: blur(14px);
   }
 
   [data-performance-mode="reduced"] & {
-    display: none;
   }
 `;
 
 export const FeatureGlowPurple = styled(FeatureGlow)`
   background: linear-gradient(
-    ${({ $position }) => $position === 'left' 
-      ? 'to right, rgba(168, 85, 247, 0.2), transparent' 
-      : 'to left, rgba(168, 85, 247, 0.2), transparent'}
+    ${({ $position }) => $position === 'left'
+    ? 'to right, rgba(168, 85, 247, 0.2), transparent'
+    : 'to left, rgba(168, 85, 247, 0.2), transparent'}
   );
 `;
 
@@ -268,4 +258,3 @@ export const FeatureListItem = styled.li`
   color: var(--text-primary);
   line-height: 1.5;
 `;
-

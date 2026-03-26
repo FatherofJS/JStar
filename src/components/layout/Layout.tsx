@@ -1,9 +1,11 @@
 import type { ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useCallback } from "react";
 import styled from "styled-components";
 import ThemeSwitch from "./ThemeSwitch";
 import { useTheme } from "../../theme";
 import { useScrollPosition } from "../../hooks/useScroll";
+import { HelpButton } from "../ui/GuidedTour.styles";
 import {
   HeaderWrapper,
   HeaderLeft,
@@ -35,6 +37,12 @@ export default function Layout({ children }: LayoutProps) {
   const { theme, toggleTheme } = useTheme();
   const { isScrolled } = useScrollPosition();
 
+  const isChartPage = location.pathname.startsWith('/chart') || location.pathname.startsWith('/synastry');
+
+  const triggerTour = useCallback(() => {
+    window.dispatchEvent(new CustomEvent('jstar-start-tour'));
+  }, []);
+
   return (
     <LayoutWrapper>
       <HeaderWrapper $scrolled={isScrolled}>
@@ -52,6 +60,11 @@ export default function Layout({ children }: LayoutProps) {
         </HeaderLeft>
 
         <HeaderRight>
+          {isChartPage && (
+            <HelpButton onClick={triggerTour} title="Hướng dẫn sử dụng">
+              ?
+            </HelpButton>
+          )}
           <ThemeSwitch isDark={theme === 'dark'} onToggle={toggleTheme} />
         </HeaderRight>
       </HeaderWrapper>

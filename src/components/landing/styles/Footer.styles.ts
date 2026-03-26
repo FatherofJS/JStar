@@ -80,4 +80,3 @@ export const FooterLink = styled.a`
     color: var(--text-primary);
   }
 `;
-

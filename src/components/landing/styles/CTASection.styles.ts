@@ -14,12 +14,10 @@ export const CTASectionWrapper = styled.section`
   }
 
   @media (max-width: 1280px) {
-    backdrop-filter: none;
     background: rgba(255, 255, 255, 0.02);
   }
 
   [data-performance-mode="reduced"] & {
-    backdrop-filter: none;
     background: rgba(255, 255, 255, 0.015);
   }
 `;
@@ -68,7 +66,7 @@ export const CTAButton = styled.button`
   padding: 14px 28px;
   border-radius: 8px;
   border: none;
-  background: linear-gradient(135deg, var(--hero-gradient-start), var(--hero-gradient-mid));
+  background: #7189ff;
   color: white;
   font-size: 14px;
   font-weight: 600;
@@ -86,20 +84,12 @@ export const CTAButton = styled.button`
   }
 
   @media (max-width: 1280px) {
-    transition: none;
-
     &:hover {
-      transform: none;
-      box-shadow: none;
     }
   }
 
   [data-performance-mode="reduced"] & {
-    transition: none;
-
     &:hover {
-      transform: none;
-      box-shadow: none;
     }
   }
 `;
@@ -109,4 +99,3 @@ export const CTANote = styled.p`
   color: var(--text-secondary);
   margin-top: 8px;
 `;
-

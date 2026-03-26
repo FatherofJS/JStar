@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import {
     ZODIAC_SIGNS, ZODIAC_ORDER, ASPECT_COLORS,
     PLANET_SYMBOLS, ASPECT_SYMBOLS,
+    PLANET_NAMES_VI, ASPECT_NAMES_VI
 } from '../../types/chart';
 import type { Planet, Aspect, ChartData } from '../../types/chart';
 
@@ -9,6 +10,8 @@ import { useTheme } from "../../theme";
 import { ZODIAC_ICONS, PlanetIcon, getSignColor, normalizeAngle, formatDegree } from './chartUtils';
 import './ChartWheel.css';
 
+
+import { IconZoomIn, IconZoomOut, IconRefresh } from '@tabler/icons-react';
 
 export function ChartWheel({ data }: { data: ChartData }) {
     const { planets, houses, aspects } = data;
@@ -29,7 +32,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
         angleLabel: isLight ? '#0f172a' : '',
     };
 
-    const size = 700;
+    const size = 800;
     const cx = size / 2;
     const cy = size / 2;
 
@@ -146,12 +149,12 @@ export function ChartWheel({ data }: { data: ChartData }) {
     } : {};
 
     return (
-        <div className="chart-wheel-container">
+        <div className="chart-wheel-container" style={{ width: "fit-content", margin: "0 auto", position: "relative" }}>
 
             <div className="chart-controls">
-                <button onClick={() => zoom(0.1)}>+</button>
-                <button onClick={() => zoom(-0.1)}>−</button>
-                <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}>⟳</button>
+                <button onClick={() => zoom(0.1)}><IconZoomIn size={20} stroke={2} /></button>
+                <button onClick={() => zoom(-0.1)}><IconZoomOut size={20} stroke={2} /></button>
+                <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}><IconRefresh size={20} stroke={2} /></button>
             </div>
 
             {(hoveredPlanet || hoveredAspect) && (
@@ -159,23 +162,23 @@ export function ChartWheel({ data }: { data: ChartData }) {
                     {hoveredPlanet && !hoveredAspect && (
                         <>
                             <div className="tooltip-header">
-                                {PLANET_SYMBOLS[hoveredPlanet.planets[0].name]} {hoveredPlanet.planets[0].name}
+                                {PLANET_SYMBOLS[hoveredPlanet.planets[0].name]} {PLANET_NAMES_VI[hoveredPlanet.planets[0].name] || hoveredPlanet.planets[0].name}
                             </div>
                             <div className="tooltip-row">
-                                <span>Sign:</span>
+                                <span>Cung hoàng đạo:</span>
                                 <span style={{ color: getSignColor(hoveredPlanet.planets[0].sign) }}>
-                                    {ZODIAC_SIGNS[hoveredPlanet.planets[0].sign]?.symbol} {hoveredPlanet.planets[0].sign}
+                                    {ZODIAC_SIGNS[hoveredPlanet.planets[0].sign]?.symbol} {ZODIAC_SIGNS[hoveredPlanet.planets[0].sign]?.vi || hoveredPlanet.planets[0].sign}
                                 </span>
                             </div>
                             <div className="tooltip-row">
-                                <span>Degree:</span>
+                                <span>Độ:</span>
                                 <span>
                                     {Math.floor(hoveredPlanet.planet.signDegree)}°
                                     {Math.floor((hoveredPlanet.planet.signDegree % 1) * 60)}'
                                 </span>
                             </div>
                             <div className="tooltip-row">
-                                <span>House:</span>
+                                <span>Nhà:</span>
                                 <span>{hoveredPlanet.planets[0].house}</span>
                             </div>
                             {false && (
@@ -196,12 +199,12 @@ export function ChartWheel({ data }: { data: ChartData }) {
                                 </>
                             )}
                             {hoveredPlanet.planets[0].retrograde && (
-                                <div className="tooltip-retrograde">℞ Retrograde</div>
+                                <div className="tooltip-retrograde">℞ Đi lùi (Retrograde)</div>
                             )}
                             {hoveredPlanet.planets.length > 1 && (
                                 <>
                                     <div className="tooltip-header" style={{ marginTop: '8px' }}>
-                                        All In This Stack
+                                        Cùng vị trí
                                     </div>
                                     {hoveredPlanet.planets.map((planet, index) => (
                                         <div
@@ -212,25 +215,25 @@ export function ChartWheel({ data }: { data: ChartData }) {
                                             }}
                                         >
                                             <div className="tooltip-row">
-                                                <span>Planet:</span>
-                                                <span>{PLANET_SYMBOLS[planet.name]} {planet.name}</span>
+                                                <span>Hành tinh:</span>
+                                                <span>{PLANET_SYMBOLS[planet.name]} {PLANET_NAMES_VI[planet.name] || planet.name}</span>
                                             </div>
                                             <div className="tooltip-row">
-                                                <span>Sign:</span>
+                                                <span>Cung hoàng đạo:</span>
                                                 <span style={{ color: getSignColor(planet.sign) }}>
-                                                    {ZODIAC_SIGNS[planet.sign]?.symbol} {planet.sign}
+                                                    {ZODIAC_SIGNS[planet.sign]?.symbol} {ZODIAC_SIGNS[planet.sign]?.vi || planet.sign}
                                                 </span>
                                             </div>
                                             <div className="tooltip-row">
-                                                <span>Degree:</span>
+                                                <span>Độ:</span>
                                                 <span>{formatDegree(planet.signDegree)}</span>
                                             </div>
                                             <div className="tooltip-row">
-                                                <span>House:</span>
+                                                <span>Nhà:</span>
                                                 <span>{planet.house}</span>
                                             </div>
                                             {planet.retrograde && (
-                                                <div className="tooltip-retrograde">℞ Retrograde</div>
+                                                <div className="tooltip-retrograde">℞ Đi lùi (Retrograde)</div>
                                             )}
                                         </div>
                                     ))}
@@ -241,23 +244,15 @@ export function ChartWheel({ data }: { data: ChartData }) {
                     {hoveredAspect && (
                         <>
                             <div className="tooltip-header" style={{ color: ASPECT_COLORS[hoveredAspect.aspect.type] }}>
-                                {ASPECT_SYMBOLS[hoveredAspect.aspect.type]} {hoveredAspect.aspect.type.charAt(0).toUpperCase() + hoveredAspect.aspect.type.slice(1)}
+                                {ASPECT_SYMBOLS[hoveredAspect.aspect.type]} {ASPECT_NAMES_VI[hoveredAspect.aspect.type] || hoveredAspect.aspect.type.charAt(0).toUpperCase() + hoveredAspect.aspect.type.slice(1)}
                             </div>
                             <div className="tooltip-row">
-                                <span>Planets:</span>
+                                <span>Hành tinh:</span>
                                 <span>{PLANET_SYMBOLS[hoveredAspect.aspect.planet1] || hoveredAspect.aspect.planet1} ↔ {PLANET_SYMBOLS[hoveredAspect.aspect.planet2] || hoveredAspect.aspect.planet2}</span>
                             </div>
                             <div className="tooltip-row">
-                                <span>Angle:</span>
+                                <span>Góc Chiếu:</span>
                                 <span>{hoveredAspect.aspect.angle.toFixed(1)}°</span>
-                            </div>
-                            <div className="tooltip-row">
-                                <span>Orb:</span>
-                                <span>{hoveredAspect.aspect.orb.toFixed(2)}°</span>
-                            </div>
-                            <div className="tooltip-row">
-                                <span>Status:</span>
-                                <span>{hoveredAspect.aspect.applying ? 'Applying' : 'Separating'}</span>
                             </div>
                         </>
                     )}
@@ -275,8 +270,8 @@ export function ChartWheel({ data }: { data: ChartData }) {
                 <svg
                     viewBox={`0 0 ${size} ${size}`}
                     style={{
-                        width: '100%', height: '100%',
-                        maxWidth: size, maxHeight: size,
+                        width: size, height: size,
+                        maxWidth: '100%',
                         transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${scale})`,
                     }}
                 >
@@ -295,7 +290,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
                                 transform={`rotate(${rot}, ${pos.x}, ${pos.y})`}
                                 style={{ fontFamily: 'Inter, sans-serif' }}
                             >
-                                {sign.toUpperCase()}
+                                {(ZODIAC_SIGNS[sign]?.vi || sign).toUpperCase()}
                             </text>
                         );
                     })}
