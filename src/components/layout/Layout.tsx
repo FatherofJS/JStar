@@ -14,6 +14,7 @@ import {
   NavMenu,
   NavItemMemo,
 } from "../landing/styles/Header.styles";
+import { IconHelp } from "@tabler/icons-react";
 
 const LayoutWrapper = styled.div`
   min-height: 100dvh;
@@ -62,7 +63,7 @@ export default function Layout({ children }: LayoutProps) {
         <HeaderRight>
           {isChartPage && (
             <HelpButton onClick={triggerTour} title="Hướng dẫn sử dụng">
-              ?
+              <IconHelp size={22} stroke={2.5} />
             </HelpButton>
           )}
           <ThemeSwitch isDark={theme === 'dark'} onToggle={toggleTheme} />

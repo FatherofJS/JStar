@@ -106,8 +106,8 @@ export const PLANET_SYMBOLS: Record<string, string> = {
 };
 
 export const PLANET_NAMES_VI: Record<string, string> = {
-    Sun: 'Mặt Trời', Moon: 'Mặt Trăng', Mercury: 'Thủy Tinh', Venus: 'Kim Tinh', Mars: 'Hỏa Tinh',
-    Jupiter: 'Mộc Tinh', Saturn: 'Thổ Tinh', Uranus: 'Thiên Vương Tinh', Neptune: 'Hải Vương Tinh', Pluto: 'Diêm Vương Tinh',
+    Sun: 'Mặt Trời', Moon: 'Mặt Trăng', Mercury: 'Sao Thủy', Venus: 'Sao Kim', Mars: 'Sao Hỏa',
+    Jupiter: 'Sao Mộc', Saturn: 'Sao Thổ', Uranus: 'Sao Thiên Vương', Neptune: 'Sao Hải Vương', Pluto: 'Sao Diêm Vương',
     Chiron: 'Chiron', 'North Node': 'Bắc Giao Điểm', 'South Node': 'Nam Giao Điểm', Ascendant: 'Cung Mọc'
 };
 

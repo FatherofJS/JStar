@@ -6,7 +6,7 @@ export const PanelContainer = styled.div<{ $isLight: boolean }>`
   border-radius: 24px;
   background: ${({ $isLight }) => $isLight ? "rgba(255, 255, 255, 0.85)" : "rgba(16, 22, 36, 0.6)"};
   border: 1px solid ${({ $isLight }) => $isLight ? "rgba(148, 163, 184, 0.2)" : "rgba(129, 140, 248, 0.15)"};
-  box-shadow: ${({ $isLight }) => $isLight ? "0 10px 30px rgba(148, 163, 184, 0.1)" : "0 10px 30px rgba(0, 0, 0, 0.2)"};
+  box-shadow: none;
   backdrop-filter: blur(12px);
 
   @media (max-width: 768px) {

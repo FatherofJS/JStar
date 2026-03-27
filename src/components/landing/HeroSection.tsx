@@ -17,7 +17,6 @@ import {
 } from "./styles/HeroSection.styles.ts";
 
 function HeroSection() {
-  console.count('🟡 HeroSection render');
   const heroRef = useRef<HTMLElement>(null);
   const navigate = useNavigate();
   const t = landingContent;

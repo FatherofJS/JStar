@@ -29,7 +29,6 @@ const useStarData = (zodiacName: string) => {
 };
 
 export function ZodiacCinematic() {
-  console.count('🟠 ZodiacCinematic render');
   const [index, setIndex] = useState(0);
   const [allowTiltInteraction, setAllowTiltInteraction] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

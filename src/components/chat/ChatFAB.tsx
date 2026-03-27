@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { IconMessageChatbot, IconX } from "@tabler/icons-react";
+import { IconSparkles, IconX } from "@tabler/icons-react";
 
 const FAB = styled.button<{ $isOpen: boolean }>`
   position: fixed;
@@ -49,7 +49,7 @@ interface ChatFABProps {
 export function ChatFAB({ isOpen, onClick }: ChatFABProps) {
   return (
     <FAB $isOpen={isOpen} onClick={onClick} className="chat-fab-button">
-      {isOpen ? <IconX size={26} /> : <IconMessageChatbot size={26} />}
+      {isOpen ? <IconX size={26} /> : <IconSparkles size={26} />}
     </FAB>
   );
 }

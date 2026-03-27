@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState, useEffect, memo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDynamicScale } from "../../hooks/useDynamicScale";
 
 import { IconZodiacLeo } from "@tabler/icons-react";
@@ -159,8 +160,8 @@ const CircularGroup = React.memo(
 );
 
 export const AboutUs = memo(function AboutUs() {
-  console.count('🟡 AboutUs render');
   const [flippedIds, setFlippedIds] = useState<Set<string>>(new Set());
+  const navigate = useNavigate();
 
   // Mảng dữ liệu các Member Nhóm 1 (Nhóm nhỏ bên trong)
   const group1Members = useMemo(
@@ -317,6 +318,31 @@ export const AboutUs = memo(function AboutUs() {
           </div>
         </CircularGroup>
       </div>
+      <p
+        onClick={() => navigate('/fatherofjs')}
+        style={{
+          textAlign: 'center',
+          marginTop: '32px',
+          fontSize: '0.7rem',
+          color: 'rgba(148, 163, 184, 0.35)',
+          cursor: 'default',
+          userSelect: 'none',
+          letterSpacing: '2px',
+          transition: 'all 0.4s ease',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.color = 'rgba(139, 92, 246, 0.8)';
+          e.currentTarget.style.cursor = 'pointer';
+          e.currentTarget.style.letterSpacing = '4px';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.color = 'rgba(148, 163, 184, 0.35)';
+          e.currentTarget.style.cursor = 'default';
+          e.currentTarget.style.letterSpacing = '2px';
+        }}
+      >
+        ✦ bí mật vũ trụ ✦
+      </p>
     </div>
   );
 });

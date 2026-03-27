@@ -10,7 +10,13 @@ import { useTheme } from "../../theme";
 import { ZODIAC_ICONS, PlanetIcon, getSignColor, normalizeAngle, formatDegree } from './chartUtils';
 import './SynastryWheel.css';
 
-import { IconZoomIn, IconZoomOut, IconRefresh, IconUser } from '@tabler/icons-react';
+const normalizePlanetName = (name: string) => {
+    if (name === "True_North_Lunar_Node") return "North Node";
+    if (name === "True_South_Lunar_Node") return "South Node";
+    return name;
+};
+
+import { IconZoomInArea, IconZoomOutArea, IconFocus2, IconUserHeart } from '@tabler/icons-react';
 
 export function SynastryWheel({ data }: { data: SynastryData }) {
     const { person1_planets, person2_planets, person1_houses, aspects } = data;
@@ -160,22 +166,22 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
     return (
         <div className="synastry-wheel-container" style={{ width: "fit-content", margin: "0 auto", position: "relative" }}>
             <div className="chart-controls">
-                <button onClick={() => zoom(0.1)}><IconZoomIn size={20} stroke={2} /></button>
-                <button onClick={() => zoom(-0.1)}><IconZoomOut size={20} stroke={2} /></button>
-                <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}><IconRefresh size={20} stroke={2} /></button>
+                <button onClick={() => zoom(0.1)}><IconZoomInArea size={20} stroke={2} /></button>
+                <button onClick={() => zoom(-0.1)}><IconZoomOutArea size={20} stroke={2} /></button>
+                <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}><IconFocus2 size={20} stroke={2} /></button>
             </div>
 
             <div className="synastry-legend">
                 <div className="legend-item">
                     <div className="legend-color" style={{ background: palette.person1Color, boxShadow: `0 0 12px ${palette.person1Color}60` }}>
-                        <IconUser size={14} color="#fff" stroke={2.5} />
+                        <IconUserHeart size={14} color="#fff" stroke={2.5} />
                     </div>
                     <span className="legend-name">{data.person1.name || 'Person 1'}</span>
                 </div>
                 <div className="legend-divider"></div>
                 <div className="legend-item">
                     <div className="legend-color" style={{ background: palette.person2Color, boxShadow: `0 0 12px ${palette.person2Color}60` }}>
-                        <IconUser size={14} color="#fff" stroke={2.5} />
+                        <IconUserHeart size={14} color="#fff" stroke={2.5} />
                     </div>
                     <span className="legend-name">{data.person2.name || 'Person 2'}</span>
                 </div>
@@ -186,7 +192,7 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                     {hoveredPlanet && !hoveredAspect && (
                         <>
                             <div className="tooltip-header">
-                                {PLANET_SYMBOLS[hoveredPlanet.planets[0].name]} {PLANET_NAMES_VI[hoveredPlanet.planets[0].name] || hoveredPlanet.planets[0].name}
+                                {PLANET_SYMBOLS[hoveredPlanet.planets[0].name]} {PLANET_NAMES_VI[normalizePlanetName(hoveredPlanet.planets[0].name)] || normalizePlanetName(hoveredPlanet.planets[0].name)}
                                 <span style={{ marginLeft: '4px', fontSize: '10px', color: hoveredPlanet.person === 1 ? palette.person1Color : palette.person2Color }}>
                                     (P{hoveredPlanet.person})
                                 </span>
@@ -213,7 +219,7 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                                         <div key={planet.name} className="tooltip-stack-card" style={{ marginBottom: index === hoveredPlanet.planets.length - 1 ? 0 : '8px' }}>
                                             <div className="tooltip-row">
                                                 <span>Hành tinh:</span>
-                                                <span>{PLANET_SYMBOLS[planet.name]} {PLANET_NAMES_VI[planet.name] || planet.name}</span>
+                                                <span>{PLANET_SYMBOLS[planet.name]} {PLANET_NAMES_VI[normalizePlanetName(planet.name)] || normalizePlanetName(planet.name)}</span>
                                             </div>
                                             <div className="tooltip-row">
                                                 <span>Cung hoàng đạo:</span>
@@ -239,8 +245,8 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
                             <div className="tooltip-row">
                                 <span>Hành tinh:</span>
                                 <span>
-                                    <span style={{ color: palette.person1Color }}>{PLANET_SYMBOLS[hoveredAspect.aspect.person1_planet] || hoveredAspect.aspect.person1_planet}</span> ↔
-                                    <span style={{ color: palette.person2Color }}> {PLANET_SYMBOLS[hoveredAspect.aspect.person2_planet] || hoveredAspect.aspect.person2_planet}</span>
+                                    <span style={{ color: palette.person1Color }}>{PLANET_SYMBOLS[hoveredAspect.aspect.person1_planet] || normalizePlanetName(hoveredAspect.aspect.person1_planet)}</span> ↔
+                                    <span style={{ color: palette.person2Color }}> {PLANET_SYMBOLS[hoveredAspect.aspect.person2_planet] || normalizePlanetName(hoveredAspect.aspect.person2_planet)}</span>
                                 </span>
                             </div>
                             <div className="tooltip-row">

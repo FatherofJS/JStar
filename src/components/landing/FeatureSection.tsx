@@ -37,7 +37,6 @@ interface FeatureSectionProps {
 }
 
 function FeatureSection({ feature }: FeatureSectionProps) {
-  console.count(`🟡 FeatureSection[${feature.id}] render`);
   const [zoomImage, setZoomImage] = useState<{ src: string; alt: string } | null>(null);
   const {
     title,

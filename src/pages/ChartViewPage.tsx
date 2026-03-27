@@ -11,6 +11,7 @@ import Layout from "../components/layout/Layout";
 import { API, getApiEndpoint } from "../constants";
 import type { Aspect, ChartData } from "../types/chart";
 import { useTheme } from "../theme";
+import { Background } from "../components/layout/Background";
 import "../App.css";
 
 interface BirthState {
@@ -239,6 +240,7 @@ export default function ChartViewPage() {
 
   return (
     <Layout>
+      <Background />
       <ChartPageWrapper className="chart-page" $isLight={isLight}>
         {loading && (
           <LoadingOverlay $isLight={isLight}>

@@ -185,13 +185,13 @@ export const ShootingStar = styled.span<ShootingStarProps>`
   }
   
   [data-theme="light"] & {
-    background: linear-gradient(90deg, rgba(30,41,59,0.7), rgba(30,41,59,0.4), transparent);
+    background: linear-gradient(90deg, rgba(0,0,0,0.8), rgba(0,0,0,0.5), transparent);
     &::before {
-      background: #1e293b;
+      background: #000;
       box-shadow: 
-        0 0 4px 1px rgba(30,41,59, 1),
-        0 0 8px 2px rgba(30,41,59, 0.6),
-        0 0 12px 4px rgba(30,41,59, 0.3);
+        0 0 4px 1px rgba(0,0,0, 0.9),
+        0 0 8px 2px rgba(0,0,0, 0.6),
+        0 0 12px 4px rgba(0,0,0, 0.3);
     }
   }
 

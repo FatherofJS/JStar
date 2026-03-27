@@ -11,7 +11,7 @@ import Layout from "../components/layout/Layout";
 import { API, getApiEndpoint } from "../constants";
 import type { SynastryData, Subject } from "../types/chart";
 import { useTheme } from "../theme";
-
+import { Background } from "../components/layout/Background";
 interface SynastryState {
   person1: Subject;
   person2: Subject;
@@ -242,6 +242,7 @@ export default function SynastryViewPage() {
 
   return (
     <Layout>
+      <Background />
       <ChartPageWrapper $isLight={isLight}>
         <ContentContainer>
           {loading ? (

@@ -24,7 +24,6 @@ const LandingPageShell = styled.div`
 `;
 
 function LandingPage() {
-    console.count('🔴 LandingPage render');
     const navigate = useNavigate();
     useLanding();
 

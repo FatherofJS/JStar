@@ -216,8 +216,8 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
       id: "welcome",
       role: "assistant",
       content: chartType === 'synastry'
-        ? "Chào đằng ấy! Tớ là trợ lý tâm linh mỏ hỗn đây. Cứ mạnh dạn hỏi tớ bất cứ thứ gì về bản đồ sao cặp đôi này nhé. Tớ sẽ bóc trần sự thật về nhân duyên của hai người!"
-        : "Chào đằng ấy! Tớ là trợ lý tâm linh mỏ hỗn đây. Cứ mạnh dạn hỏi tớ bất cứ thứ gì về bản đồ sao của bạn nhé. Tớ sẽ không nương tay đâu!",
+        ? "Chào, tớ là JStar. Tớ xem bản đồ sao của hai người để hiểu cách hai bạn tác động lên nhau. Gửi chart qua, tớ xem cho."
+        : "Chào, tớ là JStar. Tớ đọc bản đồ sao để bạn hiểu rõ hơn về bản thân mình. Gửi chart của bạn qua nhé."
     },
   ]);
   const [question, setQuestion] = useState("");
@@ -240,6 +240,21 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
       }, 250); // wait for exit animation
     }
   }, [isOpen, mounted, isClosing]);
+
+  useEffect(() => {
+    setMessages((prev) => {
+      const newArr = [...prev];
+      if (newArr.length > 0 && newArr[0].id === 'welcome') {
+        newArr[0] = {
+          ...newArr[0],
+          content: chartType === 'synastry'
+            ? "Chào, tớ là JStar. Tớ xem bản đồ sao của hai người để hiểu cách hai bạn tác động lên nhau. Có gì thắc mắc cứ hỏi nhé, tớ xem cho."
+            : "Chào, tớ là JStar. Tớ đọc bản đồ sao để bạn hiểu rõ hơn về bản thân mình. Cứ gửi câu hỏi của bạn qua nhé."
+        };
+      }
+      return newArr;
+    });
+  }, [chartType]);
 
   useEffect(() => {
     const list = messageListRef.current;
@@ -339,7 +354,7 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
         ))}
         {loading && (
           <Bubble $role="assistant" $isLight={isLight}>
-            <span style={{ opacity: 0.6 }}>Đang rặn chữ...</span>
+            <span style={{ opacity: 0.6 }}>Đang nghĩ...</span>
           </Bubble>
         )}
       </MessageList>
@@ -350,7 +365,7 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Hỏi xiên xỏ, hỏi ngang ngược, hỏi gì cũng được..."
+          placeholder="Nhập câu hỏi của bạn vào đây nhé."
           disabled={loading}
         />
         <FooterRow>

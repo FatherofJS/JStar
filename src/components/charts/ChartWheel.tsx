@@ -10,8 +10,13 @@ import { useTheme } from "../../theme";
 import { ZODIAC_ICONS, PlanetIcon, getSignColor, normalizeAngle, formatDegree } from './chartUtils';
 import './ChartWheel.css';
 
+const normalizePlanetName = (name: string) => {
+    if (name === "True_North_Lunar_Node") return "North Node";
+    if (name === "True_South_Lunar_Node") return "South Node";
+    return name;
+};
 
-import { IconZoomIn, IconZoomOut, IconRefresh } from '@tabler/icons-react';
+import { IconZoomInArea, IconZoomOutArea, IconFocus2 } from '@tabler/icons-react';
 
 export function ChartWheel({ data }: { data: ChartData }) {
     const { planets, houses, aspects } = data;
@@ -152,9 +157,9 @@ export function ChartWheel({ data }: { data: ChartData }) {
         <div className="chart-wheel-container" style={{ width: "fit-content", margin: "0 auto", position: "relative" }}>
 
             <div className="chart-controls">
-                <button onClick={() => zoom(0.1)}><IconZoomIn size={20} stroke={2} /></button>
-                <button onClick={() => zoom(-0.1)}><IconZoomOut size={20} stroke={2} /></button>
-                <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}><IconRefresh size={20} stroke={2} /></button>
+                <button onClick={() => zoom(0.1)}><IconZoomInArea size={20} stroke={2} /></button>
+                <button onClick={() => zoom(-0.1)}><IconZoomOutArea size={20} stroke={2} /></button>
+                <button onClick={() => { setScale(1); setPanOffset({ x: 0, y: 0 }); }}><IconFocus2 size={20} stroke={2} /></button>
             </div>
 
             {(hoveredPlanet || hoveredAspect) && (
@@ -162,7 +167,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
                     {hoveredPlanet && !hoveredAspect && (
                         <>
                             <div className="tooltip-header">
-                                {PLANET_SYMBOLS[hoveredPlanet.planets[0].name]} {PLANET_NAMES_VI[hoveredPlanet.planets[0].name] || hoveredPlanet.planets[0].name}
+                                {PLANET_SYMBOLS[hoveredPlanet.planets[0].name]} {PLANET_NAMES_VI[normalizePlanetName(hoveredPlanet.planets[0].name)] || normalizePlanetName(hoveredPlanet.planets[0].name)}
                             </div>
                             <div className="tooltip-row">
                                 <span>Cung hoàng đạo:</span>
@@ -216,7 +221,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
                                         >
                                             <div className="tooltip-row">
                                                 <span>Hành tinh:</span>
-                                                <span>{PLANET_SYMBOLS[planet.name]} {PLANET_NAMES_VI[planet.name] || planet.name}</span>
+                                                <span>{PLANET_SYMBOLS[planet.name]} {PLANET_NAMES_VI[normalizePlanetName(planet.name)] || normalizePlanetName(planet.name)}</span>
                                             </div>
                                             <div className="tooltip-row">
                                                 <span>Cung hoàng đạo:</span>
@@ -248,7 +253,7 @@ export function ChartWheel({ data }: { data: ChartData }) {
                             </div>
                             <div className="tooltip-row">
                                 <span>Hành tinh:</span>
-                                <span>{PLANET_SYMBOLS[hoveredAspect.aspect.planet1] || hoveredAspect.aspect.planet1} ↔ {PLANET_SYMBOLS[hoveredAspect.aspect.planet2] || hoveredAspect.aspect.planet2}</span>
+                                <span>{PLANET_SYMBOLS[hoveredAspect.aspect.planet1] || normalizePlanetName(hoveredAspect.aspect.planet1)} ↔ {PLANET_SYMBOLS[hoveredAspect.aspect.planet2] || normalizePlanetName(hoveredAspect.aspect.planet2)}</span>
                             </div>
                             <div className="tooltip-row">
                                 <span>Góc Chiếu:</span>

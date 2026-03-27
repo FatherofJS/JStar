@@ -14,7 +14,6 @@ import {
 } from "./styles/DocsSection.styles";
 
 function DocsSection() {
-  console.count('🟡 DocsSection render');
   const [activeId, setActiveId] = useState(DOCS_SECTIONS[0].id);
 
   const activeSection = DOCS_SECTIONS.find((s) => s.id === activeId) || DOCS_SECTIONS[0];

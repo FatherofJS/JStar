@@ -14,7 +14,7 @@ import {
 
 const generateShootingStars = () =>
   Array.from({ length: 4 }, (_, i) => {
-    const duration = 1.5 + Math.random() * 2.5;
+    const duration = 2.0 + Math.random() * 2.0;
 
     return {
       id: i,
@@ -22,14 +22,13 @@ const generateShootingStars = () =>
       left: Math.random() * 100,
       delay: -(Math.random() * duration),
       duration,
-      width: 60 + Math.random() * 80,
+      width: 120 + Math.random() * 60,
     };
   });
 
 const SHOOTING_STARS = generateShootingStars();
 
 export function Background() {
-  console.count('🟡 Background render');
   const shootingStars = useMemo(() => SHOOTING_STARS, []);
 
   return (
@@ -68,15 +67,15 @@ export function Background() {
       <GrainOverlay />
 
       {shootingStars.map((star) => (
-          <ShootingStar
-            key={star.id}
-            $top={star.top}
-            $left={star.left}
-            $delay={star.delay}
-            $duration={star.duration}
-            style={{ width: star.width }}
-          />
-        ))}
+        <ShootingStar
+          key={star.id}
+          $top={star.top}
+          $left={star.left}
+          $delay={star.delay}
+          $duration={star.duration}
+          style={{ width: star.width }}
+        />
+      ))}
     </BackgroundWrapper>
   );
 }
