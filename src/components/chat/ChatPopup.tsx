@@ -271,13 +271,17 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const trimmedQuestion = question.trim();
-    if (!trimmedQuestion || loading) return;
+    if (!question || loading) return;
+
+    if (question.length > 200) {
+      setError("Câu hỏi quá dài (tối đa 200 ký tự).");
+      return;
+    }
 
     const userMessage: ChatMessage = {
       id: `user-${Date.now()}`,
       role: "user",
-      content: trimmedQuestion,
+      content: question,
     };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -286,7 +290,7 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
     setLoading(true);
 
     // Force the AI to respond in Vietnamese with a slightly unhinged persona
-    const promptWithInstruction = `${trimmedQuestion}\n\n[SYSTEM INSTRUCTION: Please respond ENTIRELY in Vietnamese. Adopt a slightly funny, sarcastic, and unhinged 'mỏ hỗn' gen-z astrology reader persona. Do not use em-dashes. Keep the styling clean with newlines.]`;
+    const promptWithInstruction = `${question}\n\n[SYSTEM INSTRUCTION: Please respond ENTIRELY in Vietnamese. Adopt a slightly funny, sarcastic, and unhinged 'mỏ hỗn' gen-z astrology reader persona. Do not use em-dashes. Keep the styling clean with newlines.]`;
 
     try {
       const response = await fetch(getApiEndpoint(`${API.CHAT}/`), {
@@ -369,15 +373,24 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
         <TextArea
           $isLight={isLight}
           value={question}
-          onChange={(e) => setQuestion(e.target.value)}
+          onChange={(e) => {
+            setQuestion(e.target.value);
+            if (error) setError(null);
+          }}
           onKeyDown={handleKeyDown}
-          maxLength={300}
+          maxLength={200}
           placeholder="Nhập câu hỏi của bạn vào đây nhé."
           disabled={loading}
         />
         <FooterRow>
-          {error && <ErrorTextPopup>{error}</ErrorTextPopup>}
-          <SendButton type="submit" disabled={!question.trim() || loading}>
+          {error ? (
+            <ErrorTextPopup>{error}</ErrorTextPopup>
+          ) : (
+            <div style={{ fontSize: '12px', color: isLight ? '#94a3b8' : '#64748b', opacity: 0.8 }}>
+              {question.length}/200
+            </div>
+          )}
+          <SendButton type="submit" disabled={!question || question.length > 200 || loading}>
             {loading ? "Đang gửi..." : "Gửi"}
           </SendButton>
         </FooterRow>

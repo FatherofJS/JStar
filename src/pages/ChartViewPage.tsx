@@ -5,6 +5,7 @@ import { ChartWheel } from "../components/charts/ChartWheel";
 import { ChatPopup } from "../components/chat/ChatPopup";
 import { ChatFAB } from "../components/chat/ChatFAB";
 import { NatalInfoPanel } from "../components/panels/NatalInfoPanel";
+import { PersonalizedBoard } from "../components/panels/PersonalizedBoard";
 import { GuidedTour } from "../components/ui/GuidedTour";
 import { natalTourSteps } from "../data/tourSteps";
 import Layout from "../components/layout/Layout";
@@ -263,6 +264,7 @@ export default function ChartViewPage() {
               </WheelFrame>
             </WheelStage>
             <NatalInfoPanel data={displayedChartData!} isLight={isLight} />
+            <PersonalizedBoard data={displayedChartData!} isLight={isLight} />
             <ChatPopup
               chartData={displayedChartData!}
               chartType="natal"

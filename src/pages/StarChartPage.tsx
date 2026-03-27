@@ -6,6 +6,8 @@ import Layout from "../components/layout/Layout";
 import { LocationAutocomplete } from "../components/forms/LocationAutocomplete";
 import type { LocationData } from "../types/location";
 import { useTheme } from "../theme";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const shimmer = keyframes`
   0% { background-position: -200% center; }
@@ -168,23 +170,18 @@ const FormLabel = styled.label<{ $isLight: boolean }>`
 `;
 
 
-const DatePickerWrapper = styled.div`
-  display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(110px, 0.9fr) minmax(120px, 1fr);
-  gap: 12px;
-  align-items: stretch;
-  
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-    gap: 10px;
+const DateContainer = styled.div`
+  width: 100%;
+  .react-datepicker-wrapper {
+    width: 100%;
+    display: block;
   }
 `;
 
-const DateSelect = styled.select<{ $isLight: boolean }>`
+const StyledDatePicker = styled(DatePicker) <{ $isLight: boolean }>`
   width: 100%;
   min-height: 58px;
   box-sizing: border-box;
-  display: block;
   padding: 16px 18px;
   border-radius: 16px;
   border: 1px solid ${props => props.$isLight
@@ -200,14 +197,6 @@ const DateSelect = styled.select<{ $isLight: boolean }>`
   font-family: inherit;
   outline: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='${props => props.$isLight ? '%234f46e5' : '%23818cf8'}' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 12px;
-  padding-right: 42px;
-  text-overflow: ellipsis;
   
   &:hover {
     border-color: ${props => props.$isLight
@@ -226,21 +215,14 @@ const DateSelect = styled.select<{ $isLight: boolean }>`
     transform: translateY(-2px);
   }
   
-  option {
-    background: ${props => props.$isLight ? '#ffffff' : '#1e1b4b'};
-    color: ${props => props.$isLight ? '#1e293b' : '#fff'};
-    padding: 16px;
-    font-size: 15px;
-  }
-  
-  &:invalid, &:hover:invalid {
+  &::placeholder {
     color: ${props => props.$isLight
     ? 'rgba(30, 41, 59, 0.4)'
     : 'rgba(255, 255, 255, 0.4)'};
   }
 `;
 
-const DateInput = styled.input<{ $isLight: boolean }>`
+const BaseInput = styled.input<{ $isLight: boolean }>`
   width: 100%;
   min-height: 58px;
   box-sizing: border-box;
@@ -304,7 +286,7 @@ const DateInput = styled.input<{ $isLight: boolean }>`
   }
 `;
 
-const FullNameInput = styled(DateInput)`
+const FullNameInput = styled(BaseInput)`
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -504,17 +486,13 @@ export default function StarChartPage() {
   const [chartType, setChartType] = useState<'natal' | 'synastry'>('natal');
 
   const [fullName, setFullName] = useState('');
-  const [day, setDay] = useState('');
-  const [month, setMonth] = useState('');
-  const [year, setYear] = useState('');
+  const [birthDateObj, setBirthDateObj] = useState<Date | null>(null);
   const [birthTime, setBirthTime] = useState('');
   const [selectedCity, setSelectedCity] = useState<LocationData | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<LocationData | null>(null);
 
   const [p2FullName, setP2FullName] = useState('');
-  const [p2Day, setP2Day] = useState('');
-  const [p2Month, setP2Month] = useState('');
-  const [p2Year, setP2Year] = useState('');
+  const [p2BirthDateObj, setP2BirthDateObj] = useState<Date | null>(null);
   const [p2BirthTime, setP2BirthTime] = useState('');
   const [p2SelectedCity, setP2SelectedCity] = useState<LocationData | null>(null);
   const [p2SelectedCountry, setP2SelectedCountry] = useState<LocationData | null>(null);
@@ -528,9 +506,10 @@ export default function StarChartPage() {
       if (saved) {
         const data = JSON.parse(saved);
         if (data.fullName) setFullName(data.fullName);
-        if (data.day) setDay(data.day);
-        if (data.month) setMonth(data.month);
-        if (data.year) setYear(data.year);
+        if (data.day && data.month && data.year) {
+          const d = new Date(parseInt(data.year), parseInt(data.month) - 1, parseInt(data.day));
+          if (!isNaN(d.getTime())) setBirthDateObj(d);
+        }
         if (data.birthTime) setBirthTime(data.birthTime);
         if (data.selectedCity) setSelectedCity(data.selectedCity);
         if (data.selectedCountry) setSelectedCountry(data.selectedCountry);
@@ -550,7 +529,7 @@ export default function StarChartPage() {
       setError('Vui lòng nhập họ tên.');
       return;
     }
-    if (!day || !month || !year) {
+    if (!birthDateObj) {
       setError('Vui lòng chọn ngày sinh.');
       return;
     }
@@ -559,19 +538,14 @@ export default function StarChartPage() {
       return;
     }
 
-    const dayNum = parseInt(day);
-    const monthNum = parseInt(month);
-    const yearNum = parseInt(year);
-
-    if (dayNum < 1 || dayNum > 31 || monthNum < 1 || monthNum > 12 || yearNum < 1900 || yearNum > new Date().getFullYear()) {
-      setError('Ngày sinh không hợp lệ.');
-      return;
-    }
+    const dayNum = birthDateObj.getDate();
+    const monthNum = birthDateObj.getMonth() + 1;
+    const yearNum = birthDateObj.getFullYear();
 
     try {
       localStorage.setItem('jstar_person1_autofill', JSON.stringify({
         fullName: fullName.trim(),
-        day, month, year, birthTime,
+        day: dayNum.toString(), month: monthNum.toString(), year: yearNum.toString(), birthTime,
         selectedCity, selectedCountry
       }));
     } catch (e) {
@@ -583,7 +557,7 @@ export default function StarChartPage() {
         setError('Vui lòng nhập họ tên người 2.');
         return;
       }
-      if (!p2Day || !p2Month || !p2Year) {
+      if (!p2BirthDateObj) {
         setError('Vui lòng chọn ngày sinh người 2.');
         return;
       }
@@ -591,14 +565,9 @@ export default function StarChartPage() {
         setError('Vui lòng chọn thành phố sinh cho người 2.');
         return;
       }
-      const p2DayNum = parseInt(p2Day);
-      const p2MonthNum = parseInt(p2Month);
-      const p2YearNum = parseInt(p2Year);
-
-      if (p2DayNum < 1 || p2DayNum > 31 || p2MonthNum < 1 || p2MonthNum > 12 || p2YearNum < 1900 || p2YearNum > new Date().getFullYear()) {
-        setError('Ngày sinh người 2 không hợp lệ.');
-        return;
-      }
+      const p2DayNum = p2BirthDateObj.getDate();
+      const p2MonthNum = p2BirthDateObj.getMonth() + 1;
+      const p2YearNum = p2BirthDateObj.getFullYear();
 
       const p1DateStr = `${yearNum}-${String(monthNum).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
       const p1TimeStr = birthTime || '12:00';
@@ -646,8 +615,8 @@ export default function StarChartPage() {
       }
     });
   }, [
-    fullName, day, month, year, birthTime, selectedCity, selectedCountry,
-    p2FullName, p2Day, p2Month, p2Year, p2BirthTime, p2SelectedCity, p2SelectedCountry,
+    fullName, birthDateObj, birthTime, selectedCity, selectedCountry,
+    p2FullName, p2BirthDateObj, p2BirthTime, p2SelectedCity, p2SelectedCountry,
     chartType, navigate
   ]);
 
@@ -716,55 +685,20 @@ export default function StarChartPage() {
 
                 <FormSection>
                   <FormLabel $isLight={isLight}>Ngày Sinh</FormLabel>
-                  <DatePickerWrapper>
-                    <DateSelect
-                      name="bday-day"
-                      autoComplete="bday-day"
-                      value={day}
-                      onChange={(e) => setDay(e.target.value)}
-                      $isLight={isLight}
-                      required
-                    >
-                      <option value="">Ngày</option>
-                      {Array.from({ length: 31 }, (_, i) => (
-                        <option key={i + 1} value={i + 1}>{i + 1}</option>
-                      ))}
-                    </DateSelect>
-                    <DateSelect
-                      name="bday-month"
-                      autoComplete="bday-month"
-                      value={month}
-                      onChange={(e) => setMonth(e.target.value)}
-                      $isLight={isLight}
-                      required
-                    >
-                      <option value="">Tháng</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                    </DateSelect>
-                    <DateInput
-                      type="number"
-                      name="bday-year"
-                      autoComplete="bday-year"
-                      placeholder="Năm"
-                      min="1900"
-                      max={new Date().getFullYear()}
-                      value={year}
-                      onChange={(e) => setYear(e.target.value)}
+                  <DateContainer>
+                    <StyledDatePicker
+                      selected={birthDateObj}
+                      onChange={(date: Date | null) => setBirthDateObj(date)}
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="Chọn ngày sinh (DD/MM/YYYY)"
+                      showYearDropdown
+                      showMonthDropdown
+                      dropdownMode="select"
+                      maxDate={new Date()}
                       $isLight={isLight}
                       required
                     />
-                  </DatePickerWrapper>
+                  </DateContainer>
                 </FormSection>
 
                 <FormSection>
@@ -842,49 +776,20 @@ export default function StarChartPage() {
 
                   <FormSection>
                     <FormLabel $isLight={isLight}>Ngày Sinh</FormLabel>
-                    <DatePickerWrapper>
-                      <DateSelect
-                        value={p2Day}
-                        onChange={(e) => setP2Day(e.target.value)}
-                        $isLight={isLight}
-                        required={chartType === 'synastry'}
-                      >
-                        <option value="">Ngày</option>
-                        {Array.from({ length: 31 }, (_, i) => (
-                          <option key={i + 1} value={i + 1}>{i + 1}</option>
-                        ))}
-                      </DateSelect>
-                      <DateSelect
-                        value={p2Month}
-                        onChange={(e) => setP2Month(e.target.value)}
-                        $isLight={isLight}
-                        required={chartType === 'synastry'}
-                      >
-                        <option value="">Tháng</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                      </DateSelect>
-                      <DateInput
-                        type="number"
-                        placeholder="Năm"
-                        min="1900"
-                        max={new Date().getFullYear()}
-                        value={p2Year}
-                        onChange={(e) => setP2Year(e.target.value)}
+                    <DateContainer>
+                      <StyledDatePicker
+                        selected={p2BirthDateObj}
+                        onChange={(date: Date | null) => setP2BirthDateObj(date)}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="Chọn ngày sinh (DD/MM/YYYY)"
+                        showYearDropdown
+                        showMonthDropdown
+                        dropdownMode="select"
+                        maxDate={new Date()}
                         $isLight={isLight}
                         required={chartType === 'synastry'}
                       />
-                    </DatePickerWrapper>
+                    </DateContainer>
                   </FormSection>
 
                   <FormSection>

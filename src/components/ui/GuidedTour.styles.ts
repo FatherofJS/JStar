@@ -40,13 +40,13 @@ export const Tooltip = styled.div.attrs<{
 }))`
   position: fixed;
   z-index: 10000;
-  width: 380px;
+  width: 420px;
   max-width: calc(100vw - 32px);
   box-sizing: border-box;
   background: rgba(30, 41, 59, 1);
   border: 1px solid rgba(99, 102, 241, 0.25);
-  border-radius: 18px;
-  padding: 24px 24px 28px;
+  border-radius: 24px;
+  padding: 32px 32px 36px;
   backdrop-filter: blur(20px);
   pointer-events: auto;
   box-shadow:
@@ -64,15 +64,15 @@ export const Tooltip = styled.div.attrs<{
 
   @media (max-width: 480px) {
     width: calc(100vw - 32px);
-    padding: 20px 20px 24px;
+    padding: 24px 24px 28px;
   }
 `;
 
 export const TooltipTitle = styled.h4`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
   color: #e2e8f0;
-  margin: 0 0 10px;
+  margin: 0 0 16px;
   letter-spacing: 0.3px;
   display: flex;
   align-items: center;
@@ -84,10 +84,10 @@ export const TooltipTitle = styled.h4`
 `;
 
 export const TooltipDescription = styled.p`
-  font-size: 14px;
-  line-height: 1.75;
+  font-size: 15px;
+  line-height: 1.8;
   color: #94a3b8;
-  margin: 0 0 20px;
+  margin: 0 0 32px;
   white-space: pre-wrap;
 
   [data-theme="light"] & {
@@ -99,7 +99,8 @@ export const TooltipFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
+  margin-top: 24px;
 `;
 
 export const StepDots = styled.div`

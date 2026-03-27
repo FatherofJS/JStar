@@ -9,7 +9,6 @@ import {
   ContentBox,
   AnimatedContent,
   SectionTitle,
-  SectionImage,
   Paragraph,
 } from "./styles/DocsSection.styles";
 
@@ -37,9 +36,6 @@ function DocsSection() {
         <ContentBox>
           <AnimatedContent key={activeId}>
             <SectionTitle>{activeSection.title}</SectionTitle>
-            {activeSection.image && (
-              <SectionImage src={activeSection.image} alt={activeSection.title} loading="lazy" />
-            )}
             {activeSection.content.map((text, i) => (
               <Paragraph key={i}>{text}</Paragraph>
             ))}

@@ -309,10 +309,12 @@ function AIInterpretationSection({ feature }: FeatureSectionProps) {
           </FeatureContent>
           <FeatureImageWrapper>
             <FeatureGlow $position="right" />
-            <FeatureImageCard style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
-              <div style={{ fontFamily: 'monospace', fontSize: '14px', lineHeight: '1.6', color: 'var(--text-primary)' }}>
-                <br />
-                <span style={{ display: 'inline-block', width: '8px', height: '16px', background: 'var(--text-primary)', animation: 'pulse 1s ease-in-out infinite' }}></span>
+            <FeatureImageCard style={{ padding: '24px', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ alignSelf: 'flex-end', background: 'rgba(56, 189, 248, 0.2)', color: '#bae6fd', padding: '12px 16px', borderRadius: '16px 16px 0 16px', maxWidth: '85%', fontSize: '15px', lineHeight: 1.5 }}>
+                Cung mặt trời ở Xử Nữ có ý nghĩa gì?
+              </div>
+              <div style={{ alignSelf: 'flex-start', background: 'rgba(255, 255, 255, 0.05)', color: '#f8fafc', padding: '16px', borderRadius: '16px 16px 16px 0', maxWidth: '90%', fontSize: '15px', lineHeight: 1.6, border: '1px solid rgba(255,255,255,0.05)' }}>
+                Trời ơi, Mặt Trời Xử Nữ nghĩa là bạn sinh ra để bị "overthinking" và hay soi xét những thứ li ti đó. Nhưng bù lại, làm việc gì bạn cũng vô cùng chỉn chu, tỉ mỉ và trách nhiệm đầy mình. Cứ bớt cầu toàn đi là cuộc đời tự nhiên dễ thở hơn rất nhiều bù nhìn à!
               </div>
             </FeatureImageCard>
           </FeatureImageWrapper>
