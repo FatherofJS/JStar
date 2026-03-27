@@ -313,6 +313,20 @@ export function AboutUs() {
           </div>
         </CircularGroup>
       </div>
+      <div style={{ textAlign: "center", marginTop: "40px", opacity: 0.6 }}>
+        <a
+          href="/fatherofjs"
+          style={{
+            color: "inherit",
+            textDecoration: "none",
+            fontSize: "0.8rem",
+            letterSpacing: "2px",
+            cursor: "pointer",
+          }}
+        >
+          ✦ bí mật vũ trụ ✦
+        </a>
+      </div>
     </div>
   );
 }

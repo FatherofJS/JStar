@@ -3,7 +3,7 @@ import LandingPage from './pages/LandingPage';
 import StarChartPage from './pages/StarChartPage';
 import ChartViewPage from './pages/ChartViewPage';
 import SynastryViewPage from './pages/SynastryViewPage';
-import Gallery from './pages/GalleryPage';
+import GalleryPage from './pages/GalleryPage';
 import { ThemeProvider } from './theme';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import './App.css';
@@ -16,7 +16,7 @@ function App() {
           <Route path="/star-chart" element={<StarChartPage />} />
           <Route path="/chart" element={<ChartViewPage />} />
           <Route path="/synastry" element={<SynastryViewPage />} />
-          <Route path="/fatherofjs" element={<Gallery />} />
+          <Route path="/fatherofjs" element={<GalleryPage />} />
         </Routes>
       <SpeedInsights />
     </ThemeProvider>

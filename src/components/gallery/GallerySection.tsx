@@ -9,10 +9,10 @@ interface GalleryProps {
 
 const ZoomInIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
-    <circle cx="11" cy="11" r="8"/>
-    <line x1="21" x2="16.65" y1="21" y2="16.65"/>
-    <line x1="11" x2="11" y1="8" y2="14"/>
-    <line x1="8" x2="14" y1="11" y2="11"/>
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" x2="16.65" y1="21" y2="16.65" />
+    <line x1="11" x2="11" y1="8" y2="14" />
+    <line x1="8" x2="14" y1="11" y2="11" />
   </svg>
 );
 
@@ -20,16 +20,16 @@ export const GalleryView: React.FC<GalleryProps> = ({ images, onImageClick, clou
   return (
     <>
       <S.BannerSection>
-        <h1>TINH KÍ</h1>
+        <h1>TINH MẮT THÍ</h1>
         <p>Ba JS và những điều chưa kể?</p>
       </S.BannerSection>
 
       <S.GalleryGrid>
         {images.map((img: any) => {
           const imageUrl = `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/${img.public_id}`;
-          
+
           return (
-            <S.ImageWrapper 
+            <S.ImageWrapper
               key={img.public_id}
               onClick={() => onImageClick(imageUrl)}
             >

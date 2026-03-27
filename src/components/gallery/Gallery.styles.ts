@@ -8,15 +8,20 @@ export const BannerSection = styled.section`
   margin-bottom: 30px;
 
   h1 {
-    font-size: 3.5rem;
-    color: #d4af37;
-    margin-bottom: 10px;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 800;
+    margin-bottom: 15px;
     text-transform: uppercase;
-    letter-spacing: 4px;
-    text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    letter-spacing: -1px;
+    
+    background: linear-gradient(90deg, var(--hero-gradient-start), var(--hero-gradient-mid), var(--hero-gradient-end));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 20px var(--text-shadow));
 
-    @media (max-width: 900px) { font-size: 2.5rem; }
-    @media (max-width: 500px) { font-size: 2rem; }
+    @media (max-width: 900px) { font-size: 3rem; }
+    @media (max-width: 500px) { font-size: 2.2rem; }
   }
 
   p {

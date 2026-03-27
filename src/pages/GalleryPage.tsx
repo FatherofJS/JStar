@@ -8,7 +8,7 @@ const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 
 import { API } from "../constants";
 
-export default function Gallery() {
+export default function GalleryPage() {
   const [images, setImages] = useState([]);
   const [zoomImage, setZoomImage] = useState<{ src: string; alt: string } | null>(null);
 
@@ -25,10 +25,10 @@ export default function Gallery() {
   return (
     <Layout>
       <Background showShootingStars={false} />
-      <GalleryView 
-        images={images} 
-        onImageClick={handleZoom} 
-        cloudName={cloudName} 
+      <GalleryView
+        images={images}
+        onImageClick={handleZoom}
+        cloudName={cloudName}
       />
 
       {zoomImage && (
