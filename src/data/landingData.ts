@@ -45,6 +45,10 @@ export interface LandingContent {
   aiInterpretationsTitle: string;
   aiInterpretationsDescription: string;
   aiInterpretationsItems: string[];
+  boardBadge: string;
+  boardTitle: string;
+  boardDescription: string;
+  boardItems: string[];
   getStartedTitle: string;
   step1Title: string;
   step1Desc: string;
@@ -139,6 +143,17 @@ export const landingContent: LandingContent = {
   dataManagementDescription: '',
   dataManagementItems: [],
 
+  boardBadge: '',
+  boardTitle: 'Thẩm mỹ vũ trụ',
+  boardDescription:
+    'Visual hóa năng lượng của bạn qua những tấm ảnh được AI tinh tuyển. Một curation độc bản chỉ dành riêng cho tần số của bạn.',
+  boardItems: [
+    '20+ hình ảnh phản ánh tâm hồn',
+    'Dựa trên Sun, Moon, ASC và các hành tinh',
+    'Shuffle để tìm ra bản phối mới',
+    'Có cả bản "Song Hành" cho các cặp đôi',
+  ],
+
   getStartedTitle: '',
   step1Title: '',
   step1Desc: '',
@@ -182,7 +197,7 @@ export const featuresData: FeatureItem[] = [
     title: landingContent.interactiveChartsTitle,
     description: landingContent.interactiveChartsDescription,
     items: landingContent.interactiveChartsItems,
-    imageSrc: "",
+    imageSrc: "/src/assets/features/natal.png",
     imageAlt: "Natal Chart",
     reversed: false,
     glowColor: "blue",
@@ -194,7 +209,7 @@ export const featuresData: FeatureItem[] = [
     title: landingContent.chartDataTitle,
     description: landingContent.chartDataDescription,
     items: landingContent.chartDataItems,
-    imageSrc: "",
+    imageSrc: "/src/assets/features/synastry.png",
     imageAlt: "Synastry",
     reversed: true,
     glowColor: "purple",
@@ -210,5 +225,17 @@ export const featuresData: FeatureItem[] = [
     imageAlt: "AI Chatbot",
     reversed: false,
     glowColor: "blue",
+  },
+  {
+    id: "board",
+    badge: landingContent.boardBadge,
+    badgeIcon: "sparkles",
+    title: landingContent.boardTitle,
+    description: landingContent.boardDescription,
+    items: landingContent.boardItems,
+    imageSrc: "/src/assets/features/board.png",
+    imageAlt: "Aesthetic Board",
+    reversed: true,
+    glowColor: "purple",
   },
 ];

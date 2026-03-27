@@ -42,10 +42,6 @@ const StatusPanel = styled.div<{ $isLight: boolean }>`
     ${({ $isLight }) =>
       $isLight ? "rgba(99, 102, 241, 0.14)" : "rgba(255,255,255,0.08)"};
   border-radius: 20px;
-  box-shadow: ${({ $isLight }) =>
-    $isLight
-      ? "0 18px 40px rgba(148, 163, 184, 0.18)"
-      : "0 18px 40px rgba(0, 0, 0, 0.28)"};
   backdrop-filter: blur(14px);
 `;
 
@@ -120,6 +116,41 @@ const ContentContainer = styled.div`
   width: 100%;
 `;
 
+const VibesLinkContainer = styled.div<{ $isLight: boolean }>`
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+
+  button {
+    padding: 16px 36px;
+    border-radius: 20px;
+    border: 1px solid ${({ $isLight }) => ($isLight ? 'rgba(99, 102, 241, 0.3)' : 'rgba(99, 102, 241, 0.4)')};
+    background: ${({ $isLight }) =>
+      $isLight
+        ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05))'
+        : 'rgba(99, 102, 241, 0.1)'};
+    color: ${({ $isLight }) => ($isLight ? '#4f46e5' : '#818cf8')};
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    &:hover {
+      background: ${({ $isLight }) =>
+        $isLight
+          ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1))'
+          : 'rgba(99, 102, 241, 0.2)'};
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
+    }
+  }
+`;
+
 
 const SYNASTRY_CACHE_KEY = "jstar_synastry_cache";
 
@@ -151,7 +182,7 @@ function saveSynastryToCache(data: SynastryData) {
   try {
     sessionStorage.setItem(SYNASTRY_CACHE_KEY, JSON.stringify(data));
   } catch {
-    /* quota exceeded — silently ignore */
+    /* quota exceeded - silently ignore */
   }
 }
 
@@ -172,6 +203,17 @@ export default function SynastryViewPage() {
   useEffect(() => {
     const handler = () => setIsTourActive(true);
     window.addEventListener('jstar-start-tour', handler);
+
+    // Auto-start for new users
+    const hasSeenTour = localStorage.getItem('synastry-tour');
+    if (!hasSeenTour) {
+      const timer = setTimeout(() => setIsTourActive(true), 2000); // Slightly longer for synastry as it loads more data
+      return () => {
+        window.removeEventListener('jstar-start-tour', handler);
+        clearTimeout(timer);
+      };
+    }
+
     return () => window.removeEventListener('jstar-start-tour', handler);
   }, []);
 
@@ -264,6 +306,13 @@ export default function SynastryViewPage() {
                   <SynastryWheel data={chartData} />
                 </WheelFrame>
               </WheelStage>
+
+              <VibesLinkContainer $isLight={isLight}>
+                <button onClick={() => window.location.href = `/synastry-board`}>
+                  Khám Phá Aesthetic Board Song Hành
+                </button>
+              </VibesLinkContainer>
+
               <SynastryInfoPanel data={chartData} isLight={isLight} />
               <ChatPopup 
                 chartData={chartData} 

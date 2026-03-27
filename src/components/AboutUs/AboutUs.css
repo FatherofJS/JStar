@@ -200,7 +200,7 @@
     transition: box-shadow 0.2s ease-out;
 }
 
-/* Bỏ shadowInward animation — giảm 11 animation threads */
+/* Bỏ shadowInward animation - giảm 11 animation threads */
 
 .flip-card-front,
 .flip-card-back {

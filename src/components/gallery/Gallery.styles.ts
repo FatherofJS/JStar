@@ -18,7 +18,6 @@ export const BannerSection = styled.section`
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    filter: drop-shadow(0 0 20px var(--text-shadow));
 
     @media (max-width: 900px) { font-size: 3rem; }
     @media (max-width: 500px) { font-size: 2.2rem; }

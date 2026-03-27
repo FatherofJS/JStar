@@ -178,7 +178,7 @@ const DateContainer = styled.div`
   }
 `;
 
-const StyledDatePicker = styled(DatePicker) <{ $isLight: boolean }>`
+const StyledDatePicker = styled(DatePicker as any) <{ $isLight: boolean }>`
   width: 100%;
   min-height: 58px;
   box-sizing: border-box;
@@ -688,7 +688,7 @@ export default function StarChartPage() {
                   <DateContainer>
                     <StyledDatePicker
                       selected={birthDateObj}
-                      onChange={(date: Date | null) => setBirthDateObj(date)}
+                      onChange={(date: any) => setBirthDateObj(date as Date | null)}
                       dateFormat="dd/MM/yyyy"
                       placeholderText="Chọn ngày sinh (DD/MM/YYYY)"
                       showYearDropdown
@@ -779,7 +779,7 @@ export default function StarChartPage() {
                     <DateContainer>
                       <StyledDatePicker
                         selected={p2BirthDateObj}
-                        onChange={(date: Date | null) => setP2BirthDateObj(date)}
+                        onChange={(date: any) => setP2BirthDateObj(date as Date | null)}
                         dateFormat="dd/MM/yyyy"
                         placeholderText="Chọn ngày sinh (DD/MM/YYYY)"
                         showYearDropdown

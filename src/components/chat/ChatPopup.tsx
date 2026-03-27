@@ -289,7 +289,6 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
     setError(null);
     setLoading(true);
 
-    // Force the AI to respond in Vietnamese with a slightly unhinged persona
     const promptWithInstruction = `${question}\n\n[SYSTEM INSTRUCTION: Please respond ENTIRELY in Vietnamese. Adopt a slightly funny, sarcastic, and unhinged 'mỏ hỗn' gen-z astrology reader persona. Do not use em-dashes. Keep the styling clean with newlines.]`;
 
     try {
@@ -309,10 +308,13 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
       const payload = (await response.json()) as ChatResponse | { detail?: string };
 
       if (!response.ok) {
+        if (response.status === 429) {
+          throw new Error("Ối, bạn hỏi nhanh quá. Nghỉ tay uống miếng nước rồi quay lại sau nhé");
+        }
         throw new Error(
           "detail" in payload && payload.detail
             ? payload.detail
-            : "The astrology assistant is unavailable right now."
+            : "Ối, hình như linh tính đang bị nghẽn mạch rồi. Thử lại sau nhen! 🌀"
         );
       }
 
@@ -328,7 +330,7 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
       setError(
         submissionError instanceof Error
           ? submissionError.message
-          : "The astrology assistant is unavailable right now."
+          : "Vũ trụ đang bận 'overthinking' một chút rồi. Thử lại sau nha! ✨"
       );
     } finally {
       setLoading(false);

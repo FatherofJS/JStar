@@ -22,9 +22,7 @@ const ScoreCircle = styled.div<{ $score: number; $isLight: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 
-    inset 0 0 20px rgba(0,0,0,0.1),
-    0 0 40px ${({ $score }) => $score >= 70 ? 'rgba(236, 72, 153, 0.3)' : $score >= 40 ? 'rgba(99, 102, 241, 0.3)' : 'rgba(100, 116, 139, 0.3)'};
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
 
   &::before {
     content: '';

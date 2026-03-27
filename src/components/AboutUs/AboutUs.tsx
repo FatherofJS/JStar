@@ -252,7 +252,7 @@ export const AboutUs = memo(function AboutUs() {
     [],
   );
 
-  // Xử lý đóng/mở từng thẻ — useCallback giúp React.memo hoạt động đúng
+  // Xử lý đóng/mở từng thẻ - useCallback giúp React.memo hoạt động đúng
   const toggleCard = useCallback((id: string) => {
     setFlippedIds((prev) => {
       const next = new Set(prev);

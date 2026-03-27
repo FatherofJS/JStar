@@ -108,6 +108,17 @@ export const DOCS_SECTIONS: DocsSection[] = [
   },
 
   {
+    id: "aesthetic-board",
+    title: "Aesthetic Board: Nhìn Thấy Năng Lượng Của Bạn",
+    image: "https://picsum.photos/seed/aesthetic/800/400",
+    content: [
+      "Aesthetic Board không phải là một bộ sưu tập ảnh ngẫu nhiên. Nó là visual hóa những dấu ấn năng lượng trong lá số của bạn.",
+      "Sun Sign cho biết phong cách tổng thể. Moon Sign là cảm xúc bên trong. ASC là vẻ ngoài bạn phát ra. AI sẽ tinh tuyển những tấm ảnh khớp với các tần số này.",
+      "Bạn có thể dùng nút shuffle để thay đổi góc nhìn. Và đừng quên xem bản Song Hành cùng người yêu để thấy hai vũ trụ hòa quyện thế nào.",
+    ],
+  },
+
+  {
     id: "how-to-use",
     title: "Cách Dùng JSTAR Trong 1 Phút",
     image: "https://picsum.photos/seed/howtouse/800/400",

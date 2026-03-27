@@ -235,7 +235,7 @@ export function GuidedTour({ steps, storageKey, isActive, onComplete, onStepChan
     try {
       localStorage.setItem(storageKey, 'true');
     } catch { /* silently ignore */ }
-    // Scroll to top BEFORE deactivating — synchronous and reliable
+    // Scroll to top BEFORE deactivating - synchronous and reliable
     scrollToTop();
     setCurrentStep(0);
     onComplete();

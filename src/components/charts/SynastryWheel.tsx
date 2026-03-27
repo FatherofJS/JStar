@@ -173,14 +173,14 @@ export function SynastryWheel({ data }: { data: SynastryData }) {
 
             <div className="synastry-legend">
                 <div className="legend-item">
-                    <div className="legend-color" style={{ background: palette.person1Color, boxShadow: `0 0 12px ${palette.person1Color}60` }}>
+                    <div className="legend-color" style={{ background: palette.person1Color }}>
                         <IconUserHeart size={14} color="#fff" stroke={2.5} />
                     </div>
                     <span className="legend-name">{data.person1.name || 'Person 1'}</span>
                 </div>
                 <div className="legend-divider"></div>
                 <div className="legend-item">
-                    <div className="legend-color" style={{ background: palette.person2Color, boxShadow: `0 0 12px ${palette.person2Color}60` }}>
+                    <div className="legend-color" style={{ background: palette.person2Color }}>
                         <IconUserHeart size={14} color="#fff" stroke={2.5} />
                     </div>
                     <span className="legend-name">{data.person2.name || 'Person 2'}</span>

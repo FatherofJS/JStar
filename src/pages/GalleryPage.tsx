@@ -4,7 +4,7 @@ import Background from "../components/layout/Background";
 import { ImageZoomModal } from "../components/ui/ImageZoomModal";
 import { GalleryView } from "../components/gallery/GallerySection";
 
-const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const cloudName = import.meta.env.VITE_CLOUDINARY_BOARD_CLOUD_NAME || 'dqf4atcvo';
 
 import { API } from "../constants";
 
