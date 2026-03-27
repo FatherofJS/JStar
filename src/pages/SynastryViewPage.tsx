@@ -279,7 +279,10 @@ export default function SynastryViewPage() {
                 steps={synastryTourSteps}
                 storageKey="synastry-tour"
                 isActive={isTourActive}
-                onComplete={() => setIsTourActive(false)}
+                onComplete={() => {
+                  setIsTourActive(false);
+                  setIsChatOpen(false);
+                }}
                 onStepChange={(i) => {
                   if (i === synastryTourSteps.length - 1) setIsChatOpen(true);
                   else setIsChatOpen(false);

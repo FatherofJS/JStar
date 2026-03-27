@@ -1,4 +1,4 @@
-*{
+* {
     box-sizing: border-box;
 }
 
@@ -11,7 +11,7 @@
     padding-bottom: 60px;
     position: relative;
     z-index: 10;
-    
+
     /* Apply oscillating overlay background */
     background: rgba(255, 255, 255, 0.03);
 }
@@ -39,13 +39,16 @@
     padding: 0 20px;
 }
 
-.usercontainer{
+.usercontainer {
     padding: 100px 2% 100px;
     display: flex;
-    flex-direction: row-reverse; /* Thay đổi sang ngang */
+    flex-direction: row-reverse;
+    /* Thay đổi sang ngang */
     align-items: center;
-    justify-content: center; /* Căn giữa cả 2 nhóm */
-    gap: 150px; /* Thu hẹp gap một chút để vừa màn hình ngang */
+    justify-content: center;
+    /* Căn giữa cả 2 nhóm */
+    gap: 150px;
+    /* Thu hẹp gap một chút để vừa màn hình ngang */
     width: 100%;
     transition: scale 0.3s ease, gap 0.3s ease;
 }
@@ -84,8 +87,13 @@
 }
 
 @keyframes rotateCircle {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Dừng xoay khi hover để người dùng dễ quan sát và chọn thẻ */
@@ -113,8 +121,13 @@
 
 
 @keyframes counterRotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(-360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-360deg);
+    }
 }
 
 .upright-container {
@@ -126,13 +139,13 @@
     animation: counterRotate var(--speed, 20s) linear infinite;
 }
 
-.imgngon{
+.imgngon {
     max-width: 100%;
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #ff6f0186;
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
     transition: opacity 0.3s ease;
 }
 
@@ -159,37 +172,38 @@
     transform-style: preserve-3d;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
     will-change: transform;
 }
 
 /* Trigger Flip */
-.flip-input:checked ~ .flip-card-inner {
+.flip-input:checked~.flip-card-inner {
     transform: rotateY(180deg);
 }
 
 /* Tốc độ biến mất shadow nhanh khi ấn (checked) */
-.flip-input:checked ~ .flip-card-inner .flip-card-front {
+.flip-input:checked~.flip-card-inner .flip-card-front {
     box-shadow: 0 0 0 rgba(255, 165, 0, 0), 0 0 0 rgba(0, 0, 0, 0);
     transition: box-shadow 0.2s ease-out;
 }
 
 /* Bỏ hiệu ứng shadow hiện lại dần ở mặt sau */
-.flip-input:checked ~ .flip-card-inner .flip-card-back {
+.flip-input:checked~.flip-card-inner .flip-card-back {
     animation: none;
     box-shadow: 0 0 50px rgba(255, 165, 0, 0.6), 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Khi quay ngược lại (not checked): mặt sau mất bóng nhanh */
-.flip-input:not(:checked) ~ .flip-card-inner .flip-card-back {
-    box-shadow: 0 0 0 rgba(0,0,0,0);
+.flip-input:not(:checked)~.flip-card-inner .flip-card-back {
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
     animation: none;
     transition: box-shadow 0.2s ease-out;
 }
 
 /* Bỏ shadowInward animation — giảm 11 animation threads */
 
-.flip-card-front, .flip-card-back {
+.flip-card-front,
+.flip-card-back {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -213,7 +227,8 @@
     color: white;
     transform: rotateY(180deg);
     border: 2px solid #fff;
-    overflow: hidden; /* Ensure image doesn't leak */
+    overflow: hidden;
+    /* Ensure image doesn't leak */
 }
 
 .imgngon-sau {
@@ -242,13 +257,11 @@
     width: 60%;
     height: 60%;
     /* Starlight Silver / Cyan Glow */
-    color: #f8fafc; 
-    filter: drop-shadow(0 0 5px #fff) 
-            drop-shadow(0 0 15px #38bdf8)
-            drop-shadow(0 0 30px rgba(56, 189, 248, 0.3));
+    color: #f8fafc;
+    filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 15px #38bdf8) drop-shadow(0 0 30px rgba(56, 189, 248, 0.3));
 }
 
-.ducanh{
+.ducanh {
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -260,20 +273,22 @@
 }
 
 
-.ducanh .chucvu{
-    font-size: 0.9rem; /* Reduced size to fit better */
+.ducanh .chucvu {
+    font-size: 0.9rem;
+    /* Reduced size to fit better */
     font-weight: 600;
     color: #fff;
     margin: 0;
 }
-.ducanh .name{
+
+.ducanh .name {
     font-size: 1.1rem;
     font-weight: 600;
     color: #fff;
     margin: 0;
 }
 
-.thongtin{
+.thongtin {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -303,4 +318,17 @@
         flex-direction: column;
         gap: 160px;
     }
+}
+
+.easter-egg-link {
+    opacity: 0.1;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 1px;
+}
+
+.easter-egg-link:hover {
+    opacity: 0.5 !important;
+    text-shadow: 0 0 15px rgba(122, 162, 255, 0.7);
+    letter-spacing: 2px;
+    transform: scale(1.05);
 }

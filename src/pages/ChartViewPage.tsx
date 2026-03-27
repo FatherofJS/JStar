@@ -277,7 +277,10 @@ export default function ChartViewPage() {
               steps={natalTourSteps}
               storageKey="natal-tour"
               isActive={isTourActive}
-              onComplete={() => setIsTourActive(false)}
+              onComplete={() => {
+                setIsTourActive(false);
+                setIsChatOpen(false);
+              }}
               onStepChange={(i) => {
                 if (i === natalTourSteps.length - 1) setIsChatOpen(true);
                 else setIsChatOpen(false);
