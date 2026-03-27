@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import type { SynastryData } from "../../types/chart";
-import { SYNASTRY_INTRO, ASPECT_MEANINGS, calculateSynastryScore } from "../../data/synastryInterpretations";
+import { SYNASTRY_ASPECT_PAIR_MEANINGS } from "../../data/synastryAspectInterpretations";
 import { ASPECT_COLORS } from "../../types/chart";
 
 import { PanelContainer, SectionTitle, IntroText, Table, TableRow, LabelWrap, RowTitle, RowContent } from "./Panel.styles";
@@ -84,6 +84,43 @@ const TYPES_VI: Record<string, string> = {
   conjunction: 'Trùng Tụ', trine: 'Tam Hợp', sextile: 'Lục Hợp', square: 'Vuông Góc', opposition: 'Đối Đỉnh'
 };
 
+const PLANET_ORDER = ['Ascendant', 'Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
+
+const getAspectKey = (p1: string, p2: string) => {
+  const i1 = PLANET_ORDER.indexOf(p1);
+  const i2 = PLANET_ORDER.indexOf(p2);
+  if (i1 === -1 || i2 === -1) return `${p1}_${p2}`;
+  return i1 <= i2 ? `${p1}_${p2}` : `${p2}_${p1}`;
+};
+
+export function calculateSynastryScore(aspects: { type: string, orb?: number }[]): number {
+  if (!aspects || aspects.length === 0) return 20;
+
+  let baseScore = 50;
+  let currentWeight = 0;
+
+  for (const aspect of aspects) {
+    const orb = aspect.orb ?? 0;
+    let weightValue = 0;
+    const orbDensity = Math.max(0.3, 1 - (orb / 7));
+
+    switch (aspect.type.toLowerCase()) {
+      case 'conjunction': weightValue = 18; break;
+      case 'trine': weightValue = 12; break;
+      case 'sextile': weightValue = 5; break;
+      case 'square': weightValue = -16; break;
+      case 'opposition': weightValue = -11; break;
+    }
+    currentWeight += (weightValue * orbDensity);
+  }
+
+  let finalScore = baseScore + currentWeight;
+  if (finalScore >= 100) finalScore = 95 + Math.random() * 4;
+  if (finalScore <= 0) finalScore = 2 + Math.random() * 6;
+
+  return Math.round(Math.max(1, Math.min(99, finalScore)));
+}
+
 export function SynastryInfoPanel({ data, isLight }: SynastryInfoPanelProps) {
   const validPlanets = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Ascendant'];
   const validAspectsList = ['conjunction', 'trine', 'sextile', 'square', 'opposition'];
@@ -95,15 +132,14 @@ export function SynastryInfoPanel({ data, isLight }: SynastryInfoPanelProps) {
       if (!validPlanets.includes(a.person2_planet)) return false;
       return a.orb <= 7;
     })
-    .sort((a, b) => a.orb - b.orb)
-    .slice(0, 8);
+    .sort((a, b) => a.orb - b.orb);
 
   const score = calculateSynastryScore(filteredAspects);
 
   return (
     <PanelContainer $isLight={isLight}>
       <SectionTitle $isLight={isLight}>Bảng Đo Nhân Phẩm Tình Yêu</SectionTitle>
-      <IntroText $isLight={isLight}>{SYNASTRY_INTRO}</IntroText>
+      <IntroText $isLight={isLight}>BẢNG PHONG THẦN SYNASTRY. Nơi bóc trần sự thật phũ phàng về mối quan hệ của bạn! Tưởng là định mệnh hóa ra toàn là nghiệp chướng đan xen. Hệ thống đã tự động vứt sọt rác mấy điểm sương sương vô thưởng vô phạt để focus thẳng vào những pha combat nảy lửa hoặc u mê mù quáng nhất giữa hai người. Ôm tim cho chặt vào, kết quả có thể làm bạn suy cả tuần đấy!</IntroText>
 
       <GaugeContainer>
         <ScoreCircle $score={score} $isLight={isLight}>
@@ -118,23 +154,28 @@ export function SynastryInfoPanel({ data, isLight }: SynastryInfoPanelProps) {
       <Table $isLight={isLight} data-tour="synastry-aspects">
         {filteredAspects.length > 0 ? filteredAspects.map(aspect => {
           const typeKey = aspect.type.toLowerCase();
+          const p1Name = aspect.person1_planet === "True_North_Lunar_Node" ? "North Node" : aspect.person1_planet === "True_South_Lunar_Node" ? "South Node" : aspect.person1_planet;
+          const p2Name = aspect.person2_planet === "True_North_Lunar_Node" ? "North Node" : aspect.person2_planet === "True_South_Lunar_Node" ? "South Node" : aspect.person2_planet;
+          const pairKey = getAspectKey(p1Name, p2Name);
+          const meaningDict = SYNASTRY_ASPECT_PAIR_MEANINGS[pairKey];
+          const meaning = meaningDict?.[typeKey] || "Chưa có lời phán. Cứ cẩn thận thì hơn.";
 
           return (
             <TableRow key={aspect.id || `${aspect.person1_planet}-${aspect.person2_planet}-${aspect.type}`} $isLight={isLight} $columns="200px 1fr" style={{ display: 'grid', alignItems: 'center', gridTemplateColumns: 'minmax(180px, 200px) 1fr', gap: '20px' }}>
               <LabelWrap>
                 <RowTitle $isLight={isLight}>
-                  <span style={{ color: '#ff6b8a' }}>{PLANETS_VI[aspect.person1_planet] || aspect.person1_planet}</span>
+                  <span style={{ color: '#ff6b8a' }}>{PLANETS_VI[p1Name] || p1Name}</span>
                   <span style={{ color: ASPECT_COLORS[aspect.type], margin: '0 8px' }}>
                     {TYPES_VI[typeKey] || aspect.type}
                   </span>
-                  <span style={{ color: '#6bcbff' }}>{PLANETS_VI[aspect.person2_planet] || aspect.person2_planet}</span>
+                  <span style={{ color: '#6bcbff' }}>{PLANETS_VI[p2Name] || p2Name}</span>
                 </RowTitle>
               </LabelWrap>
               <RowContent $isLight={isLight}>
                 <strong style={{ display: 'block', marginBottom: '4px', textTransform: 'capitalize', color: ASPECT_COLORS[aspect.type] }}>
                   Loại: {TYPES_VI[typeKey] || aspect.type}
                 </strong>
-                {ASPECT_MEANINGS[typeKey] || "Chưa có lời phán. Cứ cẩn thận thì hơn."}
+                {meaning}
               </RowContent>
             </TableRow>
           );

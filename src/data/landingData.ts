@@ -147,7 +147,7 @@ export const landingContent: LandingContent = {
   step3Title: '',
   step3Desc: '',
 
-  ctaTitle: 'Đọc xong thấy đúng quá đúng không',
+  ctaTitle: 'Sẵn sàng Khám phá Bản đồ Sao của bạn chưa?',
   ctaDescription:
     'Nếu bạn đã thấy bản thân mình trong đó thì cứ vào thử. Không có gì để mất. Cùng lắm là biết thêm sự thật.',
   ctaButton: 'THỬ NGAY',
