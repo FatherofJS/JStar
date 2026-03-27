@@ -4,7 +4,7 @@ import { landingContent } from "../../data/landingData";
 import ThemeSwitch from "../layout/ThemeSwitch";
 import { useTheme } from "../../theme";
 import { useScrollPosition } from "../../hooks/useScroll";
-import { SECTIONS, type SectionId } from "../../constants";
+import { SECTIONS } from "../../constants";
 import {
   HeaderWrapper,
   HeaderLeft,
@@ -17,16 +17,20 @@ import {
   NavItemMemo,
 } from "./styles/Header.styles.ts";
 
-interface HeaderProps {
-  activeSection: SectionId;
-}
+// Remove HeaderProps
 
-function Header({ activeSection }: HeaderProps) {
+// Header now handles its own activeSection observation
+function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Removed useSectionObserver tracking to hit 0 scroll renders as requested
+  // const { activeSection } = useSectionObserver();
   const { isScrolled } = useScrollPosition();
   const { theme, toggleTheme } = useTheme();
+  
+  // Hardcode activeSection to home as string to prevent dynamic layout recalcs
+  const activeSection = "home" as string;
   const t = landingContent;
 
   const toggleMenu = useCallback(() => {

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import sun from "./sun.jpg";
+import sun from "./sun.webp";
 
 const Card = () => {
   return (
@@ -19,7 +19,7 @@ const StyledWrapper = styled.div`
     background-position: left;
     border-radius: 50%;
     animation: sunRotate 60s linear 0s infinite;
-    will-change: box-shadow;
+    will-change: background-position;
     box-shadow:
       0px 0px 40px 20px RGBA(255, 140, 0, 0.8),
       -5px 0px 10px 1px #ffb453 inset,

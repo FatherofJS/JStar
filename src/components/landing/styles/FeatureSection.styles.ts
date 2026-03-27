@@ -29,7 +29,6 @@ export const SectionContainer = styled.section`
 export const SectionContainerAlt = styled(SectionContainer)`
   background: var(--bg-secondary);
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(6px);
 
   @media (max-width: 1280px) {
     background: rgba(255, 255, 255, 0.025);
@@ -97,7 +96,7 @@ export const FeatureImageCard = styled.div`
     opacity: 1;
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     transition: none;
 
     &:hover {
@@ -126,7 +125,7 @@ export const FeatureImage = styled.img`
     transform: translateZ(0) scale(1.03);
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     transition: none;
 
     ${FeatureImageCard}:hover & {
@@ -153,7 +152,7 @@ export const FeatureImageOverlay = styled.div`
   opacity: 0;
   transition: opacity 0.2s ease;
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     display: none;
   }
 
@@ -197,7 +196,7 @@ export const FeatureGlow = styled.div<{ $position: 'left' | 'right' }>`
     display: none;
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     opacity: 0.28;
   }
 

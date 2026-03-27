@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 
 
@@ -14,14 +14,7 @@ const slideDown = keyframes`
   }
 `;
 
-const borderGlow = keyframes`
-  0%, 100% { 
-    box-shadow: 0 0 20px rgba(122, 162, 255, 0.3), 0 0 40px rgba(122, 162, 255, 0.1);
-  }
-  50% { 
-    box-shadow: 0 0 30px rgba(122, 162, 255, 0.5), 0 0 60px rgba(122, 162, 255, 0.2);
-  }
-`;
+// Removed borderGlow keyframes for performance
 
 
 export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
@@ -44,25 +37,19 @@ export const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
       : "linear-gradient(135deg, rgba(20, 25, 70, 0.4) 0%, rgba(30, 35, 80, 0.5) 100%)"};
   
   backdrop-filter: ${({ $scrolled }) =>
-    $scrolled ? "blur(25px) saturate(180%)" : "blur(15px) saturate(120%)"};
+    $scrolled ? "blur(12px)" : "blur(8px)"};
   
   border-bottom: 1px solid var(--glass-border);
-
-  ${({ $scrolled }) => $scrolled && css`
-    animation: ${borderGlow} 4s ease-in-out infinite;
-  `}
 
   animation: ${slideDown} 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 
   box-shadow: ${({ $scrolled }) =>
-    $scrolled ? "0 4px 30px var(--shadow-color), 0 0 40px rgba(122, 162, 255, 0.1)" : "none"};
+    $scrolled ? "0 4px 20px rgba(0,0,0,0.2)" : "none"};
 
   transition:
     height 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-    padding 0.3s cubic-bezier(0.22, 1, 0.36, 1),
     background 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-    backdrop-filter 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 
   &::after {
     content: '';

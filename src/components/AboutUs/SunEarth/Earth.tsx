@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Earth from "./Earth.jpg";
+import Earth from "./Earth.webp";
 
 const Card = () => {
   return (

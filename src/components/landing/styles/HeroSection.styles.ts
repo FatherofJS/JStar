@@ -70,11 +70,11 @@ export const HeroLight = styled.div`
       rgba(0, 200, 255, 0.12),
       transparent 50%
     );
-  filter: blur(56px);
+  filter: blur(28px);
   opacity: 0.55;
   z-index: -1;
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     /* filter: blur(28px);
     opacity: 0.3; */
   }
@@ -239,7 +239,7 @@ export const ScrollButton = styled.button`
     animation: none;
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     /* backdrop-filter: none;
     animation: none; */
     transition: background 0.2s ease, border-color 0.2s ease;

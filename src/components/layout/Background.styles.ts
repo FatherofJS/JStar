@@ -76,7 +76,7 @@ export const NebulaLayer = styled.div`
     }
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     > div {
       animation: none !important;
       opacity: 0.35;
@@ -96,7 +96,6 @@ export const AuroraLayer = styled.div`
 export const StarField = styled.div`
   position: absolute;
   inset: 0;
-  will-change: opacity;
   
   &::before {
     content: "";
@@ -118,32 +117,12 @@ export const StarField = styled.div`
       radial-gradient(1px 1px at 65% 65%, rgba(255, 255, 255, 0.65) 0%, transparent 100%),
       radial-gradient(1px 1px at 90% 10%, rgba(255, 250, 240, 0.7) 0%, transparent 100%);
     background-size: 100% 100%;
-    animation: ${starTwinkle} 8s ease-in-out infinite;
-    will-change: opacity;
+    opacity: 0.65;
     transform: translateZ(0);
-    backface-visibility: hidden;
   }
   
   [data-theme="light"] & {
     display: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    &::before {
-      animation: none;
-    }
-  }
-
-  @media (max-width: 1280px) {
-    &::before {
-      animation: none;
-      opacity: 0.75;
-    }
-  }
-
-  [data-performance-mode="reduced"] &::before {
-    animation: none;
-    opacity: 0.55;
   }
 `;
 
@@ -156,27 +135,11 @@ export const CosmicGlow = styled.div`
     rgba(59, 130, 246, 0.07) 32%,
     transparent 68%
   );
-  animation: ${glowPulse} 14s ease-in-out infinite;
-  will-change: opacity;
+  opacity: 0.4;
   transform: translateZ(0);
-  backface-visibility: hidden;
   
   [data-theme="light"] & {
     display: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-
-  @media (max-width: 1280px) {
-    animation: none;
-    opacity: 0.4;
-  }
-
-  [data-performance-mode="reduced"] & {
-    animation: none;
-    opacity: 0.4;
   }
 `;
 

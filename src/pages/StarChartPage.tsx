@@ -653,7 +653,7 @@ export default function StarChartPage() {
 
   return (
     <Layout>
-      <Background showShootingStars={true} />
+      <Background />
       <PageWrapper>
         {!isLight && (
           <>

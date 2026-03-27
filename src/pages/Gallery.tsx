@@ -17,7 +17,7 @@ export default function Gallery() {
 
   return (
     <Layout>
-      <Background showShootingStars={false} />
+      <Background />
       <style>
         {`
           .gallery {

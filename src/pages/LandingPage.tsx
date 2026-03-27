@@ -1,19 +1,22 @@
-import { memo, useCallback, useMemo, useEffect } from "react";
+import { memo, useCallback, useMemo, useEffect, Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Background } from "../components/layout/Background";
 import { useLanding } from "../hooks/useLanding";
-import { useSectionObserver } from "../hooks/useScroll";
 import { featuresData } from "../data/landingData";
-
 
 import Header from "../components/landing/Header";
 import HeroSection from "../components/landing/HeroSection";
-import { AIInterpretationSection, FeatureSection, FeatureSectionAlt } from "../components/landing/FeatureSection";
-import DocsSection from "../components/landing/DocsSection";
-import CTASection from "../components/landing/CTASection";
-import Footer from "../components/landing/Footer";
-import AboutUs from "../components/AboutUs/AboutUs";
+
+// Lazy load below-the-fold components
+const AboutUs = lazy(() => import("../components/AboutUs/AboutUs").then(module => ({ default: module.AboutUs })));
+const DocsSection = lazy(() => import("../components/landing/DocsSection"));
+const CTASection = lazy(() => import("../components/landing/CTASection"));
+const Footer = lazy(() => import("../components/landing/Footer"));
+// Note: Feature sections are mapped dynamically, so their lazy versions need to handle the named exports
+const AIInterpretationSection = lazy(() => import("../components/landing/FeatureSection").then(module => ({ default: module.AIInterpretationSection })));
+const FeatureSection = lazy(() => import("../components/landing/FeatureSection").then(module => ({ default: module.FeatureSection })));
+const FeatureSectionAlt = lazy(() => import("../components/landing/FeatureSection").then(module => ({ default: module.FeatureSectionAlt })));
 
 const LandingPageShell = styled.div`
   position: relative;
@@ -21,13 +24,9 @@ const LandingPageShell = styled.div`
 `;
 
 function LandingPage() {
+    console.count('🔴 LandingPage render');
     const navigate = useNavigate();
-    const { activeSection } = useSectionObserver();
-    const { isReduced } = useLanding();
-
-    useEffect(() => {
-        document.documentElement.setAttribute('data-performance-mode', isReduced ? 'reduced' : 'default');
-    }, [isReduced]);
+    useLanding();
 
     useEffect(() => {
         if (window.location.hash === '#docs') {
@@ -73,29 +72,30 @@ function LandingPage() {
     );
 
     return (
-        <LandingPageShell data-performance-mode={isReduced ? "reduced" : "default"}>
-            <Background
-                showShootingStars={true}
-                forceReducedMotion={false}
-            />
+        <LandingPageShell>
+            <Background />
 
-            <Header activeSection={activeSection} />
+            <Header />
 
             <HeroSection />
 
-            <div data-section="about" className="zoom-section">
-                <AboutUs />
-            </div>
+            <Suspense fallback={<div style={{ height: "100vh", opacity: 0 }} />}>
+                <div data-section="about" className="zoom-section">
+                    <AboutUs />
+                </div>
 
-            <div data-section="features">
-                {featureSections}
-            </div>
+                <div data-section="features">
+                    {featureSections}
+                </div>
 
-            <DocsSection />
+                <div data-section="docs" className="zoom-section">
+                    <DocsSection />
+                </div>
 
-            <CTASection onGetStarted={handleGetStarted} />
+                <CTASection onGetStarted={handleGetStarted} />
 
-            <Footer />
+                <Footer />
+            </Suspense>
         </LandingPageShell>
     );
 }

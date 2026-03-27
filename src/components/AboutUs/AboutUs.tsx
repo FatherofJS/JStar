@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useEffect } from "react";
+import React, { useCallback, useMemo, useState, useEffect, memo } from "react";
 import { useDynamicScale } from "../../hooks/useDynamicScale";
 
 import { IconZodiacLeo } from "@tabler/icons-react";
@@ -9,17 +9,17 @@ import { IconZodiacPisces } from "@tabler/icons-react";
 import { IconZodiacAquarius } from "@tabler/icons-react";
 import { IconZodiacCancer } from "@tabler/icons-react";
 
-import AnhDuc from "./TVimg/DoneDucAnh.jpg";
-import Huy from "./TVimg/Huy.jpg";
-import Huyen from "./TVimg/Huyen.jpg";
-import Manh from "./TVimg/Manh.jpg";
-import NgocBich from "./TVimg/NgocBich.png";
-import TangThang from "./TVimg/TangThang.jpg";
-import ThaiMinh from "./TVimg/ThaiMinh.jpg";
-import TheAnh from "./TVimg/TheAnh.jpg";
-import Toan from "./TVimg/Toan.png";
-import Tuong from "./TVimg/Tuong.jpg";
-import QuocAnh from "./TVimg/QuocAnh.jpg";
+import AnhDuc from "./TVimg/DoneDucAnh.webp";
+import Huy from "./TVimg/Huy.webp";
+import Huyen from "./TVimg/Huyen.webp";
+import Manh from "./TVimg/Manh.webp";
+import NgocBich from "./TVimg/NgocBich.webp";
+import TangThang from "./TVimg/TangThang.webp";
+import ThaiMinh from "./TVimg/ThaiMinh.webp";
+import TheAnh from "./TVimg/TheAnh.webp";
+import Toan from "./TVimg/Toan.webp";
+import Tuong from "./TVimg/Tuong.webp";
+import QuocAnh from "./TVimg/QuocAnh.webp";
 import Sun from "./SunEarth/Sun";
 import Earth from "./SunEarth/Earth";
 import "./AboutUs.css";
@@ -158,7 +158,8 @@ const CircularGroup = React.memo(
   },
 );
 
-export function AboutUs() {
+export const AboutUs = memo(function AboutUs() {
+  console.count('🟡 AboutUs render');
   const [flippedIds, setFlippedIds] = useState<Set<string>>(new Set());
 
   // Mảng dữ liệu các Member Nhóm 1 (Nhóm nhỏ bên trong)
@@ -268,9 +269,12 @@ export function AboutUs() {
       const target = event.target as HTMLElement;
 
       // Nếu nơi click vào KHÔNG nằm trong một tấm thẻ (.flip-card)
-      // thì chúng ta lật tất cả về mặt trước
+      // thì chúng ta lật tất cả về mặt trước nhưng chỉ cập nhật state nếu thực sự có thẻ đang lật
       if (!target.closest(".flip-card")) {
-        setFlippedIds(new Set());
+        setFlippedIds((prev) => {
+          if (prev.size === 0) return prev; // Bail out to prevent re-renders
+          return new Set();
+        });
       }
     };
 
@@ -315,6 +319,6 @@ export function AboutUs() {
       </div>
     </div>
   );
-}
+});
 
 export default AboutUs;

@@ -6,24 +6,6 @@ interface StarPlayButtonProps {
   children?: React.ReactNode;
 }
 
-const animStar = keyframes`
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-135rem);
-  }
-`;
-
-const animStarRotate = keyframes`
-  from {
-    transform: rotate(360deg);
-  }
-  to {
-    transform: rotate(0);
-  }
-`;
-
 const gradient_301 = keyframes`
   0% {
     background-position: 0% 50%;
@@ -33,21 +15,6 @@ const gradient_301 = keyframes`
   }
   100% {
     background-position: 0% 50%;
-  }
-`;
-
-const pulse_3011 = keyframes`
-  0% {
-    transform: scale(0.75);
-    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
-  }
-  70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
-  }
-  100% {
-    transform: scale(0.75);
-    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
   }
 `;
 
@@ -62,7 +29,6 @@ const StyledWrapper = styled.div`
     height: 3.6rem;
     background-size: 300% 300%;
     cursor: pointer;
-    backdrop-filter: blur(1rem);
     border-radius: 5rem;
     transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
     animation: ${gradient_301} 5s ease infinite;
@@ -78,44 +44,7 @@ const StyledWrapper = styled.div`
     background-origin: border-box;
     background-clip: content-box, border-box;
     position: relative;
-  }
-
-  #container-stars {
-    position: absolute;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    transition: background-color 0.3s ease;
-    backdrop-filter: blur(1rem);
-    border-radius: 5rem;
-  }
-
-  #glow {
-    position: absolute;
-    display: flex;
-    width: 15rem;
-  }
-
-  .circle {
-    width: 100%;
-    height: 30px;
-    filter: blur(2rem);
-    animation: ${pulse_3011} 4s infinite;
-    z-index: -1;
-  }
-
-  .circle:nth-of-type(1) {
-    background: rgba(254, 83, 186, 0.636);
-  }
-
-  .circle:nth-of-type(2) {
-    background: rgba(142, 81, 234, 0.704);
-  }
-
-  .btn:hover #container-stars {
-    z-index: 1;
-    background-color: #212121;
+    will-change: transform;
   }
 
   .btn:hover {
@@ -127,42 +56,6 @@ const StyledWrapper = styled.div`
     background-origin: border-box;
     background-clip: content-box, border-box;
     animation: none;
-  }
-
-  .btn:active .circle {
-    background: #fe53bb;
-  }
-
-  #stars {
-    position: relative;
-    background: transparent;
-    width: 200rem;
-    height: 200rem;
-  }
-
-  #stars::after {
-    content: "";
-    position: absolute;
-    top: -10rem;
-    left: -100rem;
-    width: 100%;
-    height: 100%;
-    animation: ${animStarRotate} 90s linear infinite;
-    background-image: radial-gradient(#ffffff 1px, transparent 1%);
-    background-size: 50px 50px;
-  }
-
-  #stars::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -50%;
-    width: 170%;
-    height: 500%;
-    animation: ${animStar} 60s linear infinite;
-    background-image: radial-gradient(#ffffff 1px, transparent 1%);
-    background-size: 50px 50px;
-    opacity: 0.5;
   }
 
   .btn-content {
@@ -230,24 +123,9 @@ const StyledWrapper = styled.div`
     }
   }
 
-  @media (max-width: 1280px), (prefers-reduced-motion: reduce) {
+  @media (max-width: 768px), (prefers-reduced-motion: reduce) {
     .btn {
       animation: none;
-      backdrop-filter: none;
-    }
-
-    #container-stars {
-      display: none;
-      backdrop-filter: none;
-    }
-
-    #glow {
-      display: none;
-    }
-
-    .circle {
-      animation: none;
-      filter: blur(1rem);
     }
 
     .btn:hover {
@@ -259,25 +137,6 @@ const StyledWrapper = styled.div`
     button:hover .play {
       transform: none;
       transition-delay: 0ms;
-    }
-  }
-
-  [data-performance-mode="reduced"] & {
-    .btn {
-      animation: none;
-      backdrop-filter: none;
-    }
-
-    #container-stars,
-    #glow {
-      display: none;
-    }
-
-    .btn:hover,
-    button:hover svg,
-    button:hover .now,
-    button:hover .play {
-      transform: none;
     }
   }
 `;
@@ -300,13 +159,6 @@ export const StarPlayButton: React.FC<StarPlayButtonProps> = ({ onClick, childre
           </svg>
           <span className="now">now!</span>
           <span className="play">{children || 'SEE CHART'}</span>
-        </div>
-        <div id="container-stars">
-          <div id="stars" />
-        </div>
-        <div id="glow">
-          <div className="circle" />
-          <div className="circle" />
         </div>
       </button>
     </StyledWrapper>

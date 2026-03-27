@@ -68,7 +68,7 @@ export const landingContent: LandingContent = {
   docs: 'Docs',
 
   heroTitle: 'JSTAR',
-  heroSubtitle: 'VỊ TINH TÚ CỦA RIÊNG BẠN',
+  heroSubtitle: 'VÌ TINH TÚ CỦA RIÊNG BẠN',
   heroDescription:
     'Xem lá số Natal để biết mình là ai, soi Synastry để biết yêu đúng người chưa, và hỏi AI khi bạn không hiểu nổi chính mình.',
 
