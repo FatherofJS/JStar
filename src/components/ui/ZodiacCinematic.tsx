@@ -29,6 +29,7 @@ const useStarData = (zodiacName: string) => {
 };
 
 export function ZodiacCinematic() {
+  console.count('🟠 ZodiacCinematic render');
   const [index, setIndex] = useState(0);
   const [allowTiltInteraction, setAllowTiltInteraction] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -38,8 +39,38 @@ export function ZodiacCinematic() {
 
   const current = zodiac[index];
   const map = constellationMap[current.name];
-  
+
   const starData = useStarData(current.name);
+
+  // Memoize the SVG elements so React doesn't re-diff them on every render
+  const constellationElements = useMemo(() => (
+    <>
+      {map.lines.map(([a, b]: [number, number], i: number) => {
+        const s1 = map.stars[a];
+        const s2 = map.stars[b];
+        return (
+          <Line
+            key={`line-${i}`}
+            x1={s1.x}
+            y1={s1.y}
+            x2={s2.x}
+            y2={s2.y}
+            color={current.color}
+            $delay={i * 0.15}
+          />
+        );
+      })}
+      {map.stars.map((s: { x: number; y: number }, i: number) => (
+        <GalaxyStar
+          key={`star-${i}`}
+          cx={s.x}
+          cy={s.y}
+          r={starData.size}
+          $intensity={starData.intensity}
+        />
+      ))}
+    </>
+  ), [current.name, current.color, map, starData]);
 
   useEffect(() => {
     const interval = setInterval(
@@ -112,7 +143,6 @@ export function ZodiacCinematic() {
       >
         <DeepGlow
           color="rgba(120,140,255,0.2)"
-          style={{ filter: "blur(72px)", opacity: 0.24 }}
         />
 
         <AuraRing />
@@ -125,32 +155,7 @@ export function ZodiacCinematic() {
         />
 
         <ConstellationSVG key={`constellation-${current.name}`} viewBox="0 0 100 100">
-          {map.lines.map(([a, b], i) => {
-            const s1 = map.stars[a];
-            const s2 = map.stars[b];
-
-            return (
-              <Line
-                key={`line-${i}-${current.name}`}
-                x1={s1.x}
-                y1={s1.y}
-                x2={s2.x}
-                y2={s2.y}
-                color={current.color}
-                $delay={i * 0.15}
-              />
-            );
-          })}
-
-          {map.stars.map((s, i) => (
-            <GalaxyStar
-              key={`star-${i}-${current.name}`}
-              cx={s.x}
-              cy={s.y}
-              r={starData.size}
-              $intensity={starData.intensity}
-            />
-          ))}
+          {constellationElements}
         </ConstellationSVG>
 
         <ZodiacName>{current.name}</ZodiacName>

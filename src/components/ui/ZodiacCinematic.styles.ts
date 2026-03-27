@@ -82,7 +82,7 @@ export const ZodiacSymbol = styled.img`
 
   z-index: 1;
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     animation: 
       ${fadeInSymbol} 1s ease forwards 3s,
       ${breathe} 8s ease-in-out infinite 4s,
@@ -112,7 +112,7 @@ export const ConstellationContainer = styled.div`
   will-change: transform;
   contain: layout paint;
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     transition: none;
     will-change: auto;
   }
@@ -134,10 +134,10 @@ export const DeepGlow = styled.div<{ color: string }>`
   inset: 0;
   border-radius: 50%;
   background: radial-gradient(circle, ${({ color }) => color}30, transparent 70%);
-  filter: blur(28px);
-  opacity: 0.38;
+  filter: blur(16px);
+  opacity: 0.3;
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     /* filter: blur(16px);
     opacity: 0.18; */
   }
@@ -164,7 +164,7 @@ export const AuraRing = styled.div`
     animation: none;
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     /* animation: none;
     opacity: 0.55; */
   }
@@ -192,7 +192,7 @@ export const OrbitRing = styled.div`
     animation: none;
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     /* animation: none;
     opacity: 0.45; */
   }
@@ -223,25 +223,32 @@ export const ZodiacName = styled.div`
   }
 `;
 
-export const GalaxyStar = styled.circle<{ $intensity: number }>`
-  fill: rgba(255, 255, 255, ${(p) => 0.5 + p.$intensity * 0.5});
-  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
-  opacity: ${(p) => 0.5 + p.$intensity * 0.5};
+export const GalaxyStar = styled.circle.attrs<{ $intensity: number }>((props) => {
+  const opNormal = 0.5 + props.$intensity * 0.5;
+  const opReduced = 0.4 + props.$intensity * 0.35;
+  return {
+    style: {
+      "--star-op": opNormal,
+      "--star-reduced-op": opReduced,
+    } as any,
+  };
+})`
+  fill: rgba(255, 255, 255, var(--star-op));
+  opacity: var(--star-op);
   
   animation: ${fadeOutElement} 1s ease forwards 5.5s;
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     filter: none;
   }
 
   [data-theme="light"] & {
-    fill: rgba(30, 41, 59, ${(p) => 0.5 + p.$intensity * 0.5});
-    filter: drop-shadow(0 0 2px rgba(30, 41, 59, 0.4));
+    fill: rgba(30, 41, 59, var(--star-op));
   }
 
   [data-performance-mode="reduced"] & {
     filter: none;
-    opacity: ${(p) => 0.4 + p.$intensity * 0.35};
+    opacity: var(--star-reduced-op);
   }
 `;
 
@@ -256,14 +263,19 @@ export const ConstellationSVG = styled.svg`
   }
 `;
 
-export const Line = styled.line<{ color: string; $delay: number }>`
-  stroke: ${(p) => p.color};
+export const Line = styled.line.attrs<{ color: string; $delay: number }>((props) => ({
+  style: {
+    "--line-color": props.color,
+    "--line-delay": `${props.$delay}s`,
+  } as any,
+}))`
+  stroke: var(--line-color);
   stroke-width: 0.5;
   stroke-dasharray: 140;
   stroke-dashoffset: 140;
 
   animation: 
-    ${drawLine} 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards ${(p) => p.$delay}s,
+    ${drawLine} 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards var(--line-delay),
     ${fadeOutElement} 1s ease forwards 5.5s;
 
   @media (prefers-reduced-motion: reduce) {
@@ -272,9 +284,9 @@ export const Line = styled.line<{ color: string; $delay: number }>`
     opacity: 1;
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: 768px) {
     animation: 
-      ${drawLine} 1s cubic-bezier(0.22, 1, 0.36, 1) forwards ${(p) => p.$delay}s,
+      ${drawLine} 1s cubic-bezier(0.22, 1, 0.36, 1) forwards var(--line-delay),
       ${fadeOutElement} 1s ease forwards 5.5s;
   }
 

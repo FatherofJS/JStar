@@ -7,7 +7,6 @@ export const CTASectionWrapper = styled.section`
   padding: 80px 16px;
   text-align: center;
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
   
   @media (max-width: 768px) {
     padding: 60px 16px;

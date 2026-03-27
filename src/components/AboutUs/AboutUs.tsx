@@ -1,22 +1,25 @@
-import React, { useCallback, useMemo, useState, useEffect } from "react";
+import React, { useCallback, useMemo, useState, useEffect, memo } from "react";
 import { useDynamicScale } from "../../hooks/useDynamicScale";
 
 import { IconZodiacLeo } from "@tabler/icons-react";
 import { IconZodiacVirgo } from "@tabler/icons-react";
 import { IconZodiacTaurus } from "@tabler/icons-react";
 import { IconZodiacAries } from "@tabler/icons-react";
+import { IconZodiacPisces } from "@tabler/icons-react";
+import { IconZodiacAquarius } from "@tabler/icons-react";
+import { IconZodiacCancer } from "@tabler/icons-react";
 
-import AnhDuc from "./TVimg/DoneDucAnh.jpg";
-import Huy from "./TVimg/Huy.jpg";
-import Huyen from "./TVimg/Huyen.jpg";
-import Manh from "./TVimg/Manh.jpg";
-import NgocBich from "./TVimg/NgocBich.png";
-import TangThang from "./TVimg/TangThang.jpg";
-import ThaiMinh from "./TVimg/ThaiMinh.jpg";
-import TheAnh from "./TVimg/TheAnh.jpg";
-import Toan from "./TVimg/Toan.png";
-import Tuong from "./TVimg/Tuong.jpg";
-import QuocAnh from "./TVimg/QuocAnh.jpg";
+import AnhDuc from "./TVimg/DoneDucAnh.webp";
+import Huy from "./TVimg/Huy.webp";
+import Huyen from "./TVimg/Huyen.webp";
+import Manh from "./TVimg/Manh.webp";
+import NgocBich from "./TVimg/NgocBich.webp";
+import TangThang from "./TVimg/TangThang.webp";
+import ThaiMinh from "./TVimg/ThaiMinh.webp";
+import TheAnh from "./TVimg/TheAnh.webp";
+import Toan from "./TVimg/Toan.webp";
+import Tuong from "./TVimg/Tuong.webp";
+import QuocAnh from "./TVimg/QuocAnh.webp";
 import Sun from "./SunEarth/Sun";
 import Earth from "./SunEarth/Earth";
 import "./AboutUs.css";
@@ -155,7 +158,8 @@ const CircularGroup = React.memo(
   },
 );
 
-export function AboutUs() {
+export const AboutUs = memo(function AboutUs() {
+  console.count('🟡 AboutUs render');
   const [flippedIds, setFlippedIds] = useState<Set<string>>(new Set());
 
   // Mảng dữ liệu các Member Nhóm 1 (Nhóm nhỏ bên trong)
@@ -166,7 +170,7 @@ export function AboutUs() {
         name: "Đức Mạnh",
         role: "Take Care",
         imgSrc: Manh, // Ảnh mặt trước (Hãy import ảnh mới ở trên và thay vào đây)
-        backImgSrc: AnhDuc, // Ảnh mặt sau (Hãy import ảnh mới ở trên và thay vào đây)
+        backImgSrc: <IconZodiacLeo />, // Ảnh mặt sau (Hãy import ảnh mới ở trên và thay vào đây)
       },
       {
         id: "g1-2",
@@ -180,7 +184,7 @@ export function AboutUs() {
         name: "Thái Minh",
         role: "Take Care",
         imgSrc: ThaiMinh,
-        backImgSrc: AnhDuc,
+        backImgSrc: <IconZodiacCancer />,
       },
       {
         id: "g1-4",
@@ -194,7 +198,7 @@ export function AboutUs() {
         name: "Ngọc Bích",
         role: "Take Care",
         imgSrc: NgocBich,
-        backImgSrc: AnhDuc,
+        backImgSrc: <IconZodiacTaurus />,
       },
     ],
     [],
@@ -215,28 +219,28 @@ export function AboutUs() {
         name: "Đức Huy",
         role: "CTV",
         imgSrc: Huy,
-        backImgSrc: AnhDuc,
+        backImgSrc: <IconZodiacPisces />,
       },
       {
         id: "g2-3",
         name: "Khánh Huyền",
         role: "CTV",
         imgSrc: Huyen,
-        backImgSrc: AnhDuc,
+        backImgSrc: <IconZodiacLeo />,
       },
       {
         id: "g2-4",
         name: "Quang Toàn",
         role: "CTV",
         imgSrc: Toan,
-        backImgSrc: <IconZodiacLeo />,
+        backImgSrc: <IconZodiacCancer />,
       },
       {
         id: "g2-5",
         name: "Hữu Tường",
         role: "CTV",
         imgSrc: Tuong,
-        backImgSrc: AnhDuc,
+        backImgSrc: <IconZodiacAquarius />,
       },
       {
         id: "g2-6",
@@ -265,9 +269,12 @@ export function AboutUs() {
       const target = event.target as HTMLElement;
 
       // Nếu nơi click vào KHÔNG nằm trong một tấm thẻ (.flip-card)
-      // thì chúng ta lật tất cả về mặt trước
+      // thì chúng ta lật tất cả về mặt trước nhưng chỉ cập nhật state nếu thực sự có thẻ đang lật
       if (!target.closest(".flip-card")) {
-        setFlippedIds(new Set());
+        setFlippedIds((prev) => {
+          if (prev.size === 0) return prev; // Bail out to prevent re-renders
+          return new Set();
+        });
       }
     };
 
@@ -312,6 +319,6 @@ export function AboutUs() {
       </div>
     </div>
   );
-}
+});
 
 export default AboutUs;

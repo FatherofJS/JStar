@@ -6,51 +6,8 @@ interface UseSectionObserverReturn {
 }
 
 export function useSectionObserver(): UseSectionObserverReturn {
-  const [activeSection, setActiveSection] = useState<SectionId>(
-    SECTIONS.HOME as SectionId
-  );
-  
-  const activeSectionRef = useRef<SectionId>(SECTIONS.HOME as SectionId);
-
-  useEffect(() => {
-    const sections = document.querySelectorAll(".zoom-section");
-    const allowSectionAnimations = !window.matchMedia(
-      "(prefers-reduced-motion: reduce), (max-width: 1440px), (max-height: 900px)"
-    ).matches;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const id = entry.target.getAttribute("data-section") as SectionId;
-
-          if (entry.isIntersecting) {
-            if (allowSectionAnimations) {
-              entry.target.classList.add("zoom-in");
-              entry.target.classList.remove("zoom-out");
-            }
-
-            if (id && activeSectionRef.current !== id) {
-              activeSectionRef.current = id;
-              setActiveSection(id);
-            }
-          } else if (allowSectionAnimations) {
-            entry.target.classList.remove("zoom-in");
-            entry.target.classList.add("zoom-out");
-          }
-        });
-      },
-      {
-        threshold: SCROLL.INTERSECTION_THRESHOLD,
-        rootMargin: SCROLL.ROOT_MARGIN,
-      }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
-  }, []);
-
-  return { activeSection };
+  // Navigation tracking disabled to maximize scroll performance
+  return { activeSection: SECTIONS.HOME as SectionId };
 }
 
 interface UseScrollPositionReturn {
