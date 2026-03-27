@@ -121,13 +121,16 @@ const MessageList = styled.div`
 `;
 
 const Bubble = styled.div<{ $role: "assistant" | "user"; $isLight: boolean }>`
-  max-width: 92%;
-  align-self: ${({ $role }) => ($role === "user" ? "flex-end" : "flex-start")};
-  padding: 12px 14px;
-  border-radius: 18px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  max-width: 85%;
+  font-size: 0.95rem;
+  line-height: 1.5;
   white-space: pre-wrap;
-  line-height: 1.55;
-  font-size: 0.92rem;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  align-self: ${({ $role }) => ($role === "user" ? "flex-end" : "flex-start")};
   background: ${({ $role, $isLight }) =>
     $role === "user"
       ? "linear-gradient(135deg, #6366f1, #8b5cf6)"
@@ -162,6 +165,7 @@ const Composer = styled.form<{ $isLight: boolean }>`
 const TextArea = styled.textarea<{ $isLight: boolean }>`
   width: 100%;
   min-height: 50px;
+  max-height: 120px;
   resize: none;
   border-radius: 16px;
   padding: 12px 14px;
@@ -173,6 +177,8 @@ const TextArea = styled.textarea<{ $isLight: boolean }>`
     ${({ $isLight }) =>
     $isLight ? "rgba(148, 163, 184, 0.2)" : "rgba(255,255,255,0.08)"};
   outline: none;
+  word-wrap: break-word;
+  word-break: break-word;
 
   &::placeholder {
     color: ${({ $isLight }) =>
@@ -365,6 +371,7 @@ export function ChatPopup({ chartData, chartType, isOpen, onClose }: ChatPopupPr
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={handleKeyDown}
+          maxLength={300}
           placeholder="Nhập câu hỏi của bạn vào đây nhé."
           disabled={loading}
         />

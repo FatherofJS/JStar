@@ -23,15 +23,18 @@ export function NatalInfoPanel({ data, isLight }: NatalInfoPanelProps) {
   return (
     <PanelContainer $isLight={isLight}>
       <SectionTitle $isLight={isLight}>Bản Đồ Sao Cá Nhân</SectionTitle>
-      <IntroText $isLight={isLight}>BỐC TRẦN LÁ SỐ: Đây là ảnh chụp bầu trời đúng cái khoảnh khắc bạn chào đời, lúc bạn còn chưa kịp fake personality. Mặt Trời, Mặt Trăng và cả đám hành tinh lúc đó đứng ở đâu, tụ lại kiểu gì thì nó build sẵn cái 'bản thiết kế con người' của bạn luôn. Không phải ngẫu nhiên bạn như này đâu, có kịch bản hết rồi. Đọc xong có thể hơi nhột. Nhưng thôi, vũ trụ nó không có thói quen nịnh người.</IntroText>
+      <IntroText $isLight={isLight}>
+        Đây là snapshot bầu trời đúng thời điểm bạn sinh ra. Vị trí của Mặt Trời, Mặt Trăng và các hành tinh lúc đó ghép lại thành một “bản thiết kế” về cách bạn vận hành: cách bạn suy nghĩ, phản ứng, đưa ra quyết định và tương tác với thế giới xung quanh.
 
+        Nó cho thấy bạn tiếp cận cảm xúc ra sao, xử lý áp lực thế nào, dễ bị thu hút bởi kiểu người gì và thường mắc kẹt ở những vòng lặp nào. Không phải để dán nhãn hay bó buộc, mà để hiểu rõ cơ chế bên trong của mình và dùng nó một cách có ý thức hơn.
+      </IntroText>
       <SectionTitle $isLight={isLight}>Bản Vị Hành Tinh</SectionTitle>
       <Table $isLight={isLight} data-tour="natal-planets">
         {data.planets.map(p => {
           const pName = p.name === "True_North_Lunar_Node" ? "North Node" :
-                        p.name === "True_South_Lunar_Node" ? "South Node" : p.name;
+            p.name === "True_South_Lunar_Node" ? "South Node" : p.name;
           return (
-            <TableRow key={p.name} $isLight={isLight}>
+            <TableRow key={p.name} $isLight={isLight} $columns="minmax(160px, 200px) 1fr">
               <LabelWrap>
                 <RowTitle $isLight={isLight}>{PLANETS_VI[pName] || pName} tại {SIGNS_VI[p.sign] || p.sign}</RowTitle>
                 <RowSubtitle $isLight={isLight}>Nhà {p.house}</RowSubtitle>
@@ -52,7 +55,7 @@ export function NatalInfoPanel({ data, isLight }: NatalInfoPanelProps) {
       <SectionTitle $isLight={isLight}>12 Nhà Mệnh</SectionTitle>
       <Table $isLight={isLight} data-tour="natal-houses">
         {data.houses.map(h => (
-          <TableRow key={h.id} $isLight={isLight}>
+          <TableRow key={h.id} $isLight={isLight} $columns="minmax(160px, 200px) 1fr">
             <LabelWrap>
               <RowTitle $isLight={isLight}>Nhà {h.id}</RowTitle>
               <RowSubtitle $isLight={isLight}>tại {SIGNS_VI[h.sign] || h.sign}</RowSubtitle>

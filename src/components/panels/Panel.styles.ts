@@ -41,6 +41,7 @@ export const Table = styled.div<{ $isLight: boolean }>`
 export const TableRow = styled.div<{ $isLight: boolean; $columns?: string }>`
   display: grid;
   grid-template-columns: ${({ $columns }) => $columns || "140px 1fr"};
+  column-gap: 40px;
   padding: 16px;
   border-radius: 12px;
   background: ${({ $isLight }) => $isLight ? "rgba(248, 250, 252, 0.8)" : "rgba(255, 255, 255, 0.03)"};

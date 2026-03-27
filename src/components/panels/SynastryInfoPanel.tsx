@@ -139,8 +139,11 @@ export function SynastryInfoPanel({ data, isLight }: SynastryInfoPanelProps) {
   return (
     <PanelContainer $isLight={isLight}>
       <SectionTitle $isLight={isLight}>Bảng Đo Nhân Phẩm Tình Yêu</SectionTitle>
-      <IntroText $isLight={isLight}>BẢNG PHONG THẦN SYNASTRY. Nơi bóc trần sự thật phũ phàng về mối quan hệ của bạn! Tưởng là định mệnh hóa ra toàn là nghiệp chướng đan xen. Hệ thống đã tự động vứt sọt rác mấy điểm sương sương vô thưởng vô phạt để focus thẳng vào những pha combat nảy lửa hoặc u mê mù quáng nhất giữa hai người. Ôm tim cho chặt vào, kết quả có thể làm bạn suy cả tuần đấy!</IntroText>
+      <IntroText $isLight={isLight}>
+        Đây là phần synastry, nơi đặt hai bản đồ sao cạnh nhau để xem cách hai người tác động qua lại. Hệ thống tập trung vào những điểm tương tác mạnh nhất, nơi cảm xúc, hành động và cái tôi dễ va chạm hoặc kéo nhau đi rất xa.
 
+        Bạn sẽ thấy rõ chỗ nào hợp tự nhiên, chỗ nào dễ căng, và vì sao có những thứ vừa hút vừa mệt. Không phải để phán đúng sai, mà để nhìn thẳng vào cách mối quan hệ này vận hành khi đặt hai người cạnh nhau.
+      </IntroText>
       <GaugeContainer>
         <ScoreCircle $score={score} $isLight={isLight}>
           <ScoreValue $isLight={isLight}>
@@ -150,7 +153,7 @@ export function SynastryInfoPanel({ data, isLight }: SynastryInfoPanelProps) {
         </ScoreCircle>
       </GaugeContainer>
 
-      <SectionTitle $isLight={isLight}>Nhân Duyên Quả Báo (Cross-Aspects)</SectionTitle>
+      <SectionTitle $isLight={isLight}>Nhân Duyên Quả Báo</SectionTitle>
       <Table $isLight={isLight} data-tour="synastry-aspects">
         {filteredAspects.length > 0 ? filteredAspects.map(aspect => {
           const typeKey = aspect.type.toLowerCase();
@@ -161,7 +164,7 @@ export function SynastryInfoPanel({ data, isLight }: SynastryInfoPanelProps) {
           const meaning = meaningDict?.[typeKey] || "Chưa có lời phán. Cứ cẩn thận thì hơn.";
 
           return (
-            <TableRow key={aspect.id || `${aspect.person1_planet}-${aspect.person2_planet}-${aspect.type}`} $isLight={isLight} $columns="200px 1fr" style={{ display: 'grid', alignItems: 'center', gridTemplateColumns: 'minmax(180px, 200px) 1fr', gap: '20px' }}>
+            <TableRow key={aspect.id || `${aspect.person1_planet}-${aspect.person2_planet}-${aspect.type}`} $isLight={isLight} $columns="minmax(180px, 200px) 1fr">
               <LabelWrap>
                 <RowTitle $isLight={isLight}>
                   <span style={{ color: '#ff6b8a' }}>{PLANETS_VI[p1Name] || p1Name}</span>

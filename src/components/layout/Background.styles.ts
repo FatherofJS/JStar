@@ -28,7 +28,7 @@ const glowPulse = keyframes`
   50% { opacity: 0.5; }
 `;
 
-export const BackgroundWrapper = styled.div`
+export const BackgroundWrapper = styled.div<{ $isLight?: boolean }>`
   position: fixed;
   inset: 0;
   z-index: -10;
@@ -39,11 +39,10 @@ export const BackgroundWrapper = styled.div`
   contain: layout paint style;
   transform: translateZ(0);
   
-  background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 30%, #0f1a2e 60%, #0a0a1a 100%);
-  
-  [data-theme="light"] & {
-    background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 40%, #ffffff 100%);
-  }
+  background: ${({ $isLight }) =>
+    $isLight
+      ? "linear-gradient(180deg, #e0f2fe 0%, #bae6fd 40%, #ffffff 100%)"
+      : "linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 30%, #0f1a2e 60%, #0a0a1a 100%)"};
 `;
 
 export const StarsLayer = styled.div`
@@ -152,6 +151,7 @@ interface ShootingStarProps {
   $left: number;
   $delay: number;
   $duration: number;
+  $isLight?: boolean;
   $direction?: number;
   style?: CSSProperties;
 }
@@ -160,7 +160,10 @@ export const ShootingStar = styled.span<ShootingStarProps>`
   position: absolute;
   width: 72px;
   height: 1px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6), transparent);
+  background: ${({ $isLight }) =>
+    $isLight
+      ? "linear-gradient(90deg, rgba(0,0,0,0.8), rgba(0,0,0,0.5), transparent)"
+      : "linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6), transparent)"};
   top: ${({ $top }) => $top}%;
   left: ${({ $left }) => $left}%;
   animation: ${shoot} ${({ $duration }) => $duration}s linear infinite;
@@ -176,23 +179,20 @@ export const ShootingStar = styled.span<ShootingStarProps>`
     transform: translateY(-50%);
     width: 4px;
     height: 4px;
-    background: #fff;
+    background: ${({ $isLight }) => ($isLight ? "#000" : "#fff")};
     border-radius: 50%;
-    box-shadow: 
-      0 0 4px 1px rgba(255, 255, 255, 1),
-      0 0 8px 2px rgba(255, 255, 255, 0.8),
-      0 0 12px 4px rgba(255, 255, 255, 0.5);
-  }
-  
-  [data-theme="light"] & {
-    background: linear-gradient(90deg, rgba(0,0,0,0.8), rgba(0,0,0,0.5), transparent);
-    &::before {
-      background: #000;
-      box-shadow: 
+    box-shadow: ${({ $isLight }) =>
+      $isLight
+        ? `
         0 0 4px 1px rgba(0,0,0, 0.9),
         0 0 8px 2px rgba(0,0,0, 0.6),
-        0 0 12px 4px rgba(0,0,0, 0.3);
-    }
+        0 0 12px 4px rgba(0,0,0, 0.3)
+      `
+        : `
+        0 0 4px 1px rgba(255, 255, 255, 1),
+        0 0 8px 2px rgba(255, 255, 255, 0.8),
+        0 0 12px 4px rgba(255, 255, 255, 0.5)
+      `};
   }
 
   @media (prefers-reduced-motion: reduce) {

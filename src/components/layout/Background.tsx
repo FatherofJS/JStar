@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { useTheme } from "../../theme";
 import {
   BackgroundWrapper,
   NebulaLayer,
@@ -30,9 +31,11 @@ const SHOOTING_STARS = generateShootingStars();
 
 export function Background() {
   const shootingStars = useMemo(() => SHOOTING_STARS, []);
+  const { theme } = useTheme();
+  const isLight = theme === "light";
 
   return (
-    <BackgroundWrapper>
+    <BackgroundWrapper $isLight={isLight}>
       <NebulaLayer>
         <div
           style={{
@@ -69,6 +72,7 @@ export function Background() {
       {shootingStars.map((star) => (
         <ShootingStar
           key={star.id}
+          $isLight={isLight}
           $top={star.top}
           $left={star.left}
           $delay={star.delay}

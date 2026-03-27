@@ -27,10 +27,7 @@ interface BirthState {
 const ChartPageWrapper = styled.div<{ $isLight: boolean }>`
   min-height: calc(100dvh - 80px);
   padding: 20px;
-  background: ${({ $isLight }) =>
-    $isLight
-      ? "linear-gradient(180deg, rgba(224, 242, 254, 0.96) 0%, rgba(255, 255, 255, 0.98) 100%)"
-      : "transparent"};
+  background: transparent;
 
   @media (max-width: 768px) {
     padding: 12px;
