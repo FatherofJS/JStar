@@ -1,3 +1,7 @@
+import natalImg from '../assets/features/natal.webp';
+import synastryImg from '../assets/features/synastry.webp';
+import boardImg from '../assets/features/board.webp';
+
 export interface LandingContent {
   home: string;
   features: string;
@@ -197,7 +201,7 @@ export const featuresData: FeatureItem[] = [
     title: landingContent.interactiveChartsTitle,
     description: landingContent.interactiveChartsDescription,
     items: landingContent.interactiveChartsItems,
-    imageSrc: "",
+    imageSrc: natalImg,
     imageAlt: "Natal Chart",
     reversed: false,
     glowColor: "blue",
@@ -209,7 +213,7 @@ export const featuresData: FeatureItem[] = [
     title: landingContent.chartDataTitle,
     description: landingContent.chartDataDescription,
     items: landingContent.chartDataItems,
-    imageSrc: "",
+    imageSrc: synastryImg,
     imageAlt: "Synastry",
     reversed: true,
     glowColor: "purple",
@@ -233,7 +237,7 @@ export const featuresData: FeatureItem[] = [
     title: landingContent.boardTitle,
     description: landingContent.boardDescription,
     items: landingContent.boardItems,
-    imageSrc: "",
+    imageSrc: boardImg,
     imageAlt: "Aesthetic Board",
     reversed: true,
     glowColor: "purple",
