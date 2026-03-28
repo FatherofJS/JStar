@@ -136,9 +136,9 @@ const VibesLinkContainer = styled.div<{ $isLight: boolean }>`
     border-radius: 20px;
     border: 1px solid ${({ $isLight }) => ($isLight ? 'rgba(99, 102, 241, 0.3)' : 'rgba(99, 102, 241, 0.4)')};
     background: ${({ $isLight }) =>
-      $isLight
-        ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05))'
-        : 'rgba(99, 102, 241, 0.1)'};
+    $isLight
+      ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05))'
+      : 'rgba(99, 102, 241, 0.1)'};
     color: ${({ $isLight }) => ($isLight ? '#4f46e5' : '#818cf8')};
     font-size: 1.1rem;
     font-weight: 700;
@@ -149,9 +149,9 @@ const VibesLinkContainer = styled.div<{ $isLight: boolean }>`
 
     &:hover {
       background: ${({ $isLight }) =>
-        $isLight
-          ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1))'
-          : 'rgba(99, 102, 241, 0.2)'};
+    $isLight
+      ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1))'
+      : 'rgba(99, 102, 241, 0.2)'};
       transform: translateY(-4px) scale(1.02);
     }
 

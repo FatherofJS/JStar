@@ -21,6 +21,9 @@
 ### 4. Gallery Easter Egg
 - Một tính năng bí mật lưu trữ các khoảnh khắc của đội ngũ phát triển, tích hợp trực tiếp với Cloudinary.
 
+### 5. Vũ Trụ Aesthetic Board
+- Trải nghiệm thị giác dựa trên năng lượng các hành tinh qua hình ảnh tuyển chọn bởi AI.
+
 ---
 
 ## 💻 Tech Stack

@@ -166,7 +166,7 @@ export const AboutUs = memo(function AboutUs() {
     (): Member[] => [
       {
         id: "g1-1",
-        name: "Đức Mạnh",
+        name: "Tiến Mạnh",
         role: "Take Care",
         imgSrc: Manh, // Ảnh mặt trước (Hãy import ảnh mới ở trên và thay vào đây)
         backImgSrc: <IconZodiacLeo />, // Ảnh mặt sau (Hãy import ảnh mới ở trên và thay vào đây)

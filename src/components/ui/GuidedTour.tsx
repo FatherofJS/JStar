@@ -159,10 +159,22 @@ function getTooltipPosition(
   // Clamp to viewport
   const vw = window.innerWidth;
   const vh = window.innerHeight;
-  // Use a more generous bottom clamp for mobile screens to handle taller tooltips
-  const estTooltipHeight = vw <= 480 ? 320 : 250;
-  left = Math.max(16, Math.min(left, vw - tooltipWidth - 16));
-  top = Math.max(16, Math.min(top, vh - estTooltipHeight - 16));
+
+  // Mobile specific adjustments
+  if (vw <= 480) {
+    tooltipWidth = vw - 20; // Match GuidedTour.styles.ts
+    // left is overridden by CSS (50% + translateX(-50%)) on mobile
+
+    // If target is in bottom half, put tooltip centered in the top half
+    if (rect.top > vh / 2) {
+      top = vh / 4 - 20; // High up, perfectly centered in top half
+    } else {
+      top = rect.top + rect.height + gap; // put below
+    }
+  }
+
+  left = Math.max(10, Math.min(left, vw - tooltipWidth - 10));
+  top = Math.max(10, Math.min(top, vh - 400)); // conservatively assume 400px height for safety
 
   return { top, left };
 }

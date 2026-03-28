@@ -37,7 +37,11 @@ export const GalleryGrid = styled.div`
   margin: 0 auto 60px;
 
   @media (max-width: 900px) { column-count: 2; }
-  @media (max-width: 500px) { column-count: 1; }
+  @media (max-width: 500px) { 
+    column-count: 2; 
+    column-gap: 12px;
+    width: 95%;
+  }
 `;
 
 export const ZoomOverlay = styled.div`
@@ -63,9 +67,15 @@ export const ImageWrapper = styled.div`
   margin-bottom: 24px;
   break-inside: avoid;
   background: #1a1a1a;
-  padding: 15px;
-  border: 3px solid #d4af37; 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 15px rgba(212, 175, 55, 0.3);
+  padding: 10px;
+  border: 2px solid #d4af37; 
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+  
+  @media (max-width: 500px) {
+    padding: 6px;
+    border-width: 1px;
+    margin-bottom: 12px;
+  }
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
 
